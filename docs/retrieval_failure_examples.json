@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T01:55:24.230701+00:00",
-  "runs": 133,
+  "updated": "2026-09-27T06:26:26.399127+00:00",
+  "runs": 135,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 17792,
-  "n_false_negatives": 3462,
+  "n_false_positives": 17871,
+  "n_false_negatives": 3464,
   "new_this_run": {
-    "false_positives": 58,
-    "false_negatives": 2
+    "false_positives": 78,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -200953,6 +200953,844 @@
         "Rabies lyssavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10090"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38652792",
+      "title": "Pemivibart",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lassa mammarenavirus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "42430403",
+      "title": "Clinico-epidemiological insights and treatment practices of bovine lumpy skin disease in Bangladesh.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "How does Lassa mammarenavirus evade or modulate the host immune response?",
+      "cited_pmid": "42770795",
+      "title": "Differential glycosylation in the envelope glycoprotein enhances DC-SIGN-mediated cell entry of the West African Ebolavirus Makona.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "15560063",
+      "title": "Clinical application of hepatitis C virus genotyping and quantitation.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Nipah henipavirus?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "cited_pmid": "15560064",
+      "title": "Treatment of HCV: approach to difficult cases.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42742725",
+      "title": "Screening and identification of B-cell epitopes on the gH protein of varicella-zoster virus.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "15617335",
+      "title": "[Cloning and sequencing of cDNA of E2/NS1 gene of hepatitis C virus].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "cited_pmid": "42422560",
+      "title": "Henipavirus evidence gaps: a Rapid Research Needs Appraisal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "cited_pmid": "42395906",
+      "title": "A risk-gate mechanistic-ecological framework for assessing emergence potential of henipa-related viruses.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 1?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42627681",
+      "title": "Targeting \u03b22-Adrenergic Receptor Stability With Lycorine Reveals a Host-Directed Pathway for Antiviral Defense Against Poxviruses.",
+      "actual_organisms": [
+        "Cowpox virus"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42621909",
+      "title": "Post-COVID varicella-zoster virus reactivation: lowering the immunological threshold for latency breakdown.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42777316",
+      "title": "Extended IL-4 priming of macrophages induces an antiviral state that restricts lymphocytic choriomeningitis virus replication.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42779973",
+      "title": "Computational design of potent, broadly neutralizing anti-Nipah virus and Hendra virus miniproteins.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "9930199",
+      "title": "Induction of apoptosis in HEp-2 cells by infection with herpes simplex virus type 2.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42114492",
+      "title": "Ectromelia virus growth factor is not secreted from infected cells and plays no apparent role for virus replication in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12643"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "15617234",
+      "title": "[Expression of foreign genes in adult rats' central nervous system by use of defective herpes simplex virus type 1 vectors].",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "15617329",
+      "title": "[Core protein of hepatitis C virus expressed in transgenic mice is associated with the expression of Fas molecule].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "2014229",
+      "title": "Identification of a determinant within the human immunodeficiency virus 1 surface envelope glycoprotein critical for productive infection of primary monocytes.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42779995",
+      "title": "Mapping First In Vivo Ebolavirus Infection Events.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42665761",
+      "title": "Machine learning-driven drug repurposing and computational validation for Nipah virus.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 3?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 3?",
+      "cited_pmid": "42395906",
+      "title": "A risk-gate mechanistic-ecological framework for assessing emergence potential of henipa-related viruses.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 3?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 3?",
+      "cited_pmid": "12160245",
+      "title": "Use of the highly sensitive PCR method to detect the Herpes simplex virus type 1 genome and its expression in samples from Beh\u00e7et disease patients.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 3?",
+      "cited_pmid": "42599394",
+      "title": "Deadbolt Drug Discovery: Locking the Door to Class 1 Viral Entry by Small Molecules.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 3?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 3?",
+      "cited_pmid": "2014240",
+      "title": "Effect of mutations affecting the p6 gag protein on human immunodeficiency virus particle release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "How does Human alphaherpesvirus 3 evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "How does Human alphaherpesvirus 3 evade or modulate the host immune response?",
+      "cited_pmid": "42777316",
+      "title": "Extended IL-4 priming of macrophages induces an antiviral state that restricts lymphocytic choriomeningitis virus replication.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "How does Human alphaherpesvirus 3 evade or modulate the host immune response?",
+      "cited_pmid": "42674244",
+      "title": "Nipah virus: an exceptionally virulent emerging zoonotic pathogen.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797794",
+      "title": "Limited Antibodies to Henipaviruses Detected Among Nigerian Horses Using Pseudotyped Virus Neutralization Tests.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2847089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052222"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42523513",
+      "title": "Jamaican fruit bats are susceptible to henipaviruses but rapidly control infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42108251",
+      "title": "Diversity of fecal viromes and zoonotic risk assessment in captive wild felids using viral metagenomics.",
+      "actual_organisms": [
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731619",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "42492241",
+      "title": "Longitudinal and spatial declines in equine Hendra virus vaccination despite continued risk.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "42422560",
+      "title": "Henipavirus evidence gaps: a Rapid Research Needs Appraisal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "42674244",
+      "title": "Nipah virus: an exceptionally virulent emerging zoonotic pathogen.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 1?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human immunodeficiency virus 1?",
+      "cited_pmid": "42599394",
+      "title": "Deadbolt Drug Discovery: Locking the Door to Class 1 Viral Entry by Small Molecules.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Cowpox virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "How does Cowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "1708386",
+      "title": "Polymerization and RNase H activities of the reverse transcriptases from avian myeloblastosis, human immunodeficiency, and Moloney murine leukemia viruses are functionally uncoupled.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11801",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11866",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the clinical symptoms and disease presentation of Variola virus?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Variola virus?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "42777316",
+      "title": "Extended IL-4 priming of macrophages induces an antiviral state that restricts lymphocytic choriomeningitis virus replication.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "42621909",
+      "title": "Post-COVID varicella-zoster virus reactivation: lowering the immunological threshold for latency breakdown.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the epidemiology and outbreak history of Influenza B virus?",
+      "cited_pmid": "42135325",
+      "title": "Digitization of Historical Data from Somalia's Last Smallpox Outbreaks 1976-1977.",
+      "actual_organisms": [
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Influenza B virus?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
     }
   ],
   "false_negatives": [
@@ -221727,6 +222565,18 @@
       "question": "How does Rotavirus B evade or modulate the host immune response?",
       "missed_pmid": "38277437",
       "title": "Recurrent viral capture of cellular phosphodiesterases that antagonize OAS-RNase L."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36780415",
+      "title": "Tixagevimab and Cilgavimab"
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "missed_pmid": "1709492",
+      "title": "Structural models of ribonuclease H domains in reverse transcriptases from retroviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
