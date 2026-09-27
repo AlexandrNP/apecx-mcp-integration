@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:33:54.901655+00:00",
-  "runs": 385,
+  "updated": "2026-09-27T20:35:41.404815+00:00",
+  "runs": 386,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24262,
-  "n_false_negatives": 4767,
+  "n_false_positives": 24265,
+  "n_false_negatives": 4772,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 8
+    "false_positives": 3,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -273504,6 +273504,33 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Feline herpesvirus 1?",
+      "cited_pmid": "26726105",
+      "title": "Serological and biomolecular survey on canine herpesvirus-1 infection in a dog breeding kennel.",
+      "actual_organisms": [
+        "Canine herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Canine herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Canine herpesvirus 1?",
+      "cited_pmid": "26418618",
+      "title": "In Vitro and In Vivo Evaluation of Cidofovir as a Topical Ophthalmic Antiviral for Ocular Canine Herpesvirus-1 Infections in Dogs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Canine herpesvirus 1",
+      "question": "How does Canine herpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "39852824",
+      "title": "Multiple Gene Deletion Mutants of Equine Herpesvirus 1 Exhibit Strong Protective Efficacy Against Wild Virus Challenge in a Murine Model.",
+      "actual_organisms": [
+        "Equine herpesvirus 1"
+      ]
     }
   ],
   "false_negatives": [
@@ -302108,6 +302135,36 @@
       "question": "What is the epidemiology and outbreak history of Mengovirus?",
       "missed_pmid": "26383122",
       "title": "Variability in the recovery of a virus concentration procedure in water: Implications for QMRA."
+    },
+    {
+      "organism": "Equine herpesvirus 1",
+      "question": "What is known about Equine herpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40941318",
+      "title": "Development of an In-House ELISA for Serological Detection of Equine Herpesvirus-1/4 Antibodies in Turkish Horses."
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Feline herpesvirus 1?",
+      "missed_pmid": "40673670",
+      "title": "Viral diversity in urban feline swab samples recovered using metagenomics."
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Feline herpesvirus 1?",
+      "missed_pmid": "42034370",
+      "title": "Involvement of lipid raft during feline herpesvirus (FHV-1) infection on permissive cells: A potential target for antiviral treatment."
+    },
+    {
+      "organism": "Canine herpesvirus 1",
+      "question": "What is known about Canine herpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "26450840",
+      "title": "Canid herpesvirus 1 (CHV-1)-related disease in older puppies and CHV-1 shedding in the vagina of adult pregnant dogs."
+    },
+    {
+      "organism": "Canine herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Canine herpesvirus 1?",
+      "missed_pmid": "26726105",
+      "title": "Serological and biomolecular survey on canine herpesvirus-1 infection in a dog breeding kennel."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
