@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:29:35.070178+00:00",
-  "runs": 383,
+  "updated": "2026-09-27T20:31:18.043536+00:00",
+  "runs": 384,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24238,
+  "n_false_positives": 24252,
   "n_false_negatives": 4759,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 5
+    "false_positives": 14,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -273236,6 +273236,154 @@
       "actual_organisms": [
         "Equine herpesvirus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human betaherpesvirus 7?",
+      "cited_pmid": "42489478",
+      "title": "Time-resolved mapping in calves reveals bovine herpesvirus 1 shift from mucosal replication to trigeminal ganglion neuroinvasion with promyelocytic leukemia protein-centered host-virus antagonism.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "How does Human betaherpesvirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42392336",
+      "title": "Cyprinid herpesvirus 3 ORF24 facilitates viral replication via RLR signaling pathway-mediated innate immune evasion.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "42537337",
+      "title": "Two divergent BoHV-1 isolates from yaks show distinct biological properties and neutralization profiles.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is known about Cyprinid herpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40947653",
+      "title": "Summary of the 12th International Conference on Human Herpesviruses-6A, -6B, and -7.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Cyprinid herpesvirus 3?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Cyprinid herpesvirus 3?",
+      "cited_pmid": "41299705",
+      "title": "Human herpesvirus 7 induced aseptic meningitis in an immunocompetent adult presenting with unusual neurological symptoms: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Cyprinid herpesvirus 3?",
+      "cited_pmid": "35201702",
+      "title": "Cytomegalovirus Corneal Endotheliitis",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is known about Ranid herpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40947653",
+      "title": "Summary of the 12th International Conference on Human Herpesviruses-6A, -6B, and -7.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is known about Ranid herpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41283666",
+      "title": "Herpesvirus-host interactions in neurological diseases: the immunogenetic role of HLA-E.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Ranid herpesvirus 1?",
+      "cited_pmid": "41893645",
+      "title": "Veterinary Herpesviruses: Experimental Tools for Transcriptomics and Neuroscience.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Ranid herpesvirus 1?",
+      "cited_pmid": "40842029",
+      "title": "Human herpes virus-7-related severe encephalitis diagnosed using mNGS in immunocompetent pediatric patients.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_873064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Ranid herpesvirus 1?",
+      "cited_pmid": "41426356",
+      "title": "Human herpesvirus 7 (HHV-7) outbreak among hostel inmates in Odisha, India.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Ranid herpesvirus 1?",
+      "cited_pmid": "41299705",
+      "title": "Human herpesvirus 7 induced aseptic meningitis in an immunocompetent adult presenting with unusual neurological symptoms: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ranid herpesvirus 1?",
+      "cited_pmid": "42489478",
+      "title": "Time-resolved mapping in calves reveals bovine herpesvirus 1 shift from mucosal replication to trigeminal ganglion neuroinvasion with promyelocytic leukemia protein-centered host-virus antagonism.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
     }
   ],
