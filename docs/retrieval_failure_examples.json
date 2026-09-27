@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:51:09.716480+00:00",
-  "runs": 263,
+  "updated": "2026-09-27T14:52:56.781800+00:00",
+  "runs": 264,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22374,
-  "n_false_negatives": 3825,
+  "n_false_positives": 22405,
+  "n_false_negatives": 3839,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 9
+    "false_positives": 31,
+    "false_negatives": 14
   },
   "false_positives": [
     {
@@ -252976,6 +252976,339 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33757",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "39627454",
+      "title": "RT-RPA as a dual tool for detection and phylogenetic analysis of epidemic arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "42198655",
+      "title": "Discovery of Synthetic Imine-Chalcones Targeting Mayaro Virus Replication.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the epidemiology and outbreak history of Ross River virus?",
+      "cited_pmid": "42116271",
+      "title": "Retrospective Phylogenetic Analysis of Mayaro Virus, French Guiana, 1996-2024.",
+      "actual_organisms": [
+        "Mayaro virus"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "cited_pmid": "41263682",
+      "title": "O'nyong'nyong Virus Infections in Nigeria: A Case Series.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "How does Ross River virus evade or modulate the host immune response?",
+      "cited_pmid": "42250266",
+      "title": "Pathogen-Specific Evasion of Innate Immunity by Alphaviruses (CHIKV, VEEV, and SINV).",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "How does Ross River virus evade or modulate the host immune response?",
+      "cited_pmid": "41297433",
+      "title": "A storm is born: immune activation and pathogenesis in arthritogenic alphavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "How does Ross River virus evade or modulate the host immune response?",
+      "cited_pmid": "42257709",
+      "title": "Immunopathogenesis of Mayaro Virus-Induced Chronic Arthritis: From Inflammatory Pathways to Targeted Therapeutic Strategies.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the epidemiology and outbreak history of Mayaro virus?",
+      "cited_pmid": "42029885",
+      "title": "Epidemiological and molecular analysis of the Chikungunya virus outbreak in the state of Rond\u00f4nia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "cited_pmid": "41297433",
+      "title": "A storm is born: immune activation and pathogenesis in arthritogenic alphavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "39627454",
+      "title": "RT-RPA as a dual tool for detection and phylogenetic analysis of epidemic arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "40824091",
+      "title": "ARRDC1 inhibits the replication of Semliki Forest virus by regulating the ubiquitination and degradation of viral nsP4.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "42198655",
+      "title": "Discovery of Synthetic Imine-Chalcones Targeting Mayaro Virus Replication.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "41263682",
+      "title": "O'nyong'nyong Virus Infections in Nigeria: A Case Series.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "41133059",
+      "title": "Dermatologic Clues to Emerging Tropical Infections: A Narrative Review for Early Recognition and Differential Diagnosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38946",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40354",
+        "http://purl.obolibrary.org/obo/NCBITaxon_61463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_7208",
+        "http://purl.obolibrary.org/obo/NCBITaxon_780"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "How does Sindbis virus evade or modulate the host immune response?",
+      "cited_pmid": "41297433",
+      "title": "A storm is born: immune activation and pathogenesis in arthritogenic alphavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "42116271",
+      "title": "Retrospective Phylogenetic Analysis of Mayaro Virus, French Guiana, 1996-2024.",
+      "actual_organisms": [
+        "Mayaro virus"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39556619",
+      "title": "Attenuated Getah virus confers protection against multiple arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus pathogenesis and transmission?",
+      "cited_pmid": "40014625",
+      "title": "Low capacity for molecular detection of Alphaviruses other than Chikungunya virus in 23 European laboratories, March 2022.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "O'nyong-nyong virus",
+        "Ross River virus",
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11020",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
+      "cited_pmid": "39627454",
+      "title": "RT-RPA as a dual tool for detection and phylogenetic analysis of epidemic arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What antiviral drugs or treatments are effective against Semliki Forest virus?",
+      "cited_pmid": "41902198",
+      "title": "A High-Throughput Antiviral Assay Based on a Sindbis Virus-GFP for the Discovery of Inhibitors of Alphavirus Replication.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What antiviral drugs or treatments are effective against Semliki Forest virus?",
+      "cited_pmid": "42198655",
+      "title": "Discovery of Synthetic Imine-Chalcones Targeting Mayaro Virus Replication.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the epidemiology and outbreak history of Semliki Forest virus?",
+      "cited_pmid": "41407624",
+      "title": "The impact of temperature on Ross River virus and Barmah Forest virus infection in Australia: A scoping review.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11020",
+        "http://purl.obolibrary.org/obo/NCBITaxon_207343",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What are the clinical symptoms and disease presentation of Semliki Forest virus?",
+      "cited_pmid": "41263682",
+      "title": "O'nyong'nyong Virus Infections in Nigeria: A Case Series.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "How does Semliki Forest virus evade or modulate the host immune response?",
+      "cited_pmid": "42250266",
+      "title": "Pathogen-Specific Evasion of Innate Immunity by Alphaviruses (CHIKV, VEEV, and SINV).",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "How does Semliki Forest virus evade or modulate the host immune response?",
+      "cited_pmid": "41297433",
+      "title": "A storm is born: immune activation and pathogenesis in arthritogenic alphavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Semliki Forest virus?",
+      "cited_pmid": "42116271",
+      "title": "Retrospective Phylogenetic Analysis of Mayaro Virus, French Guiana, 1996-2024.",
+      "actual_organisms": [
+        "Mayaro virus"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Semliki Forest virus?",
+      "cited_pmid": "41721021",
+      "title": "Discovery of a novel Sindbis virus from Chinese soft-shelled turtle, Pelodiscus sinensis.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
     }
   ],
   "false_negatives": [
@@ -275928,6 +276261,90 @@
       "question": "What is known about Coxsackievirus B5 pathogenesis and transmission?",
       "missed_pmid": "39647532",
       "title": "CircPTPN11 inhibits the replication of Coxsackievirus B5 through regulating the IFN-I pathway by targeting miR-152-3p/SIRPA axis."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41035683",
+      "title": "Unpacking Ross River virus trends in Queensland: Regional insights and predictive modeling."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "missed_pmid": "40525299",
+      "title": "The epidemiology of hospitalisations from four key environmentally sensitive zoonotic diseases in Queensland, 2012-2019."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the epidemiology and outbreak history of Mayaro virus?",
+      "missed_pmid": "40014625",
+      "title": "Low capacity for molecular detection of Alphaviruses other than Chikungunya virus in 23 European laboratories, March 2022."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "missed_pmid": "42357672",
+      "title": "WIN 55,212-2 Modulates Antiviral, Inflammatory, and ER Stress Responses in Mayaro Virus-Infected Macrophages: Insights from RNA-Seq and In Vitro Studies."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41902198",
+      "title": "A High-Throughput Antiviral Assay Based on a Sindbis Virus-GFP for the Discovery of Inhibitors of Alphavirus Replication."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42075767",
+      "title": "Interferon-\u03b2 Modulates Early Viral Replication Kinetics and Innate Responses to Non-Fatal Alphavirus Encephalomyelitis."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "missed_pmid": "41428753",
+      "title": "Bat Dicer antiviral role and subcellular localization differ upon alphavirus infection in two distinct species."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "missed_pmid": "41721021",
+      "title": "Discovery of a novel Sindbis virus from Chinese soft-shelled turtle, Pelodiscus sinensis."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "missed_pmid": "40014625",
+      "title": "Low capacity for molecular detection of Alphaviruses other than Chikungunya virus in 23 European laboratories, March 2022."
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41029819",
+      "title": "Human platelets support Semliki Forest virus replication."
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41295495",
+      "title": "Production Optimization, Adjuvant Screening and Immunogenicity Evaluation of a Virus-like Vesicle Rabies Vaccine."
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus pathogenesis and transmission?",
+      "missed_pmid": "41419770",
+      "title": "Molecular basis of ApoER2-mediated Semliki Forest virus entry."
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
+      "missed_pmid": "40824091",
+      "title": "ARRDC1 inhibits the replication of Semliki Forest virus by regulating the ubiquitination and degradation of viral nsP4."
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
+      "missed_pmid": "41408316",
+      "title": "Identification of a culturable fungal species and endosymbiotic bacteria in saliva of Aedes aegypti and Culex pipiens and their impact on arbovirus infection in vitro."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
