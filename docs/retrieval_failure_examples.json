@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T08:26:52.954658+00:00",
-  "runs": 177,
+  "updated": "2026-09-27T08:28:44.873839+00:00",
+  "runs": 178,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19681,
-  "n_false_negatives": 3552,
+  "n_false_positives": 19732,
+  "n_false_negatives": 3556,
   "new_this_run": {
-    "false_positives": 68,
-    "false_negatives": 2
+    "false_positives": 51,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -222352,6 +222352,567 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "40633843",
+      "title": "Identification of a novel ectromelia virus from rodent: Implications for use as an in vivo infection model for vaccine and antiviral research.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cowpox virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "42655667",
+      "title": "Sheeppox and Goatpox: Molecular Epidemiology, Phylogeny and Transmission Patterns.",
+      "actual_organisms": [
+        "Sheeppox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171",
+        "http://purl.obolibrary.org/obo/NCBITaxon_97135"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "42685183",
+      "title": "Three thousand five hundred\u00a0years of sheeppox virus evolution inferred from archaeological and codicological genomes.",
+      "actual_organisms": [
+        "Sheeppox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186805"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40562151",
+      "title": "A monkeypox nanovaccine candidate based on three protein antigens and silica nanoparticles.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "42114492",
+      "title": "Ectromelia virus growth factor is not secreted from infected cells and plays no apparent role for virus replication in vitro.",
+      "actual_organisms": [
+        "Ectromelia virus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "40633843",
+      "title": "Identification of a novel ectromelia virus from rodent: Implications for use as an in vivo infection model for vaccine and antiviral research.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "40453475",
+      "title": "Detection of the mpox virus using a robust recombinase-aided amplification-based approach.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "42685207",
+      "title": "A newly established reverse genetic system for a circular RNA virus reveals new requirements for infection and its biocontrol potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052842",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5518"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the clinical symptoms and disease presentation of Variola virus?",
+      "cited_pmid": "41523458",
+      "title": "Unmasking Hidden Clues in Cutaneous Viral Infections: Histopathological Insights Into Keratinocytic Features of Herpes Simplex Virus, Varicella Zoster Virus, and Molluscum Contagiosum.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Variola virus?",
+      "cited_pmid": "41958430",
+      "title": "SG33, a Vaccine Strain of Myxoma Virus with Oncolytic Potential, Exploits Macropinocytosis and Clathrin-Mediated Endocytosis for Entry into Pancreatic Cancer Cells.",
+      "actual_organisms": [
+        "Myxoma virus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Variola virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "42773059",
+      "title": "High-content image-based screening reveals vaccinia virus membrane proteins as potential regulators of LC3 lipidation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "41959122",
+      "title": "Interferon-\u03b1 and -\u03b2 subtypes have temporally distinct roles in containing viral spread and protecting vital organs.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "41994123",
+      "title": "Interferon-\u03b1 and -\u03b2 subtypes have temporally distinct roles in containing viral spread and protecting vital organs.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Variola virus?",
+      "cited_pmid": "42385547",
+      "title": "Divergent poxvirus identified in a non-native black rat from Madagascar.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3687202"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Variola virus?",
+      "cited_pmid": "42797765",
+      "title": "Alignment-Free Genome Geometry and Mosaic Barcodes Characterize Modular Diversity in the Cacao Swollen Shoot Virus Complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31559"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42743913",
+      "title": "A single-dose inhalable rAAV-vectored vaccine against mpox virus.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "42135325",
+      "title": "Digitization of Historical Data from Somalia's Last Smallpox Outbreaks 1976-1977.",
+      "actual_organisms": [
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "How does Orf virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "How does Orf virus evade or modulate the host immune response?",
+      "cited_pmid": "41678605",
+      "title": "Poxvirus attack of antiviral defense pathways unleashes an effector-triggered NF-\u03baB response.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "41566003",
+      "title": "Efficient whole-genome sequencing of Monkeypox virus using a novel nuclease-multiple displacement amplification enrichment method.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "42797765",
+      "title": "Alignment-Free Genome Geometry and Mosaic Barcodes Characterize Modular Diversity in the Cacao Swollen Shoot Virus Complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31559"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "42385547",
+      "title": "Divergent poxvirus identified in a non-native black rat from Madagascar.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3687202"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "42629476",
+      "title": "Complete genome sequence of the first alphahypovirus from the phytopathogenic fungus Curvularia americana on Poa pratensis in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1424291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2511840",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946791",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is known about Ectromelia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What antiviral drugs or treatments are effective against Ectromelia virus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the epidemiology and outbreak history of Ectromelia virus?",
+      "cited_pmid": "42135325",
+      "title": "Digitization of Historical Data from Somalia's Last Smallpox Outbreaks 1976-1977.",
+      "actual_organisms": [
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ectromelia virus?",
+      "cited_pmid": "42527601",
+      "title": "In situ structure of the poxvirus portal complex.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ectromelia virus?",
+      "cited_pmid": "42629476",
+      "title": "Complete genome sequence of the first alphahypovirus from the phytopathogenic fungus Curvularia americana on Poa pratensis in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1424291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2511840",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946791",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ectromelia virus?",
+      "cited_pmid": "42685183",
+      "title": "Three thousand five hundred\u00a0years of sheeppox virus evolution inferred from archaeological and codicological genomes.",
+      "actual_organisms": [
+        "Sheeppox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186805"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ectromelia virus?",
+      "cited_pmid": "42797765",
+      "title": "Alignment-Free Genome Geometry and Mosaic Barcodes Characterize Modular Diversity in the Cacao Swollen Shoot Virus Complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31559"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Myxoma virus?",
+      "cited_pmid": "42527601",
+      "title": "In situ structure of the poxvirus portal complex.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is the genome organization and replication cycle of Sheeppox virus?",
+      "cited_pmid": "41566003",
+      "title": "Efficient whole-genome sequencing of Monkeypox virus using a novel nuclease-multiple displacement amplification enrichment method.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What antiviral drugs or treatments are effective against Sheeppox virus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "How does Sheeppox virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What diagnostic assays or laboratory tests detect Tanapox virus?",
+      "cited_pmid": "40453475",
+      "title": "Detection of the mpox virus using a robust recombinase-aided amplification-based approach.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What diagnostic assays or laboratory tests detect Tanapox virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genome organization and replication cycle of Tanapox virus?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genome organization and replication cycle of Tanapox virus?",
+      "cited_pmid": "41812928",
+      "title": "Lack of resistance development during brincidofovir therapy in animal models of orthopoxvirus infection.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32606",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the epidemiology and outbreak history of Tanapox virus?",
+      "cited_pmid": "42135325",
+      "title": "Digitization of Historical Data from Somalia's Last Smallpox Outbreaks 1976-1977.",
+      "actual_organisms": [
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tanapox virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tanapox virus?",
+      "cited_pmid": "42527601",
+      "title": "In situ structure of the poxvirus portal complex.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tanapox virus?",
+      "cited_pmid": "42385547",
+      "title": "Divergent poxvirus identified in a non-native black rat from Madagascar.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3687202"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tanapox virus?",
+      "cited_pmid": "41566003",
+      "title": "Efficient whole-genome sequencing of Monkeypox virus using a novel nuclease-multiple displacement amplification enrichment method.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tanapox virus?",
+      "cited_pmid": "42655667",
+      "title": "Sheeppox and Goatpox: Molecular Epidemiology, Phylogeny and Transmission Patterns.",
+      "actual_organisms": [
+        "Sheeppox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171",
+        "http://purl.obolibrary.org/obo/NCBITaxon_97135"
+      ]
     }
   ],
   "false_negatives": [
@@ -243666,6 +244227,30 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
       "missed_pmid": "41917271",
       "title": "Molecular detection and genetic characterization of pestiviruses associated with abortion in domestic small ruminants in T\u00fcrkiye."
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the clinical symptoms and disease presentation of Monkeypox virus?",
+      "missed_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses."
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Monkeypox virus?",
+      "missed_pmid": "42271160",
+      "title": "Immunogenicity of poxvirus A16/G9 entry-fusion subcomplex and its restriction by A56/K2 protein informs vaccine design."
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Monkeypox virus?",
+      "missed_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb."
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Lumpy skin disease virus?",
+      "missed_pmid": "42573229",
+      "title": "Seroprevalence of Lumpy Skin Disease and Livestock Owners' Knowledge, Attitudes and Practices in Selected Districts of Kazakhstan."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
