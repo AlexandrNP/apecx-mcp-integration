@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:18:32.108025+00:00",
-  "runs": 308,
+  "updated": "2026-09-27T17:24:01.543697+00:00",
+  "runs": 309,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23209,
-  "n_false_negatives": 4231,
+  "n_false_positives": 23218,
+  "n_false_negatives": 4238,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 15
+    "false_positives": 9,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -262067,6 +262067,98 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
         "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "cited_pmid": "42551222",
+      "title": "Analytical validation and clinical evaluation of digital PCR for absolute quantification of Crimean-Congo Hemorrhagic fever virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "cited_pmid": "42780294",
+      "title": "Establishment of a rapid detection method for severe fever with thrombocytopenia syndrome virus based on reverse transcription-recombinase polymerase amplification with lateral flow nucleic acid chromatography assay technology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42443146",
+      "title": "Structures of the Crimean-Congo hemorrhagic fever virus RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "38712703",
+      "title": "Pathogenesis and virulence of Heartland virus.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Rift Valley fever virus?",
+      "cited_pmid": "42583857",
+      "title": "[Yellow Fever Vaccine-Associated Viscerotropic Disease: A Case Report From T\u00fcrkiye].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42537986",
+      "title": "Genetic heterogeneity and pathogenic potential of historical Crimean-Congo hemorrhagic fever virus isolates in China.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42442443",
+      "title": "Emergence of Reassortant Crimean-Congo Hemorrhagic fever virus lineages, Pakistan, 2023-2024.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42780294",
+      "title": "Establishment of a rapid detection method for severe fever with thrombocytopenia syndrome virus based on reverse transcription-recombinase polymerase amplification with lateral flow nucleic acid chromatography assay technology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the clinical symptoms and disease presentation of Heartland virus?",
+      "cited_pmid": "42574266",
+      "title": "Severe Fever With Thrombocytopenia Syndrome: An Autopsy-Proven Case With Radiologic-Pathologic Correlation.",
+      "actual_organisms": [
+        "unknown"
+      ]
     }
   ],
   "false_negatives": [
@@ -287455,6 +287547,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
       "missed_pmid": "41597762",
       "title": "Effect of Hantavirus Infection on the Rodent Lung Microbiome: Specific Regulatory Roles of Host Species and Virus Types."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "missed_pmid": "42414945",
+      "title": "Seroprevalence of Rift Valley fever virus and factors associated with exposure in south-central Uganda."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "missed_pmid": "42782151",
+      "title": "Rift Valley fever virus virulence factor NSs targets ATF4- and XBP1-driven unfolded protein response."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "missed_pmid": "42471684",
+      "title": "Species composition, abundance and seasonality of potential Rift Valley fever virus vectors in north-eastern KwaZulu-Natal province, South Africa."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42555543",
+      "title": "Pathogenicity and virulence of Crimean-Congo hemorrhagic fever virus: From enzootic maintenance to severe human disease."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42538375",
+      "title": "Side-by-side evaluation of two Crimean-Congo hemorrhagic fever virus isolates in IFNAR-/- mice."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42455241",
+      "title": "Crimean-Congo hemorrhagic fever virus in the last four decades (1981-2025): global output, collaboration networks, and emerging frontiers."
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the clinical symptoms and disease presentation of Heartland virus?",
+      "missed_pmid": "38096954",
+      "title": "Pathological and virological findings of type I interferon receptor knockout mice upon experimental infection with Heartland virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
