@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:52:12.761934+00:00",
-  "runs": 175,
+  "updated": "2026-09-27T08:25:01.782663+00:00",
+  "runs": 176,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19569,
-  "n_false_negatives": 3543,
+  "n_false_positives": 19613,
+  "n_false_negatives": 3550,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 1
+    "false_positives": 44,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -221068,6 +221068,492 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3366332",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hantaan orthohantavirus?",
+      "cited_pmid": "36223391",
+      "title": "Diverse susceptibilities and responses of human and rodent cells to orthohantavirus infection reveal different levels of cellular restriction.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "How does Hantaan orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "21820021",
+      "title": "Comparison of innate immune responses to pathogenic and putative non-pathogenic hantaviruses in vitro.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "How does Hantaan orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "22944108",
+      "title": "Distinct innate immune responses in human macrophages and endothelial cells infected with shrew-borne hantaviruses.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "24509342",
+      "title": "Discovery of hantaviruses in bats and insectivores and the evolution of the genus Hantavirus.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "24874196",
+      "title": "Biodiversity and evolution of Imjin virus and Thottapalayam virus in Crocidurinae shrews in Zhejiang Province, China.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "37954511",
+      "title": "Phylogeographic analysis of Tula hantavirus highlights a single introduction to central Europe.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "20505009",
+      "title": "Generation and characterization of genetic reassortants between Puumala and Prospect Hill hantavirus in vitro.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sin Nombre orthohantavirus?",
+      "cited_pmid": "33478127",
+      "title": "Interactions of Viral Proteins from Pathogenic and Low or Non-Pathogenic Orthohantaviruses with Human Type I Interferon Signaling.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "21820021",
+      "title": "Comparison of innate immune responses to pathogenic and putative non-pathogenic hantaviruses in vitro.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "30696898",
+      "title": "Orthohantaviruses belonging to three phylogroups all inhibit apoptosis in infected target cells.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Hantaan orthohantavirus",
+        "Prospect Hill virus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "23055565",
+      "title": "Diversity and distribution of hantaviruses in South America.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "24770846",
+      "title": "Analysis of the nucleocapsid gene brings new insights to the classification of Sigmodontinae-borne hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Puumala orthohantavirus?",
+      "cited_pmid": "33478127",
+      "title": "Interactions of Viral Proteins from Pathogenic and Low or Non-Pathogenic Orthohantaviruses with Human Type I Interferon Signaling.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Puumala orthohantavirus?",
+      "cited_pmid": "35746729",
+      "title": "Molecular Characterisation and Phylogeny of Tula Virus in Kazakhstan.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Puumala orthohantavirus?",
+      "cited_pmid": "37954511",
+      "title": "Phylogeographic analysis of Tula hantavirus highlights a single introduction to central Europe.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seoul orthohantavirus?",
+      "cited_pmid": "36223391",
+      "title": "Diverse susceptibilities and responses of human and rodent cells to orthohantavirus infection reveal different levels of cellular restriction.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "cited_pmid": "35746729",
+      "title": "Molecular Characterisation and Phylogeny of Tula Virus in Kazakhstan.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "cited_pmid": "19357167",
+      "title": "Characterization of Imjin virus, a newly isolated hantavirus from the Ussuri white-toothed shrew (Crocidura lasiura).",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Andes orthohantavirus?",
+      "cited_pmid": "23836565",
+      "title": "Hantavirus fever without pulmonary syndrome in Panama.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_169173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
+      "cited_pmid": "36223391",
+      "title": "Diverse susceptibilities and responses of human and rodent cells to orthohantavirus infection reveal different levels of cellular restriction.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
+      "cited_pmid": "33478127",
+      "title": "Interactions of Viral Proteins from Pathogenic and Low or Non-Pathogenic Orthohantaviruses with Human Type I Interferon Signaling.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Andes orthohantavirus?",
+      "cited_pmid": "24770846",
+      "title": "Analysis of the nucleocapsid gene brings new insights to the classification of Sigmodontinae-borne hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Tula orthohantavirus?",
+      "cited_pmid": "42113832",
+      "title": "Identification and genetic characterization of a distinct genotype of Puumala orthohantavirus in Hebei Province, China.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Tula orthohantavirus?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is known about Prospect Hill virus pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What diagnostic assays or laboratory tests detect Prospect Hill virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What antiviral drugs or treatments are effective against Prospect Hill virus?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the epidemiology and outbreak history of Prospect Hill virus?",
+      "cited_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What are the clinical symptoms and disease presentation of Prospect Hill virus?",
+      "cited_pmid": "42130922",
+      "title": "Diagnostic and Clinical Challenges of Hantavirus-Associated Acute Kidney Injury.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What are the clinical symptoms and disease presentation of Prospect Hill virus?",
+      "cited_pmid": "20524006",
+      "title": "Convalescent pulmonary dysfunction following hantavirus pulmonary syndrome in Panama and the United States.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Prospect Hill virus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Prospect Hill virus?",
+      "cited_pmid": "38361825",
+      "title": "Genome-wide support for incipient Tula hantavirus species within a single rodent host lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Prospect Hill virus?",
+      "cited_pmid": "34614264",
+      "title": "Host genetic factors associated with the range limit of a European hantavirus.",
+      "actual_organisms": [
+        "Tula orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Thottapalayam orthohantavirus?",
+      "cited_pmid": "42113832",
+      "title": "Identification and genetic characterization of a distinct genotype of Puumala orthohantavirus in Hebei Province, China.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "How does Thottapalayam orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "42113832",
+      "title": "Identification and genetic characterization of a distinct genotype of Puumala orthohantavirus in Hebei Province, China.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Laguna Negra orthohantavirus?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Laguna Negra orthohantavirus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "How does Laguna Negra orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "33478127",
+      "title": "Interactions of Viral Proteins from Pathogenic and Low or Non-Pathogenic Orthohantaviruses with Human Type I Interferon Signaling.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Laguna Negra orthohantavirus?",
+      "cited_pmid": "23055565",
+      "title": "Diversity and distribution of hantaviruses in South America.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is known about Choclo orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Choclo orthohantavirus?",
+      "cited_pmid": "42113832",
+      "title": "Identification and genetic characterization of a distinct genotype of Puumala orthohantavirus in Hebei Province, China.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Choclo orthohantavirus?",
+      "cited_pmid": "20505009",
+      "title": "Generation and characterization of genetic reassortants between Puumala and Prospect Hill hantavirus in vitro.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Choclo orthohantavirus?",
+      "cited_pmid": "33478127",
+      "title": "Interactions of Viral Proteins from Pathogenic and Low or Non-Pathogenic Orthohantaviruses with Human Type I Interferon Signaling.",
+      "actual_organisms": [
+        "Prospect Hill virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -242328,6 +242814,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
       "missed_pmid": "42798604",
       "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hantaan orthohantavirus?",
+      "missed_pmid": "19234180",
+      "title": "Hantaan virus triggers TLR3-dependent innate immune responses."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "How does Hantaan orthohantavirus evade or modulate the host immune response?",
+      "missed_pmid": "24074584",
+      "title": "Hantaviruses induce cell type- and viral species-specific host microRNA expression signatures."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "20335425",
+      "title": "Truncated hantavirus nucleocapsid proteins for serotyping Sin Nombre, Andes, and Laguna Negra hantavirus infections in humans and rodents."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "missed_pmid": "20524006",
+      "title": "Convalescent pulmonary dysfunction following hantavirus pulmonary syndrome in Panama and the United States."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "How does Puumala orthohantavirus evade or modulate the host immune response?",
+      "missed_pmid": "35458553",
+      "title": "Expression Profile of Human Renal Mesangial Cells Is Altered by Infection with Pathogenic Puumala Orthohantavirus."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "missed_pmid": "20335425",
+      "title": "Truncated hantavirus nucleocapsid proteins for serotyping Sin Nombre, Andes, and Laguna Negra hantavirus infections in humans and rodents."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
+      "missed_pmid": "30696898",
+      "title": "Orthohantaviruses belonging to three phylogroups all inhibit apoptosis in infected target cells."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
