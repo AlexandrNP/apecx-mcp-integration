@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:45:55.785072+00:00",
-  "runs": 217,
+  "updated": "2026-09-27T11:47:19.322857+00:00",
+  "runs": 218,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21348,
+  "n_false_positives": 21406,
   "n_false_negatives": 3594,
   "new_this_run": {
-    "false_positives": 77,
+    "false_positives": 58,
     "false_negatives": 0
   },
   "false_positives": [
@@ -241436,6 +241436,711 @@
         "Puumala orthohantavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "cited_pmid": "37906378",
+      "title": "Genetic analysis of human parainfluenza type 2 virus in Riyadh, Saudi Arabia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "42508914",
+      "title": "A double-platform assay for rapid and on-site detection of chikungunya virus by integrating catalytic hairpin assembly with lateral flow immunochromatography assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1897738",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the epidemiology and outbreak history of Mayaro virus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "37906378",
+      "title": "Genetic analysis of human parainfluenza type 2 virus in Riyadh, Saudi Arabia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42204262",
+      "title": "Screening of a potential coxsackievirus B4 vaccine strain through analysis of biological features.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42385558",
+      "title": "Discordant trends in enteroviral infections and meningitis in the post-COVID-19 era: Contributions of type distribution and type-specific risk.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seoul orthohantavirus?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "How does Seoul orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42204262",
+      "title": "Screening of a potential coxsackievirus B4 vaccine strain through analysis of biological features.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "9820868",
+      "title": "Detection of human papillomavirus in warty carcinoma of the uterine cervix: comparison of immunohistochemistry, in situ hybridization and in situ polymerase chain reaction methods.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "42584711",
+      "title": "Pyridin-3-carbohydrazide strongly impairs Mayaro and Chikungunya virus replication in vitro.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "42540242",
+      "title": "Evaluation of the Antiviral Activity of Monomeric, Dimeric, and Oligomeric Flavonoids against Chikungunya and Mayaro Viruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1981168",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "42631866",
+      "title": "Identification of 4-Amino-7-chloroquinoline Derivative with In Vitro Activity Against Chikungunya Virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "41305396",
+      "title": "Long-Term Trends in Human Parainfluenza Virus Types 1, 2, and 3 Infection in Korea (2007-2024).",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42494843",
+      "title": "Decoupling musculoskeletal damage from antiviral control: the NLRP3 inflammasome in arthritogenic alphavirus infection.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "37906378",
+      "title": "Genetic analysis of human parainfluenza type 2 virus in Riyadh, Saudi Arabia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "42484256",
+      "title": "Integrated surveillance of arboviruses in febrile patients from the Brazilian Amazon reveals complex co-circulation dynamics and hidden viral diversity.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052608",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40121",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "39684830",
+      "title": "Development of Primer Panels for Amplicon Sequencing of Human Parainfluenza Viruses Type 1 and 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "9541619",
+      "title": "Urine-associated horizontal transmission of Seoul virus among rats.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42773483",
+      "title": "SAMSN1 restricts Japanese encephalitis virus replication by recruiting TRIM21 to degrade viral proteins and activate the interferon pathway.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "42584711",
+      "title": "Pyridin-3-carbohydrazide strongly impairs Mayaro and Chikungunya virus replication in vitro.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "42619960",
+      "title": "Lachesin is a mosquito receptor for multiple arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42494843",
+      "title": "Decoupling musculoskeletal damage from antiviral control: the NLRP3 inflammasome in arthritogenic alphavirus infection.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "39684830",
+      "title": "Development of Primer Panels for Amplicon Sequencing of Human Parainfluenza Viruses Type 1 and 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "37906378",
+      "title": "Genetic analysis of human parainfluenza type 2 virus in Riyadh, Saudi Arabia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 2?",
+      "cited_pmid": "42584711",
+      "title": "Pyridin-3-carbohydrazide strongly impairs Mayaro and Chikungunya virus replication in vitro.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 2?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "How does Human parainfluenza virus 2 evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
