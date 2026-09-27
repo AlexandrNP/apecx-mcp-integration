@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T09:02:50.487749+00:00",
-  "runs": 190,
+  "updated": "2026-09-27T09:04:32.788333+00:00",
+  "runs": 191,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20159,
-  "n_false_negatives": 3578,
+  "n_false_positives": 20188,
+  "n_false_negatives": 3579,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 4
+    "false_positives": 29,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -227721,6 +227721,308 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_262968",
         "http://purl.obolibrary.org/obo/NCBITaxon_43763"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "cited_pmid": "5313066",
+      "title": "A multipurpose serological survey in Kenya. 2. Results of arbovirus serological tests.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What antiviral drugs or treatments are effective against Rift Valley fever virus?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "How does Rift Valley fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42782136",
+      "title": "Genomic characteristics of the first five monkeypox virus clade Ib cases in Thailand: August 2024-March 2025.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42607044",
+      "title": "Opportunities and challenges for countermeasures against Rift Valley fever virus: A quintessential One Health pathogen.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus pathogenesis and transmission?",
+      "cited_pmid": "32965919",
+      "title": "La Crosse Encephalitis",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "41882526",
+      "title": "Chromosome-scale genome assembly and developmental transcriptome of Aedes triseriatus, vector of La Crosse virus.",
+      "actual_organisms": [
+        "La Crosse virus"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "42782136",
+      "title": "Genomic characteristics of the first five monkeypox virus clade Ib cases in Thailand: August 2024-March 2025.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What are the clinical symptoms and disease presentation of Ebola virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What are the clinical symptoms and disease presentation of Ebola virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "How does Ebola virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ebola virus?",
+      "cited_pmid": "42782136",
+      "title": "Genomic characteristics of the first five monkeypox virus clade Ib cases in Thailand: August 2024-March 2025.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42743913",
+      "title": "A single-dose inhalable rAAV-vectored vaccine against mpox virus.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus pathogenesis and transmission?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42294683",
+      "title": "La Crosse virus, but not Jamestown Canyon virus, is dependent on the host translation termination factor eRF1 due to changes in the nonstructural protein NSm.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42796659",
+      "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42562316",
+      "title": "Bovine lactoferrin confers antiviral effect against La Crosse virus by interfering with virus-heparan sulfate proteoglycan binding.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the epidemiology and outbreak history of Norovirus?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "How does Norovirus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "How does Norovirus evade or modulate the host immune response?",
+      "cited_pmid": "42782151",
+      "title": "Rift Valley fever virus virulence factor NSs targets ATF4- and XBP1-driven unfolded protein response.",
+      "actual_organisms": [
+        "Rift Valley fever virus"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "How does Monkeypox virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
     }
   ],
   "false_negatives": [
@@ -249191,6 +249493,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Bohle iridovirus?",
       "missed_pmid": "28097494",
       "title": "Establishment and characterization of a heart-derived cell line from goldfish (Carassius auratus)."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "How does Rift Valley fever virus evade or modulate the host immune response?",
+      "missed_pmid": "42788740",
+      "title": "Establishment of an ex vivo vascular tissue model to investigate bunyavirus-triggered vascular endothelial injury."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
