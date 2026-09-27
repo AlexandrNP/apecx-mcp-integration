@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:03:33.293061+00:00",
-  "runs": 151,
+  "updated": "2026-09-27T07:05:49.980486+00:00",
+  "runs": 152,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18955,
-  "n_false_negatives": 3495,
+  "n_false_positives": 18990,
+  "n_false_negatives": 3512,
   "new_this_run": {
-    "false_positives": 28,
-    "false_negatives": 5
+    "false_positives": 35,
+    "false_negatives": 17
   },
   "false_positives": [
     {
@@ -214111,6 +214111,446 @@
       "actual_organisms": [
         "Tomato yellow leaf curl virus"
       ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37216391",
+      "title": "Investigating the outcomes of virus coinfection within and across host species.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "37041031",
+      "title": "Initiation of translation on nedicistrovirus and related intergenic region IRESs by their factor-independent binding to the P site of 80S ribosomes.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1648481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95342"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "28082492",
+      "title": "Metagenomic Analysis of Cucumber RNA from East Timor Reveals an Aphid lethal paralysis virus Genome.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Israeli acute paralysis virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "37041031",
+      "title": "Initiation of translation on nedicistrovirus and related intergenic region IRESs by their factor-independent binding to the P site of 80S ribosomes.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1648481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95342"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Israeli acute paralysis virus?",
+      "cited_pmid": "41427710",
+      "title": "A recurrent adaptive mutation in the transmembrane 2B protein of an insect picorna-like virus in a nonnative host.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41060764",
+      "title": "The integrated stress response suppresses antiviral RNA interference by autophagy-mediated degradation of the RNA-induced silencing complex.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "42776761",
+      "title": "Splicing suppression alters the STING transcription start site to attenuate antiviral innate immunity.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "42557280",
+      "title": "Experimental infection of acute bee paralysis virus induces differential responses of selected honey bee immune genes, independent of varroa resistance.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Deformed wing virus"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is known about Black queen cell virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "cited_pmid": "39084550",
+      "title": "First metagenomic analysis of virome in Uzbekistan honey bee (Apis mellifera): Investigating basic information on honey bee viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1955170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1983567"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "How does Black queen cell virus evade or modulate the host immune response?",
+      "cited_pmid": "42557280",
+      "title": "Experimental infection of acute bee paralysis virus induces differential responses of selected honey bee immune genes, independent of varroa resistance.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Deformed wing virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "42306944",
+      "title": "Genetic mechanisms underlying the structural elaboration and dissemination of viral internal ribosomal entry sites.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_324901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39738",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "37041031",
+      "title": "Initiation of translation on nedicistrovirus and related intergenic region IRESs by their factor-independent binding to the P site of 80S ribosomes.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1648481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95342"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "39690328",
+      "title": "Complete genome sequence of a novel iflavirus from wheat sawfly (Dolerus tritici).",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3350209"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "42364905",
+      "title": "Persistence of deformed wing virus (DWV) in Apis mellifera L. colonies after Varroa destructor treatment with oxalic acid and amitraz.",
+      "actual_organisms": [
+        "Deformed wing virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "How does Sacbrood virus evade or modulate the host immune response?",
+      "cited_pmid": "41060764",
+      "title": "The integrated stress response suppresses antiviral RNA interference by autophagy-mediated degradation of the RNA-induced silencing complex.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "How does Sacbrood virus evade or modulate the host immune response?",
+      "cited_pmid": "41427710",
+      "title": "A recurrent adaptive mutation in the transmembrane 2B protein of an insect picorna-like virus in a nonnative host.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Acute bee paralysis virus?",
+      "cited_pmid": "42620928",
+      "title": "Screening and functional analysis of a host membrane protein interacting with the structural protein VP1 of deformed wing virus.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chronic bee paralysis virus?",
+      "cited_pmid": "42620928",
+      "title": "Screening and functional analysis of a host membrane protein interacting with the structural protein VP1 of deformed wing virus.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is known about Kashmir bee virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "42557280",
+      "title": "Experimental infection of acute bee paralysis virus induces differential responses of selected honey bee immune genes, independent of varroa resistance.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Deformed wing virus"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Slow bee paralysis virus?",
+      "cited_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Black queen cell virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Kashmir bee virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Slow bee paralysis virus?",
+      "cited_pmid": "42620928",
+      "title": "Screening and functional analysis of a host membrane protein interacting with the structural protein VP1 of deformed wing virus.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Aphid lethal paralysis virus?",
+      "cited_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "How does Aphid lethal paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41060764",
+      "title": "The integrated stress response suppresses antiviral RNA interference by autophagy-mediated degradation of the RNA-induced silencing complex.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "How does Aphid lethal paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "42557280",
+      "title": "Experimental infection of acute bee paralysis virus induces differential responses of selected honey bee immune genes, independent of varroa resistance.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Deformed wing virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -235083,6 +235523,108 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of African cassava mosaic virus?",
       "missed_pmid": "38932233",
       "title": "A Coiled-Coil Nucleotide-Binding Domain Leucine-Rich Repeat Receptor Gene MeRPPL1 Plays a Role in the Replication of a Geminivirus in Cassava."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41600909",
+      "title": "Viruses Infecting Cuban Honey Bees and Evolution of Deformed-Wing-Virus Variants."
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco."
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "missed_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review."
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "missed_pmid": "41173177",
+      "title": "Infection timelines and co-infection effects of Israeli acute paralysis virus and deformed wing virus in the honey bee (Apis mellifera)."
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Israeli acute paralysis virus?",
+      "missed_pmid": "31300700",
+      "title": "Detection of replicative Kashmir Bee Virus and Black Queen Cell Virus in Asian hornet Vespa velutina (Lepelieter 1836) in Italy."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is known about Black queen cell virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31300700",
+      "title": "Detection of replicative Kashmir Bee Virus and Black Queen Cell Virus in Asian hornet Vespa velutina (Lepelieter 1836) in Italy."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is known about Black queen cell virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31834965",
+      "title": "Contrasting impacts of a novel specialist vector on multihost viral pathogen epidemiology in wild and managed bees."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "missed_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "missed_pmid": "41217189",
+      "title": "Insights into the viral landscape of the western honey bee and native bees in Bangladesh."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31300700",
+      "title": "Detection of replicative Kashmir Bee Virus and Black Queen Cell Virus in Asian hornet Vespa velutina (Lepelieter 1836) in Italy."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Acute bee paralysis virus?",
+      "missed_pmid": "42557280",
+      "title": "Experimental infection of acute bee paralysis virus induces differential responses of selected honey bee immune genes, independent of varroa resistance."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "missed_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What antiviral drugs or treatments are effective against Kashmir bee virus?",
+      "missed_pmid": "31300700",
+      "title": "Detection of replicative Kashmir Bee Virus and Black Queen Cell Virus in Asian hornet Vespa velutina (Lepelieter 1836) in Italy."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Kashmir bee virus?",
+      "missed_pmid": "33808848",
+      "title": "Detection of Lotmaria passim, Crithidia mellificae and Replicative Forms of Deformed Wing Virus and Kashmir Bee Virus in the Small Hive Beetle (Aethina tumida)."
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "missed_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review."
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What is the genome organization and replication cycle of Aphid lethal paralysis virus?",
+      "missed_pmid": "28969654",
+      "title": "Viral metagenomics of aphids present in bean and maize plots on mixed-use farms in Kenya reveals the presence of three dicistroviruses including a novel Big Sioux River virus-like dicistrovirus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
