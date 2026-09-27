@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:44:42.088429+00:00",
-  "runs": 280,
+  "updated": "2026-09-27T15:46:39.825780+00:00",
+  "runs": 281,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22749,
-  "n_false_negatives": 4031,
+  "n_false_positives": 22788,
+  "n_false_negatives": 4061,
   "new_this_run": {
-    "false_positives": 31,
-    "false_negatives": 20
+    "false_positives": 39,
+    "false_negatives": 30
   },
   "false_positives": [
     {
@@ -257123,6 +257123,447 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_5819",
         "http://purl.obolibrary.org/obo/NCBITaxon_689759"
       ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Acute bee paralysis virus?",
+      "cited_pmid": "21419132",
+      "title": "Detection of honey bee (Apis mellifera) viruses with an oligonucleotide microarray.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_232800"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Acute bee paralysis virus?",
+      "cited_pmid": "38817969",
+      "title": "Establishment of a reverse transcription-recombinase polymerase amplification-lateral flow dipstick method for the dual detection of Israeli acute paralysis virus and chronic bee paralysis virus.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Acute bee paralysis virus?",
+      "cited_pmid": "20519455",
+      "title": "Genetic characterization of slow bee paralysis virus of the honeybee (Apis mellifera L.).",
+      "actual_organisms": [
+        "Slow bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Acute bee paralysis virus?",
+      "cited_pmid": "27279610",
+      "title": "Virion Structure of Iflavirus Slow Bee Paralysis Virus at 2.6-Angstrom Resolution.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Acute bee paralysis virus?",
+      "cited_pmid": "27680717",
+      "title": "Differential expression pattern of Vago in bumblebee (Bombus terrestris), induced by virulent and avirulent virus infections.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "How does Acute bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "26711439",
+      "title": "In vivo study of Dicer-2-mediated immune response of the small interfering RNA pathway upon systemic infections of virulent and avirulent viruses in Bombus terrestris.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Acute bee paralysis virus?",
+      "cited_pmid": "36851444",
+      "title": "Molecular Detection and Phylogenetic Analysis of Deformed Wing Virus and Sacbrood Virus Isolated from Pollen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40429166",
+      "title": "Reduction in Acute Bee Paralysis Virus Infection and Mortality in Honey Bees (Apis mellifera) by RNA Interference Technology.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "28361244",
+      "title": "Condition-dependent virulence of slow bee paralysis virus in Bombus terrestris: are the impacts of honeybee viruses in wild pollinators underestimated?",
+      "actual_organisms": [
+        "Slow bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Chronic bee paralysis virus?",
+      "cited_pmid": "38930487",
+      "title": "Selection and Multiplexing of Reverse Transcription-Quantitative PCR Tests Targeting Relevant Honeybee Viral Pathogens.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Chronic bee paralysis virus?",
+      "cited_pmid": "20519455",
+      "title": "Genetic characterization of slow bee paralysis virus of the honeybee (Apis mellifera L.).",
+      "actual_organisms": [
+        "Slow bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Chronic bee paralysis virus?",
+      "cited_pmid": "41161636",
+      "title": "Antiviral activity of curcumin against Israeli acute paralysis virus in Apis mellifera: Screening and mechanistic study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Chronic bee paralysis virus?",
+      "cited_pmid": "38334819",
+      "title": "Seasonal trends of the ABPV, KBV, and IAPV complex in Italian managed honey bee (Apis mellifera L.) colonies.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Kashmir bee virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chronic bee paralysis virus?",
+      "cited_pmid": "27279610",
+      "title": "Virion Structure of Iflavirus Slow Bee Paralysis Virus at 2.6-Angstrom Resolution.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chronic bee paralysis virus?",
+      "cited_pmid": "27680717",
+      "title": "Differential expression pattern of Vago in bumblebee (Bombus terrestris), induced by virulent and avirulent virus infections.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "26711439",
+      "title": "In vivo study of Dicer-2-mediated immune response of the small interfering RNA pathway upon systemic infections of virulent and avirulent viruses in Bombus terrestris.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chronic bee paralysis virus?",
+      "cited_pmid": "36851444",
+      "title": "Molecular Detection and Phylogenetic Analysis of Deformed Wing Virus and Sacbrood Virus Isolated from Pollen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "cited_pmid": "33096775",
+      "title": "Veterinary Diagnostic Approach of Common Virus Diseases in Adult Honeybees.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "cited_pmid": "38930487",
+      "title": "Selection and Multiplexing of Reverse Transcription-Quantitative PCR Tests Targeting Relevant Honeybee Viral Pathogens.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "cited_pmid": "21419132",
+      "title": "Detection of honey bee (Apis mellifera) viruses with an oligonucleotide microarray.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_232800"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is the genome organization and replication cycle of Kashmir bee virus?",
+      "cited_pmid": "20519455",
+      "title": "Genetic characterization of slow bee paralysis virus of the honeybee (Apis mellifera L.).",
+      "actual_organisms": [
+        "Slow bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "27680717",
+      "title": "Differential expression pattern of Vago in bumblebee (Bombus terrestris), induced by virulent and avirulent virus infections.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "26711439",
+      "title": "In vivo study of Dicer-2-mediated immune response of the small interfering RNA pathway upon systemic infections of virulent and avirulent viruses in Bombus terrestris.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Kashmir bee virus?",
+      "cited_pmid": "36851444",
+      "title": "Molecular Detection and Phylogenetic Analysis of Deformed Wing Virus and Sacbrood Virus Isolated from Pollen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36534281",
+      "title": "Viral Quantification in Bee Samples Using Synthetic DNA Sequences with Real-Time PCR (qPCR).",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Kashmir bee virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40429166",
+      "title": "Reduction in Acute Bee Paralysis Virus Infection and Mortality in Honey Bees (Apis mellifera) by RNA Interference Technology.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "cited_pmid": "33096775",
+      "title": "Veterinary Diagnostic Approach of Common Virus Diseases in Adult Honeybees.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "cited_pmid": "38930487",
+      "title": "Selection and Multiplexing of Reverse Transcription-Quantitative PCR Tests Targeting Relevant Honeybee Viral Pathogens.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "cited_pmid": "38817969",
+      "title": "Establishment of a reverse transcription-recombinase polymerase amplification-lateral flow dipstick method for the dual detection of Israeli acute paralysis virus and chronic bee paralysis virus.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "cited_pmid": "21419132",
+      "title": "Detection of honey bee (Apis mellifera) viruses with an oligonucleotide microarray.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_232800"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Slow bee paralysis virus?",
+      "cited_pmid": "39590430",
+      "title": "Identification of Twenty-Two New Complete Genome Sequences of Honeybee Viruses Detected in Apis mellifera carnica Worker Bees from Slovenia.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1682186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1923041",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Slow bee paralysis virus?",
+      "cited_pmid": "38334819",
+      "title": "Seasonal trends of the ABPV, KBV, and IAPV complex in Italian managed honey bee (Apis mellifera L.) colonies.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Kashmir bee virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Slow bee paralysis virus?",
+      "cited_pmid": "39098182",
+      "title": "Spatiotemporal evolution of the distribution of Chronic bee paralysis virus (CBPV) in honey bee colonies.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Slow bee paralysis virus?",
+      "cited_pmid": "36851444",
+      "title": "Molecular Detection and Phylogenetic Analysis of Deformed Wing Virus and Sacbrood Virus Isolated from Pollen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What is known about Aphid lethal paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "9367722",
+      "title": "Characteristics of acyrthosiphon pisum virus, a newly identified virus infecting the pea aphid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_340187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_439488"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "cited_pmid": "38817969",
+      "title": "Establishment of a reverse transcription-recombinase polymerase amplification-lateral flow dipstick method for the dual detection of Israeli acute paralysis virus and chronic bee paralysis virus.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "cited_pmid": "38930487",
+      "title": "Selection and Multiplexing of Reverse Transcription-Quantitative PCR Tests Targeting Relevant Honeybee Viral Pathogens.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "cited_pmid": "33096775",
+      "title": "Veterinary Diagnostic Approach of Common Virus Diseases in Adult Honeybees.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "How does Aphid lethal paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "29170046",
+      "title": "The Single von Willebrand factor C-domain protein (SVC) coding gene is not involved in the hymenoptaecin upregulation after Israeli acute paralysis virus (IAPV) injection in the bumblebee Bombus terrestris.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_696863"
+      ]
     }
   ],
   "false_negatives": [
@@ -281311,6 +281752,186 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
       "missed_pmid": "40885432",
       "title": "Landscape-scale virome analysis uncovers endemic and emerging honey bee viruses in the Silk-Road hub of Uzbekistan."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40429166",
+      "title": "Reduction in Acute Bee Paralysis Virus Infection and Mortality in Honey Bees (Apis mellifera) by RNA Interference Technology."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38334819",
+      "title": "Seasonal trends of the ABPV, KBV, and IAPV complex in Italian managed honey bee (Apis mellifera L.) colonies."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus pathogenesis and transmission?",
+      "missed_pmid": "33096775",
+      "title": "Veterinary Diagnostic Approach of Common Virus Diseases in Adult Honeybees."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus pathogenesis and transmission?",
+      "missed_pmid": "28332647",
+      "title": "Prevalence of honeybee viruses in different regions of China and Argentina."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Acute bee paralysis virus?",
+      "missed_pmid": "36534281",
+      "title": "Viral Quantification in Bee Samples Using Synthetic DNA Sequences with Real-Time PCR (qPCR)."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Acute bee paralysis virus?",
+      "missed_pmid": "39590430",
+      "title": "Identification of Twenty-Two New Complete Genome Sequences of Honeybee Viruses Detected in Apis mellifera carnica Worker Bees from Slovenia."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Acute bee paralysis virus?",
+      "missed_pmid": "40346929",
+      "title": "Honey Bee Viromes From Varroa destructor-Resistant and Susceptible Colonies."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Acute bee paralysis virus?",
+      "missed_pmid": "25889959",
+      "title": "Vertical transmission of honey bee viruses in a Belgian queen breeding program."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Acute bee paralysis virus?",
+      "missed_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Acute bee paralysis virus?",
+      "missed_pmid": "37424785",
+      "title": "Detection of honey bee viruses in larvae of Vespa orientalis."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Acute bee paralysis virus?",
+      "missed_pmid": "39934593",
+      "title": "Factors influencing the prevalence of acute bee paralysis virus in Apis mellifera and insights into its phylogenetic relationships."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38817969",
+      "title": "Establishment of a reverse transcription-recombinase polymerase amplification-lateral flow dipstick method for the dual detection of Israeli acute paralysis virus and chronic bee paralysis virus."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Chronic bee paralysis virus?",
+      "missed_pmid": "36534281",
+      "title": "Viral Quantification in Bee Samples Using Synthetic DNA Sequences with Real-Time PCR (qPCR)."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Chronic bee paralysis virus?",
+      "missed_pmid": "39590430",
+      "title": "Identification of Twenty-Two New Complete Genome Sequences of Honeybee Viruses Detected in Apis mellifera carnica Worker Bees from Slovenia."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Chronic bee paralysis virus?",
+      "missed_pmid": "25889959",
+      "title": "Vertical transmission of honey bee viruses in a Belgian queen breeding program."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chronic bee paralysis virus?",
+      "missed_pmid": "37424785",
+      "title": "Detection of honey bee viruses in larvae of Vespa orientalis."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "missed_pmid": "38519112",
+      "title": "Chronic bee paralysis virus exploits host antimicrobial peptides and alters gut microbiota composition to facilitate viral infection."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "missed_pmid": "36534281",
+      "title": "Viral Quantification in Bee Samples Using Synthetic DNA Sequences with Real-Time PCR (qPCR)."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "missed_pmid": "37424785",
+      "title": "Detection of honey bee viruses in larvae of Vespa orientalis."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Kashmir bee virus?",
+      "missed_pmid": "35601108",
+      "title": "Detection of Honeybee Viruses in Vespa orientalis."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "missed_pmid": "33658338",
+      "title": "Virion structure and in vitro genome release mechanism of dicistrovirus Kashmir bee virus."
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "27680717",
+      "title": "Differential expression pattern of Vago in bumblebee (Bombus terrestris), induced by virulent and avirulent virus infections."
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26711439",
+      "title": "In vivo study of Dicer-2-mediated immune response of the small interfering RNA pathway upon systemic infections of virulent and avirulent viruses in Bombus terrestris."
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus pathogenesis and transmission?",
+      "missed_pmid": "20519455",
+      "title": "Genetic characterization of slow bee paralysis virus of the honeybee (Apis mellifera L.)."
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "missed_pmid": "28361244",
+      "title": "Condition-dependent virulence of slow bee paralysis virus in Bombus terrestris: are the impacts of honeybee viruses in wild pollinators underestimated?"
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Slow bee paralysis virus?",
+      "missed_pmid": "27713534",
+      "title": "Moku virus; a new Iflavirus found in wasps, honey bees and Varroa."
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What is known about Aphid lethal paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28082492",
+      "title": "Metagenomic Analysis of Cucumber RNA from East Timor Reveals an Aphid lethal paralysis virus Genome."
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "missed_pmid": "12466490",
+      "title": "Sequence analysis and genomic organization of Aphid lethal paralysis virus: a new member of the family Dicistroviridae."
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "missed_pmid": "23460860",
+      "title": "Metagenomic detection of viral pathogens in Spanish honeybees: co-infection by Aphid Lethal Paralysis, Israel Acute Paralysis and Lake Sinai Viruses."
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Aphid lethal paralysis virus?",
+      "missed_pmid": "2610597",
+      "title": "A comparative study on the cell-free translation of the genomic RNAs of two aphid picorna-like viruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
