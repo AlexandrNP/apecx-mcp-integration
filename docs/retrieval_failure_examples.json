@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:56:06.934065+00:00",
-  "runs": 285,
+  "updated": "2026-09-27T15:57:57.229704+00:00",
+  "runs": 286,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22855,
+  "n_false_positives": 22885,
   "n_false_negatives": 4118,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 8
+    "false_positives": 30,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -258274,6 +258274,328 @@
         "Viral hemorrhagic septicemia virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11276",
         "http://purl.obolibrary.org/obo/NCBITaxon_373862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "32986347",
+      "title": "Phylogeny and In Silico Structure Analysis of Major Capsid Protein (L1) Human Papillomavirus 45 from Indonesian Isolates.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is known about Human papillomavirus type 45 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 45?",
+      "cited_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 45?",
+      "cited_pmid": "35048388",
+      "title": "Genetic variation of E6, E7, and L1 genes of human papillomavirus 51 from central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 45?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "How does Human papillomavirus type 45 evade or modulate the host immune response?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "How does Human papillomavirus type 45 evade or modulate the host immune response?",
+      "cited_pmid": "40677200",
+      "title": "Detection Rate, Genetic Polymorphism, Viral Load, Persistent Infection Capacity, and Pathogenicity of Human Papillomavirus Type 58.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 45?",
+      "cited_pmid": "30583025",
+      "title": "Genetic variability of human papillomavirus type 51 E6, E7, L1 and L2 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is known about Human papillomavirus type 58 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 58?",
+      "cited_pmid": "36571268",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by GP5+/6+-PCR-based reverse dot blot hybridization assay and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 58?",
+      "cited_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 58?",
+      "cited_pmid": "30583025",
+      "title": "Genetic variability of human papillomavirus type 51 E6, E7, L1 and L2 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "37630475",
+      "title": "E7 Oncogene HPV58 Variants Detected in Northeast Brazil: Genetic and Functional Analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "How does Human papillomavirus type 58 evade or modulate the host immune response?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 58?",
+      "cited_pmid": "35048388",
+      "title": "Genetic variation of E6, E7, and L1 genes of human papillomavirus 51 from central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 51?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 51?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "32986347",
+      "title": "Phylogeny and In Silico Structure Analysis of Major Capsid Protein (L1) Human Papillomavirus 45 from Indonesian Isolates.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "41722563",
+      "title": "Structural and biochemical characterization of neutralizing antibodies targeting human papillomavirus type 45.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "How does Human papillomavirus type 51 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 51?",
+      "cited_pmid": "29981762",
+      "title": "Genetic variability and lineage phylogeny of human papillomavirus type 45 based on E6 and E7 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 39?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 39?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 39?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 39?",
+      "cited_pmid": "41722563",
+      "title": "Structural and biochemical characterization of neutralizing antibodies targeting human papillomavirus type 45.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "How does Human papillomavirus type 39 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
