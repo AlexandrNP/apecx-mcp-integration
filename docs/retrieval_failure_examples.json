@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:02:23.773881+00:00",
-  "runs": 243,
+  "updated": "2026-09-27T14:04:03.423127+00:00",
+  "runs": 244,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21958,
-  "n_false_negatives": 3661,
+  "n_false_positives": 21969,
+  "n_false_negatives": 3668,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 9
+    "false_positives": 11,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -248379,6 +248379,127 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genome organization and replication cycle of Infectious salmon anemia virus?",
+      "cited_pmid": "39969098",
+      "title": "Phylogenetic Diversity and Geographic Distribution of Atlantic Salmon Calicivirus in Major Salmon Farming Regions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1237",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1271477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1489836",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3394917"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "cited_pmid": "41819395",
+      "title": "Broad-spectrum antiviral activity of molnupiravir against fish rhabdoviruses through entry blockade and induced viral mutagenesis.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus",
+        "Viral hemorrhagic septicemia virus"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the epidemiology and outbreak history of Infectious salmon anemia virus?",
+      "cited_pmid": "41791752",
+      "title": "Region-specific understanding of virus transmission to support salmonid health at hatcheries in three regions of the Pacific Northwest, North America.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "38309371",
+      "title": "Diagnostic performance of cross-priming amplification-based lateral flow assay (CPA-LFA) and real-time PCR for koi herpesvirus (KHV) detection.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "38708552",
+      "title": "Development of real-time recombinase polymerase amplification (RPA) and RPA combined with lateral flow dipstick (LFD) assays for the rapid and sensitive detection of cyprinid herpesvirus 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_128987",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1437365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_642"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "40526623",
+      "title": "Global genetic diversity of Infectious Salmon Anemia Virus (ISAV) a scoping review protocol.",
+      "actual_organisms": [
+        "Infectious salmon anemia virus"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "41116685",
+      "title": "Development and Validation of a Double-Antibody Sandwich ELISA (DAS-ELISA) for Detection of Anguillid Herpesvirus.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_128987",
+        "http://purl.obolibrary.org/obo/NCBITaxon_150286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "39214419",
+      "title": "Development of a loop-mediated isothermal amplification (LAMP) assay for rapid and visual detection of Anguillid herpesvirus 1.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_150286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_380178",
+        "http://purl.obolibrary.org/obo/NCBITaxon_79600"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "38309371",
+      "title": "Diagnostic performance of cross-priming amplification-based lateral flow assay (CPA-LFA) and real-time PCR for koi herpesvirus (KHV) detection.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious pancreatic necrosis virus?",
+      "cited_pmid": "38309371",
+      "title": "Diagnostic performance of cross-priming amplification-based lateral flow assay (CPA-LFA) and real-time PCR for koi herpesvirus (KHV) detection.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "39969098",
+      "title": "Phylogenetic Diversity and Geographic Distribution of Atlantic Salmon Calicivirus in Major Salmon Farming Regions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1237",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1271477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1489836",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3394917"
+      ]
     }
   ],
   "false_negatives": [
@@ -270347,6 +270468,48 @@
       "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
       "missed_pmid": "39592268",
       "title": "Rio Mamore Hantavirus Endemicity, Peruvian Amazon, 2020."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is known about Infectious salmon anemia virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41604357",
+      "title": "Immune Efficacy and Intestinal Microbiota of Rainbow Trout (Oncorhynchus mykiss) After Inactivated IHNV Vaccination via Distinct Injection Regimens."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the epidemiology and outbreak history of Infectious salmon anemia virus?",
+      "missed_pmid": "40886517",
+      "title": "Network of ship movements and its potential in spreading pathogenic infectious salmon anemia virus among Norwegian fish farms."
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "How does Infectious hematopoietic necrosis virus evade or modulate the host immune response?",
+      "missed_pmid": "41796695",
+      "title": "Development of anti-CD4-1/CD8\u03b2 monoclonal antibodies and spatiotemporal immune profiling of response to live attenuated IHNV in rainbow trout (Oncorhynchus mykiss)."
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "missed_pmid": "41825729",
+      "title": "Development of sandwich ELISA for IL-10 quantification in olive flounder (Paralichthys olivaceus) and its application to protein-level analysis during viral hemorrhagic septicemia virus (VHSV) infection."
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Viral hemorrhagic septicemia virus?",
+      "missed_pmid": "41177279",
+      "title": "Erythrocyte-targeted recombinant subunit vaccine: A novel approach to improve viral vaccines in fish."
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious pancreatic necrosis virus?",
+      "missed_pmid": "39214419",
+      "title": "Development of a loop-mediated isothermal amplification (LAMP) assay for rapid and visual detection of Anguillid herpesvirus 1."
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious pancreatic necrosis virus?",
+      "missed_pmid": "41128079",
+      "title": "Temporal modulation of proteasome and ubiquitin-mediated responses in rainbow trout kidneys during infectious pancreatic necrosis virus infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
