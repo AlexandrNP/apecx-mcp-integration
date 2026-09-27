@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:06:13.223560+00:00",
-  "runs": 325,
+  "updated": "2026-09-27T18:07:49.212702+00:00",
+  "runs": 326,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23395,
+  "n_false_positives": 23401,
   "n_false_negatives": 4346,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 4
+    "false_positives": 6,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -264157,6 +264157,68 @@
       "title": "E6 and E7 Gene Polymorphisms in Human Papillomavirus Types-58 and 33 Identified in Southwest China.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "1649326",
+      "title": "Biologic properties and nucleotide sequence analysis of human papillomavirus type 51.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "2831406",
+      "title": "Isolation of a novel human papillomavirus (type 51) from a cervical condyloma.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "1649326",
+      "title": "Biologic properties and nucleotide sequence analysis of human papillomavirus type 51.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "1649326",
+      "title": "Biologic properties and nucleotide sequence analysis of human papillomavirus type 51.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2831406",
+      "title": "Isolation of a novel human papillomavirus (type 51) from a cervical condyloma.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "1649326",
+      "title": "Biologic properties and nucleotide sequence analysis of human papillomavirus type 51.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
