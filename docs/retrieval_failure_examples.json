@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:57:57.861945+00:00",
-  "runs": 321,
+  "updated": "2026-09-27T17:59:34.282041+00:00",
+  "runs": 322,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23353,
-  "n_false_negatives": 4326,
+  "n_false_positives": 23369,
+  "n_false_negatives": 4330,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 8
+    "false_positives": 16,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -263697,6 +263697,189 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_36048",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "38164047",
+      "title": "Novel intertypic recombination of Echovirus 11 in the Enterovirus species B.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 30?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 30?",
+      "cited_pmid": "39907911",
+      "title": "Echovirus serotype 11 induced sepsis in a young female patient with multiple sclerosis treated with anti-CD20 monoclonal antibody ocrelizumab.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 pathogenesis and transmission?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "39907434",
+      "title": "Serology supportive of recent coxsackievirus B infection is correlated with multisystem inflammatory syndrome in children (MIS-C).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "38932451",
+      "title": "A 3-month-old neonatal rhesus macaque HFMD model caused by coxsackievirus B1 infection and viral tissue tropism.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
+      "cited_pmid": "40064995",
+      "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "38164047",
+      "title": "Novel intertypic recombination of Echovirus 11 in the Enterovirus species B.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "39980007",
+      "title": "Two dramatically different clinical scenarios of neonatal Echovirus-11 infection in late preterm male twins: a case report and review of the literature.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "38392881",
+      "title": "Echovirus 30 in Bulgaria during the European Upsurge of the Virus, 2017-2018.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "38458420",
+      "title": "Increased circulation of echovirus 11 in the general population and hospital patients as elicited by the non-polio enterovirus laboratory-based sentinel surveillance in northern Italy, 2023.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "39907911",
+      "title": "Echovirus serotype 11 induced sepsis in a young female patient with multiple sclerosis treated with anti-CD20 monoclonal antibody ocrelizumab.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genome organization and replication cycle of Echovirus 11?",
+      "cited_pmid": "38392881",
+      "title": "Echovirus 30 in Bulgaria during the European Upsurge of the Virus, 2017-2018.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 11?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 11?",
+      "cited_pmid": "39980007",
+      "title": "Two dramatically different clinical scenarios of neonatal Echovirus-11 infection in late preterm male twins: a case report and review of the literature.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
     }
   ],
   "false_negatives": [
@@ -289655,6 +289838,30 @@
       "question": "What is known about Cotton leaf curl virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "38952448",
       "title": "Microbial influencers and cotton leaf curl disease (CLCuD) susceptibility: a network perspective."
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "missed_pmid": "38189249",
+      "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 11?",
+      "missed_pmid": "38729515",
+      "title": "Echovirus 11 lineage I and other enteroviruses in hospitalized children with acute respiratory infection in Southern Italy, 2022- 2023."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "How does Echovirus 11 evade or modulate the host immune response?",
+      "missed_pmid": "38164047",
+      "title": "Novel intertypic recombination of Echovirus 11 in the Enterovirus species B."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 11?",
+      "missed_pmid": "39819037",
+      "title": "Diversity of lake bacteria promotes human echovirus inactivation."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
