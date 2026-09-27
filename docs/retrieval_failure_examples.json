@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:20:17.911962+00:00",
-  "runs": 159,
+  "updated": "2026-09-27T07:21:48.940415+00:00",
+  "runs": 160,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19375,
+  "n_false_positives": 19387,
   "n_false_negatives": 3535,
   "new_this_run": {
-    "false_positives": 37,
-    "false_negatives": 1
+    "false_positives": 12,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -218926,6 +218926,144 @@
       "actual_organisms": [
         "Invertebrate iridescent virus 6",
         "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is known about Ranid herpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24747010",
+      "title": "Selection and characterization of single-chain recombinant antibodies against infectious haematopoietic necrosis virus from mouse phage display library.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1906674",
+        "http://purl.obolibrary.org/obo/NCBITaxon_219584"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Ranid herpesvirus 1?",
+      "cited_pmid": "35773319",
+      "title": "Preparation of recombinant glycoprotein B (gB) of Chelonid herpesvirus 5 (ChHV5) for antibody production and its application for infection detection in sea turtles.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What diagnostic assays or laboratory tests detect Common midwife toad virus?",
+      "cited_pmid": "32856553",
+      "title": "Consensus PCR protocols for the detection of amphibian herpesviruses (Batrachovirus).",
+      "actual_organisms": [
+        "Ranid herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1987509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2282206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044671",
+        "http://purl.obolibrary.org/obo/NCBITaxon_389214"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What is the genome organization and replication cycle of Common midwife toad virus?",
+      "cited_pmid": "17098965",
+      "title": "Genome sequences of two frog herpesviruses.",
+      "actual_organisms": [
+        "Ranid herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Common midwife toad virus?",
+      "cited_pmid": "30066272",
+      "title": "Soft-shelled turtle iridovirus enters cells via cholesterol-dependent, clathrin-mediated endocytosis as well as macropinocytosis.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Common midwife toad virus?",
+      "cited_pmid": "28987623",
+      "title": "The pathogenicity and biological features of Santee-Cooper Ranaviruses isolated from Chinese perch and snakehead fish.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the genome organization and replication cycle of Santee-Cooper ranavirus?",
+      "cited_pmid": "28803676",
+      "title": "Ranavirus phylogenomics: Signatures of recombination and inversions among bullfrog ranaculture isolates.",
+      "actual_organisms": [
+        "Common midwife toad virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1914855",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the genome organization and replication cycle of Santee-Cooper ranavirus?",
+      "cited_pmid": "27812275",
+      "title": "Comparative Genomics of Amphibian-like Ranaviruses, Nucleocytoplasmic Large DNA Viruses of Poikilotherms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732007"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the genome organization and replication cycle of Santee-Cooper ranavirus?",
+      "cited_pmid": "33214291",
+      "title": "Genome Sequence of a Ranavirus Isolated from a Red-Eared Slider (Trachemys scripta elegans) in Poland.",
+      "actual_organisms": [
+        "Common midwife toad virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Santee-Cooper ranavirus?",
+      "cited_pmid": "30066272",
+      "title": "Soft-shelled turtle iridovirus enters cells via cholesterol-dependent, clathrin-mediated endocytosis as well as macropinocytosis.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is the epidemiology and outbreak history of Soft-shelled turtle iridovirus?",
+      "cited_pmid": "36670830",
+      "title": "Increased Prevalence and New Evidence of Multi-Species Chelonid Herpesvirus 5 (ChHV5) Infection in the Sea Turtles of Mabul Island, Borneo.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "How does Soft-shelled turtle iridovirus evade or modulate the host immune response?",
+      "cited_pmid": "31158386",
+      "title": "The distinct evolutionary properties of the tripartite motif-containing protein 39 in the Chinese softshell turtle based on its structural and functional characterization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_644"
       ]
     }
   ],
