@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:52:27.331189+00:00",
-  "runs": 480,
+  "updated": "2026-09-27T23:54:19.016022+00:00",
+  "runs": 481,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25134,
-  "n_false_negatives": 4978,
+  "n_false_positives": 25149,
+  "n_false_negatives": 4993,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 1
+    "false_positives": 15,
+    "false_negatives": 15
   },
   "false_positives": [
     {
@@ -283224,6 +283224,147 @@
         "Myxoma virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10270"
       ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655659",
+      "title": "Dual Antiviral Functions of Antibodies Targeting African Swine Fever Virus p17 Protein: Viral Inhibition and ADCC Induction.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41746113",
+      "title": "Oral Bait Immunization of Eurasian Wild Boar (Sus scrofa) Against African Swine Fever with \"ASFV-G-\u0394I177L\": Bait Performance, Immunogenicity, and Environmental Monitoring.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "cited_pmid": "42632480",
+      "title": "Impact of African swine fever virus genotype II on the porcine female reproductive system.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "42325445",
+      "title": "Development of a Novel Duplex qPCR-HRM Assay for Rapid Detection of African Swine Fever Virus in Pigs.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "cited_pmid": "42665846",
+      "title": "Evaluation of An I226R and A137R deletion mutant from a genotype I/II recombinant African swine fever virus strain as a live attenuated vaccine in pigs.",
+      "actual_organisms": [
+        "African swine fever virus"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "cited_pmid": "42661289",
+      "title": "Genetically Distinct African Swine Fever Virus Genotype II Variant in Wild Boar, Spain, 2025-2026.",
+      "actual_organisms": [
+        "African swine fever virus"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "How does Classical swine fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42753295",
+      "title": "African swine fever virus pA137R inhibits type i interferon signal transduction by interacting with TYK2 and impairing STAT1/2 activation.",
+      "actual_organisms": [
+        "African swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is known about African swine fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41746113",
+      "title": "Oral Bait Immunization of Eurasian Wild Boar (Sus scrofa) Against African Swine Fever with \"ASFV-G-\u0394I177L\": Bait Performance, Immunogenicity, and Environmental Monitoring.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is the genome organization and replication cycle of African swine fever virus?",
+      "cited_pmid": "41802677",
+      "title": "Rethinking classical swine fever virus phylogenetics: NS3 Outperforms traditional gene markers.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against African swine fever virus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of African swine fever virus?",
+      "cited_pmid": "41902209",
+      "title": "Molecular Maneuvers and Host Sabotage: A Comprehensive Review of CSFV's Multifaceted Strategies to Subvert Immune Defenses and Cellular Metabolism.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of African swine fever virus?",
+      "cited_pmid": "42107207",
+      "title": "Annexin A2 orchestrates CSFV entry route selection via the annexin A2/S100A10 heterotetrameric complex.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "How does African swine fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42349522",
+      "title": "Genome-wide transcriptome profiling in crossbred pigs after challenge with Classical Swine Fever Virus.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of African swine fever virus?",
+      "cited_pmid": "41880900",
+      "title": "Comprehensive E2 gene-based phylogeny uncovers emerging lineages and refines global genotype framework of classical swine fever virus.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of African swine fever virus?",
+      "cited_pmid": "42115469",
+      "title": "Molecular evolution and antigenic mapping of classical swine fever virus: a comprehensive analysis of E2 genomic variability and selection dynamics.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -313094,6 +313235,96 @@
       "question": "What diagnostic assays or laboratory tests detect Orf virus?",
       "missed_pmid": "41986757",
       "title": "Development of a double-antibody sandwich ELISA for detecting Peste des petits ruminants virus infection."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42278519",
+      "title": "Single B-Cell-Based Generation of Porcine Anti-CSFV Erns Monoclonal Antibodies and Application in a Blocking ELISA Assay."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41797173",
+      "title": "Post-licensing evaluation of Porvac\u00ae subunit vaccine against classical swine fever in two pig genetic development farms in Cuba."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "missed_pmid": "41817886",
+      "title": "Post-vaccination seroconversion and lineage-level molecular characterization of classical swine fever virus in five northeastern states of India."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "missed_pmid": "42168735",
+      "title": "Decoding classical swine fever virus-swine protein interactions: a bioinformatics approach to targeted viral control."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "missed_pmid": "41902209",
+      "title": "Molecular Maneuvers and Host Sabotage: A Comprehensive Review of CSFV's Multifaceted Strategies to Subvert Immune Defenses and Cellular Metabolism."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the epidemiology and outbreak history of Classical swine fever virus?",
+      "missed_pmid": "42184064",
+      "title": "Blood swabs represent an alternative sample matrix for detection of antibodies against classical swine fever virus during surveillance in wild boar."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "missed_pmid": "41880900",
+      "title": "Comprehensive E2 gene-based phylogeny uncovers emerging lineages and refines global genotype framework of classical swine fever virus."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Classical swine fever virus?",
+      "missed_pmid": "42115469",
+      "title": "Molecular evolution and antigenic mapping of classical swine fever virus: a comprehensive analysis of E2 genomic variability and selection dynamics."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "How does Classical swine fever virus evade or modulate the host immune response?",
+      "missed_pmid": "41773859",
+      "title": "A dual role for ER-Golgi cargo receptor LMAN1 in supporting CSFV replication and restraining RLR signaling."
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine epidemic diarrhea virus?",
+      "missed_pmid": "42655682",
+      "title": "Isolation, Characterization and Reverse Genetic System Establishment of a Highly Virulent PEDV Strain."
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is known about African swine fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42684801",
+      "title": "Genotype II Live-Attenuated ASFV Vaccine Bearing 24 Genes Deletion in 3 Independent Regions Is Able to Provide Complete Protection Against Homologous Lethal Challenge."
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of African swine fever virus?",
+      "missed_pmid": "42655659",
+      "title": "Dual Antiviral Functions of Antibodies Targeting African Swine Fever Virus p17 Protein: Viral Inhibition and ADCC Induction."
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of African swine fever virus?",
+      "missed_pmid": "42753295",
+      "title": "African swine fever virus pA137R inhibits type i interferon signal transduction by interacting with TYK2 and impairing STAT1/2 activation."
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "How does African swine fever virus evade or modulate the host immune response?",
+      "missed_pmid": "42665846",
+      "title": "Evaluation of An I226R and A137R deletion mutant from a genotype I/II recombinant African swine fever virus strain as a live attenuated vaccine in pigs."
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of African swine fever virus?",
+      "missed_pmid": "42640359",
+      "title": "Comparative genomic analysis of pigs differing in survival following African swine fever virus infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
