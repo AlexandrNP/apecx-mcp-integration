@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:14:16.872342+00:00",
-  "runs": 270,
+  "updated": "2026-09-27T15:15:49.987392+00:00",
+  "runs": 271,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22529,
-  "n_false_negatives": 3900,
+  "n_false_positives": 22549,
+  "n_false_negatives": 3908,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 13
+    "false_positives": 20,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -254649,6 +254649,232 @@
       "actual_organisms": [
         "Porcine circovirus 2"
       ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42117238",
+      "title": "Temporal genetic changes in human bocavirus 1 in Fukushima, Japan, from 2018 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052040",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "42213790",
+      "title": "PATZ1 condensation adjacent to PML nuclear bodies suppresses HBoV transcription as an intrinsic antiviral defense.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689403"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "42349632",
+      "title": "Feline bocaparvovirus in domestic cats with gastrointestinal disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "42277060",
+      "title": "Transferrin receptor 1 binds human parvovirus B19 VP1u to facilitate entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "How does Human bocavirus evade or modulate the host immune response?",
+      "cited_pmid": "42797816",
+      "title": "Molecular Mechanisms Between Canine Parvovirus 2 and Host Interactions: From Viruses to Innate Immune Signaling Pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What diagnostic assays or laboratory tests detect Torque teno virus?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "42213790",
+      "title": "PATZ1 condensation adjacent to PML nuclear bodies suppresses HBoV transcription as an intrinsic antiviral defense.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689403"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "42337529",
+      "title": "Multilayered nucleotide organization reveals purifying selection and host-driven adaptation in CPV and FPV.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "42671192",
+      "title": "Integration of an anellovirus genome in the SKNO-1 acute myeloid leukemia cell line.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048427",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the epidemiology and outbreak history of Torque teno virus?",
+      "cited_pmid": "42357695",
+      "title": "Analysis of Epidemiological and Molecular Characteristics of Bocavirus in Guangzhou.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What are the clinical symptoms and disease presentation of Torque teno virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Torque teno virus?",
+      "cited_pmid": "42198612",
+      "title": "Differential Interactions of Tissue-Restricted Host Proteins SPLUNC1 and VAMP8 with VP3 of Human Bocaviruses 1 and 2.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Torque teno virus?",
+      "cited_pmid": "42277060",
+      "title": "Transferrin receptor 1 binds human parvovirus B19 VP1u to facilitate entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Torque teno virus?",
+      "cited_pmid": "42530339",
+      "title": "Identification of human transferrin receptor as an entry co-receptor for parvovirus B19 infection of human erythroid progenitor cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40121",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "How does Torque teno virus evade or modulate the host immune response?",
+      "cited_pmid": "42089290",
+      "title": "Anellovirus-mediated interferon dysregulation enhances virus-induced lung injury.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687332"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Torque teno virus?",
+      "cited_pmid": "42117238",
+      "title": "Temporal genetic changes in human bocavirus 1 in Fukushima, Japan, from 2018 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052040",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Torque teno virus?",
+      "cited_pmid": "42349632",
+      "title": "Feline bocaparvovirus in domestic cats with gastrointestinal disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Torque teno virus?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is known about Canine parvovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42316335",
+      "title": "Development of canine parvovirus-2-based recombinant pseudoviruses expression system: a potential vaccine platform.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
     }
   ],
   "false_negatives": [
@@ -278051,6 +278277,54 @@
       "question": "What diagnostic assays or laboratory tests detect Duck circovirus?",
       "missed_pmid": "39813864",
       "title": "Study on the infection characteristics and pathogenesis of duck circovirus 1 in Cherry Valley meat ducks."
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "missed_pmid": "42198641",
+      "title": "National Cross-Sectional Study Assessing the Positivity Rate and Clinical Manifestations of Human Bocavirus Respiratory Infections Among Hospitalized Children Under 5 Years of Age in Jordan."
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the epidemiology and outbreak history of Torque teno virus?",
+      "missed_pmid": "42141398",
+      "title": "Torque teno virus viral load and hospitalisation for infections in long-term kidney transplant recipients: a single-centre prospective cohort study."
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Torque teno virus?",
+      "missed_pmid": "42095457",
+      "title": "Infectivity of recombinant Torque teno sus virus 1 in pigs coinfected with swine influenza virus."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is known about Canine parvovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42421843",
+      "title": "Acute hemorrhagic gastroenteritis caused by an \"Asian\" CPV-2c variant in a vaccinated dog from Slovakia (Central Europe): a case report."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is the genome organization and replication cycle of Canine parvovirus?",
+      "missed_pmid": "42357671",
+      "title": "Canine Parvovirus Asian Type 2 Variant C (CPV-2c) Detected in C\u00f4te d'Ivoire."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is the genome organization and replication cycle of Canine parvovirus?",
+      "missed_pmid": "42337529",
+      "title": "Multilayered nucleotide organization reveals purifying selection and host-driven adaptation in CPV and FPV."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is the genome organization and replication cycle of Canine parvovirus?",
+      "missed_pmid": "42674009",
+      "title": "Canine parvovirus cases (2010-2023): a retrospective study of 78,977 cases demonstrates declining incidence, but mortality risk remains."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "How does Canine parvovirus evade or modulate the host immune response?",
+      "missed_pmid": "42486166",
+      "title": "Retrospective evaluation of canine parvovirus monoclonal antibody supports faster clinical recovery in shelter dogs with naturally occurring canine parvovirus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
