@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:28:18.999569+00:00",
-  "runs": 334,
+  "updated": "2026-09-27T18:31:01.839130+00:00",
+  "runs": 335,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23532,
-  "n_false_negatives": 4403,
+  "n_false_positives": 23538,
+  "n_false_negatives": 4416,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 5
+    "false_positives": 6,
+    "false_negatives": 13
   },
   "false_positives": [
     {
@@ -265604,6 +265604,66 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1041883",
         "http://purl.obolibrary.org/obo/NCBITaxon_464095"
       ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40406227",
+      "title": "Genomic Characteristics and Pathogenicity of Novel Reassortant Mammalian Orthoreoviruses From Sheep, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32611"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mammalian orthoreovirus?",
+      "cited_pmid": "40373131",
+      "title": "Diverse bat organoids provide pathophysiological models for zoonotic viruses.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "cited_pmid": "39932305",
+      "title": "mGem: The complexity of viral entry-one virus, many receptors.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "cited_pmid": "40961883",
+      "title": "The VP7 protein of the African horse sickness virus core particle facilitates binding to Culicoides sonorensis cells in an RGD-independent manner.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36421"
+      ]
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What diagnostic assays or laboratory tests detect African horse sickness virus?",
+      "cited_pmid": "40427310",
+      "title": "Establishment of an In-House Indirect Enzyme-Linked Immunosorbent Assay to Detect Antibodies Against African Horse Sickness Based on Monovalent and Polyvalent Live Attenuated Vaccines During the First Outbreak in Thailand.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "39932305",
+      "title": "mGem: The complexity of viral entry-one virus, many receptors.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
     }
   ],
   "false_negatives": [
@@ -292024,6 +292084,84 @@
       "question": "What is the genome organization and replication cycle of Sacbrood virus?",
       "missed_pmid": "38980019",
       "title": "Sacbrood viruses and select Lake Sinai virus variants dominated Apis mellifera colonies symptomatic for European foulbrood."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "missed_pmid": "40492784",
+      "title": "Coding complete sequences of the 10 genomic segments of a mammalian orthoreovirus type 3 isolated from a Blarina peninsulae shrew."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "missed_pmid": "39889480",
+      "title": "The influence of the cytoskeleton on the development and behavior of viral factories in mammalian orthoreovirus."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the epidemiology and outbreak history of Mammalian orthoreovirus?",
+      "missed_pmid": "40441334",
+      "title": "Tupaia orthoreovirus: The first successful isolation of a novel Mammalian orthoreovirus from treeshrews in Malaysia."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "missed_pmid": "41700014",
+      "title": "Emergence of Bluetongue virus serotype 5 in Sardinia- Italy, 2025."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "missed_pmid": "40307924",
+      "title": "Monoclonal antibody and B-cell epitope mapping of the VP7 protein in bluetongue virus."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "missed_pmid": "42179342",
+      "title": "The changing landscape of bluetongue in northern Europe."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "missed_pmid": "42138172",
+      "title": "Bluetongue virus serotype 8 (BTV-8) in Serbia, 2025."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What diagnostic assays or laboratory tests detect African horse sickness virus?",
+      "missed_pmid": "40893456",
+      "title": "Prevalence of African Horse Sickness Virus Antibodies in Horses and Selected Wildlife in Four Geographical Regions of Nigeria."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What are the clinical symptoms and disease presentation of African horse sickness virus?",
+      "missed_pmid": "41012803",
+      "title": "The Viremic Phase and Humoral Immune Response Against African Horse Sickness Virus That Emerged in Thailand in 2020."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of African horse sickness virus?",
+      "missed_pmid": "41471886",
+      "title": "Modification and Validation of a Reference Real-Time RT-PCR Method for the Detection of a New African Horse Sickness Virus Variant."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the epidemiology and outbreak history of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "41497378",
+      "title": "First Expert Elicitation of Knowledge Conducted in 2023 on Possible Drivers of Observed Increasing Epizootic Haemorrhagic Disease Incidence in Europe."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "41600923",
+      "title": "Structure-Guided Engineering of Protein VP2 from Epizootic Hemorrhagic Disease Virus Maximizes Production and Confers Complete Protection as Subunit Vaccine."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "41086990",
+      "title": "WarmStart colorimetric reverse transcription-loop-mediated isothermal amplification assay for the visual, sensitive, and specific detection of epizootic haemorrhagic disease virus in China."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
