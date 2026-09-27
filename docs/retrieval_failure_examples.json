@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:55:50.843288+00:00",
-  "runs": 239,
+  "updated": "2026-09-27T13:57:31.239849+00:00",
+  "runs": 240,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21893,
-  "n_false_negatives": 3640,
+  "n_false_positives": 21913,
+  "n_false_negatives": 3645,
   "new_this_run": {
-    "false_positives": 38,
-    "false_negatives": 2
+    "false_positives": 20,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -247657,6 +247657,225 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_333760"
       ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30986224",
+      "title": "The effect of respiratory viruses on immunogenicity and protection induced by a candidate universal influenza vaccine in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "How does Hepatitis A virus evade or modulate the host immune response?",
+      "cited_pmid": "42705198",
+      "title": "Exploring the role of differential splicing of Pekin ducks resistant to DHAV-3 based on full-length transcriptome.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1006063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_691956"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "How does Human parechovirus evade or modulate the host immune response?",
+      "cited_pmid": "42131302",
+      "title": "Serial passaging in vitro generates a Vero cell-adapted coxsackievirus A6 strain with distinct phenotypic characteristics.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30986224",
+      "title": "The effect of respiratory viruses on immunogenicity and protection induced by a candidate universal influenza vaccine in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32467165",
+      "title": "Inhibitory antibodies identify unique sites of therapeutic vulnerability in rhinovirus and other enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Rhinovirus B?",
+      "cited_pmid": "42088745",
+      "title": "Clinical manifestations in children with parechovirus A and respiratory tract infection.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rhinovirus B?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42061817",
+      "title": "Sepsis-like symptoms from parechovirus A type 5 in a neonate: First Japanese case and literature review.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42131302",
+      "title": "Serial passaging in vitro generates a Vero cell-adapted coxsackievirus A6 strain with distinct phenotypic characteristics.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "42220743",
+      "title": "Onychomadesis: A Rare Manifestation of Coxsackievirus A6 Infection in an Adult Patient.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
     }
   ],
   "false_negatives": [
@@ -269499,6 +269718,36 @@
       "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
       "missed_pmid": "8873413",
       "title": "Transforming activities of human papillomavirus type 59 E5, E6 and E7 open reading frames in mouse C127 cells."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "missed_pmid": "42088745",
+      "title": "Clinical manifestations in children with parechovirus A and respiratory tract infection."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "missed_pmid": "42082698",
+      "title": "Contrasting MRI patterns in early infant human parechovirus CNS infection: a brief report."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rhinovirus B?",
+      "missed_pmid": "31827765",
+      "title": "Rhinovirus species and tonsillar immune responses."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "42131302",
+      "title": "Serial passaging in vitro generates a Vero cell-adapted coxsackievirus A6 strain with distinct phenotypic characteristics."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "missed_pmid": "42220743",
+      "title": "Onychomadesis: A Rare Manifestation of Coxsackievirus A6 Infection in an Adult Patient."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
