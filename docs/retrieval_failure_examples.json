@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:23:46.547297+00:00",
-  "runs": 440,
+  "updated": "2026-09-27T22:25:21.005521+00:00",
+  "runs": 441,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24788,
+  "n_false_positives": 24791,
   "n_false_negatives": 4853,
   "new_this_run": {
-    "false_positives": 8,
+    "false_positives": 3,
     "false_negatives": 0
   },
   "false_positives": [
@@ -279459,6 +279459,44 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_3428500"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
+      "cited_pmid": "38662794",
+      "title": "Picornavirus security proteins promote the release of extracellular vesicle enclosed viruses via the modulation of host kinases.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124"
       ]
     }
   ],
