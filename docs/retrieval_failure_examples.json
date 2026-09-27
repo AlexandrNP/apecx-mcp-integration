@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:23:51.523670+00:00",
-  "runs": 467,
+  "updated": "2026-09-27T23:25:37.133812+00:00",
+  "runs": 468,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24932,
-  "n_false_negatives": 4886,
+  "n_false_positives": 24948,
+  "n_false_negatives": 4895,
   "new_this_run": {
-    "false_positives": 1,
-    "false_negatives": 4
+    "false_positives": 16,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -281062,6 +281062,185 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10912",
         "http://purl.obolibrary.org/obo/NCBITaxon_10913"
       ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40035700",
+      "title": "The seroprevalence of adenoviruses since 20001.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40035700",
+      "title": "The seroprevalence of adenoviruses since 20001.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B pathogenesis and transmission?",
+      "cited_pmid": "36897042",
+      "title": "Two novel recombinant human mastadenovirus D genotypes associated with acute respiratory illness.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035907",
+        "http://purl.obolibrary.org/obo/NCBITaxon_880565"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B pathogenesis and transmission?",
+      "cited_pmid": "38635622",
+      "title": "Whole genome analysis of Human Mastadenovirus D causing Keratoconjunctivitis in India - A multicentre study.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3567875"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "38689047",
+      "title": "In Silico Intensive Analysis for the E4 Gene Evolution of Human Adenovirus Species D.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "42075254",
+      "title": "Complex Recombination Landscape and Lineage Turnover in Classical Human Astroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430629",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human mastadenovirus B?",
+      "cited_pmid": "37125921",
+      "title": "Enforced Dimerization of CD45 by the Adenovirus E3/49K Protein Inhibits T Cell Receptor Signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human mastadenovirus B?",
+      "cited_pmid": "37376642",
+      "title": "Structural Model for Factor X Inhibition of IgM and Complement-Mediated Neutralization of Adenovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "How does Human mastadenovirus B evade or modulate the host immune response?",
+      "cited_pmid": "40103806",
+      "title": "Adenovirus E1B-55K interferes with cellular I\u03baB kinase complex subunit proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40035700",
+      "title": "The seroprevalence of adenoviruses since 20001.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D pathogenesis and transmission?",
+      "cited_pmid": "40533761",
+      "title": "Human mastadenovirus pneumonia in two immunocompetent patients.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3567875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "38689047",
+      "title": "In Silico Intensive Analysis for the E4 Gene Evolution of Human Adenovirus Species D.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human mastadenovirus D?",
+      "cited_pmid": "37125921",
+      "title": "Enforced Dimerization of CD45 by the Adenovirus E3/49K Protein Inhibits T Cell Receptor Signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus D?",
+      "cited_pmid": "38319669",
+      "title": "Phylogenetic and Recombination Analysis of Clinical Vitreous Humor-Derived Adenovirus Isolates Reveals Discordance Between Serotype and Phylogeny.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40035700",
+      "title": "The seroprevalence of adenoviruses since 20001.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human astrovirus?",
+      "cited_pmid": "40751515",
+      "title": "Development of a Rapid Isothermal Assay for Detection of Adenovirus Types Important in Respiratory Infections.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -310380,6 +310559,60 @@
       "question": "What diagnostic assays or laboratory tests detect Rotavirus B?",
       "missed_pmid": "27408331",
       "title": "Reinfection of adult cattle with rotavirus B during repeated outbreaks of epidemic diarrhea."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "41969129",
+      "title": "Beyond Rotavirus: Persistence of Norovirus, Adenovirus, and Astrovirus in Paediatric Gastroenteritis in the Republic of Congo After Vaccine Introduction."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "42649517",
+      "title": "Drivers of the paradigm shift in norovirus diagnostics: technological innovation, contextual demands, and collaborative synergy."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "42655664",
+      "title": "Subzero Control of Human Norovirus and Indicator Microorganisms on Frozen Foods Using an Antifreeze-Peracetic Acid Formulation."
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38319669",
+      "title": "Phylogenetic and Recombination Analysis of Clinical Vitreous Humor-Derived Adenovirus Isolates Reveals Discordance Between Serotype and Phylogeny."
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40586718",
+      "title": "An Epidemic of Respiratory and Ocular Infections Caused by the Reemergence of a Recombinant Human Adenovirus, the Novel Type HAdV-B114 (P7H3F3)."
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "missed_pmid": "40533761",
+      "title": "Human mastadenovirus pneumonia in two immunocompetent patients."
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38635622",
+      "title": "Whole genome analysis of Human Mastadenovirus D causing Keratoconjunctivitis in India - A multicentre study."
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38451451",
+      "title": "Genomic Evolution and Recombination Dynamics of Human Adenovirus D Species: Insights from Comprehensive Bioinformatic Analysis."
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus D?",
+      "missed_pmid": "40400688",
+      "title": "Identification and characterization of a novel human adenovirus type HAdV-D116."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
