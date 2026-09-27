@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:21:48.940415+00:00",
-  "runs": 160,
+  "updated": "2026-09-27T07:24:48.899122+00:00",
+  "runs": 161,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19387,
-  "n_false_negatives": 3535,
+  "n_false_positives": 19414,
+  "n_false_negatives": 3536,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 0
+    "false_positives": 27,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -219065,6 +219065,307 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_644"
       ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42797810",
+      "title": "Powassan Virus Infects Mouse Testes and Reveals a Protective Role for Phagocytic Cells.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42658574",
+      "title": "Pericyte dysfunction alone may be insufficient to drive tick-borne orthoflavivirus non-structural protein 1-mediated microvascular permeability.",
+      "actual_organisms": [
+        "Kyasanur Forest disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_172148",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42797810",
+      "title": "Powassan Virus Infects Mouse Testes and Reveals a Protective Role for Phagocytic Cells.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "39530699",
+      "title": "Genotypic and phylogeographic insights into a pre-epidemic variant of Wesselsbron virus detected in sylvatic Aedes mcintoshi from Semuliki Forest, Uganda.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "How does Tick-borne encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42763584",
+      "title": "Comparative Sequence Analysis of the Envelope Gene of Kyasanur Forest Disease Virus Vaccine Strain With Currently Circulating Field Strains.",
+      "actual_organisms": [
+        "Kyasanur Forest disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "cited_pmid": "42708070",
+      "title": "Yellow Fever, an Arboviral Disease with Public Health Impacts: General Aspects and the Use of the One Health Approach in the Context of This Zoonosis.",
+      "actual_organisms": [
+        "Yellow fever virus"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Usutu virus?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42773483",
+      "title": "SAMSN1 restricts Japanese encephalitis virus replication by recruiting TRIM21 to degrade viral proteins and activate the interferon pathway.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "How does Wesselsbron virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "How does Wesselsbron virus evade or modulate the host immune response?",
+      "cited_pmid": "42773483",
+      "title": "SAMSN1 restricts Japanese encephalitis virus replication by recruiting TRIM21 to degrade viral proteins and activate the interferon pathway.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Wesselsbron virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus pathogenesis and transmission?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Kyasanur Forest disease virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "How does Kyasanur Forest disease virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "How does Kyasanur Forest disease virus evade or modulate the host immune response?",
+      "cited_pmid": "42797810",
+      "title": "Powassan Virus Infects Mouse Testes and Reveals a Protective Role for Phagocytic Cells.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
     }
   ],
   "false_negatives": [
@@ -240277,6 +240578,12 @@
       "question": "What diagnostic assays or laboratory tests detect Drosophila C virus?",
       "missed_pmid": "38934580",
       "title": "Effects of spontaneous mutations on survival and reproduction of Drosophila serrata infected with Drosophila C virus."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "missed_pmid": "39480108",
+      "title": "Emerging mosquito-borne flaviviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
