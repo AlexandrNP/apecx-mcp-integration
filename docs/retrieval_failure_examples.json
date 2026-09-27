@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T09:04:32.788333+00:00",
-  "runs": 191,
+  "updated": "2026-09-27T09:14:05.939957+00:00",
+  "runs": 192,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20188,
+  "n_false_positives": 20212,
   "n_false_negatives": 3579,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 1
+    "false_positives": 24,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -228022,6 +228022,270 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_2",
         "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lassa mammarenavirus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "How does Lassa mammarenavirus evade or modulate the host immune response?",
+      "cited_pmid": "42761642",
+      "title": "Biological barriers underlying the extremely high fatality of symptomatic rabies: neuroinvasion, immune evasion, and blood-brain barrier restriction.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lassa mammarenavirus?",
+      "cited_pmid": "42780858",
+      "title": "Reconstructing the molecular epidemiology of rabies in Switzerland from outbreak to elimination (1967-97).",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lassa mammarenavirus?",
+      "cited_pmid": "42796653",
+      "title": "Molecular Genetic Analysis of the Rabies Virus in Wild and Domestic Animals of Kazakhstan and the Development of a Diagnostic System.",
+      "actual_organisms": [
+        "Rabies lyssavirus"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lassa mammarenavirus?",
+      "cited_pmid": "42788597",
+      "title": "Temporal changes in rabies epidemiology in Brazil: an analysis of notifications of suspected and confirmed human rabies cases, 2010-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42781794",
+      "title": "Diagnostics for Hemorrhagic Fever Viruses: Lassa Fever as an Example.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "42108251",
+      "title": "Diversity of fecal viromes and zoonotic risk assessment in captive wild felids using viral metagenomics.",
+      "actual_organisms": [
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731619",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42794425",
+      "title": "Generation and Characterization of the Human Anti-HTNV Antibody KJJ4.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "42781794",
+      "title": "Diagnostics for Hemorrhagic Fever Viruses: Lassa Fever as an Example.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "42599394",
+      "title": "Deadbolt Drug Discovery: Locking the Door to Class 1 Viral Entry by Small Molecules.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the clinical symptoms and disease presentation of Variola virus?",
+      "cited_pmid": "5358980",
+      "title": "Diseases from Vietnam.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Variola virus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "42237939",
+      "title": "Fatty acid synthase promotes Hantaan virus infection through lipogenic regulation in the tree shrew model.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "How does Variola virus evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Variola virus?",
+      "cited_pmid": "42780858",
+      "title": "Reconstructing the molecular epidemiology of rabies in Switzerland from outbreak to elimination (1967-97).",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
