@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:26:12.329060+00:00",
-  "runs": 276,
+  "updated": "2026-09-27T15:27:46.794233+00:00",
+  "runs": 277,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22673,
-  "n_false_negatives": 3979,
+  "n_false_positives": 22699,
+  "n_false_negatives": 3996,
   "new_this_run": {
-    "false_positives": 30,
-    "false_negatives": 8
+    "false_positives": 26,
+    "false_negatives": 17
   },
   "false_positives": [
     {
@@ -256251,6 +256251,284 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12195",
         "http://purl.obolibrary.org/obo/NCBITaxon_146500"
       ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What diagnostic assays or laboratory tests detect Channel catfish virus?",
+      "cited_pmid": "38367823",
+      "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "cited_pmid": "35924844",
+      "title": "Characterization of a Novel RNA Virus Causing Massive Mortality in Yellow Catfish, Pelteobagrus fulvidraco, as an Emerging Genus in Caliciviridae (Picornavirales).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "cited_pmid": "42003639",
+      "title": "Coding-complete genome sequence of a largemouth bass virus isolate from Micropterus salmoides collected in China.",
+      "actual_organisms": [
+        "Largemouth bass virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genome organization and replication cycle of Nervous necrosis virus?",
+      "cited_pmid": "35176182",
+      "title": "Channel catfish virus ORF25 and ORF63 genes are essential for viral replication in vitro.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Nervous necrosis virus?",
+      "cited_pmid": "42245628",
+      "title": "Progressive cerebral infarction as the presenting feature of ANCA-associated vasculitis with concurrent Evans syndrome: a case report and literature review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nervous necrosis virus?",
+      "cited_pmid": "41403127",
+      "title": "Genomic Characterisation of Red Sea Bream Iridovirus (RSIV) Samples Collected in Japan in 2024 Revealed Genotype II and the First Detection of the Intermediate Type in Japan.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430774"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nervous necrosis virus?",
+      "cited_pmid": "41944626",
+      "title": "Identification and characterization of a novel orthoreovirus from American eels, Anguilla rostrata.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10979",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157337",
+        "http://purl.obolibrary.org/obo/NCBITaxon_150286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1885633",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3468504"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nervous necrosis virus?",
+      "cited_pmid": "37364814",
+      "title": "Comparative genomic analysis of alloherpesviruses: Exploring an available genus/species demarcation proposal and method.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_548682",
+        "http://purl.obolibrary.org/obo/NCBITaxon_700375"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37222626",
+      "title": "The Inactivated ISKNV-I Vaccine Confers Highly Effective Cross-Protection against Epidemic RSIV-I and RSIV-II from Cultured Spotted Sea Bass Lateolabrax maculatus.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1697349",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34028055",
+      "title": "Virulence and immunogenicity of blue catfish alloherpesvirus in channel, blue and blue\u00a0\u00d7\u00a0channel hybrid catfish.",
+      "actual_organisms": [
+        "Channel catfish virus"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus pathogenesis and transmission?",
+      "cited_pmid": "42258100",
+      "title": "The multifaceted challenge of viral nervous necrosis in fish farming: a review of current knowledge and control.",
+      "actual_organisms": [
+        "Nervous necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus pathogenesis and transmission?",
+      "cited_pmid": "37048466",
+      "title": "Impact of Red Sea Bream Iridovirus Infection on Rock Bream (Oplegnathus fasciatus) and Other Fish Species: A Study of Horizontal Transmission.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What diagnostic assays or laboratory tests detect Largemouth bass virus?",
+      "cited_pmid": "33787893",
+      "title": "Development of a Colloidal Gold Immunochromatographic Strip for the Rapid Detection of Channel Catfish Virus.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What diagnostic assays or laboratory tests detect Largemouth bass virus?",
+      "cited_pmid": "38367823",
+      "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What diagnostic assays or laboratory tests detect Largemouth bass virus?",
+      "cited_pmid": "42015360",
+      "title": "Development of Two Multienzyme Isothermal Rapid Amplification Techniques for the Rapid Visual Detection of Micropterus salmoides rhabdovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_62805"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genome organization and replication cycle of Largemouth bass virus?",
+      "cited_pmid": "35176182",
+      "title": "Channel catfish virus ORF25 and ORF63 genes are essential for viral replication in vitro.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genome organization and replication cycle of Largemouth bass virus?",
+      "cited_pmid": "30975798",
+      "title": "Complete Genome Sequence of an Ictalurid Herpesvirus 1 Strain Isolated from Blue Catfish (Ictalurus furcatus).",
+      "actual_organisms": [
+        "Channel catfish virus"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the epidemiology and outbreak history of Largemouth bass virus?",
+      "cited_pmid": "37106904",
+      "title": "Red Sea Bream Iridovirus Kinetics, Tissue Tropism, and Interspecies Horizontal Transmission in Flathead Grey Mullets (Mugil cephalus).",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the epidemiology and outbreak history of Largemouth bass virus?",
+      "cited_pmid": "37737592",
+      "title": "Assessing the transmission risk of red sea bream iridovirus (RSIV) in environmental water: insights from fish farms and experimental settings.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Largemouth bass virus?",
+      "cited_pmid": "34960662",
+      "title": "Characterization of Ictalurid herpesvirus 1 Glycoprotein ORF59 and Its Potential Role on Virus Entry into the Host Cells.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Largemouth bass virus?",
+      "cited_pmid": "35504448",
+      "title": "Channel catfish virus entry into host cells via clathrin-mediated endocytosis.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Largemouth bass virus?",
+      "cited_pmid": "41856221",
+      "title": "Identification of three novel linear B-cell epitopes located on the glycoprotein of Micropterus salmoides rhabdovirus using monoclonal antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2527734",
+        "http://purl.obolibrary.org/obo/NCBITaxon_62805"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Largemouth bass virus?",
+      "cited_pmid": "37364814",
+      "title": "Comparative genomic analysis of alloherpesviruses: Exploring an available genus/species demarcation proposal and method.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_548682",
+        "http://purl.obolibrary.org/obo/NCBITaxon_700375"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Largemouth bass virus?",
+      "cited_pmid": "41944626",
+      "title": "Identification and characterization of a novel orthoreovirus from American eels, Anguilla rostrata.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10979",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157337",
+        "http://purl.obolibrary.org/obo/NCBITaxon_150286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1885633",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3468504"
+      ]
+    },
+    {
+      "organism": "Atlantic salmon paramyxovirus",
+      "question": "What is known about Atlantic salmon paramyxovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39010235",
+      "title": "Fish Iridoviridae: infection, vaccination and immune response.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Atlantic salmon paramyxovirus",
+      "question": "What diagnostic assays or laboratory tests detect Atlantic salmon paramyxovirus?",
+      "cited_pmid": "38367823",
+      "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -280127,6 +280405,108 @@
       "question": "What is the genome organization and replication cycle of Cauliflower mosaic virus?",
       "missed_pmid": "40408450",
       "title": "Stylet cuticular gene-directed mutagenesis impairs the pea aphid vector capacity to transmit a plant virus."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is known about Channel catfish virus pathogenesis and transmission?",
+      "missed_pmid": "30975798",
+      "title": "Complete Genome Sequence of an Ictalurid Herpesvirus 1 Strain Isolated from Blue Catfish (Ictalurus furcatus)."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What diagnostic assays or laboratory tests detect Channel catfish virus?",
+      "missed_pmid": "34028055",
+      "title": "Virulence and immunogenicity of blue catfish alloherpesvirus in channel, blue and blue\u00a0\u00d7\u00a0channel hybrid catfish."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "missed_pmid": "34192354",
+      "title": "Multiple AT-rich sequences function as a cis-element in the ORF3 promoter in channel catfish virus (Ictaluridherpesvirus 1)."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "missed_pmid": "33253717",
+      "title": "Acyclovir inhibits channel catfish virus replication and protects channel catfish ovary cells from apoptosis."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "missed_pmid": "34960662",
+      "title": "Characterization of Ictalurid herpesvirus 1 Glycoprotein ORF59 and Its Potential Role on Virus Entry into the Host Cells."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the epidemiology and outbreak history of Channel catfish virus?",
+      "missed_pmid": "33787893",
+      "title": "Development of a Colloidal Gold Immunochromatographic Strip for the Rapid Detection of Channel Catfish Virus."
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Channel catfish virus?",
+      "missed_pmid": "35176182",
+      "title": "Channel catfish virus ORF25 and ORF63 genes are essential for viral replication in vitro."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What is known about Red sea bream iridovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37106904",
+      "title": "Red Sea Bream Iridovirus Kinetics, Tissue Tropism, and Interspecies Horizontal Transmission in Flathead Grey Mullets (Mugil cephalus)."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "missed_pmid": "37048466",
+      "title": "Impact of Red Sea Bream Iridovirus Infection on Rock Bream (Oplegnathus fasciatus) and Other Fish Species: A Study of Horizontal Transmission."
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nervous necrosis virus?",
+      "missed_pmid": "42468658",
+      "title": "Functional and transcriptome analyses identify CMPK2 as a potential antiviral factor against NNV in Siniperca chuatsi."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42019591",
+      "title": "Immunoglobulin M response in different intestinal segments of largemouth bass (Micropterus salmoides) following largemouth bass virus (LMBV) infection."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41985799",
+      "title": "Oral immunization of largemouth bass with recombinant Bacillus methylotrophicus expressing LMBV MCP induces protective immune responses."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus pathogenesis and transmission?",
+      "missed_pmid": "42003639",
+      "title": "Coding-complete genome sequence of a largemouth bass virus isolate from Micropterus salmoides collected in China."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What diagnostic assays or laboratory tests detect Largemouth bass virus?",
+      "missed_pmid": "42106859",
+      "title": "Establishment and application of a detection method for chinese rice-field eels rhabdovirus (CrERV) using the RPA-CRISPR/Cas12a System."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What antiviral drugs or treatments are effective against Largemouth bass virus?",
+      "missed_pmid": "42269993",
+      "title": "Palmatine inhibits largemouth bass ranavirus replication and enhances host antiviral defense."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What antiviral drugs or treatments are effective against Largemouth bass virus?",
+      "missed_pmid": "41887302",
+      "title": "Paeoniae Radix Rubra extract inhibits largemouth bass ranavirus (LMBV) replication by suppressing inflammatory response and oxidative stress."
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Largemouth bass virus?",
+      "missed_pmid": "41828960",
+      "title": "Integrated Gut Microbiome and Metabolome Analysis in Largemouth Bass (Micropterus salmoides) Following Viral Infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
