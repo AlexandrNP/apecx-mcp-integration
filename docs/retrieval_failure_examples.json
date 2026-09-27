@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:36:19.116248+00:00",
-  "runs": 254,
+  "updated": "2026-09-27T14:38:00.037234+00:00",
+  "runs": 255,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22103,
-  "n_false_negatives": 3752,
+  "n_false_positives": 22124,
+  "n_false_negatives": 3762,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 7
+    "false_positives": 21,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -249962,6 +249962,243 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10358",
         "http://purl.obolibrary.org/obo/NCBITaxon_12305"
       ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41157642",
+      "title": "Toward Effective Vaccines Against Piscine Orthoreovirus: Challenges and Current Strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157337",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41118031",
+      "title": "Isolation and characterization of a novel reassortant strain of Orthoreovirus mammalis from diarrheic pig.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_32611",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3422298"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mammalian orthoreovirus?",
+      "cited_pmid": "38480794",
+      "title": "Cryo-EM structures of Banna virus in multiple states reveal stepwise detachment of viral spikes.",
+      "actual_organisms": [
+        "Banna virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mammalian orthoreovirus?",
+      "cited_pmid": "41086247",
+      "title": "Myosin-9 is required for lysosome-mediated nonlytic reovirus egress.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "32232463",
+      "title": "Tick-Borne Diseases in the United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1618189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "cited_pmid": "32478118",
+      "title": "Investigation of Heartland Virus Disease Throughout the United States, 2013-2017.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "cited_pmid": "38480794",
+      "title": "Cryo-EM structures of Banna virus in multiple states reveal stepwise detachment of viral spikes.",
+      "actual_organisms": [
+        "Banna virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Colorado tick fever virus?",
+      "cited_pmid": "32232463",
+      "title": "Tick-Borne Diseases in the United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1618189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42210331",
+      "title": "Expression of bluetongue virus core proteins VP2 and VP7 by bovine herpesvirus-4 confers protection against virulent challenge in a mouse model.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41157642",
+      "title": "Toward Effective Vaccines Against Piscine Orthoreovirus: Challenges and Current Strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157337",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "cited_pmid": "41011770",
+      "title": "Exploring Bat-Virus Interactions: Insights from a Study in the Gobi Desert.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "42198597",
+      "title": "A Molecular and Structural Perspective on Bluetongue Virus Entry and Assembly.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "42229676",
+      "title": "The antiviral effect of TRPV1 antagonist SB-705498 against GCRV infection via inflammation and apoptosis inhibition.",
+      "actual_organisms": [
+        "Grass carp reovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "31189110",
+      "title": "TRIM5\u03b1 Restricts Flavivirus Replication by Targeting the Viral Protease for Proteasomal Degradation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the epidemiology and outbreak history of Banna virus?",
+      "cited_pmid": "42197343",
+      "title": "Exceptional Bluetongue Epidemic Caused by Co-Circulation of Several Serotypes in Spain in 2024.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "32478118",
+      "title": "Investigation of Heartland Virus Disease Throughout the United States, 2013-2017.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "42212806",
+      "title": "Congenital brain lesions in calves caused by bluetongue virus serotype 3 infection.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "37862094",
+      "title": "Colorado tick fever virus: a review of historical literature and research emphasis for a modern era.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Banna virus?",
+      "cited_pmid": "34218056",
+      "title": "Colorado tick fever virus induces apoptosis in human endothelial cells\u00a0to facilitate viral replication.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Banna virus?",
+      "cited_pmid": "42655042",
+      "title": "Molecular Epidemiological Characteristics and Genetic Evolution of Bluetongue Virus in Yunnan Province, China.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -272476,6 +272713,66 @@
       "question": "What diagnostic assays or laboratory tests detect Human astrovirus?",
       "missed_pmid": "41961185",
       "title": "Prevalence of astrovirus-associated gastroenteritis among hospitalized pediatric patients in Asia: A systematic review and meta-analysis."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40631177",
+      "title": "Virion aggregation shapes infection dynamics and evolutionary potential."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "missed_pmid": "41090923",
+      "title": "Virion aggregation shapes infection dynamics and evolutionary potential."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "missed_pmid": "41011379",
+      "title": "Identification of Reassortant Mammalian Orthoreovirus Strains in European Hedgehogs (Erinaceus europaeus): Genomic Insights and Host Association."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the epidemiology and outbreak history of Mammalian orthoreovirus?",
+      "missed_pmid": "41011770",
+      "title": "Exploring Bat-Virus Interactions: Insights from a Study in the Gobi Desert."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "missed_pmid": "42212806",
+      "title": "Congenital brain lesions in calves caused by bluetongue virus serotype 3 infection."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "missed_pmid": "42197343",
+      "title": "Exceptional Bluetongue Epidemic Caused by Co-Circulation of Several Serotypes in Spain in 2024."
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35877087",
+      "title": "Colorado Tick Fever Virus in the Far West: Forgotten, but Not Gone."
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38480794",
+      "title": "Cryo-EM structures of Banna virus in multiple states reveal stepwise detachment of viral spikes."
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38035340",
+      "title": "Full genome characterization and evolutionary analysis of Banna virus isolated from Culicoides, mosquitoes and ticks in Yunnan, China."
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "missed_pmid": "35632713",
+      "title": "Full Genome Sequencing of Three Sedoreoviridae Viruses Isolated from Culicoides spp. (Diptera, Ceratopogonidae) in China."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
