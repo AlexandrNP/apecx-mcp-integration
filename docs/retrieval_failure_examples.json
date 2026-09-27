@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:59:42.006622+00:00",
-  "runs": 457,
+  "updated": "2026-09-27T23:02:54.935236+00:00",
+  "runs": 458,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24888,
-  "n_false_negatives": 4869,
+  "n_false_positives": 24893,
+  "n_false_negatives": 4871,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 0
+    "false_positives": 5,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -280591,6 +280591,56 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_35250",
         "http://purl.obolibrary.org/obo/NCBITaxon_37108"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42595093",
+      "title": "Construction of a suckling mouse model based on an EV-C96 clinical isolate and its application in drug screening and vaccine development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1193974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_325445"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42630966",
+      "title": "Enterovirus infections in children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "41114500",
+      "title": "Gallic acid inhibits EMCV infection via targeting the interaction between TBK1 and IRF3 to promote IFN-\u03b2 expression.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "How does Enterovirus C evade or modulate the host immune response?",
+      "cited_pmid": "42043227",
+      "title": "EMCV Non-Structural Protein 2C Antagonizes cGAS-STING-Mediated Type I Interferon Signaling via Promoting K48-Linked Polyubiquitination and Degradation of STING.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What are the clinical symptoms and disease presentation of Encephalomyocarditis virus?",
+      "cited_pmid": "41019008",
+      "title": "Neonatal Sepsis Caused by Human Parechovirus Type A3 With Marked Hyperferritinemia: A Case Report.",
+      "actual_organisms": [
+        "Human parechovirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -309807,6 +309857,18 @@
       "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
       "missed_pmid": "42189918",
       "title": "Decoding the complex receptor landscape of enterovirus D68."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40881810",
+      "title": "A potential surrogate for poliovirus in testing the efficacy of hand antiseptics according to the Global Poliovirus Containment Action Plan."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "missed_pmid": "40916768",
+      "title": "Poliovirus surveillance in Mayotte, Indian Ocean, reveals encephalomyocarditis virus type 1 and a wide diversity of non-polio enteroviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
