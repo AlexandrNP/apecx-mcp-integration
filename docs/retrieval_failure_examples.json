@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:43:02.411108+00:00",
-  "runs": 341,
+  "updated": "2026-09-27T18:45:04.685654+00:00",
+  "runs": 342,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23611,
-  "n_false_negatives": 4471,
+  "n_false_positives": 23622,
+  "n_false_negatives": 4486,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 5
+    "false_positives": 11,
+    "false_negatives": 15
   },
   "false_positives": [
     {
@@ -266446,6 +266446,116 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What are the clinical symptoms and disease presentation of Chikungunya virus?",
+      "cited_pmid": "41478940",
+      "title": "Murine Models of Alphavirus Infection to Study the Immunopathogenesis of Pain.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42734788",
+      "title": "Determination of Chikungunya Virus Infectious Titer Using Plaque Assays.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "40007016",
+      "title": "Neuropathogenesis of Old World Alphaviruses: Considerations for the Development of Medical Countermeasures.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "cited_pmid": "41483970",
+      "title": "Epidemiology, diagnosis and treatment of Mayaro and Oropouche virus infections: implication for clinical practice and public health.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ross River virus?",
+      "cited_pmid": "37083332",
+      "title": "Species-specific MARCO-alphavirus interactions dictate chikungunya virus viremia.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "42734788",
+      "title": "Determination of Chikungunya Virus Infectious Titer Using Plaque Assays.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "39066196",
+      "title": "The Stop Codon after the nsp3 Gene of Ross River Virus (RRV) Is Not Essential for Virus Replication in Three Cell Lines Tested, but RRV Replication Is Attenuated in HEK 293T Cells.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "cited_pmid": "41478940",
+      "title": "Murine Models of Alphavirus Infection to Study the Immunopathogenesis of Pain.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42734788",
+      "title": "Determination of Chikungunya Virus Infectious Titer Using Plaque Assays.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "39066196",
+      "title": "The Stop Codon after the nsp3 Gene of Ross River Virus (RRV) Is Not Essential for Virus Replication in Three Cell Lines Tested, but RRV Replication Is Attenuated in HEK 293T Cells.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "39411152",
+      "title": "Independent repeated mutations within the alphaviruses Ross River virus and Barmah Forest virus indicates convergent evolution and past positive selection in ancestral populations despite ongoing purifying selection.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11020",
+        "http://purl.obolibrary.org/obo/NCBITaxon_207343",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
     }
   ],
   "false_negatives": [
@@ -293274,6 +293384,96 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus C?",
       "missed_pmid": "35175914",
       "title": "Genomic diversity and intragenic recombination of species C rotaviruses."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "missed_pmid": "42734789",
+      "title": "Automated Counting of Chikungunya Virus-Formed Plaques."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What are the clinical symptoms and disease presentation of Chikungunya virus?",
+      "missed_pmid": "42734788",
+      "title": "Determination of Chikungunya Virus Infectious Titer Using Plaque Assays."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What are the clinical symptoms and disease presentation of Chikungunya virus?",
+      "missed_pmid": "40028687",
+      "title": "Seroprevalence of Chikungunya and O'nyong-nyong Viruses in Senegal, West Africa."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "How does Chikungunya virus evade or modulate the host immune response?",
+      "missed_pmid": "41959173",
+      "title": "GM-CSF and M-CSF Driven Differentiation Differentially Regulates Chikungunya Virus Infection and Antiviral Responses in Human Monocyte-Derived Macrophages."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "How does Chikungunya virus evade or modulate the host immune response?",
+      "missed_pmid": "37884534",
+      "title": "FHL1 promotes chikungunya and o'nyong-nyong virus infection and pathogenesis with implications for alphavirus vaccine design."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39066196",
+      "title": "The Stop Codon after the nsp3 Gene of Ross River Virus (RRV) Is Not Essential for Virus Replication in Three Cell Lines Tested, but RRV Replication Is Attenuated in HEK 293T Cells."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "missed_pmid": "39411152",
+      "title": "Independent repeated mutations within the alphaviruses Ross River virus and Barmah Forest virus indicates convergent evolution and past positive selection in ancestral populations despite ongoing purifying selection."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ross River virus?",
+      "missed_pmid": "39881941",
+      "title": "Corrigendum to \"Current and future burden of ross river virus infection attributable to increasing temperature in Australia: a population-based study\" the Lancet Regional Health-Western Pacific 2024;48: 101124."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "missed_pmid": "38826256",
+      "title": "Development of RT-RPA-based point-of-care tests for epidemic arthritogenic alphaviruses."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "missed_pmid": "41849537",
+      "title": "Differential expression of miRNAs in Vero cells after Mayaro virus infection."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "missed_pmid": "42116271",
+      "title": "Retrospective Phylogenetic Analysis of Mayaro Virus, French Guiana, 1996-2024."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "missed_pmid": "41358100",
+      "title": "Evaluation of Antiviral Activity of N\u2011Phenyl-2-Phenoxyacetamides Derived from Carvacrol against Mayaro Virus: In Vitro Analyses and In Silico Insights."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "missed_pmid": "41200662",
+      "title": "The first mitochondrial genome of Haemagogus equinus from Jamaica."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "missed_pmid": "39452763",
+      "title": "High-Sensitivity RT-LAMP for Molecular Detection of O'nyong-nyong (Alphavirus onyong)."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
+      "missed_pmid": "37515274",
+      "title": "Seroprevalence of Alphaviruses (Togaviridae) among Urban Population in Nouakchott, Mauritania, West Africa."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
