@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:33:30.985548+00:00",
-  "runs": 165,
+  "updated": "2026-09-27T07:52:12.761934+00:00",
+  "runs": 175,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19534,
-  "n_false_negatives": 3542,
+  "n_false_positives": 19569,
+  "n_false_negatives": 3543,
   "new_this_run": {
-    "false_positives": 21,
-    "false_negatives": 3
+    "false_positives": 13,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -220666,6 +220666,408 @@
       "actual_organisms": [
         "Enterovirus D68"
       ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42330958",
+      "title": "Analysis of West Nile disease convalescents identifies human monoclonal antibodies protective against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42330958",
+      "title": "Analysis of West Nile disease convalescents identifies human monoclonal antibodies protective against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40911282",
+      "title": "Potential high arbovirus exposure in INDOPACOM during U.S. service member deployment or exercises in Papua New Guinea.",
+      "actual_organisms": [
+        "Dengue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_207343"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "42671191",
+      "title": "Pathogenesis and neurotropism of a contemporary Powassan virus lineage II strain in mice.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42773483",
+      "title": "SAMSN1 restricts Japanese encephalitis virus replication by recruiting TRIM21 to degrade viral proteins and activate the interferon pathway.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Tick-borne encephalitis virus",
+        "Yellow fever virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "cited_pmid": "40911282",
+      "title": "Potential high arbovirus exposure in INDOPACOM during U.S. service member deployment or exercises in Papua New Guinea.",
+      "actual_organisms": [
+        "Dengue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_207343"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the epidemiology and outbreak history of Powassan virus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42795607",
+      "title": "Design and Evaluation of a Multi-Epitope Vaccine Targeting Conserved Envelope and NS5 Proteins of Usutu Virus Using Immunoinformatics.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Japanese encephalitis virus?",
+      "cited_pmid": "42786511",
+      "title": "Establishment of an in vitro human blood-brain barrier model for antiviral screening against neurotropic viruses.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Powassan virus?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Powassan virus?",
+      "cited_pmid": "42734801",
+      "title": "Analysis of Cell Populations from Arbovirus-Infected Tissues by Flow Cytometry.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42797810",
+      "title": "Powassan Virus Infects Mouse Testes and Reveals a Protective Role for Phagocytic Cells.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "How does Powassan virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42788643",
+      "title": "Virome Diversity and Zoonotic Risks of Haemaphysalis concinna Ticks in Northeastern China.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608046",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2795181",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2983972",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "cited_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murray Valley encephalitis virus?",
+      "cited_pmid": "42696092",
+      "title": "Surveillance of tick-borne encephalitis virus and Tribe\u010d Virus in Ixodes ricinus ticks from Slovakia.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_881914"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murray Valley encephalitis virus?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "cited_pmid": "42788643",
+      "title": "Virome Diversity and Zoonotic Risks of Haemaphysalis concinna Ticks in Northeastern China.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608046",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2795181",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2983972",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -241920,6 +242322,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
       "missed_pmid": "42555528",
       "title": "Calycosin targets the MAPK-EGR1 signaling axis to inhibit enterovirus 71 replication in cells and human colonic organoids."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "missed_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
