@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:36:12.541362+00:00",
-  "runs": 139,
+  "updated": "2026-09-27T06:38:39.355065+00:00",
+  "runs": 140,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18135,
-  "n_false_negatives": 3472,
+  "n_false_positives": 18222,
+  "n_false_negatives": 3474,
   "new_this_run": {
-    "false_positives": 79,
-    "false_negatives": 1
+    "false_positives": 87,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -204750,6 +204750,1069 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_226901",
         "http://purl.obolibrary.org/obo/NCBITaxon_333760"
       ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What antiviral drugs or treatments are effective against La Crosse virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of La Crosse virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "How does La Crosse virus evade or modulate the host immune response?",
+      "cited_pmid": "42695751",
+      "title": "Reverse genetics and comparative pathogenesis of Lone Star virus.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1219465",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733256",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What diagnostic assays or laboratory tests detect Oropouche virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780641",
+      "title": "Jun\u00edn virus and Argentine haemorrhagic fever: Virology, pathogenesis, diagnosis, and prevention strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the epidemiology and outbreak history of Toscana virus?",
+      "cited_pmid": "42428999",
+      "title": "Autochthonous transmission patterns of dengue virus serotype 2 in Italy: evidence from outbreaks in 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the clinical symptoms and disease presentation of Toscana virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is known about Punta Toro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is known about Punta Toro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780641",
+      "title": "Jun\u00edn virus and Argentine haemorrhagic fever: Virology, pathogenesis, diagnosis, and prevention strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What diagnostic assays or laboratory tests detect Punta Toro virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What antiviral drugs or treatments are effective against Punta Toro virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Punta Toro virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "How does Punta Toro virus evade or modulate the host immune response?",
+      "cited_pmid": "42327165",
+      "title": "Pathogenesis and host response to a novel Tacaribe virus isolate in experimentally-infected Jamaican fruit bats.",
+      "actual_organisms": [
+        "Tacaribe virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "How does Punta Toro virus evade or modulate the host immune response?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What antiviral drugs or treatments are effective against Heartland virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Heartland virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Heartland virus?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is known about Tacaribe virus pathogenesis and transmission?",
+      "cited_pmid": "25934793",
+      "title": "Characterization of the Punta Toro species complex (genus Phlebovirus, family Bunyaviridae).",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1649830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206377",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genome organization and replication cycle of Tacaribe virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genome organization and replication cycle of Tacaribe virus?",
+      "cited_pmid": "42368258",
+      "title": "Mechanistic mathematical model of the in vitro infection dynamics of Bunyamwera and Batai viruses including MOI-dependent shortening of the eclipse phase.",
+      "actual_organisms": [
+        "Batai virus",
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genome organization and replication cycle of Tacaribe virus?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the epidemiology and outbreak history of Tacaribe virus?",
+      "cited_pmid": "25695188",
+      "title": "Spatiotemporal analysis of Guaroa virus diversity, evolution, and spread in South America.",
+      "actual_organisms": [
+        "Guaroa virus"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What are the clinical symptoms and disease presentation of Tacaribe virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tacaribe virus?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "How does Tacaribe virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "How does Tacaribe virus evade or modulate the host immune response?",
+      "cited_pmid": "42594073",
+      "title": "Correction: BH3-only sensors Bad, Noxa and Puma are Key Regulators of Tacaribe virus-induced Apoptosis.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is known about Pichinde virus pathogenesis and transmission?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Batai virus",
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What diagnostic assays or laboratory tests detect Pichinde virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What diagnostic assays or laboratory tests detect Pichinde virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What diagnostic assays or laboratory tests detect Pichinde virus?",
+      "cited_pmid": "42294738",
+      "title": "Toscana Virus Diagnosis via a Point-of-Care Tool Based on Disposable Optical Fiber Biosensors.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the genome organization and replication cycle of Pichinde virus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What antiviral drugs or treatments are effective against Pichinde virus?",
+      "cited_pmid": "24486952",
+      "title": "Favipiravir (T-705) protects against peracute Rift Valley fever virus infection and reduces delayed-onset neurologic disease observed with ribavirin treatment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What antiviral drugs or treatments are effective against Pichinde virus?",
+      "cited_pmid": "27979594",
+      "title": "Synthesis and in vitro antiviral evaluation of 4-substituted 3,4-dihydropyrimidinones.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What antiviral drugs or treatments are effective against Pichinde virus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the epidemiology and outbreak history of Pichinde virus?",
+      "cited_pmid": "32965919",
+      "title": "La Crosse Encephalitis",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the epidemiology and outbreak history of Pichinde virus?",
+      "cited_pmid": "25695188",
+      "title": "Spatiotemporal analysis of Guaroa virus diversity, evolution, and spread in South America.",
+      "actual_organisms": [
+        "Guaroa virus"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the epidemiology and outbreak history of Pichinde virus?",
+      "cited_pmid": "40439544",
+      "title": "A One Health Approach to Investigating Cache Valley Virus, Arkansas, USA, July 20231.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the epidemiology and outbreak history of Pichinde virus?",
+      "cited_pmid": "36337757",
+      "title": "Jamestown Canyon and snowshoe hare virus seroprevalence in New Brunswick.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What are the clinical symptoms and disease presentation of Pichinde virus?",
+      "cited_pmid": "28418305",
+      "title": "Clinical Manifestations of Punta Toro Virus Species Complex Infections, Panama, 2009.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What are the clinical symptoms and disease presentation of Pichinde virus?",
+      "cited_pmid": "42742818",
+      "title": "Expanding the spectrum of oropouche virus neurological disease: emerging evidence from the 2025 Panama outbreak.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What are the clinical symptoms and disease presentation of Pichinde virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Pichinde virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Pichinde virus?",
+      "cited_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "How does Pichinde virus evade or modulate the host immune response?",
+      "cited_pmid": "37033933",
+      "title": "Arenaviruses: Old viruses present new solutions for cancer therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "How does Pichinde virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "34578299",
+      "title": "Further Characterization of Rio Grande Virus and Potential for Cross Reactivity with Rift Valley Fever Virus Assays.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_629740",
+        "http://purl.obolibrary.org/obo/NCBITaxon_904722",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What antiviral drugs or treatments are effective against Bunyamwera virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "How does Bunyamwera virus evade or modulate the host immune response?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genome organization and replication cycle of Cache Valley virus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What antiviral drugs or treatments are effective against Cache Valley virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the epidemiology and outbreak history of Cache Valley virus?",
+      "cited_pmid": "36337757",
+      "title": "Jamestown Canyon and snowshoe hare virus seroprevalence in New Brunswick.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cache Valley virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cache Valley virus?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "How does Cache Valley virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "How does Cache Valley virus evade or modulate the host immune response?",
+      "cited_pmid": "42695751",
+      "title": "Reverse genetics and comparative pathogenesis of Lone Star virus.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1219465",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733256",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genome organization and replication cycle of Snowshoe hare virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genome organization and replication cycle of Snowshoe hare virus?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Batai virus",
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What are the clinical symptoms and disease presentation of Snowshoe hare virus?",
+      "cited_pmid": "40274388",
+      "title": "The Growing Threat of Tick-Borne Viruses: Global Trends, Clinical Outcomes, and Diagnostic Strategies.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Snowshoe hare virus?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "How does Snowshoe hare virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42327165",
+      "title": "Pathogenesis and host response to a novel Tacaribe virus isolate in experimentally-infected Jamaican fruit bats.",
+      "actual_organisms": [
+        "Tacaribe virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "27248570",
+      "title": "Attenuation of pathogenic Rift Valley fever virus strain through the chimeric S-segment encoding sandfly fever phlebovirus NSs or a dominant-negative PKR.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42039551",
+      "title": "Mutations that positively affect Bandavirus glycoprotein function on VSV vectored vaccines.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733256",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "27029488",
+      "title": "Development of real-time reverse transcriptase qPCR assays for the detection of Punta Toro virus and Pichinde virus.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the epidemiology and outbreak history of Batai virus?",
+      "cited_pmid": "40439544",
+      "title": "A One Health Approach to Investigating Cache Valley Virus, Arkansas, USA, July 20231.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "42742818",
+      "title": "Expanding the spectrum of oropouche virus neurological disease: emerging evidence from the 2025 Panama outbreak.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Batai virus?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "How does Batai virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "How does Batai virus evade or modulate the host immune response?",
+      "cited_pmid": "42655648",
+      "title": "Oropouche Virus: Comparative Study of Two Strains Reveals Distinct Innate Immunity Modulation.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is known about Guaroa virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genome organization and replication cycle of Guaroa virus?",
+      "cited_pmid": "42368258",
+      "title": "Mechanistic mathematical model of the in vitro infection dynamics of Bunyamwera and Batai viruses including MOI-dependent shortening of the eclipse phase.",
+      "actual_organisms": [
+        "Batai virus",
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What antiviral drugs or treatments are effective against Guaroa virus?",
+      "cited_pmid": "24486952",
+      "title": "Favipiravir (T-705) protects against peracute Rift Valley fever virus infection and reduces delayed-onset neurologic disease observed with ribavirin treatment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What antiviral drugs or treatments are effective against Guaroa virus?",
+      "cited_pmid": "39970958",
+      "title": "Recombinant Pichinde reporter virus as a safe and suitable surrogate for high-throughput antiviral screening against highly pathogenic arenaviruses.",
+      "actual_organisms": [
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Guaroa virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "How does Guaroa virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -225584,6 +226647,18 @@
       "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
       "missed_pmid": "42797787",
       "title": "vGPCR-Mediated ANO1 Modulation of Apoptosis Regulates Lytic KSHV Infection."
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Heartland virus?",
+      "missed_pmid": "40125606",
+      "title": "A Stable mRNA-Based Novel Multi-Epitope Vaccine Designs Against Infectious Heartland Virus by Integrated Immunoinformatics and Reverse Vaccinology Approaches."
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Pichinde virus?",
+      "missed_pmid": "38631709",
+      "title": "Preclinical evaluation of two phylogenetically distant arenavirus vectors for the development of novel immunotherapeutic combination strategies for cancer treatment."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
