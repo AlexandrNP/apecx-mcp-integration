@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:34:41.206797+00:00",
-  "runs": 365,
+  "updated": "2026-09-27T19:36:38.945217+00:00",
+  "runs": 366,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23945,
-  "n_false_negatives": 4692,
+  "n_false_positives": 23947,
+  "n_false_negatives": 4698,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 0
+    "false_positives": 2,
+    "false_negatives": 6
   },
   "false_positives": [
     {
@@ -269969,6 +269969,31 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
         "http://purl.obolibrary.org/obo/NCBITaxon_226901"
       ]
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is the genome organization and replication cycle of Grapevine fanleaf virus?",
+      "cited_pmid": "39902638",
+      "title": "Grapevine leafroll-associated virus 3: a global threat to grapevine and wine industries but a gold mine for scientific discovery.",
+      "actual_organisms": [
+        "Citrus tristeza virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_217160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38404",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_69973"
+      ]
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What are the clinical symptoms and disease presentation of Grapevine fanleaf virus?",
+      "cited_pmid": "35684258",
+      "title": "Virus and Virus-like Pathogens in the Grapevine Virus Collection of Croatian Autochthonous Grapevine Cultivars.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_196400",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33926"
+      ]
     }
   ],
   "false_negatives": [
@@ -298123,6 +298148,42 @@
       "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
       "missed_pmid": "42709545",
       "title": "Structure-based design of soluble prefusion-stabilized herpes simplex virus type 2 glycoprotein B antigens."
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is known about Grapevine fanleaf virus pathogenesis and transmission?",
+      "missed_pmid": "33562555",
+      "title": "Studies on the Occurrence of Viruses in Planting Material of Grapevines in Southwestern Germany."
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is the genome organization and replication cycle of Grapevine fanleaf virus?",
+      "missed_pmid": "36018550",
+      "title": "Gathered from the Vine: A Survey of Seven Grapevine Viruses Within New England Vineyards."
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is the epidemiology and outbreak history of Grapevine fanleaf virus?",
+      "missed_pmid": "35807671",
+      "title": "Survey for Major Grapevine Viruses in Commercial Vineyards of Northwestern Argentina."
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What are the clinical symptoms and disease presentation of Grapevine fanleaf virus?",
+      "missed_pmid": "34834945",
+      "title": "Severe Stunting Symptoms upon Nepovirus Infection Are Reminiscent of a Chronic Hypersensitive-like Response in a Perennial Woody Fruit Crop."
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Grapevine fanleaf virus?",
+      "missed_pmid": "38254661",
+      "title": "Predictive Modeling of Proteins Encoded by a Plant Virus Sheds a New Light on Their Structure and Inherent Multifunctionality."
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Grapevine fanleaf virus?",
+      "missed_pmid": "35215120",
+      "title": "Prevalence of Virus Infections and GLRaV-3 Genetic Diversity in Selected Clones of Croatian Indigenous Grapevine Cultivar Plavac Mali."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
