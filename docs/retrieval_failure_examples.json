@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:31:01.839130+00:00",
-  "runs": 335,
+  "updated": "2026-09-27T18:33:07.265370+00:00",
+  "runs": 336,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23538,
-  "n_false_negatives": 4416,
+  "n_false_positives": 23552,
+  "n_false_negatives": 4423,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 13
+    "false_positives": 14,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -265664,6 +265664,160 @@
         "Mammalian orthoreovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10891"
       ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41862693",
+      "title": "Venezuelan equine encephalitis virus: novel live-attenuated vaccines for inducing complete protective immunity.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Eastern equine encephalitis virus?",
+      "cited_pmid": "40402741",
+      "title": "Structural basis for the recognition of two different types of receptors by Western equine encephalitis virus.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1258572"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Eastern equine encephalitis virus?",
+      "cited_pmid": "40373745",
+      "title": "Decoding WEEV's host adaptation.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "How does Eastern equine encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "41950299",
+      "title": "Venezuelan equine encephalitis virus infection causes chronic neurobehavioral outcomes, cellular remodeling, and hippocampal single-cell transcriptomic changes.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "40402741",
+      "title": "Structural basis for the recognition of two different types of receptors by Western equine encephalitis virus.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1258572"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41862693",
+      "title": "Venezuelan equine encephalitis virus: novel live-attenuated vaccines for inducing complete protective immunity.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Western equine encephalitis virus?",
+      "cited_pmid": "40988382",
+      "title": "A retrospective study of 171 cases of equine meningoencephalomyelitis in the United States, 1996-2023.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "How does Western equine encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "41950299",
+      "title": "Venezuelan equine encephalitis virus infection causes chronic neurobehavioral outcomes, cellular remodeling, and hippocampal single-cell transcriptomic changes.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40890032",
+      "title": "Development of in vitro and in vivo neutralization assays for New World alphaviruses based on the VSV pseudovirus system.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41032627",
+      "title": "An inactivated trivalent virion-based vaccine protects against aerosol challenge with encephalitic alphaviruses in mice and macaques.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "40872781",
+      "title": "Chimeric Vesicular Stomatitis Virus Bearing Western Equine Encephalitis Virus Envelope Proteins E2-E1 Is a Suitable Surrogate for Western Equine Encephalitis Virus in a Plaque Reduction Neutralization Test.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "41983925",
+      "title": "An update on infectious encephalitis: from epidemiology to management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "41740582",
+      "title": "Broad-spectrum inhibitor of non-structural protein 2 protease shows therapeutic efficacy against Venezuelan equine encephalitis viral infection.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "cited_pmid": "32644758",
+      "title": "Venezuelan Equine Encephalitis",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -292162,6 +292316,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hemorrhagic disease virus?",
       "missed_pmid": "41086990",
       "title": "WarmStart colorimetric reverse transcription-loop-mediated isothermal amplification assay for the visual, sensitive, and specific detection of epizootic haemorrhagic disease virus in China."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Eastern equine encephalitis virus?",
+      "missed_pmid": "40988382",
+      "title": "A retrospective study of 171 cases of equine meningoencephalomyelitis in the United States, 1996-2023."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Western equine encephalitis virus?",
+      "missed_pmid": "40628733",
+      "title": "Structural basis for engagement of Western Equine Encephalitis Virus with the PCDH10 receptor."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41492303",
+      "title": "Corrigendum to \" First isolation of the Sindbis virus in mosquitoes from southwestern Spain reveals a new recent introduction from Africa [One Health, Volume 20, 100947]\"."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "missed_pmid": "41567939",
+      "title": "Detection and Characterization of Sindbis Virus Genotype IV in Mosquitoes From Slovenia."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "missed_pmid": "40304470",
+      "title": "The impact of temperature and insect-specific viruses on the transmission of alphaviruses by Aedes japonicus japonicus."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "missed_pmid": "41468796",
+      "title": "Early cellular events induced by Sindbis virus via CD11b support viral infection."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
+      "missed_pmid": "41534429",
+      "title": "Development of a multi-epitope vaccine candidate against Sindbis virus through integrated immunoinformatics approaches and molecular dynamics simulations."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
