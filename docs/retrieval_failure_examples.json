@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:48:13.365231+00:00",
-  "runs": 452,
+  "updated": "2026-09-27T22:50:09.686332+00:00",
+  "runs": 453,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24871,
+  "n_false_positives": 24878,
   "n_false_negatives": 4868,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 2
+    "false_positives": 7,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -280405,6 +280405,83 @@
       "actual_organisms": [
         "Coxsackievirus A6",
         "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42212125",
+      "title": "Antigenic characterization and mapping of a conserved neutralizing epitope on VP1 of coxsackievirus A5.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "36980418",
+      "title": "Evaluation of the Performance Characteristics of a New POC Multiplex PCR Assay for the Diagnosis of Viral and Bacterial Neuromeningeal Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "38149210",
+      "title": "Optimization of RT-PCR methods for enterovirus detection in groundwater.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "37040226",
+      "title": "Molecular characterization & recombination analysis of complete enterovirus-88 isolated from acute flaccid paralysis cases in India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 11?",
+      "cited_pmid": "40078744",
+      "title": "Genetic characterizations and molecular epidemiology of human echovirus 30 isolated from Ningxia, China.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 11?",
+      "cited_pmid": "36714132",
+      "title": "Case report: Clinical and virological characteristics of aseptic meningitis caused by a recombinant echovirus 18 in an immunocompetent adult.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
       ]
     }
   ],
