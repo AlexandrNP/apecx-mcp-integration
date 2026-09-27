@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:15:49.987392+00:00",
-  "runs": 271,
+  "updated": "2026-09-27T15:17:23.549474+00:00",
+  "runs": 272,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22549,
-  "n_false_negatives": 3908,
+  "n_false_positives": 22564,
+  "n_false_negatives": 3920,
   "new_this_run": {
-    "false_positives": 20,
-    "false_negatives": 8
+    "false_positives": 15,
+    "false_negatives": 12
   },
   "false_positives": [
     {
@@ -254875,6 +254875,186 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
         "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
       ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35997512",
+      "title": "Sequestration and Destruction of Rinderpest Virus-Containing Material 10 Years after Eradication.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "41294350",
+      "title": "Developing a recombinase-aided amplification method combined with a lateral flow dipstick assay for rapid triplex detection of bovine coronavirus, infectious bovine rhinotracheitis virus, and bovine viral diarrhea virus.",
+      "actual_organisms": [
+        "Bovine parainfluenza virus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "41521899",
+      "title": "Detection of five viruses commonly implicated with bovine respiratory disease using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "37821730",
+      "title": "Comparative study of HA and HNB staining RT-LAMP assays for peste des petits ruminants virus detection in West African Dwarf goats.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rinderpest virus?",
+      "cited_pmid": "42372353",
+      "title": "Targeting the fusion machinery of Peste des petits ruminants virus: design and in vitro characterization of an HRC-derived antiviral peptide.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Phocine distemper virus?",
+      "cited_pmid": "34297685",
+      "title": "Retrospective immunohistochemical investigation on dolphin morbillivirus infection by comparing the performance of heterologous monoclonal and polyclonal antibodies - Short communication.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Rinderpest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37131"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "cited_pmid": "41135374",
+      "title": "Sanguinarine inhibits bovine parainfluenza virus type 3 replication through CD97 suppression.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Phocine distemper virus?",
+      "cited_pmid": "42401952",
+      "title": "Investigating the evolution of the Arctic lineage of canine distemper virus circulating in Italy.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34297685",
+      "title": "Retrospective immunohistochemical investigation on dolphin morbillivirus infection by comparing the performance of heterologous monoclonal and polyclonal antibodies - Short communication.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Rinderpest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37131"
+      ]
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29173050",
+      "title": "Measles vaccination: Threat from related veterinary viruses and need for continued vaccination post measles eradication.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Phocine distemper virus",
+        "Rinderpest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What diagnostic assays or laboratory tests detect Bovine parainfluenza virus 3?",
+      "cited_pmid": "41521899",
+      "title": "Detection of five viruses commonly implicated with bovine respiratory disease using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What diagnostic assays or laboratory tests detect Bovine parainfluenza virus 3?",
+      "cited_pmid": "40948632",
+      "title": "Field-validated multiplex RT-qPCR for simultaneous detection of bovine respiratory syncytial virus and bovine parainfluenza virus-3 in bovine respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the genome organization and replication cycle of Bovine parainfluenza virus 3?",
+      "cited_pmid": "41320254",
+      "title": "Genetic diversity, codon usage, and evolutionary dynamics of bovine parainfluenza virus type-3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What antiviral drugs or treatments are effective against Bovine parainfluenza virus 3?",
+      "cited_pmid": "41135374",
+      "title": "Sanguinarine inhibits bovine parainfluenza virus type 3 replication through CD97 suppression.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the epidemiology and outbreak history of Bovine parainfluenza virus 3?",
+      "cited_pmid": "40460209",
+      "title": "Assessment of Risk Factors Related to Environmental Factors and Herd Management for Bovine Respiratory Syncytial Virus and Bovine Parainfluenza Virus-3 Infections Frequently Observed in Beef and Dairy Cattle.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246"
+      ]
     }
   ],
   "false_negatives": [
@@ -278325,6 +278505,78 @@
       "question": "How does Canine parvovirus evade or modulate the host immune response?",
       "missed_pmid": "42486166",
       "title": "Retrospective evaluation of canine parvovirus monoclonal antibody supports faster clinical recovery in shelter dogs with naturally occurring canine parvovirus."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29173050",
+      "title": "Measles vaccination: Threat from related veterinary viruses and need for continued vaccination post measles eradication."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35106093",
+      "title": "Assessment of the control measures of category A diseases of the Animal Health Law: Infection with rinderpest virus (Rinderpest)."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34297685",
+      "title": "Retrospective immunohistochemical investigation on dolphin morbillivirus infection by comparing the performance of heterologous monoclonal and polyclonal antibodies - Short communication."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus pathogenesis and transmission?",
+      "missed_pmid": "36414136",
+      "title": "History of measles."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "How does Rinderpest virus evade or modulate the host immune response?",
+      "missed_pmid": "34611656",
+      "title": "Zoonotic potential of a novel bat morbillivirus."
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31615092",
+      "title": "Canine and Phocine Distemper Viruses: Global Spread and Genetic Basis of Jumping Species Barriers."
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "missed_pmid": "29173050",
+      "title": "Measles vaccination: Threat from related veterinary viruses and need for continued vaccination post measles eradication."
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36573734",
+      "title": "Short-Finned Pilot Whale Strandings Associated with Pilot Whale Morbillivirus, Brazil."
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29316493",
+      "title": "Transmission of morbilliviruses within and among marine mammal species."
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What antiviral drugs or treatments are effective against Cetacean morbillivirus?",
+      "missed_pmid": "31277275",
+      "title": "Marine Morbilliviruses: Diversity and Interaction with Signaling Lymphocyte Activation Molecules."
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What are the clinical symptoms and disease presentation of Cetacean morbillivirus?",
+      "missed_pmid": "35203160",
+      "title": "Neuropathological Characterization of Dolphin Morbillivirus Infection in Cetaceans Stranded in Italy."
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41294350",
+      "title": "Developing a recombinase-aided amplification method combined with a lateral flow dipstick assay for rapid triplex detection of bovine coronavirus, infectious bovine rhinotracheitis virus, and bovine viral diarrhea virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
