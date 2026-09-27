@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:08:03.780780+00:00",
-  "runs": 402,
+  "updated": "2026-09-27T21:09:54.817935+00:00",
+  "runs": 403,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24387,
+  "n_false_positives": 24398,
   "n_false_negatives": 4829,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -274839,6 +274839,136 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12104",
         "http://purl.obolibrary.org/obo/NCBITaxon_12124",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What antiviral drugs or treatments are effective against Foot-and-mouth disease virus?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "41623554",
+      "title": "Phorbol Myristate Acetate Inhibits Senecavirus A Replication by Activating IKBKE-Mediated IFN Pathway and NF-\u03baB Signal.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "cited_pmid": "38270132",
+      "title": "Emerging Enterovirus A71 Subgenogroup B5 Causing Severe Hand, Foot, and Mouth Disease, Vietnam, 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "40466758",
+      "title": "Voxtalisib inhibits enterovirus 71 replication by downregulating host RAN and restoring IFN-STAT signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "38471668",
+      "title": "Environmental surveillance reveals co-circulation of distinctive lineages of enteroviruses in southwest China's border cities, 2020-2022.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus pathogenesis and transmission?",
+      "cited_pmid": "40733627",
+      "title": "Investigation of the Mouse Infection Model for Echovirus 18.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "39295283",
+      "title": "Clinical and molecular epidemiology of enterovirus infections in cerebrospinal fluid samples, 2019-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "38399771",
+      "title": "Seasonal Testing, Results, and Effect of the Pandemic on Coxsackievirus Serum Studies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What antiviral drugs or treatments are effective against Encephalomyocarditis virus?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Encephalomyocarditis virus?",
+      "cited_pmid": "40732088",
+      "title": "Complete-Genome Analysis of Echovirus-30 Isolated from an Encephalitis Case in India Revealed Distinct Mutations.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
