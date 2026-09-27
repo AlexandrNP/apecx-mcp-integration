@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:52:54.875950+00:00",
-  "runs": 395,
+  "updated": "2026-09-27T20:54:56.980536+00:00",
+  "runs": 396,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24317,
-  "n_false_negatives": 4814,
+  "n_false_positives": 24336,
+  "n_false_negatives": 4827,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 0
+    "false_positives": 19,
+    "false_negatives": 13
   },
   "false_positives": [
     {
@@ -274089,6 +274089,217 @@
       "actual_organisms": [
         "Canine herpesvirus 1"
       ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is known about Lujo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "32441627",
+      "title": "Sabi\u00e1 Virus-Like Mammarenavirus in Patient with Fatal Hemorrhagic Fever, Brazil, 2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "How does Lujo mammarenavirus evade or modulate the host immune response?",
+      "cited_pmid": "42202225",
+      "title": "Structures of New World mammarenavirus glycoproteins as targets for antibody-mediated neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sabia mammarenavirus?",
+      "cited_pmid": "24096270",
+      "title": "Rapid molecular detection of Lujo virus RNA.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Sabia mammarenavirus?",
+      "cited_pmid": "34925303",
+      "title": "Screening and Identification of Lujo Virus Entry Inhibitors From an Food and Drug Administration-Approved Drugs Library.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sabia mammarenavirus?",
+      "cited_pmid": "25393244",
+      "title": "Clinical features and patient management of Lujo hemorrhagic fever.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sabia mammarenavirus?",
+      "cited_pmid": "29733163",
+      "title": "[Lujo hemorrhagic fever].",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Chapare mammarenavirus?",
+      "cited_pmid": "24096270",
+      "title": "Rapid molecular detection of Lujo virus RNA.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Chapare mammarenavirus?",
+      "cited_pmid": "20439981",
+      "title": "Comprehensive panel of real-time TaqMan polymerase chain reaction assays for detection and absolute quantification of filoviruses, arenaviruses, and New World hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Chapare mammarenavirus?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Chapare mammarenavirus?",
+      "cited_pmid": "34925303",
+      "title": "Screening and Identification of Lujo Virus Entry Inhibitors From an Food and Drug Administration-Approved Drugs Library.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chapare mammarenavirus?",
+      "cited_pmid": "34999003",
+      "title": "Detection and genetic diversity of Mopeia virus in Mastomys natalensis from different habitats in the Limpopo National Park, Mozambique.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052320"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "24096270",
+      "title": "Rapid molecular detection of Lujo virus RNA.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "20439981",
+      "title": "Comprehensive panel of real-time TaqMan polymerase chain reaction assays for detection and absolute quantification of filoviruses, arenaviruses, and New World hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "23202455",
+      "title": "Serological assays based on recombinant viral proteins for the diagnosis of arenavirus hemorrhagic fevers.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "34925303",
+      "title": "Screening and Identification of Lujo Virus Entry Inhibitors From an Food and Drug Administration-Approved Drugs Library.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "31105135",
+      "title": "[Arenavirus research and antiviral candidate].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "25393244",
+      "title": "Clinical features and patient management of Lujo hemorrhagic fever.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -302975,6 +303186,84 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Equine herpesvirus 4?",
       "missed_pmid": "26421307",
       "title": "Molecular Detection of Equine Herpesvirus Types 1 and 4 Infection in Healthy Horses in Isfahan Central and Shahrekord Southwest Regions, Iran."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is known about Lujo mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29120740",
+      "title": "Breaking the Barrier: Host Cell Invasion by Lujo Virus."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is known about Lujo mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "25393244",
+      "title": "Clinical features and patient management of Lujo hemorrhagic fever."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is known about Lujo mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "24096270",
+      "title": "Rapid molecular detection of Lujo virus RNA."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lujo mammarenavirus?",
+      "missed_pmid": "24153233",
+      "title": "[Arenavirus infections]."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lujo mammarenavirus?",
+      "missed_pmid": "27593704",
+      "title": "Lujo viral hemorrhagic fever: considering diagnostic capacity and preparedness in the wake of recent Ebola and Zika virus outbreaks."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "missed_pmid": "26719243",
+      "title": "Analysis of Assembly and Budding of Lujo Virus."
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "missed_pmid": "29733163",
+      "title": "[Lujo hemorrhagic fever]."
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What is known about Sabia mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "20668086",
+      "title": "A multivalent vaccination strategy for the prevention of Old World arenavirus infection in humans."
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What is known about Sabia mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "19967131",
+      "title": "The role of the vascular endothelium in arenavirus haemorrhagic fevers."
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Sabia mammarenavirus?",
+      "missed_pmid": "18474596",
+      "title": "Unique small molecule entry inhibitors of hemorrhagic fever arenaviruses."
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is known about Chapare mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39980339",
+      "title": "Natural History of Chapare Virus Infection in Strain 13 Guinea Pigs."
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Chapare mammarenavirus?",
+      "missed_pmid": "19553554",
+      "title": "Characterization of monoclonal antibodies to Junin virus nucleocapsid protein and application to the diagnosis of hemorrhagic fever caused by South American arenaviruses."
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "20668086",
+      "title": "A multivalent vaccination strategy for the prevention of Old World arenavirus infection in humans."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
