@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:27:46.794233+00:00",
-  "runs": 277,
+  "updated": "2026-09-27T15:29:40.563736+00:00",
+  "runs": 278,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22699,
-  "n_false_negatives": 3996,
+  "n_false_positives": 22711,
+  "n_false_negatives": 4008,
   "new_this_run": {
-    "false_positives": 26,
-    "false_negatives": 17
+    "false_positives": 12,
+    "false_negatives": 12
   },
   "false_positives": [
     {
@@ -256529,6 +256529,134 @@
       "actual_organisms": [
         "Red sea bream iridovirus"
       ]
+    },
+    {
+      "organism": "Ranavirus",
+      "question": "What antiviral drugs or treatments are effective against Ranavirus?",
+      "cited_pmid": "42269993",
+      "title": "Palmatine inhibits largemouth bass ranavirus replication and enhances host antiviral defense.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656"
+      ]
+    },
+    {
+      "organism": "Ranavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ranavirus?",
+      "cited_pmid": "15841340",
+      "title": "Promoter activity in the 5' flanking regions of the Bohle iridovirus ICP 18, ICP 46 and major capsid protein genes.",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10493"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "19891986",
+      "title": "Development and evaluation of a loop-mediated isothermal amplification assay for rapid detection of lymphocystis disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What diagnostic assays or laboratory tests detect Chelonid herpesvirus 5?",
+      "cited_pmid": "19891986",
+      "title": "Development and evaluation of a loop-mediated isothermal amplification assay for rapid detection of lymphocystis disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What antiviral drugs or treatments are effective against Chelonid herpesvirus 5?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "19891986",
+      "title": "Development and evaluation of a loop-mediated isothermal amplification assay for rapid detection of lymphocystis disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42343162",
+      "title": "Computational and experimental mapping of antigenic epitopes on iridovirus major capsid protein for precision vaccine design.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "19891986",
+      "title": "Development and evaluation of a loop-mediated isothermal amplification assay for rapid detection of lymphocystis disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "42269993",
+      "title": "Palmatine inhibits largemouth bass ranavirus replication and enhances host antiviral defense.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "How does Epizootic hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "42379431",
+      "title": "Identification and functional characterization of interferon\u00a0c (IFNc) in orange-spotted grouper (Epinephelus coioides) involved in antiviral response to SGIV and RGNNV infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_262968",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "29479497",
+      "title": "Genomic evolution, recombination, and inter-strain diversity of chelonid alphaherpesvirus 5 from Florida and Hawaii green sea turtles with fibropapillomatosis.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5"
+      ]
     }
   ],
   "false_negatives": [
@@ -280507,6 +280635,78 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Largemouth bass virus?",
       "missed_pmid": "41828960",
       "title": "Integrated Gut Microbiome and Metabolome Analysis in Largemouth Bass (Micropterus salmoides) Following Viral Infection."
+    },
+    {
+      "organism": "Ranavirus",
+      "question": "What diagnostic assays or laboratory tests detect Ranavirus?",
+      "missed_pmid": "21087639",
+      "title": "Quantitation of ranaviruses in cell culture and tissue samples."
+    },
+    {
+      "organism": "Ranavirus",
+      "question": "What antiviral drugs or treatments are effective against Ranavirus?",
+      "missed_pmid": "17584440",
+      "title": "Development of real-time PCR assays for the detection and differentiation of Australian and European ranaviruses."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "missed_pmid": "9395145",
+      "title": "Detection of antibodies against iridoviruses in the serum of the amphibian Bufo marinus."
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What diagnostic assays or laboratory tests detect Chelonid herpesvirus 5?",
+      "missed_pmid": "32661638",
+      "title": "Genetic Analysis of Chelonid Herpesvirus 5 in Marine Turtles from Baja California Peninsula."
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What diagnostic assays or laboratory tests detect Chelonid herpesvirus 5?",
+      "missed_pmid": "33058466",
+      "title": "Atypical ocular Chelonoid herpesvirus manifestations in a captive Loggerhead turtle (Caretta caretta)."
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "missed_pmid": "17699094",
+      "title": "Sensitivity of a diagnostic test for amphibian Ranavirus varies with sampling protocol."
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "missed_pmid": "15819423",
+      "title": "Influence of temperature on Ranavirus infection in larval salamanders Ambystoma tigrinum."
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What antiviral drugs or treatments are effective against Ambystoma tigrinum virus?",
+      "missed_pmid": "19415385",
+      "title": "Combined effects of atrazine and chlorpyrifos on susceptibility of the tiger salamander to Ambystoma tigrinum virus."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9395145",
+      "title": "Detection of antibodies against iridoviruses in the serum of the amphibian Bufo marinus."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "15883656",
+      "title": "Identification of a Bohle iridovirus thymidine kinase gene and demonstration of activity using vaccinia virus."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "9653454",
+      "title": "Isolation and characterization of iridoviruses from the giant toad Bufo marinus in Venezuela."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "12030764",
+      "title": "Rapid differentiation of Australian, European and American ranaviruses based on variation in major capsid protein gene sequence."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
