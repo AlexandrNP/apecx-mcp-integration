@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:58:59.593496+00:00",
-  "runs": 300,
+  "updated": "2026-09-27T17:00:37.892957+00:00",
+  "runs": 301,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23101,
-  "n_false_negatives": 4164,
+  "n_false_positives": 23127,
+  "n_false_negatives": 4176,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 0
+    "false_positives": 26,
+    "false_negatives": 12
   },
   "false_positives": [
     {
@@ -260878,6 +260878,301 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39340018",
+      "title": "Long-Term Immunogenicity Study of an Aluminum Phosphate-Adjuvanted Inactivated Enterovirus A71 Vaccine in Children: An Extension to a Phase 2 Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "38399771",
+      "title": "Seasonal Testing, Results, and Effect of the Pandemic on Coxsackievirus Serum Studies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "38189249",
+      "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46018"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "39978108",
+      "title": "Natural pyrrolo[1,2-a]quinazolinone derivatives: Design, synthesis, characterization, and bio-evaluation as novel antiviral agents.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "38270132",
+      "title": "Emerging Enterovirus A71 Subgenogroup B5 Causing Severe Hand, Foot, and Mouth Disease, Vietnam, 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "39295283",
+      "title": "Clinical and molecular epidemiology of enterovirus infections in cerebrospinal fluid samples, 2019-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "42189918",
+      "title": "Decoding the complex receptor landscape of enterovirus D68.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "38471668",
+      "title": "Environmental surveillance reveals co-circulation of distinctive lineages of enteroviruses in southwest China's border cities, 2020-2022.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "cited_pmid": "38189249",
+      "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46018"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus D68?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "cited_pmid": "38471668",
+      "title": "Environmental surveillance reveals co-circulation of distinctive lineages of enteroviruses in southwest China's border cities, 2020-2022.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "38399771",
+      "title": "Seasonal Testing, Results, and Effect of the Pandemic on Coxsackievirus Serum Studies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A6?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "38399771",
+      "title": "Seasonal Testing, Results, and Effect of the Pandemic on Coxsackievirus Serum Studies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "41667127",
+      "title": "Rapid and Visual Detection of Coxsackievirus A6 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with Nanoparticle-Based Biosensor Platform.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B5?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
     }
   ],
   "false_negatives": [
@@ -285864,6 +286159,78 @@
       "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
       "missed_pmid": "42629278",
       "title": "BK Polyomavirus-Associated Carcinoma In Situ of the Renal Allograft: Balancing Oncologic Control and Graft Preservation."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38959255",
+      "title": "Molecular epidemiology of enteroviruses from Guatemalan wastewater isolated from human lung fibroblasts."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "missed_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "missed_pmid": "39965610",
+      "title": "Australian National Enterovirus Reference Laboratory annual report, 2023."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "missed_pmid": "42156043",
+      "title": "[Acute Flaccid Myelitis]."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is known about Enterovirus D68 pathogenesis and transmission?",
+      "missed_pmid": "42168427",
+      "title": "Molecular surveillance and genomic characterization of enterovirus D68 in southern Portugal, 2024-2025."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "missed_pmid": "42205094",
+      "title": "Enterovirus D68 Epidemic in Children With Acute Respiratory Infections in Beijing, China, 2017-2024."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the epidemiology and outbreak history of Enterovirus D68?",
+      "missed_pmid": "42170749",
+      "title": "Prospective use of wastewater surveillance for early detection of enterovirus D68 in community outbreaks among children, Niigata City, Japan, 2024."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "missed_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "missed_pmid": "41728820",
+      "title": "Epidemiology of Hand, Foot, and Mouth Disease and Genetic Evolution Dynamics of Coxsackievirus A6 in Taiyuan, Shanxi, China From 2017 to 2024."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38488515",
+      "title": "Influence of Amino Acid Substitutions in Capsid Proteins of Coxsackievirus B5 on Free Chlorine and Thermal Inactivation."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
+      "missed_pmid": "38189249",
+      "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
