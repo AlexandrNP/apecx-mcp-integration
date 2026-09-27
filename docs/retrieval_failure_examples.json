@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:29:05.234041+00:00",
-  "runs": 163,
+  "updated": "2026-09-27T07:31:02.242614+00:00",
+  "runs": 164,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19478,
+  "n_false_positives": 19513,
   "n_false_negatives": 3539,
   "new_this_run": {
-    "false_positives": 20,
+    "false_positives": 35,
     "false_negatives": 0
   },
   "false_positives": [
@@ -220085,6 +220085,352 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3426305",
         "http://purl.obolibrary.org/obo/NCBITaxon_551523",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "40787470",
+      "title": "Integrating bioinformatics to explore HPV-31 and HPV-52 E6/E7 proteins: from structural analysis to antigenic epitope prediction.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "37254637",
+      "title": "25-hydroxycholesterol inhibits human papillomavirus infection in cervical epithelial cells by perturbing cytoskeletal remodeling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "36624228",
+      "title": "Genetic diversity of human papillomavirus (HPV) as specified by the detection method, gender, and year of sampling: a retrospective cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "37254637",
+      "title": "25-hydroxycholesterol inhibits human papillomavirus infection in cervical epithelial cells by perturbing cytoskeletal remodeling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "36624228",
+      "title": "Genetic diversity of human papillomavirus (HPV) as specified by the detection method, gender, and year of sampling: a retrospective cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "38037452",
+      "title": "Genetic variability analysis of human\u00a0papillomavirus 58: Novel sublineage identification and persistent infection association.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 pathogenesis and transmission?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 11?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "38952402",
+      "title": "Variant analysis of human papillomavirus type 52 in Iranian women during 2018-2020: A case-control study.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 31?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 31?",
+      "cited_pmid": "39363161",
+      "title": "Lineage and sublineage analysis of human papillomavirus type 58 in iranian women.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 33?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 33?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "40640817",
+      "title": "Genetic variability in HPV 33 and 35 E6 and E7 genes from South African and Mozambican women with different cervical cytology status.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 45?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 45?",
+      "cited_pmid": "37254637",
+      "title": "25-hydroxycholesterol inhibits human papillomavirus infection in cervical epithelial cells by perturbing cytoskeletal remodeling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 58?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "40038214",
+      "title": "Decoding codon usage in human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 59?",
+      "cited_pmid": "40787470",
+      "title": "Integrating bioinformatics to explore HPV-31 and HPV-52 E6/E7 proteins: from structural analysis to antigenic epitope prediction.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 59?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 68?",
+      "cited_pmid": "40999330",
+      "title": "Phylogenetics and selective pressure analysis of human papillomavirus types 31 and 33 variants in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087"
       ]
     }
   ],
