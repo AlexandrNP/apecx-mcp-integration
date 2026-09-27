@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:53:30.234877+00:00",
-  "runs": 319,
+  "updated": "2026-09-27T17:55:51.043696+00:00",
+  "runs": 320,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23333,
-  "n_false_negatives": 4312,
+  "n_false_positives": 23343,
+  "n_false_negatives": 4318,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 10,
     "false_negatives": 6
   },
   "false_positives": [
@@ -263474,6 +263474,122 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2560219",
         "http://purl.obolibrary.org/obo/NCBITaxon_3394917"
       ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36516120",
+      "title": "Absence of transmission of vYF next generation Yellow Fever vaccine in mosquitoes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "23073178",
+      "title": "Pathogenicity and complete genome sequence analysis of the mud crab dicistrovirus-1.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "28366189",
+      "title": "ICTV Virus Taxonomy Profile: Dicistroviridae.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_103442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "40732760",
+      "title": "A Novel Parvovirus Associated with the Whitefly Bemisia tabaci.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3434155",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "42315067",
+      "title": "The membrane receptor Basigin facilitates WSSV infection by binding envelope proteins and suppressing antiviral gene expression in shrimp.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "39609717",
+      "title": "Binding of Infectious Hypodermal and Haematopoietic Necrosis Virus-Like Particles to Mannose Receptor Stimulates Antimicrobial Responses in Immune-Related Tissues of Peneaus vannamei.",
+      "actual_organisms": [
+        "Infectious hypodermal and hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "42312655",
+      "title": "White spot syndrome virus hypothetical protein GP017 functions as a putative RNA interference suppressor.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "40817036",
+      "title": "Viral metagenomics reveals parvovirus dark matter of herbivorous wildlife from the Qinghai-Tibet Plateau.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10803",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "42655678",
+      "title": "Bat-Associated Parvoviruses: High Genetic Diversity and Novel Viruses in Gia Lai and Dong Nai Provinces, Vietnam.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "22832716",
+      "title": "New genotypes of white spot syndrome virus (WSSV) and Taura syndrome virus (TSV) from the Kingdom of Saudi Arabia.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
     }
   ],
   "false_negatives": [
@@ -289348,6 +289464,42 @@
       "question": "What are the clinical symptoms and disease presentation of Nervous necrosis virus?",
       "missed_pmid": "42218873",
       "title": "Nervous necrosis virus B2 non-structural protein shut off host translation via sequestration of polyadenylate-binding protein."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42103111",
+      "title": "Suppression of adenosine deaminase acting on RNA (ADAR) expression stimulates immunity and enhances white spot syndrome virus (WSSV) resistance in Penaeus vannamei."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "missed_pmid": "42214512",
+      "title": "XBP1 and ATF4 inhibit WSSV replication and promote host survival by modulating Spatzle expression in Macrobrachium nipponense."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the epidemiology and outbreak history of White spot syndrome virus?",
+      "missed_pmid": "42424803",
+      "title": "Scenario tree modelling to assess the sensitivity of white spot syndrome virus surveillance in Australian prawn aquaculture."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the clinical symptoms and disease presentation of White spot syndrome virus?",
+      "missed_pmid": "22832716",
+      "title": "New genotypes of white spot syndrome virus (WSSV) and Taura syndrome virus (TSV) from the Kingdom of Saudi Arabia."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the epidemiology and outbreak history of Yellow head virus?",
+      "missed_pmid": "22429834",
+      "title": "Historic emergence, impact and current status of shrimp pathogens in Asia."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "missed_pmid": "22535868",
+      "title": "Protection from yellow head virus (YHV) infection in Penaeus vannamei pre-infected with Taura syndrome virus (TSV)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
