@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:45:04.685654+00:00",
-  "runs": 342,
+  "updated": "2026-09-27T18:47:07.229274+00:00",
+  "runs": 343,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23622,
-  "n_false_negatives": 4486,
+  "n_false_positives": 23636,
+  "n_false_negatives": 4503,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 15
+    "false_positives": 14,
+    "false_negatives": 17
   },
   "false_positives": [
     {
@@ -266556,6 +266556,144 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_444185"
       ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Eastern equine encephalitis virus?",
+      "cited_pmid": "39486157",
+      "title": "Equine Encephalomyelitis Outbreak, Uruguay, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Eastern equine encephalitis virus?",
+      "cited_pmid": "40297185",
+      "title": "Atypical complication of western equine encephalitis: central hypoventilation syndrome.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Eastern equine encephalitis virus?",
+      "cited_pmid": "40005568",
+      "title": "Neuropathogenesis of Encephalitic Alphaviruses in Non-Human Primate and Mouse Models of Infection.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Eastern equine encephalitis virus?",
+      "cited_pmid": "40295695",
+      "title": "Diagnosis and genomic characterization of the largest western equine encephalitis virus outbreak in Uruguay during 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is known about Venezuelan equine encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "39486157",
+      "title": "Equine Encephalomyelitis Outbreak, Uruguay, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "40295695",
+      "title": "Diagnosis and genomic characterization of the largest western equine encephalitis virus outbreak in Uruguay during 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "40774241",
+      "title": "Eastern Equine Encephalitis Virus Exhibits More Charged Amino Acids in Its Envelope Proteins, Compared to Madariaga Virus.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "40297185",
+      "title": "Atypical complication of western equine encephalitis: central hypoventilation syndrome.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "40005568",
+      "title": "Neuropathogenesis of Encephalitic Alphaviruses in Non-Human Primate and Mouse Models of Infection.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "cited_pmid": "40774241",
+      "title": "Eastern Equine Encephalitis Virus Exhibits More Charged Amino Acids in Its Envelope Proteins, Compared to Madariaga Virus.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Western equine encephalitis virus?",
+      "cited_pmid": "40764487",
+      "title": "Three positively charged binding sites on the eastern equine encephalitis virus E2 glycoprotein coordinate heparan sulfate- and protein receptor-dependent infection.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus pathogenesis and transmission?",
+      "cited_pmid": "39733515",
+      "title": "Cellular takeover: How new world alphaviruses impact host organelle function.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "39936916",
+      "title": "The antiviral BDGR-49 provides protection from lethal, neurotropic Venezuelan equine encephalitis virus intranasal infection in mice.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "40297185",
+      "title": "Atypical complication of western equine encephalitis: central hypoventilation syndrome.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -293474,6 +293612,108 @@
       "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
       "missed_pmid": "37515274",
       "title": "Seroprevalence of Alphaviruses (Togaviridae) among Urban Population in Nouakchott, Mauritania, West Africa."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Eastern equine encephalitis virus?",
+      "missed_pmid": "39936916",
+      "title": "The antiviral BDGR-49 provides protection from lethal, neurotropic Venezuelan equine encephalitis virus intranasal infection in mice."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Eastern equine encephalitis virus?",
+      "missed_pmid": "40774241",
+      "title": "Eastern Equine Encephalitis Virus Exhibits More Charged Amino Acids in Its Envelope Proteins, Compared to Madariaga Virus."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Eastern equine encephalitis virus?",
+      "missed_pmid": "40764487",
+      "title": "Three positively charged binding sites on the eastern equine encephalitis virus E2 glycoprotein coordinate heparan sulfate- and protein receptor-dependent infection."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Eastern equine encephalitis virus?",
+      "missed_pmid": "40387358",
+      "title": "Basic patches on the E2 glycoprotein of eastern equine encephalitis virus influence viral vascular clearance and dissemination in mice."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Eastern equine encephalitis virus?",
+      "missed_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Venezuelan equine encephalitis virus?",
+      "missed_pmid": "39936916",
+      "title": "The antiviral BDGR-49 provides protection from lethal, neurotropic Venezuelan equine encephalitis virus intranasal infection in mice."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "missed_pmid": "41862693",
+      "title": "Venezuelan equine encephalitis virus: novel live-attenuated vaccines for inducing complete protective immunity."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "missed_pmid": "41600940",
+      "title": "Venezuelan Equine Encephalitis Virus: Structural Biology, Vaccines, and Advances in Functional Antibodies."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "39486157",
+      "title": "Equine Encephalomyelitis Outbreak, Uruguay, 2023-2024."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "40005568",
+      "title": "Neuropathogenesis of Encephalitic Alphaviruses in Non-Human Primate and Mouse Models of Infection."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "missed_pmid": "40295695",
+      "title": "Diagnosis and genomic characterization of the largest western equine encephalitis virus outbreak in Uruguay during 2023-2024."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "missed_pmid": "40373745",
+      "title": "Decoding WEEV's host adaptation."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Western equine encephalitis virus?",
+      "missed_pmid": "40297185",
+      "title": "Atypical complication of western equine encephalitis: central hypoventilation syndrome."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Western equine encephalitis virus?",
+      "missed_pmid": "39803583",
+      "title": "Molecular basis for shifted receptor recognition by an encephalitic arbovirus."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "How does Western equine encephalitis virus evade or modulate the host immune response?",
+      "missed_pmid": "39936916",
+      "title": "The antiviral BDGR-49 provides protection from lethal, neurotropic Venezuelan equine encephalitis virus intranasal infection in mice."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41157617",
+      "title": "Sindbis Virus-Host Interactions in Human Neuroblastoma Cells: Implications for Viral Pathogenesis and Replication."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "missed_pmid": "41081507",
+      "title": "The role of chikungunya virus capsid-viral RNA interactions in programmed ribosomal frameshifting."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
