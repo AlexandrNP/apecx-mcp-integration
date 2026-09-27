@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T08:56:20.298145+00:00",
-  "runs": 187,
+  "updated": "2026-09-27T08:58:06.876240+00:00",
+  "runs": 188,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20092,
-  "n_false_negatives": 3569,
+  "n_false_positives": 20130,
+  "n_false_negatives": 3571,
   "new_this_run": {
-    "false_positives": 16,
-    "false_negatives": 0
+    "false_positives": 38,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -226950,6 +226950,445 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11216",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42730619",
+      "title": "Imprinting-Like Serological Signatures in Human Adenovirus Infections Revealed by Cross-Adsorption Neutralization Profiling of HAdV-3, HAdV-5, and HAdV-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Norovirus?",
+      "cited_pmid": "41386619",
+      "title": "Interaction of the VP8* protein of a bovine rotavirus C with the H type-2 antigen and its precursor N-acetyl-lactosamine.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "How does Norovirus evade or modulate the host immune response?",
+      "cited_pmid": "41762478",
+      "title": "Adenovirus induces pediatric pneumonia via triggering macrophage polarization and IL-6 production via NF-\u03baB activation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "How does Norovirus evade or modulate the host immune response?",
+      "cited_pmid": "42525775",
+      "title": "CD36 is a receptor for human sapovirus.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "41775079",
+      "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "42763194",
+      "title": "[Molecular epidemiological characteristics of Sapovirus infection in pediatric diarrhea cases aged 5 years and under in Guangdong Province, 2022-2024].",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398550",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sapovirus?",
+      "cited_pmid": "41989164",
+      "title": "CD46 and DSG2 synergistically mediate human adenovirus type 7 infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10519",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "How does Sapovirus evade or modulate the host immune response?",
+      "cited_pmid": "42558152",
+      "title": "Adenoviral E3/49K: CD45-targeted immune evasion and therapeutic potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sapovirus?",
+      "cited_pmid": "40127066",
+      "title": "Identification of a potential interspecies reassortant rotavirus G and avastrovirus 2 co-infection from black-headed gull (Chroicocephalus ridibundus) in Hungary.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239438",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_183407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249589",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sapovirus?",
+      "cited_pmid": "42500393",
+      "title": "Exploratory metatranscriptomic survey of bat-associated RNA viruses in Quzhou city, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sapovirus?",
+      "cited_pmid": "41775079",
+      "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "42286165",
+      "title": "Viral protease-mediated polyprotein processing in human astroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus D?",
+      "cited_pmid": "41076143",
+      "title": "Multienzyme isothermal rapid amplification (MIRA)-LFD assay for rapid detection of PEDV and PoRVA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "42253237",
+      "title": "Co-Circulation and Mixed Infections of Classic and Melbourne Human Astroviruses Among Pediatric Acute Gastroenteritis Patients in Japan, 2018-2024.",
+      "actual_organisms": [
+        "Human astrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "38421167",
+      "title": "Cryo-EM structure of rotavirus B NSP2 reveals its unique tertiary architecture.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "40127066",
+      "title": "Identification of a potential interspecies reassortant rotavirus G and avastrovirus 2 co-infection from black-headed gull (Chroicocephalus ridibundus) in Hungary.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239438",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_183407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249589",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "42496142",
+      "title": "Human rotavirus C strain detected in wastewater in Leuven, Belgium.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10943"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "42596048",
+      "title": "Sapovirus Infection in Kidney Transplant Recipients: A Case Series Demonstrating the Burden of an Enteric Viral Pathogen.",
+      "actual_organisms": [
+        "Sapovirus"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "42779981",
+      "title": "Plscr1 inhibits murine norovirus entry.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "40980888",
+      "title": "CD46 is a cellular receptor for species D human adenovirus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "42525775",
+      "title": "CD36 is a receptor for human sapovirus.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "42441716",
+      "title": "Structural requirements of blood factors binding to soluble hexon trimers with implications for adenovirus cell targeting and immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10534",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human bocavirus?",
+      "cited_pmid": "41163033",
+      "title": "Prevalence and genetic characterization of diarrhea viruses among cattle in Guangdong, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46473",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus C?",
+      "cited_pmid": "42321797",
+      "title": "High genetic diversity of porcine rotavirus A, B, and C in Hungary with putative novel VP4 genotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_626776"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus pathogenesis and transmission?",
+      "cited_pmid": "40400688",
+      "title": "Identification and characterization of a novel human adenovirus type HAdV-D116.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus pathogenesis and transmission?",
+      "cited_pmid": "42283194",
+      "title": "Experimental Porcine Astrovirus 4-Associated Tracheitis and Bronchitis in Pigs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1105379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239567"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "38421167",
+      "title": "Cryo-EM structure of rotavirus B NSP2 reveals its unique tertiary architecture.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "41775079",
+      "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42029738",
+      "title": "HAdV55 reprograms host 3D genome architecture and mitochondrial metabolism to drive pathogenesis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_714978"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human astrovirus?",
+      "cited_pmid": "41989164",
+      "title": "CD46 and DSG2 synergistically mediate human adenovirus type 7 infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10519",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human astrovirus?",
+      "cited_pmid": "42048387",
+      "title": "Identification of a novel fiber shaft structural motif and overexpression of key transcripts elucidated in human adenovirus D 10.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28275"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human astrovirus?",
+      "cited_pmid": "40367285",
+      "title": "Virus and cell specific HMGB1 secretion and subepithelial infiltrate formation in adenovirus keratitis.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "How does Human astrovirus evade or modulate the host immune response?",
+      "cited_pmid": "42558152",
+      "title": "Adenoviral E3/49K: CD45-targeted immune evasion and therapeutic potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human astrovirus?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human astrovirus?",
+      "cited_pmid": "41780169",
+      "title": "A novel chimpanzee-derived adenovirus, a recombinant of Mastadenovirus exoticum and Mastadenovirus blackbeardi members, reveals lineage-specific recombination hotspots in simian adenoviruses.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2980954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -248366,6 +248805,18 @@
       "question": "What is the genome organization and replication cycle of Oropouche virus?",
       "missed_pmid": "42627027",
       "title": "Origin, evolution and transmission dynamics of Orthobunyavirus Oropoucheense."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "42361643",
+      "title": "Global prevalence, genetic diversity, and environmental fate of gastroenteric viruses in wastewater treatment system: A systematic review and meta-analysis."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "missed_pmid": "42471440",
+      "title": "Metatranscriptomics reveals urbanization-driven divergence in rodent viromes and zoonotic risks in Chinese megacities."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
