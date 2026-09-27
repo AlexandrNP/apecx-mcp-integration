@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:54:56.980536+00:00",
-  "runs": 396,
+  "updated": "2026-09-27T20:57:46.832784+00:00",
+  "runs": 397,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24336,
-  "n_false_negatives": 4827,
+  "n_false_positives": 24342,
+  "n_false_negatives": 4828,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 13
+    "false_positives": 6,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -274300,6 +274300,64 @@
       "actual_organisms": [
         "Lujo mammarenavirus"
       ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "8600439",
+      "title": "The diagnosis of Wesselsbron disease in a new-born lamb by immunohistochemical staining of viral antigen.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What diagnostic assays or laboratory tests detect Spondweni virus?",
+      "cited_pmid": "42295717",
+      "title": "Field evaluation of Kyasanur forest disease real-time PCR point-of-care assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42295717",
+      "title": "Field evaluation of Kyasanur forest disease real-time PCR point-of-care assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Kyasanur Forest disease virus?",
+      "cited_pmid": "42313462",
+      "title": "Conserved histidine residues and the control of tick-borne encephalitis virus maturation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_407836"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "42295717",
+      "title": "Field evaluation of Kyasanur forest disease real-time PCR point-of-care assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "42313462",
+      "title": "Conserved histidine residues and the control of tick-borne encephalitis virus maturation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_407836"
+      ]
     }
   ],
   "false_negatives": [
@@ -303264,6 +303322,12 @@
       "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
       "missed_pmid": "20668086",
       "title": "A multivalent vaccination strategy for the prevention of Old World arenavirus infection in humans."
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "7603342",
+      "title": "Wesselsbron virus antibody in domestic animals in Nigeria: retrospective and prospective studies."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
