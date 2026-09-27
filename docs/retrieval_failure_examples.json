@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:12:16.337743+00:00",
-  "runs": 434,
+  "updated": "2026-09-27T22:14:54.115927+00:00",
+  "runs": 435,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24727,
-  "n_false_negatives": 4851,
+  "n_false_positives": 24730,
+  "n_false_negatives": 4852,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 3,
     "false_negatives": 1
   },
   "false_positives": [
@@ -278783,6 +278783,36 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_42789",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42302793",
+      "title": "Sustained mucosal delivery of SAMT-247 via an intravaginal ring reduces the risk of SIVmac251 acquisition in vaccinated macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "42363855",
+      "title": "Metagenome-assembled genomes recovered from the gut microbiomes of simian immunodeficiency virus-infected rhesus macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genome organization and replication cycle of Feline leukemia virus?",
+      "cited_pmid": "42068381",
+      "title": "Molecular insights into domestic cat hepatitis B virus linking genome to function.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10404",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
     }
   ],
   "false_negatives": [
@@ -307891,6 +307921,12 @@
       "question": "What diagnostic assays or laboratory tests detect Rhinovirus B?",
       "missed_pmid": "24675857",
       "title": "Genome sequences of rhinovirus B isolates from wisconsin pediatric respiratory studies."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "missed_pmid": "42418555",
+      "title": "Humans and rhesus macaques share maturation pathways of HIV-1 envelope-reactive V3-glycan bnAb lineages."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
