@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:31:25.418705+00:00",
-  "runs": 251,
+  "updated": "2026-09-27T14:33:04.667166+00:00",
+  "runs": 252,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22064,
-  "n_false_negatives": 3721,
+  "n_false_positives": 22074,
+  "n_false_negatives": 3731,
   "new_this_run": {
     "false_positives": 10,
-    "false_negatives": 9
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -249508,6 +249508,138 @@
         "Mayaro virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "8727900",
+      "title": "Detecting bunyaviruses of the Bunyamwera and California serogroups by a PCR technique.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What antiviral drugs or treatments are effective against Bunyamwera virus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "24480054",
+      "title": "Isolation and characterization of a California encephalitis serogroup orthobunyavirus from Finnish mosquitoes.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_507486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What antiviral drugs or treatments are effective against Cache Valley virus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cache Valley virus?",
+      "cited_pmid": "41170973",
+      "title": "The La Crosse virus Gc head domain is a major determinant of infection and pathogenesis.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "How does Cache Valley virus evade or modulate the host immune response?",
+      "cited_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cache Valley virus?",
+      "cited_pmid": "21435229",
+      "title": "Tahyna virus genetics, infectivity, and immunogenicity in mice and monkeys.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What antiviral drugs or treatments are effective against Snowshoe hare virus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Snowshoe hare virus?",
+      "cited_pmid": "41170973",
+      "title": "The La Crosse virus Gc head domain is a major determinant of infection and pathogenesis.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "How does Snowshoe hare virus evade or modulate the host immune response?",
+      "cited_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
     }
   ],
   "false_negatives": [
@@ -271836,6 +271968,66 @@
       "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
       "missed_pmid": "40630106",
       "title": "Invasive Aedes albopictus is a competent vector for O'nyong Nyong virus."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "missed_pmid": "41407241",
+      "title": "Replication competent La Crosse virus pseudotyped VSV vector system as vaccine and serological diagnostic reagent."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the epidemiology and outbreak history of La Crosse virus?",
+      "missed_pmid": "16968927",
+      "title": "A new genetic variant of La Crosse virus (bunyaviridae) isolated from New England."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "missed_pmid": "40986408",
+      "title": "Neuropsychological and Functional Outcome after La Crosse Encephalitis in Marine Recruit: A Case Report and Literature Review."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "missed_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "missed_pmid": "41170973",
+      "title": "The La Crosse virus Gc head domain is a major determinant of infection and pathogenesis."
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What diagnostic assays or laboratory tests detect Oropouche virus?",
+      "missed_pmid": "42485961",
+      "title": "Selective pressure-driven identification of conserved regions for Oropouche virus molecular detection."
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38510492",
+      "title": "Exploring the transmission modalities of Bunyamwera virus."
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus pathogenesis and transmission?",
+      "missed_pmid": "39039417",
+      "title": "Imaging Bunyavirus Infections by Transmission Electron Microscopy: Conventional Sample Preparation vs High-Pressure Freezing and Freeze-Substitution."
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genome organization and replication cycle of Snowshoe hare virus?",
+      "missed_pmid": "21435229",
+      "title": "Tahyna virus genetics, infectivity, and immunogenicity in mice and monkeys."
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "How does Snowshoe hare virus evade or modulate the host immune response?",
+      "missed_pmid": "28069630",
+      "title": "The Seasonal Timing of Snowshoe Hare Virus Transmission on the Island of Newfoundland, Canada."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
