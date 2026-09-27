@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:42:42.686882+00:00",
-  "runs": 475,
+  "updated": "2026-09-27T23:45:01.888763+00:00",
+  "runs": 476,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25070,
-  "n_false_negatives": 4948,
+  "n_false_positives": 25085,
+  "n_false_negatives": 4957,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 4
+    "false_positives": 15,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -282529,6 +282529,171 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11019"
       ]
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is known about Bovine viral diarrhea virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39201420",
+      "title": "Recombinant Subunit Vaccine Candidate against the Bovine Viral Diarrhea Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "cited_pmid": "41521899",
+      "title": "Detection of five viruses commonly implicated with bovine respiratory disease using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "40512232",
+      "title": "A novel killed oil adjuvanted bovine viral diarrhea virus vaccine protects from viremia and clinical manifestations: an immune response and challenge study in cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Bovine coronavirus?",
+      "cited_pmid": "41217694",
+      "title": "Pathological alterations and molecular-immunohistochemical detection of bovine respiratory syncytial virus in dairy calves of Himachal Pradesh, India: a first study.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "How does Bovine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42138810",
+      "title": "Inducing Antigen-Specific and Functional Immune Responses in Mice Toward Bovine Herpesvirus 1 and Bovine Respiratory Syncytial Virus by Chimeric Peptides Delivered by Bovine Herpesvirus 4-Based Vector.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10385",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus pathogenesis and transmission?",
+      "cited_pmid": "39692339",
+      "title": "Coinfection of some respiratory viruses in cattle: An abattoir study.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "cited_pmid": "40653488",
+      "title": "Deletion viral genome diversity among bovine viral diarrhea virus (BVDV) 1a and 1b strains.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "cited_pmid": "41135374",
+      "title": "Sanguinarine inhibits bovine parainfluenza virus type 3 replication through CD97 suppression.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What are the clinical symptoms and disease presentation of Bovine respiratory syncytial virus?",
+      "cited_pmid": "42216150",
+      "title": "Evidence of respiratory infection by bovine coronavirus in a neonatal calf.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine respiratory syncytial virus?",
+      "cited_pmid": "42334091",
+      "title": "Bovine coronavirus enters PBIECs via membrane fusion and clathrin-, caveolin-mediated endocytosis, macropinocytosis.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39511676",
+      "title": "Protective efficacy of a recombinant adenovirus expressing novel dual F and HN proteins of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37951410",
+      "title": "Immunogenicity and protective efficacy of a recombinant adenovirus containing the fusion protein of bovine parainfluenza virus type 3 genotype C in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38543767",
+      "title": "Prevalence, Molecular Characteristics and Virulence Identification of Bovine Parainfluenza Virus Type 3 in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 pathogenesis and transmission?",
+      "cited_pmid": "40303758",
+      "title": "Isolation and Identification of a Genotype C Bovine Parainfluenza Virus Type 3 and Its Pathogenicity in Albino Guinea Pigs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the epidemiology and outbreak history of Bovine parainfluenza virus 3?",
+      "cited_pmid": "39819649",
+      "title": "Cross-sectional seroprevalence study of bovine herpesvirus 1, bovine respiratory syncytial virus, and parainfluenza virus 3 in cattle from Villavicencio, Colombia.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
     }
   ],
   "false_negatives": [
@@ -312219,6 +312384,60 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
       "missed_pmid": "41662733",
       "title": "Mayaro Virus Infections in European Field Researchers in the Remote Amazon Rainforest, French Guiana, 2024."
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "How does Bovine viral diarrhea virus 1 evade or modulate the host immune response?",
+      "missed_pmid": "39195827",
+      "title": "Preclinical Efficacy of Cap-Dependent and Independent mRNA Vaccines against Bovine Viral Diarrhea Virus-1."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42043674",
+      "title": "Evaluating the presence of bovine coronavirus in diarrheic calves in Lahore, Punjab, Pakistan: a food security risk."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42216150",
+      "title": "Evidence of respiratory infection by bovine coronavirus in a neonatal calf."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "How does Bovine coronavirus evade or modulate the host immune response?",
+      "missed_pmid": "42098175",
+      "title": "Multi-omics atlas of the bovine coronavirus-infected calf jejunum: reduction of Phocaeicola coprophilus and deoxycholic acid linked to Th17/Treg imbalance."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39308712",
+      "title": "Effect of two different commercial vaccines against bovine respiratory disease on cell-mediated immunity in Holstein cattle."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "missed_pmid": "38791675",
+      "title": "Bovine Parainfluenza Virus 3 and Bovine Respiratory Syncytial Virus: Dominant Viral Players in Bovine Respiratory Disease Complex among Serbian Cattle."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "missed_pmid": "39819649",
+      "title": "Cross-sectional seroprevalence study of bovine herpesvirus 1, bovine respiratory syncytial virus, and parainfluenza virus 3 in cattle from Villavicencio, Colombia."
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38791675",
+      "title": "Bovine Parainfluenza Virus 3 and Bovine Respiratory Syncytial Virus: Dominant Viral Players in Bovine Respiratory Disease Complex among Serbian Cattle."
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38731260",
+      "title": "Serological Profile for Major Respiratory Viruses in Unvaccinated Cows from High-Yielding Dairy Herds."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
