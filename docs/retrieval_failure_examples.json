@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:23:55.295138+00:00",
-  "runs": 410,
+  "updated": "2026-09-27T21:25:42.924420+00:00",
+  "runs": 411,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24490,
+  "n_false_positives": 24499,
   "n_false_negatives": 4838,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 2
+    "false_positives": 9,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -276023,6 +276023,108 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
         "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
         "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "38399771",
+      "title": "Seasonal Testing, Results, and Effect of the Pandemic on Coxsackievirus Serum Studies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "38417531",
+      "title": "The combination of pleconaril, rupintrivir, and remdesivir efficiently inhibits enterovirus infections in vitro, delaying the development of drug-resistant virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "cited_pmid": "38488515",
+      "title": "Influence of Amino Acid Substitutions in Capsid Proteins of Coxsackievirus B5 on Free Chlorine and Thermal Inactivation.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A16?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41746118",
+      "title": "Correction: Chang et al. Intertypic Recombination Between Coxsackievirus A16 and Enterovirus A71 Structural and Non-Structural Genes Modulates Virulence and Protection Efficacy. Vaccines 2025, 13, 1017.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "cited_pmid": "41573759",
+      "title": "School outbreak of coxsackievirus A16 in Antipolo City, Philippines, October 2022.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "41586838",
+      "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6].",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "How does Coxsackievirus B5 evade or modulate the host immune response?",
+      "cited_pmid": "41754535",
+      "title": "SHFL Post-Transcriptionally Restricts Coxsackievirus A16 In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
