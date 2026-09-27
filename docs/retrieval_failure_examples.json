@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:59:34.282041+00:00",
-  "runs": 322,
+  "updated": "2026-09-27T18:02:15.688240+00:00",
+  "runs": 323,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23369,
-  "n_false_negatives": 4330,
+  "n_false_positives": 23379,
+  "n_false_negatives": 4334,
   "new_this_run": {
-    "false_positives": 16,
+    "false_positives": 10,
     "false_negatives": 4
   },
   "false_positives": [
@@ -263880,6 +263880,123 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "25574400",
+      "title": "Type I diabetes mellitus: genetic factors and presumptive enteroviral etiology or protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_463676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "41709303",
+      "title": "Detection rate, clinical characteristics, and molecular characterization of enterovirus and parechovirus infections in Thai infants during the first three months of life.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47516",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "32467165",
+      "title": "Inhibitory antibodies identify unique sites of therapeutic vulnerability in rhinovirus and other enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "42535854",
+      "title": "KREMEN1 residue W94 is essential for receptor binding and infection by a major group of enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rhinovirus B?",
+      "cited_pmid": "26608824",
+      "title": "Detection of respiratory syncytial virus and rhinovirus in healthy infants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
     }
   ],
   "false_negatives": [
@@ -289862,6 +289979,30 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 11?",
       "missed_pmid": "39819037",
       "title": "Diversity of lake bacteria promotes human echovirus inactivation."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "24586469",
+      "title": "Population structure and evolution of Rhinoviruses."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rhinovirus B?",
+      "missed_pmid": "28542207",
+      "title": "Metagenomic sequencing complements routine diagnostics in identifying viral pathogens in lung transplant recipients with unknown etiology of respiratory infection."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "missed_pmid": "27717933",
+      "title": "Antiviral activity of the \"Virus Blocking Factor\" (VBF) derived i.a. from Pelargonium extract and Sambucus juice against different human-pathogenic cold viruses in vitro."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "41709303",
+      "title": "Detection rate, clinical characteristics, and molecular characterization of enterovirus and parechovirus infections in Thai infants during the first three months of life."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
