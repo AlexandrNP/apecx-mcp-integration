@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:47:39.163751+00:00",
-  "runs": 237,
+  "updated": "2026-09-27T13:54:20.119770+00:00",
+  "runs": 238,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21843,
-  "n_false_negatives": 3634,
+  "n_false_positives": 21855,
+  "n_false_negatives": 3638,
   "new_this_run": {
-    "false_positives": 16,
+    "false_positives": 12,
     "false_negatives": 4
   },
   "false_positives": [
@@ -247142,6 +247142,136 @@
         "Oropouche virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11572"
       ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Eastern equine encephalitis virus?",
+      "cited_pmid": "41983925",
+      "title": "An update on infectious encephalitis: from epidemiology to management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Venezuelan equine encephalitis virus?",
+      "cited_pmid": "41983925",
+      "title": "An update on infectious encephalitis: from epidemiology to management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "cited_pmid": "42060520",
+      "title": "Notes from the Field: Increase in Eastern Equine Encephalitis Virus Activity - Vermont, 2023-2024.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Western equine encephalitis virus?",
+      "cited_pmid": "41983925",
+      "title": "An update on infectious encephalitis: from epidemiology to management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "cited_pmid": "41983925",
+      "title": "An update on infectious encephalitis: from epidemiology to management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "cited_pmid": "41263682",
+      "title": "O'nyong'nyong Virus Infections in Nigeria: A Case Series.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "cited_pmid": "42250266",
+      "title": "Pathogen-Specific Evasion of Innate Immunity by Alphaviruses (CHIKV, VEEV, and SINV).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "41305528",
+      "title": "Seroprevalence of Arboviruses and Genetic Characterization of Orbiviruses in Sloths from Western Panama.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40052"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "41849539",
+      "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "cited_pmid": "41983925",
+      "title": "An update on infectious encephalitis: from epidemiology to management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "How does O'nyong-nyong virus evade or modulate the host immune response?",
+      "cited_pmid": "42250266",
+      "title": "Pathogen-Specific Evasion of Innate Immunity by Alphaviruses (CHIKV, VEEV, and SINV).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "42116271",
+      "title": "Retrospective Phylogenetic Analysis of Mayaro Virus, French Guiana, 1996-2024.",
+      "actual_organisms": [
+        "Mayaro virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -268948,6 +269078,30 @@
       "question": "What is the epidemiology and outbreak history of Cache Valley virus?",
       "missed_pmid": "25487728",
       "title": "Arboviruses in North Dakota, 2003-2006."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "How does Eastern equine encephalitis virus evade or modulate the host immune response?",
+      "missed_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Western equine encephalitis virus?",
+      "missed_pmid": "41353198",
+      "title": "Structural insights into VLDLR recognition by western equine encephalitis virus."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "How does Western equine encephalitis virus evade or modulate the host immune response?",
+      "missed_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
+      "missed_pmid": "40192485",
+      "title": "First Phosphonic-Type Inhibitors and Activity-Based Probes Specific to the O'nyong-nyong Virus Capsid Protease."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
