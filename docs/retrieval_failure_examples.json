@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:50:37.655140+00:00",
-  "runs": 479,
+  "updated": "2026-09-27T23:52:27.331189+00:00",
+  "runs": 480,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25116,
-  "n_false_negatives": 4977,
+  "n_false_positives": 25134,
+  "n_false_negatives": 4978,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 2
+    "false_positives": 18,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -283040,6 +283040,190 @@
         "Viral hemorrhagic septicemia virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11290"
       ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42283566",
+      "title": "Comparison of multiple antigens for use in indirect ELISAs for detection of anti-capripoxvirus antibodies in sheep, goats, and cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "cited_pmid": "42357677",
+      "title": "Transmission Dynamics and Control of the 2025 Lumpy Skin Disease Epidemic in Sardinia (Italy): A Spatial and Epidemiological Analysis.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "How does Cowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42378817",
+      "title": "Host immune response to lumpy skin disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "42357632",
+      "title": "Whole Genome Characterization of Lumpy Skin Disease Virus and Bovine Papular Stomatitis Virus Detected in Cattle During the 2024-2025 Outbreaks in Tunisia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42283566",
+      "title": "Comparison of multiple antigens for use in indirect ELISAs for detection of anti-capripoxvirus antibodies in sheep, goats, and cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40761797",
+      "title": "Determination of the minimal level of neutralizing antibodies elicited following vaccination able to protect rabbits against virulent cowpox virus.",
+      "actual_organisms": [
+        "Cowpox virus"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40463609",
+      "title": "A review of vaccines and antivirals against human poxviruses with special emphasis on mpox virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus pathogenesis and transmission?",
+      "cited_pmid": "40755018",
+      "title": "[Cowpox - an underdiagnosed disease in Sweden?].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus pathogenesis and transmission?",
+      "cited_pmid": "39621257",
+      "title": "Poxvirus Epidemiology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What diagnostic assays or laboratory tests detect Sheeppox virus?",
+      "cited_pmid": "39959162",
+      "title": "Preparation and application evaluation of monoclonal antibodies against Monkeypox virus A29 protein.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_44129",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is the genome organization and replication cycle of Sheeppox virus?",
+      "cited_pmid": "41472220",
+      "title": "Molecular Aspects of the Emergence of Monkeypox Virus Clades.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is the genome organization and replication cycle of Sheeppox virus?",
+      "cited_pmid": "42489650",
+      "title": "Tymoviruses partition selection using overlapping genes to allow their replication genes and their movement protein gene to evolve independently.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What antiviral drugs or treatments are effective against Sheeppox virus?",
+      "cited_pmid": "40717583",
+      "title": "Recent Progress in the Discovery of Anti-Mpox Agents.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What antiviral drugs or treatments are effective against Sheeppox virus?",
+      "cited_pmid": "40792286",
+      "title": "The Role of Public Health Interventions and Control Measures During Mpox Outbreaks: Enhancing Strategies for Disease Prevention and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What antiviral drugs or treatments are effective against Sheeppox virus?",
+      "cited_pmid": "39608644",
+      "title": "Molecular analysis of the 2022 mpox outbreak and antiviral activity of dihydroorotate dehydrogenase inhibitors against orthopoxviruses.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the clinical symptoms and disease presentation of Sheeppox virus?",
+      "cited_pmid": "40372132",
+      "title": "Neurological complications of Orthopoxvirus infections: neurotropism and neurovirulence.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sheeppox virus?",
+      "cited_pmid": "40664127",
+      "title": "Computational design of a multi-epitope mRNA vaccine against orthopoxviruses: A path toward comprehensive poxvirus protection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "How does Sheeppox virus evade or modulate the host immune response?",
+      "cited_pmid": "40872858",
+      "title": "The Role of Myxoma Virus Immune Modulators and Host Range Factors in Pathogenesis and Species Leaping.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10270"
+      ]
     }
   ],
   "false_negatives": [
@@ -312904,6 +313088,12 @@
       "question": "What antiviral drugs or treatments are effective against Red sea bream iridovirus?",
       "missed_pmid": "38367823",
       "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "missed_pmid": "41986757",
+      "title": "Development of a double-antibody sandwich ELISA for detecting Peste des petits ruminants virus infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
