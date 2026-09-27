@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:51:25.993969+00:00",
-  "runs": 345,
+  "updated": "2026-09-27T18:53:23.414483+00:00",
+  "runs": 346,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23660,
-  "n_false_negatives": 4513,
+  "n_false_positives": 23671,
+  "n_false_negatives": 4522,
   "new_this_run": {
-    "false_positives": 22,
+    "false_positives": 11,
     "false_negatives": 9
   },
   "false_positives": [
@@ -266960,6 +266960,118 @@
         "Echovirus 30",
         "http://purl.obolibrary.org/obo/NCBITaxon_138949"
       ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "34415501",
+      "title": "Complete genome sequence of a recombinant isolate of yambean mosaic virus from Canavalia ensiformis.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_418827"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "cited_pmid": "42129035",
+      "title": "Mild Strain Cross-Protection in Passion Fruit.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_400394"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "32504705",
+      "title": "Distribution and evolution of the major viruses infecting cucurbitaceous and solanaceous crops in the French Mediterranean area.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91753",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "cited_pmid": "40253643",
+      "title": "A plant viral effector subverts FER-RALF1 module-mediated intracellular immunity.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is known about Turnip mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42129033",
+      "title": "Pepper Veinal Mottle Virus (PVMV)-Based Vector for Expressing Pathogen-Derived Resistance in Pepper.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_255066"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "34499966",
+      "title": "Development of a multiplex RT-PCR assay for the detection of soybean mosaic virus, bean common mosaic virus and cucumber mosaic virus in field samples of soybean.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "How does Turnip mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42145089",
+      "title": "Cucumber Mosaic Virus Coat Protein Sequesters Host CDPK7-Like Into Phase-Separated Condensates to Promote Viral Infection.",
+      "actual_organisms": [
+        "Potato virus Y",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Turnip mosaic virus?",
+      "cited_pmid": "32618008",
+      "title": "Ecological fitting is the forerunner to diversification in a plant virus with broad host range.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Turnip mosaic virus?",
+      "cited_pmid": "32432019",
+      "title": "Identification, genetic diversity and recombination analysis of Watermelon Mosaic Virus\u00a0isolates.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Watermelon mosaic virus?",
+      "cited_pmid": "42129035",
+      "title": "Mild Strain Cross-Protection in Passion Fruit.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_400394"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "How does Watermelon mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42145089",
+      "title": "Cucumber Mosaic Virus Coat Protein Sequesters Host CDPK7-Like Into Phase-Separated Condensates to Promote Viral Infection.",
+      "actual_organisms": [
+        "Potato virus Y",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
     }
   ],
   "false_negatives": [
@@ -294040,6 +294152,60 @@
       "question": "What is the epidemiology and outbreak history of Echovirus 11?",
       "missed_pmid": "38458420",
       "title": "Increased circulation of echovirus 11 in the general population and hospital patients as elicited by the non-polio enterovirus laboratory-based sentinel surveillance in northern Italy, 2023."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y pathogenesis and transmission?",
+      "missed_pmid": "42261316",
+      "title": "Effects of temperature on the life-history traits of Myzus persicae and its efficiency in transmitting potato virus Y (PVY) in potato crops."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "missed_pmid": "41701625",
+      "title": "Large ribosomal protein 4 inhibits tobacco vein banding mosaic virus replication by impairing nuclear export of viral NIb."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "missed_pmid": "33245804",
+      "title": "The conserved aromatic residue W122 is a determinant of potyviral coat protein stability, replication, and cell-to-cell movement in plants."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "missed_pmid": "42129039",
+      "title": "Phosphatidic Acid Application to Enhance Plant Virus Resistance."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "missed_pmid": "31887986",
+      "title": "High-Throughput Sequencing Reveals Bell Pepper Endornavirus Infection in Pepper (Capsicum annum) in Slovakia and Enables Its Further Molecular Characterization."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Potato virus Y?",
+      "missed_pmid": "42153003",
+      "title": "A Rapid and Field-Deployable RT-LAMP Assay for Reliable Detection of Potato Virus Y (PVY)."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is known about Turnip mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39670884",
+      "title": "Seed Transmission of Turnip Mosaic Virus Demonstrated Unequivocally in a Brassica Species."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "missed_pmid": "39872321",
+      "title": "Screening Brassica rapa for broad-spectrum resistance to Turnip mosaic virus."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is the genome organization and replication cycle of Watermelon mosaic virus?",
+      "missed_pmid": "35394500",
+      "title": "A single substitution in Vacuolar protein sorting 4 is responsible for resistance to Watermelon mosaic virus in melon."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
