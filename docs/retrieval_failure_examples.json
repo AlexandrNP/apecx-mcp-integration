@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:09:46.860951+00:00",
-  "runs": 305,
+  "updated": "2026-09-27T17:11:39.390005+00:00",
+  "runs": 306,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23159,
-  "n_false_negatives": 4197,
+  "n_false_positives": 23169,
+  "n_false_negatives": 4206,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 6
+    "false_positives": 10,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -261516,6 +261516,113 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11216",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42075254",
+      "title": "Complex Recombination Landscape and Lineage Turnover in Classical Human Astroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430629",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42159811",
+      "title": "Three-dimensional peptide modeling and subcellular localization of the VPg protein of human astrovirus 8 in infected Caco-2 cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39733",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "41792744",
+      "title": "Genetic characterization and structural insights of canine astroviruses circulating in South Korea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157338",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239569",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249588"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "41806611",
+      "title": "Biochemical characterization of Sapovirus 2C helicase and identification of pramipexole as a novel inhibitor in vitro.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Norovirus?",
+      "cited_pmid": "41851900",
+      "title": "Progress in human intestinal organoid research: applications to acute gastroenteritis viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "41720281",
+      "title": "Genetic characterization and evolutionary dynamics of non-epidemic sapovirus GII.5 strains.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1697443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "How does Rotavirus C evade or modulate the host immune response?",
+      "cited_pmid": "37060970",
+      "title": "Interferon-\u03bb3 alleviates intestinal epithelium injury induced by porcine rotavirus in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41792395",
+      "title": "Molecular characterization and genotypic diversity of human astroviruses among patients with gastroenteritis in Saudi Arabia, 2022-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35741",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "41795259",
+      "title": "Genomic characterization of a novel human astrovirus MLB1 variant from Tanzania.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_568715",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "41792744",
+      "title": "Genetic characterization and structural insights of canine astroviruses circulating in South Korea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157338",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239569",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249588"
+      ]
     }
   ],
   "false_negatives": [
@@ -286700,6 +286807,60 @@
       "question": "What is known about Human parainfluenza virus 4 and neutralizing antibodies or vaccines?",
       "missed_pmid": "24002378",
       "title": "Discovery of a divergent HPIV4 from respiratory secretions using second and third generation metagenomic sequencing."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "missed_pmid": "37101126",
+      "title": "Influence of herd immunity on norovirus: a long-term field study of repeated viral gastroenteritis outbreaks at the same facilities."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Norovirus?",
+      "missed_pmid": "42684943",
+      "title": "Feline noroviruses: investigation of epidemic potential and genetic/structural insights of host-based separation and recombination."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "missed_pmid": "42199979",
+      "title": "Metaviromics reveals a high diversity of viruses belonging to the Caliciviridae family in seal feces."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41720281",
+      "title": "Genetic characterization and evolutionary dynamics of non-epidemic sapovirus GII.5 strains."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "missed_pmid": "41806611",
+      "title": "Biochemical characterization of Sapovirus 2C helicase and identification of pramipexole as a novel inhibitor in vitro."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "missed_pmid": "36298806",
+      "title": "Antibody Response to Rotavirus C Pre-Farrow Natural Planned Exposure to Gilts and Their Piglets."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus pathogenesis and transmission?",
+      "missed_pmid": "41813687",
+      "title": "The conserved human astrovirus-receptor interface reveals a targetable vulnerability for antiviral development."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human astrovirus?",
+      "missed_pmid": "41850139",
+      "title": "On the detection of foodborne viral contamination in edible seaweeds."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "missed_pmid": "42037360",
+      "title": "Human astrovirus draft genomes from under-five children presenting with gastroenteritis in Malawi from 2012 to 2024."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
