@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:39:12.752346+00:00",
-  "runs": 388,
+  "updated": "2026-09-27T20:40:57.306047+00:00",
+  "runs": 389,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24276,
-  "n_false_negatives": 4785,
+  "n_false_positives": 24282,
+  "n_false_negatives": 4792,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 8
+    "false_positives": 6,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -273657,6 +273657,64 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10244",
         "http://purl.obolibrary.org/obo/NCBITaxon_10255"
       ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36068296",
+      "title": "Development of an attenuated vaccine against Koi Herpesvirus Disease (KHVD) suitable for oral administration and immersion.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "35608512",
+      "title": "Intra vitam assays for detecting fish infected with cyprinid herpesvirus 3 (CyHV-3).",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1437365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is known about Chelonid herpesvirus 5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36068296",
+      "title": "Development of an attenuated vaccine against Koi Herpesvirus Disease (KHVD) suitable for oral administration and immersion.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is known about Chelonid herpesvirus 5 pathogenesis and transmission?",
+      "cited_pmid": "11471850",
+      "title": "Comparison of 16 chelonid herpesviruses by virus neutralization tests and restriction endonuclease digestion of viral DNA.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What diagnostic assays or laboratory tests detect Chelonid herpesvirus 5?",
+      "cited_pmid": "35608512",
+      "title": "Intra vitam assays for detecting fish infected with cyprinid herpesvirus 3 (CyHV-3).",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1437365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is known about Ranid herpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36068296",
+      "title": "Development of an attenuated vaccine against Koi Herpesvirus Disease (KHVD) suitable for oral administration and immersion.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
     }
   ],
   "false_negatives": [
@@ -302369,6 +302427,48 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Pseudocowpox virus?",
       "missed_pmid": "25674608",
       "title": "Evidence of zoonotic pseudocowpox virus infection from a cattle in Turkey."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "missed_pmid": "35817540",
+      "title": "Marek's Disease in an Indian Peafowl (Pavo cristatus) with Clinical Ocular Disease and Paraparesis."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "missed_pmid": "36398672",
+      "title": "Marek's disease in genetically susceptible Cochin chickens in Italy: a case report."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "missed_pmid": "35477401",
+      "title": "The sulphated polysaccharides extract ulvans from Ulva armoricana limits Marek's disease virus dissemination in vitro and promotes viral reactivation in lymphoid cells."
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is known about Cyprinid herpesvirus 3 pathogenesis and transmission?",
+      "missed_pmid": "35490338",
+      "title": "First report on the occurrence of cyprinid herpesvirus 3 in koi carp (Cyprinus carpio koi) in India."
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What diagnostic assays or laboratory tests detect Chelonid herpesvirus 5?",
+      "missed_pmid": "25445320",
+      "title": "Dynamics of Virus Shedding and In Situ Confirmation of Chelonid Herpesvirus 5 in Hawaiian Green Turtles With Fibropapillomatosis."
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chelonid herpesvirus 5?",
+      "missed_pmid": "23056373",
+      "title": "The genome of Chelonid herpesvirus 5 harbors atypical genes."
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chelonid herpesvirus 5?",
+      "missed_pmid": "29960922",
+      "title": "Molecular evolution of fibropapilloma-associated herpesviruses infecting juvenile green and loggerhead sea turtles."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
