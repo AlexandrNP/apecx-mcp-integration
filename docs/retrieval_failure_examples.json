@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:27:10.318214+00:00",
-  "runs": 162,
+  "updated": "2026-09-27T07:29:05.234041+00:00",
+  "runs": 163,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19458,
+  "n_false_positives": 19478,
   "n_false_negatives": 3539,
   "new_this_run": {
-    "false_positives": 44,
-    "false_negatives": 3
+    "false_positives": 20,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -219854,6 +219854,236 @@
         "Human coronavirus NL63",
         "Human coronavirus OC43",
         "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "42355501",
+      "title": "The Forgotten Gate: Choroid Plexus and Blood-CSF Barrier in Arboviral Encephalitis.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "42167235",
+      "title": "Alphaviral non-structural protein-host RBP co-condensation as a mechanism to sustain virus replication.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ross River virus?",
+      "cited_pmid": "42620031",
+      "title": "Molecular basis for chikungunya virus recognition of a mosquito-specific receptor.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11023"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ross River virus?",
+      "cited_pmid": "42434987",
+      "title": "Molecular evidence of neuroinvasive Sindbis virus infection in humans: detection in cerebrospinal fluid by next generation sequencing.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mayaro virus?",
+      "cited_pmid": "42620031",
+      "title": "Molecular basis for chikungunya virus recognition of a mosquito-specific receptor.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11023"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "42667977",
+      "title": "Mosquito diversity and arbovirus detection in Paraguay: first evidence of dengue and chikungunya virus infection in field populations.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "42521468",
+      "title": "Epidemiologic, Entomologic, and Virologic Findings during Reemergence of Western Equine Encephalitis Virus, Argentina.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
+      "cited_pmid": "42620031",
+      "title": "Molecular basis for chikungunya virus recognition of a mosquito-specific receptor.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11023"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "42636212",
+      "title": "Vector competence of temperate and tropical mosquito species for Babanki virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_48540"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "42521468",
+      "title": "Epidemiologic, Entomologic, and Virologic Findings during Reemergence of Western Equine Encephalitis Virus, Argentina.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "42667977",
+      "title": "Mosquito diversity and arbovirus detection in Paraguay: first evidence of dengue and chikungunya virus infection in field populations.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genome organization and replication cycle of Semliki Forest virus?",
+      "cited_pmid": "42434987",
+      "title": "Molecular evidence of neuroinvasive Sindbis virus infection in humans: detection in cerebrospinal fluid by next generation sequencing.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genome organization and replication cycle of Semliki Forest virus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What antiviral drugs or treatments are effective against Semliki Forest virus?",
+      "cited_pmid": "42419220",
+      "title": "Discovery of broad-spectrum antiviral activity in Amaryllidaceae alkaloids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Semliki Forest virus?",
+      "cited_pmid": "41700904",
+      "title": "AGPAT1 is a novel Chikungunya virus receptor on human cells.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_499235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "How does Semliki Forest virus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "How does Semliki Forest virus evade or modulate the host immune response?",
+      "cited_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Semliki Forest virus?",
+      "cited_pmid": "42456440",
+      "title": "Alphavirus madariaga-associated encephalomyelitis in equines from the Brazilian Pantanal reveals arbovirus circulation in a peri-urban environment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
