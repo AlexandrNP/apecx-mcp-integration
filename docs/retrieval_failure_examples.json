@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:07:08.469065+00:00",
-  "runs": 373,
+  "updated": "2026-09-27T20:09:57.500275+00:00",
+  "runs": 374,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24092,
-  "n_false_negatives": 4731,
+  "n_false_positives": 24108,
+  "n_false_negatives": 4732,
   "new_this_run": {
-    "false_positives": 34,
+    "false_positives": 16,
     "false_negatives": 1
   },
   "false_positives": [
@@ -271601,6 +271601,192 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_154334",
         "http://purl.obolibrary.org/obo/NCBITaxon_45455"
       ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "41893645",
+      "title": "Veterinary Herpesviruses: Experimental Tools for Transcriptomics and Neuroscience.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "29157201",
+      "title": "Phylogenetic and recombination analysis of the herpesvirus genus varicellovirus.",
+      "actual_organisms": [
+        "Equine herpesvirus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "42799934",
+      "title": "Evaluation of indolicidin for inactivation of bovine alphaherpesvirus 1 in semen.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human betaherpesvirus 7?",
+      "cited_pmid": "42475862",
+      "title": "A conserved alphaherpesvirus UL20 homolog is required for cytoplasmic virion maturation and secondary envelopment of Marek's disease virus.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "How does Human betaherpesvirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "36652973",
+      "title": "Serum amyloid A regulates TLR2/4-mediated IFN-\u03b2 signaling pathway against Marek's disease virus.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "41893637",
+      "title": "Molecular Characterization and Phylogenetic Analysis of Subgroup III Bovine Respiratory Syncytial Virus from a Dairy Outbreak in Thailand.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41893645",
+      "title": "Veterinary Herpesviruses: Experimental Tools for Transcriptomics and Neuroscience.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "cited_pmid": "30388626",
+      "title": "Screening and evaluation of antiviral compounds against Equid alpha-herpesviruses using an impedance-based cellular assay.",
+      "actual_organisms": [
+        "Equine herpesvirus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80341"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "29157201",
+      "title": "Phylogenetic and recombination analysis of the herpesvirus genus varicellovirus.",
+      "actual_organisms": [
+        "Equine herpesvirus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40947653",
+      "title": "Summary of the 12th International Conference on Human Herpesviruses-6A, -6B, and -7.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42360375",
+      "title": "Development of recombinant glycoprotein B based Indirect ELISA for detection of antibodies against Bovine alphaherpesvirus-1 in Bovines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "29157201",
+      "title": "Phylogenetic and recombination analysis of the herpesvirus genus varicellovirus.",
+      "actual_organisms": [
+        "Equine herpesvirus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "30388626",
+      "title": "Screening and evaluation of antiviral compounds against Equid alpha-herpesviruses using an impedance-based cellular assay.",
+      "actual_organisms": [
+        "Equine herpesvirus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80341"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What are the clinical symptoms and disease presentation of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "41299705",
+      "title": "Human herpesvirus 7 induced aseptic meningitis in an immunocompetent adult presenting with unusual neurological symptoms: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What are the clinical symptoms and disease presentation of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "40905006",
+      "title": "Detection of human herpesvirus 7 in conjunctival samples collected from individuals recovering from conjunctivitis.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -299989,6 +300175,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine alphaherpesvirus 1?",
       "missed_pmid": "42138810",
       "title": "Inducing Antigen-Specific and Functional Immune Responses in Mice Toward Bovine Herpesvirus 1 and Bovine Respiratory Syncytial Virus by Chimeric Peptides Delivered by Bovine Herpesvirus 4-Based Vector."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "missed_pmid": "37154764",
+      "title": "The pUL51 Tegument Protein Is Essential for Marek's Disease Virus Growth In Vitro and Bears a Function That Is Critical for Pathogenesis In Vivo."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
