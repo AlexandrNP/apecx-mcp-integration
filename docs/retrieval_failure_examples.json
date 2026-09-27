@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:51:18.190424+00:00",
-  "runs": 423,
+  "updated": "2026-09-27T21:53:09.566540+00:00",
+  "runs": 424,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24601,
+  "n_false_positives": 24608,
   "n_false_negatives": 4848,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 1
+    "false_positives": 7,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -277320,6 +277320,88 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12058",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42475568",
+      "title": "Particles of echovirus 18 open to release their genomes in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "40261447",
+      "title": "Circulation of non-polio enteroviruses in the Ural Federal District and Western Siberia in 2023: the return of an old foe?",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "cited_pmid": "38932451",
+      "title": "A 3-month-old neonatal rhesus macaque HFMD model caused by coxsackievirus B1 infection and viral tissue tropism.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40075457",
+      "title": "Establishment and application of a wild neonatal mouse model infected with an Echovirus 30 isolate.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What are the clinical symptoms and disease presentation of Encephalomyocarditis virus?",
+      "cited_pmid": "42278884",
+      "title": "Use of Intravenous Immunoglobulins in Pediatric Viral Meningoencephalitis: A Real-World Retrospective Observational Study.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
