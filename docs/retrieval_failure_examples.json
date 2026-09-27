@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T00:05:11.699512+00:00",
-  "runs": 124,
+  "updated": "2026-09-27T00:15:09.395267+00:00",
+  "runs": 125,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 17189,
-  "n_false_negatives": 3437,
+  "n_false_positives": 17269,
+  "n_false_negatives": 3439,
   "new_this_run": {
-    "false_positives": 106,
-    "false_negatives": 0
+    "false_positives": 80,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -194234,6 +194234,895 @@
         "Cowpox virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10242"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "42773483",
+      "title": "SAMSN1 restricts Japanese encephalitis virus replication by recruiting TRIM21 to degrade viral proteins and activate the interferon pathway.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "cited_pmid": "42515657",
+      "title": "Chalcones as a Versatile Antiviral Scaffold: Molecular Targets, ADMET Profiles, and Translational Challenges.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the epidemiology and outbreak history of Chikungunya virus?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "cited_pmid": "42777010",
+      "title": "Transcriptional architecture of African swine fever virus.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42743201",
+      "title": "Correction: Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Japanese encephalitis virus?",
+      "cited_pmid": "42723024",
+      "title": "Rashless varicella-zoster virus encephalitis diagnosed by metagenomic next-generation sequencing: two case reports.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42613134",
+      "title": "A rare case of naturally occurring anti-Jka antibody detected in a 6-month-old infant.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lassa mammarenavirus?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lassa mammarenavirus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "42547256",
+      "title": "Giant anogenital condyloma acuminata with extragenital involvement in an immunocompetent host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "42756906",
+      "title": "Predictors of chronic arthralgia following chikungunya virus infection.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42116630",
+      "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41077721",
+      "title": "Hantavirus GnH Nanoparticle Immunogen Elicits a Cross-Neutralizing Antibody Response in Mice.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052474",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genome organization and replication cycle of Human coronavirus 229E?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the epidemiology and outbreak history of Human coronavirus 229E?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus 229E?",
+      "cited_pmid": "42781357",
+      "title": "Chikungunya-Associated Acute Respiratory Distress Syndrome: A Rare Fatal Case.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42297225",
+      "title": "Cyprinid herpesvirus 3 does not replicate productively in EPC cells but induces S-phase cell cycle arrest.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42777010",
+      "title": "Transcriptional architecture of African swine fever virus.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42790233",
+      "title": "CaMKII\u03b3-mediated vimentin structural rearrangement regulates FMDV replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42515657",
+      "title": "Chalcones as a Versatile Antiviral Scaffold: Molecular Targets, ADMET Profiles, and Translational Challenges.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 3?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 3?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42743913",
+      "title": "A single-dose inhalable rAAV-vectored vaccine against mpox virus.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "42777006",
+      "title": "A multiplex serological assay for quantification of arbovirus antibody kinetics and neutralizing antibodies.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42777010",
+      "title": "Transcriptional architecture of African swine fever virus.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42781357",
+      "title": "Chikungunya-Associated Acute Respiratory Distress Syndrome: A Rare Fatal Case.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "cited_pmid": "42777010",
+      "title": "Transcriptional architecture of African swine fever virus.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus D68?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "cited_pmid": "42736308",
+      "title": "Redox cycling of viral RNA polymerase controls picornavirus replication.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is known about Cyprinid herpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Cyprinid herpesvirus 3?",
+      "cited_pmid": "42467054",
+      "title": "Optimization of the antiviral spectrum of cyclophilin inhibitors targeting respiratory viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Cyprinid herpesvirus 3?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Cyprinid herpesvirus 3?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Cyprinid herpesvirus 3?",
+      "cited_pmid": "42778896",
+      "title": "A decade of endemic human coronaviruses: epidemiological patterns and clinical significance in an adult cohort at a tertiary care hospital in Germany.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_277944",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290028",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Cyprinid herpesvirus 3?",
+      "cited_pmid": "42702024",
+      "title": "Ratio of varicella-zoster virus-specific immunoglobulin G antibody titre in the late acute phase to that in the early acute phase as a novel indicator of postherpetic neuralgia in patients with herpes zoster: a single-centre retrospective cohort study.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "41115422",
+      "title": "Epidemiologic and Environmental Investigations of Reported Hantavirus Cases Inform Exposure Risk in California, 1993-2020.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "42655732",
+      "title": "Cardiopulmonary Failure in Hantavirus Disease: Mechanisms, Recognition, and ECMO-Based Management.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What is known about Ambystoma tigrinum virus pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
     }
   ],
   "false_negatives": [
@@ -214858,6 +215747,18 @@
       "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
       "missed_pmid": "42340122",
       "title": "Isolation of Metabolites With Antiviral Activity From the Brown Algae Dictyota fasciola and Dictyota mediterranea."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42778420",
+      "title": "[The importance of varicella-zoster virus reactivation in adult central nervous system diseases]."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "missed_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
