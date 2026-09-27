@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T10:04:07.768154+00:00",
-  "runs": 198,
+  "updated": "2026-09-27T10:05:29.471597+00:00",
+  "runs": 199,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20526,
+  "n_false_positives": 20598,
   "n_false_negatives": 3582,
   "new_this_run": {
-    "false_positives": 48,
+    "false_positives": 72,
     "false_negatives": 0
   },
   "false_positives": [
@@ -231875,6 +231875,872 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_146500",
         "http://purl.obolibrary.org/obo/NCBITaxon_91753",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30232190",
+      "title": "Characterization of Antibody Interactions with the G Protein of Vesicular Stomatitis Virus Indiana Strain and Other Vesiculovirus G Proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30182034",
+      "title": "Lentivector Producer Cell Lines with Stably Expressed Vesiculovirus Envelopes.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40466409",
+      "title": "Exploring approaches and advancements in the development and evaluation of multi-epitope subunit vaccines against tick-borne viruses.",
+      "actual_organisms": [
+        "Banna virus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2852122",
+      "title": "Studies on arboviruses--infection of undernourished mice by cocal virus.",
+      "actual_organisms": [
+        "Cocal virus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "9696127",
+      "title": "Structure, expression and phylogenetic analysis of the glycoprotein gene of Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "18512001",
+      "title": "Characterization of the full-length genomic sequences of vesicular stomatitis Cocal and Alagoas viruses.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "21830071",
+      "title": "Genetic and antigenic relationships of vesicular stomatitis viruses from South America.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11280"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "40512309",
+      "title": "Colorado Tick Fever Virus: Quantification, Propagation, Storage, and Detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46839"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "35220553",
+      "title": "Validation of molecular diagnostics for the detection of pseudocowpox virus.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "40282183",
+      "title": "Viral Fragments in the Urine Proteome: New Clues to the Cause of Fever.",
+      "actual_organisms": [
+        "Salivirus A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "40511403",
+      "title": "Isolation and characterization of a novel coltivirus from Haemaphysalis concinna ticks in Northeastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2014339",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "39865210",
+      "title": "Viral metagenomics in wild ducks reveals the presence of seadornaviruses in Siberia.",
+      "actual_organisms": [
+        "Banna virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_104580",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "8739600",
+      "title": "The bicyclams, a new class of potent human immunodeficiency virus inhibitors, block viral entry after binding.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "41550982",
+      "title": "Corrigendum to \"Isolation and characterization of a novel coltivirus from Haemaphysalis concinna ticks in Northeastern China\" [Infectious Medicine 4 (2025) 100179].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "41850851",
+      "title": "Genetic analysis of bovine papular stomatitis and pseudocowpox viruses circulating in Hokkaido, Japan's largest cattle-producing region.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "38767190",
+      "title": "Ten different viral agents infecting and co-infecting children with acute gastroenteritis in Southern Italy: Role of known pathogens and emerging viruses during and after COVID-19 pandemic.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95341"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sendai virus?",
+      "cited_pmid": "8263122",
+      "title": "HIV-1 pseudotype virus containing a Cocal virus genome and an HIV envelope: construction, assay and use.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "How does Sendai virus evade or modulate the host immune response?",
+      "cited_pmid": "33396704",
+      "title": "Limbic Encephalitis Brain Damage Induced by Cocal Virus in Adult Mice Is Reduced by Environmental Enrichment: Neuropathological and Behavioral Studies.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "How does Sendai virus evade or modulate the host immune response?",
+      "cited_pmid": "20038206",
+      "title": "Interferon-alpha/beta genes are up-regulated in murine brain astrocytes after infection with Theiler's murine encephalomyelitis virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30232190",
+      "title": "Characterization of Antibody Interactions with the G Protein of Vesicular Stomatitis Virus Indiana Strain and Other Vesiculovirus G Proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30182034",
+      "title": "Lentivector Producer Cell Lines with Stably Expressed Vesiculovirus Envelopes.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "8263122",
+      "title": "HIV-1 pseudotype virus containing a Cocal virus genome and an HIV envelope: construction, assay and use.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "9696127",
+      "title": "Structure, expression and phylogenetic analysis of the glycoprotein gene of Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "18512001",
+      "title": "Characterization of the full-length genomic sequences of vesicular stomatitis Cocal and Alagoas viruses.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "21830071",
+      "title": "Genetic and antigenic relationships of vesicular stomatitis viruses from South America.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11280"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "35220553",
+      "title": "Validation of molecular diagnostics for the detection of pseudocowpox virus.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "40282183",
+      "title": "Viral Fragments in the Urine Proteome: New Clues to the Cause of Fever.",
+      "actual_organisms": [
+        "Salivirus A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "34960634",
+      "title": "Composition of Eukaryotic Viruses and Bacteriophages in Individuals with Acute Gastroenteritis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "38782262",
+      "title": "Parapoxvirus species revisited by whole genome sequencing: A retrospective analysis of bovine virus isolates.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "8739600",
+      "title": "The bicyclams, a new class of potent human immunodeficiency virus inhibitors, block viral entry after binding.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "38798735",
+      "title": "Bioinformatics-based screening tool identifies a wide variety of human and zoonotic viruses in Trujillo-Peru wastewater.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "38321488",
+      "title": "A broad wastewater screening and clinical data surveillance for virus-related diseases in the metropolitan Detroit area in Michigan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891714",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "2852122",
+      "title": "Studies on arboviruses--infection of undernourished mice by cocal virus.",
+      "actual_organisms": [
+        "Cocal virus"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "How does Human bocavirus evade or modulate the host immune response?",
+      "cited_pmid": "31254925",
+      "title": "Use of Heterologous Vesiculovirus G Proteins Circumvents the Humoral Anti-envelope Immunity in Lentivector-Based In\u00a0Vivo Gene Delivery.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30182034",
+      "title": "Lentivector Producer Cell Lines with Stably Expressed Vesiculovirus Envelopes.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "cited_pmid": "21830071",
+      "title": "Genetic and antigenic relationships of vesicular stomatitis viruses from South America.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11280"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "cited_pmid": "18512001",
+      "title": "Characterization of the full-length genomic sequences of vesicular stomatitis Cocal and Alagoas viruses.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "35220553",
+      "title": "Validation of molecular diagnostics for the detection of pseudocowpox virus.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "40282183",
+      "title": "Viral Fragments in the Urine Proteome: New Clues to the Cause of Fever.",
+      "actual_organisms": [
+        "Salivirus A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "34960634",
+      "title": "Composition of Eukaryotic Viruses and Bacteriophages in Individuals with Acute Gastroenteritis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "38782262",
+      "title": "Parapoxvirus species revisited by whole genome sequencing: A retrospective analysis of bovine virus isolates.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "40511403",
+      "title": "Isolation and characterization of a novel coltivirus from Haemaphysalis concinna ticks in Northeastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2014339",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the epidemiology and outbreak history of Banna virus?",
+      "cited_pmid": "40666800",
+      "title": "A novel post-mortem pathogen discovery program detects an outbreak of Echovirus E7: Uganda, 2022-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1716",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_570",
+        "http://purl.obolibrary.org/obo/NCBITaxon_780"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the epidemiology and outbreak history of Banna virus?",
+      "cited_pmid": "38798735",
+      "title": "Bioinformatics-based screening tool identifies a wide variety of human and zoonotic viruses in Trujillo-Peru wastewater.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "40512309",
+      "title": "Colorado Tick Fever Virus: Quantification, Propagation, Storage, and Detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46839"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Banna virus?",
+      "cited_pmid": "9696127",
+      "title": "Structure, expression and phylogenetic analysis of the glycoprotein gene of Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "How does Banna virus evade or modulate the host immune response?",
+      "cited_pmid": "20038206",
+      "title": "Interferon-alpha/beta genes are up-regulated in murine brain astrocytes after infection with Theiler's murine encephalomyelitis virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30182034",
+      "title": "Lentivector Producer Cell Lines with Stably Expressed Vesiculovirus Envelopes.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "8263122",
+      "title": "HIV-1 pseudotype virus containing a Cocal virus genome and an HIV envelope: construction, assay and use.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40466409",
+      "title": "Exploring approaches and advancements in the development and evaluation of multi-epitope subunit vaccines against tick-borne viruses.",
+      "actual_organisms": [
+        "Banna virus"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "9696127",
+      "title": "Structure, expression and phylogenetic analysis of the glycoprotein gene of Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "18512001",
+      "title": "Characterization of the full-length genomic sequences of vesicular stomatitis Cocal and Alagoas viruses.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "21830071",
+      "title": "Genetic and antigenic relationships of vesicular stomatitis viruses from South America.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11280"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What diagnostic assays or laboratory tests detect Salivirus A?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What diagnostic assays or laboratory tests detect Salivirus A?",
+      "cited_pmid": "35220553",
+      "title": "Validation of molecular diagnostics for the detection of pseudocowpox virus.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is the genome organization and replication cycle of Salivirus A?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What antiviral drugs or treatments are effective against Salivirus A?",
+      "cited_pmid": "8739600",
+      "title": "The bicyclams, a new class of potent human immunodeficiency virus inhibitors, block viral entry after binding.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What are the clinical symptoms and disease presentation of Salivirus A?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What are the clinical symptoms and disease presentation of Salivirus A?",
+      "cited_pmid": "2852122",
+      "title": "Studies on arboviruses--infection of undernourished mice by cocal virus.",
+      "actual_organisms": [
+        "Cocal virus"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "How does Salivirus A evade or modulate the host immune response?",
+      "cited_pmid": "33396704",
+      "title": "Limbic Encephalitis Brain Damage Induced by Cocal Virus in Adult Mice Is Reduced by Environmental Enrichment: Neuropathological and Behavioral Studies.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11274"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Salivirus A?",
+      "cited_pmid": "39865210",
+      "title": "Viral metagenomics in wild ducks reveals the presence of seadornaviruses in Siberia.",
+      "actual_organisms": [
+        "Banna virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_104580",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What diagnostic assays or laboratory tests detect Cocal virus?",
+      "cited_pmid": "40282183",
+      "title": "Viral Fragments in the Urine Proteome: New Clues to the Cause of Fever.",
+      "actual_organisms": [
+        "Salivirus A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What are the clinical symptoms and disease presentation of Cocal virus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cocal virus?",
+      "cited_pmid": "42235709",
+      "title": "Distinct evolutionary patterns and structural insights into A33 and A34 glycoprotein in parapoxvirus.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185904",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "8263122",
+      "title": "HIV-1 pseudotype virus containing a Cocal virus genome and an HIV envelope: construction, assay and use.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Pseudocowpox virus?",
+      "cited_pmid": "40282183",
+      "title": "Viral Fragments in the Urine Proteome: New Clues to the Cause of Fever.",
+      "actual_organisms": [
+        "Salivirus A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "cited_pmid": "8739600",
+      "title": "The bicyclams, a new class of potent human immunodeficiency virus inhibitors, block viral entry after binding.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Pseudocowpox virus?",
+      "cited_pmid": "9696127",
+      "title": "Structure, expression and phylogenetic analysis of the glycoprotein gene of Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
       ]
     }
   ],
