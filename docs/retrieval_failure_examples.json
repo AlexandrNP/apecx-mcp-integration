@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:25:21.005521+00:00",
-  "runs": 441,
+  "updated": "2026-09-27T22:26:58.180092+00:00",
+  "runs": 442,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24791,
+  "n_false_positives": 24797,
   "n_false_negatives": 4853,
   "new_this_run": {
-    "false_positives": 3,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -279497,6 +279497,85 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12072",
         "http://purl.obolibrary.org/obo/NCBITaxon_12104",
         "http://purl.obolibrary.org/obo/NCBITaxon_12124"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41012728",
+      "title": "Immunogenicity of Virus-like Particles Based on VP1 Protein of Bovine Norovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38360296",
+      "title": "Porcine interferon-\u03b1 linked to the porcine IgG-Fc induces prolonged and broad-spectrum antiviral effects against foot-and-mouth disease virus.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42720819",
+      "title": "Combined use of dill essential oil and tannic acid creates stage-specific, and time-dependent antiviral effect against bovine viral pathogens (BoHV-1, BVDV, BPIV-3, BRSV, and BEV).",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "39122806",
+      "title": "The early communication stages between serine proteases and enterovirus capsids in the race for viral disintegration.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "31292248",
+      "title": "The Leader Protein of Theiler's Virus Prevents the Activation of PKR.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "38135265",
+      "title": "High prevalence of Enterovirus E, Bovine Kobuvirus, and Astrovirus revealed by viral metagenomics in fecal samples from cattle in Central Colombia.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1435485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
