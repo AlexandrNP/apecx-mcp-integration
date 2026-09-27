@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:48:07.226197+00:00",
-  "runs": 317,
+  "updated": "2026-09-27T17:49:56.686340+00:00",
+  "runs": 318,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23305,
-  "n_false_negatives": 4304,
+  "n_false_positives": 23320,
+  "n_false_negatives": 4306,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 11
+    "false_positives": 15,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -263134,6 +263134,201 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
         "http://purl.obolibrary.org/obo/NCBITaxon_307456"
       ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A pathogenesis and transmission?",
+      "cited_pmid": "23498901",
+      "title": "Viruses and prions of Saccharomyces cerevisiae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34113326",
+      "title": "Infection of Two Heterologous Mycoviruses Reduces the Virulence of Valsa mali, a Fungal Agent of Apple Valsa Canker Disease.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_311228",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_578113",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83174"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36560682",
+      "title": "Canker Development and Biocontrol Potential of CHV-1 Infected English Isolates of Cryphonectria parasitica Is Dependent on the Virus Concentration and the Compatibility of the Fungal Inoculums.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39748",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5116"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "22366520",
+      "title": "Molecular characterization of a new hypovirus infecting a phytopathogenic fungus, Valsa ceratosperma.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "Sclerotinia sclerotiorum hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_106962",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1129873",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83174"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "33221630",
+      "title": "Virome characterization of Cryphonectria parasitica isolates from Azerbaijan unveiled a new mymonavirus and a putative new RNA virus unrelated to described viral sequences.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2755404",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2755407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5116"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_158372",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "23516364",
+      "title": "Three-dimensional structure of victorivirus HvV190S suggests coat proteins in most totiviruses share a conserved core.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3152141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38568",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40125",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45237",
+        "http://purl.obolibrary.org/obo/NCBITaxon_674981"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "36836290",
+      "title": "The Effect of Trichoderma harzianum Hypovirus 1 (ThHV1) and Its Defective RNA ThHV1-S on the Antifungal Activity and Metabolome of Trichoderma koningiopsis T-51.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_124426",
+        "http://purl.obolibrary.org/obo/NCBITaxon_220672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2664558",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337941",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5179",
+        "http://purl.obolibrary.org/obo/NCBITaxon_749889"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "29179038",
+      "title": "Molecular evolution and invasion pattern of Cryphonectria hypovirus 1 in Europe: Mutation rate, and selection pressure differ between genome domains.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024332"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "35299787",
+      "title": "Long-read sequencing reveals the evolutionary drivers of intra-host diversity across natural RNA mycovirus infections.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5116"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "27891121",
+      "title": "Hypovirulence of Sclerotium rolfsii Caused by Associated RNA Mycovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_109384",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1423347",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39291"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ustilago maydis virus H1?",
+      "cited_pmid": "29559577",
+      "title": "First Evidence for Internal Ribosomal Entry Sites in Diverse Fungal Virus Genomes.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5116"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ustilago maydis virus H1?",
+      "cited_pmid": "32015104",
+      "title": "Facilitative and synergistic interactions between fungal and plant viruses.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5518"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "How does Ustilago maydis virus H1 evade or modulate the host immune response?",
+      "cited_pmid": "41219846",
+      "title": "Genome-wide screen uncovers novel host factors for L-A virus maintenance and a potential mutualistic-symbiosis relationship in yeast.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ustilago maydis virus H1?",
+      "cited_pmid": "31053974",
+      "title": "Genetic Diversity of Cryphonectria hypovirus 1, a Biocontrol Agent of Chestnut Blight, in Croatia and Slovenia.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40268",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115"
+      ]
     }
   ],
   "false_negatives": [
@@ -288960,6 +289155,18 @@
       "question": "How does Spodoptera frugiperda nucleopolyhedrovirus evade or modulate the host immune response?",
       "missed_pmid": "39396664",
       "title": "Generation and characterization of a novel ovariole cell line derived from Spodoptera frugiperda in China with sensitivity to both SfMNPV and AcMNPV."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "missed_pmid": "30513977",
+      "title": "Genetic and Phenotypic Characterization of Cryphonectria hypovirus 1 from Eurasian Georgia."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A pathogenesis and transmission?",
+      "missed_pmid": "23728812",
+      "title": "L-A-lus, a new variant of the L-A totivirus found in wine yeasts with Klus killer toxin-encoding Mlus double-stranded RNA: possible role of killer toxin-encoding satellite RNAs in the evolution of their helper viruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
