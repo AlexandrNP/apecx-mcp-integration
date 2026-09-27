@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:35:41.404815+00:00",
-  "runs": 386,
+  "updated": "2026-09-27T20:37:29.405313+00:00",
+  "runs": 387,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24265,
-  "n_false_negatives": 4772,
+  "n_false_positives": 24267,
+  "n_false_negatives": 4777,
   "new_this_run": {
-    "false_positives": 3,
+    "false_positives": 2,
     "false_negatives": 5
   },
   "false_positives": [
@@ -273531,6 +273531,27 @@
       "actual_organisms": [
         "Equine herpesvirus 1"
       ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "cited_pmid": "39191841",
+      "title": "Identification of multiple inter- and intra-genotype reassortment mammalian orthoreoviruses from Japanese black cattle in a beef cattle farm.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32611"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42043195",
+      "title": "Visualization of Bluetongue Virus RNA Segment Networks in Infected Cells: Multipartite Genomic RNA Assortment Is Independent of Viral Proteins NS2 and VP6.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -302165,6 +302186,36 @@
       "question": "What antiviral drugs or treatments are effective against Canine herpesvirus 1?",
       "missed_pmid": "26726105",
       "title": "Serological and biomolecular survey on canine herpesvirus-1 infection in a dog breeding kennel."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39320067",
+      "title": "Sialic acid and PirB are not required for targeting of neural circuits by neurotropic mammalian orthoreovirus."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "missed_pmid": "39319430",
+      "title": "Characterization of a mammalian orthoreovirus isolated from the large flying fox, Pteropus vampyrus, in Indonesia."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "How does Mammalian orthoreovirus evade or modulate the host immune response?",
+      "missed_pmid": "39431846",
+      "title": "Strain-specific differences in reovirus infection of murine macrophages segregate with polymorphisms in viral outer-capsid protein \u03c33."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "missed_pmid": "42043195",
+      "title": "Visualization of Bluetongue Virus RNA Segment Networks in Infected Cells: Multipartite Genomic RNA Assortment Is Independent of Viral Proteins NS2 and VP6."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "40476604",
+      "title": "Isolation and genetic characterization of a novel Kevo orbivirus and a strain of Mobuck virus from Ochlerotatus communis mosquitoes in Finland."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
