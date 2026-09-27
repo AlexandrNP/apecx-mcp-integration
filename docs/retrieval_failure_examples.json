@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:56:20.763862+00:00",
-  "runs": 482,
+  "updated": "2026-09-27T23:58:08.984147+00:00",
+  "runs": 483,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25161,
-  "n_false_negatives": 4998,
+  "n_false_positives": 25172,
+  "n_false_negatives": 5003,
   "new_this_run": {
-    "false_positives": 12,
+    "false_positives": 11,
     "false_negatives": 5
   },
   "false_positives": [
@@ -283487,6 +283487,125 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11673",
         "http://purl.obolibrary.org/obo/NCBITaxon_31931"
       ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Canine distemper virus?",
+      "cited_pmid": "41585524",
+      "title": "Automated highly multiplex detection system for respiratory pathogens in canines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1336",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_517"
+      ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Canine distemper virus?",
+      "cited_pmid": "42203542",
+      "title": "Update on Canine Parvovirus.",
+      "actual_organisms": [
+        "Canine parvovirus"
+      ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine distemper virus?",
+      "cited_pmid": "27033934",
+      "title": "Early events of canine herpesvirus 1 infections in canine respiratory and genital mucosae by the use of ex vivo models.",
+      "actual_organisms": [
+        "Canine herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Canine herpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Canine herpesvirus 1?",
+      "cited_pmid": "41779066",
+      "title": "Rapid and sensitive detection of feline herpesvirus-1 using fluorescent microspheres as labels for immunochromatographic test strips.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "27527760",
+      "title": "Molecular surveillance of traditional and emerging pathogens associated with canine infectious respiratory disease.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1249509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1336",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1408279",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_215681",
+        "http://purl.obolibrary.org/obo/NCBITaxon_517"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42486166",
+      "title": "Retrospective evaluation of canine parvovirus monoclonal antibody supports faster clinical recovery in shelter dogs with naturally occurring canine parvovirus.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42203542",
+      "title": "Update on Canine Parvovirus.",
+      "actual_organisms": [
+        "Canine parvovirus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine coronavirus?",
+      "cited_pmid": "42149951",
+      "title": "FUT8-mediated core fucosylation of receptor APN drives entry of multiple alphacoronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine coronavirus?",
+      "cited_pmid": "41752031",
+      "title": "Construction and Application of a Canine SLAM Receptor-Based System from Vero Cell Line to Virus Isolation and Parallel Antibody Screening.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42797816",
+      "title": "Molecular Mechanisms Between Canine Parvovirus 2 and Host Interactions: From Viruses to Innate Immune Signaling Pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42316335",
+      "title": "Development of canine parvovirus-2-based recombinant pseudoviruses expression system: a potential vaccine platform.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
     }
   ],
   "false_negatives": [
@@ -313477,6 +313596,36 @@
       "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
       "missed_pmid": "41976038",
       "title": "Pathogenicity of a Canine-Derived Feline Panleukopenia Virus in Cats and NS1 Evolution Associated with Adaptation to Dogs."
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Canine distemper virus?",
+      "missed_pmid": "27628592",
+      "title": "Development and application of multiplex PCR assays for detection of virus-induced respiratory disease complex in dogs."
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine distemper virus?",
+      "missed_pmid": "41655498",
+      "title": "A replication-defective bivalent adenovirus-vectored vaccine provides robust and durable protection against both canine distemper virus and canine parvovirus."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is the epidemiology and outbreak history of Canine parvovirus?",
+      "missed_pmid": "42449371",
+      "title": "Survival patterns and prognostic factors associated with canine parvovirus infection in dogs presented at the KNUST Veterinary Teaching Hospital in Kumasi, Ghana."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine parvovirus?",
+      "missed_pmid": "42197546",
+      "title": "Development and Validation of a Recombinant VP2-Based Indirect ELISA for Canine Parvovirus."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "missed_pmid": "41901768",
+      "title": "Design and Characterization of an HRC-Derived Peptide Inhibitor of Canine Coronavirus Spike-Mediated Fusion."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
