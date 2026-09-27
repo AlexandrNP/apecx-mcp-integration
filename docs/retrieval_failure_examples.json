@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:09:57.500275+00:00",
-  "runs": 374,
+  "updated": "2026-09-27T20:12:01.247544+00:00",
+  "runs": 375,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24108,
-  "n_false_negatives": 4732,
+  "n_false_positives": 24121,
+  "n_false_negatives": 4733,
   "new_this_run": {
-    "false_positives": 16,
+    "false_positives": 13,
     "false_negatives": 1
   },
   "false_positives": [
@@ -271787,6 +271787,156 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3044472",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "How does Hepatitis A virus evade or modulate the host immune response?",
+      "cited_pmid": "41927810",
+      "title": "Enterovirus A71 3AB protein facilitates immune evasion by blocking cGAS recognition of mtDNA.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "42606511",
+      "title": "Hepatitis Overview: Viral Hepatitis.",
+      "actual_organisms": [
+        "Hepatitis A virus"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "cited_pmid": "40928249",
+      "title": "The leader proteins of Theiler's virus and Boone cardiovirus use a combination of short linear motifs (SLiMs) to target RSK kinases to the nuclear pore complex.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1281469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A16?",
+      "cited_pmid": "42704207",
+      "title": "Genetic Variation and Evolutionary Characteristics of Coxsackievirus B1: F3 Subtype Associated With Hand, Foot and Mouth Disease in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "cited_pmid": "41586838",
+      "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6].",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "How does Foot-and-mouth disease virus evade or modulate the host immune response?",
+      "cited_pmid": "41754535",
+      "title": "SHFL Post-Transcriptionally Restricts Coxsackievirus A16 In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "42655794",
+      "title": "Development of a Competitive Chemiluminescent Enzyme Immunoassay Based on Recombinant FMDV VP2 Protein for Rapid and Simultaneous Detection of Antibodies Against Foot-and-Mouth Disease Virus Serotypes O and A.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the epidemiology and outbreak history of Encephalomyocarditis virus?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Encephalomyocarditis virus?",
+      "cited_pmid": "42704207",
+      "title": "Genetic Variation and Evolutionary Characteristics of Coxsackievirus B1: F3 Subtype Associated With Hand, Foot and Mouth Disease in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073"
+      ]
     }
   ],
   "false_negatives": [
@@ -300181,6 +300331,12 @@
       "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
       "missed_pmid": "37154764",
       "title": "The pUL51 Tegument Protein Is Essential for Marek's Disease Virus Growth In Vitro and Bears a Function That Is Critical for Pathogenesis In Vivo."
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Foot-and-mouth disease virus?",
+      "missed_pmid": "42633377",
+      "title": "Risk factor assessment and molecular characterization of foot-and-mouth disease virus in buffaloes in Bangladesh."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
