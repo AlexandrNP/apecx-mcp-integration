@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:05:37.999861+00:00",
-  "runs": 204,
+  "updated": "2026-09-27T11:14:14.347023+00:00",
+  "runs": 205,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20744,
+  "n_false_positives": 20773,
   "n_false_negatives": 3585,
   "new_this_run": {
-    "false_positives": 14,
+    "false_positives": 29,
     "false_negatives": 0
   },
   "false_positives": [
@@ -234404,6 +234404,349 @@
       "actual_organisms": [
         "African horse sickness virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10892"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genome organization and replication cycle of Wesselsbron virus?",
+      "cited_pmid": "15661139",
+      "title": "Genetic characterization of Yokose virus, a flavivirus isolated from the bat in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is known about Spondweni virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42685838",
+      "title": "Field-isolate recombinant tick-borne encephalitis viruses define reporter-stability guidelines for antiviral testing in flaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29263",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What antiviral drugs or treatments are effective against Spondweni virus?",
+      "cited_pmid": "42786511",
+      "title": "Establishment of an in vitro human blood-brain barrier model for antiviral screening against neurotropic viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What antiviral drugs or treatments are effective against Spondweni virus?",
+      "cited_pmid": "17329812",
+      "title": "Purification and crystallization of Kokobera virus helicase.",
+      "actual_organisms": [
+        "Kokobera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Spondweni virus?",
+      "cited_pmid": "27794390",
+      "title": "The phylogenetic and evolutionary history of Kokobera virus.",
+      "actual_organisms": [
+        "Kokobera virus"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "15661139",
+      "title": "Genetic characterization of Yokose virus, a flavivirus isolated from the bat in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What antiviral drugs or treatments are effective against Kyasanur Forest disease virus?",
+      "cited_pmid": "17329812",
+      "title": "Purification and crystallization of Kokobera virus helicase.",
+      "actual_organisms": [
+        "Kokobera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "23426358",
+      "title": "Genetic divergence among members of the Kokobera group of flaviviruses supports their separation into distinct species.",
+      "actual_organisms": [
+        "Kokobera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_303179",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "34748816",
+      "title": "Rapid reverse transcriptase recombinase polymerase amplification assay for flaviviruses using non-infectious in vitro transcribed RNA as positive controls.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "15661139",
+      "title": "Genetic characterization of Yokose virus, a flavivirus isolated from the bat in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "24314645",
+      "title": "Enhanced arbovirus surveillance with deep sequencing: Identification of novel rhabdoviruses and bunyaviruses in Australian mosquitoes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246280",
+        "http://purl.obolibrary.org/obo/NCBITaxon_559180"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "17329812",
+      "title": "Purification and crystallization of Kokobera virus helicase.",
+      "actual_organisms": [
+        "Kokobera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "35458522",
+      "title": "Molecular Organisation of Tick-Borne Encephalitis Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "42652146",
+      "title": "From Oncolysis to Adaptive Immunity: Yellow Fever Virus 17D and Ruxolitinib Activate Antitumor Immune Responses in Pancreatic Cancer Models.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "37390207",
+      "title": "Primary infection with Zika virus provides one-way heterologous protection against Spondweni virus infection in rhesus macaques.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "30746342",
+      "title": "Monocyte-Derived Dendritic Cells as Model to Evaluate Species Tropism of Mosquito-Borne Flaviviruses.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "26355096",
+      "title": "Ecuador Paraiso Escondido Virus, a New Flavivirus Isolated from New World Sand Flies in Ecuador, Is the First Representative of a Novel Clade in the Genus Flavivirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1566298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64317"
+      ]
+    },
+    {
+      "organism": "Kokobera virus",
+      "question": "How does Kokobera virus evade or modulate the host immune response?",
+      "cited_pmid": "40062839",
+      "title": "A single mutation in the PrM gene of Zika virus determines AXL dependency for infection of human neural cells.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_407836",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kokobera virus",
+      "question": "How does Kokobera virus evade or modulate the host immune response?",
+      "cited_pmid": "42652146",
+      "title": "From Oncolysis to Adaptive Immunity: Yellow Fever Virus 17D and Ruxolitinib Activate Antitumor Immune Responses in Pancreatic Cancer Models.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What is known about Sepik virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42641941",
+      "title": "EYRAplex platform for quantification of viral antigen-specific IgG responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What is known about Sepik virus pathogenesis and transmission?",
+      "cited_pmid": "23426358",
+      "title": "Genetic divergence among members of the Kokobera group of flaviviruses supports their separation into distinct species.",
+      "actual_organisms": [
+        "Kokobera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_303179",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What is the genome organization and replication cycle of Sepik virus?",
+      "cited_pmid": "35458522",
+      "title": "Molecular Organisation of Tick-Borne Encephalitis Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What antiviral drugs or treatments are effective against Sepik virus?",
+      "cited_pmid": "42786511",
+      "title": "Establishment of an in vitro human blood-brain barrier model for antiviral screening against neurotropic viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What antiviral drugs or treatments are effective against Sepik virus?",
+      "cited_pmid": "42685838",
+      "title": "Field-isolate recombinant tick-borne encephalitis viruses define reporter-stability guidelines for antiviral testing in flaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29263",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What is the epidemiology and outbreak history of Sepik virus?",
+      "cited_pmid": "10930658",
+      "title": "The molecular epidemiology of Kokobera virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sepik virus?",
+      "cited_pmid": "42658574",
+      "title": "Pericyte dysfunction alone may be insufficient to drive tick-borne orthoflavivirus non-structural protein 1-mediated microvascular permeability.",
+      "actual_organisms": [
+        "Kyasanur Forest disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_172148",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "How does Sepik virus evade or modulate the host immune response?",
+      "cited_pmid": "42652146",
+      "title": "From Oncolysis to Adaptive Immunity: Yellow Fever Virus 17D and Ruxolitinib Activate Antitumor Immune Responses in Pancreatic Cancer Models.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "How does Sepik virus evade or modulate the host immune response?",
+      "cited_pmid": "30746342",
+      "title": "Monocyte-Derived Dendritic Cells as Model to Evaluate Species Tropism of Mosquito-Borne Flaviviruses.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sepik virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sepik virus?",
+      "cited_pmid": "27794390",
+      "title": "The phylogenetic and evolutionary history of Kokobera virus.",
+      "actual_organisms": [
+        "Kokobera virus"
       ]
     }
   ],
