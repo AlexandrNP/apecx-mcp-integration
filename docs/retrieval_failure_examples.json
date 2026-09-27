@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:26:26.399127+00:00",
-  "runs": 135,
+  "updated": "2026-09-27T06:29:26.199872+00:00",
+  "runs": 136,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 17871,
-  "n_false_negatives": 3464,
+  "n_false_positives": 17917,
+  "n_false_negatives": 3465,
   "new_this_run": {
-    "false_positives": 78,
+    "false_positives": 46,
     "false_negatives": 1
   },
   "false_positives": [
@@ -201791,6 +201791,489 @@
         "Nipah henipavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11309"
       ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42794425",
+      "title": "Generation and Characterization of the Human Anti-HTNV Antibody KJJ4.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Yellow fever virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42202225",
+      "title": "Structures of New World mammarenavirus glycoproteins as targets for antibody-mediated neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42039646",
+      "title": "SIRPA suppresses integrin-dependent virus endocytosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Japanese encephalitis virus?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "42714963",
+      "title": "Genomic characterization of Lao Mobatvirus strains reveals host-associated clustering in Southeast Asian bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2501367",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murray Valley encephalitis virus?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "How does Murray Valley encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "41901774",
+      "title": "A Fatal Case of Puumala Virus Infection with Pulmonary and Renal Syndrome in Moscow Region, Russia.",
+      "actual_organisms": [
+        "Puumala orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42113832",
+      "title": "Identification and genetic characterization of a distinct genotype of Puumala orthohantavirus in Hebei Province, China.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42130922",
+      "title": "Diagnostic and Clinical Challenges of Hantavirus-Associated Acute Kidney Injury.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Usutu virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Usutu virus?",
+      "cited_pmid": "40857262",
+      "title": "Differential tropisms of old and new world hantaviruses influence virulence and developing host-directed antiviral candidates.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42327048",
+      "title": "Computationally hybridized pathogenic mammarenavirus receptor binding domains reveal cryptic variants that elicit cross-neutralizing immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "cited_pmid": "5358980",
+      "title": "Diseases from Vietnam.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "41902296",
+      "title": "A STAT1-Knockout Mouse Model for Chapare Virus Infection and Pathogenesis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Puumala orthohantavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Puumala orthohantavirus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Yellow fever virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Puumala orthohantavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "How does Puumala orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seoul orthohantavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seoul orthohantavirus?",
+      "cited_pmid": "40857262",
+      "title": "Differential tropisms of old and new world hantaviruses influence virulence and developing host-directed antiviral candidates.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seoul orthohantavirus?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "How does Seoul orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "How does Seoul orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Machupo mammarenavirus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Machupo mammarenavirus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Machupo mammarenavirus?",
+      "cited_pmid": "5312525",
+      "title": "Virological study of an epidemic of febrile illness with haemorrhagic manifestations at Kanpur, India, during 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
     }
   ],
   "false_negatives": [
@@ -222577,6 +223060,12 @@
       "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
       "missed_pmid": "1709492",
       "title": "Structural models of ribonuclease H domains in reverse transcriptases from retroviruses."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42798990",
+      "title": "Evolutionary Dynamics-Aware De Novo Design of a Thermostable NS1-Derived Diagnostic Protein for Yellow Fever Virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
