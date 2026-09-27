@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:28:08.961319+00:00",
-  "runs": 233,
+  "updated": "2026-09-27T13:31:10.110400+00:00",
+  "runs": 234,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21783,
-  "n_false_negatives": 3612,
+  "n_false_positives": 21798,
+  "n_false_negatives": 3617,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 2
+    "false_positives": 15,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -246446,6 +246446,178 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11673"
       ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42519317",
+      "title": "Fc\u03b3R-ACE2 cooperative antibody-dependent enhancement in human and veterinary coronaviruses: mechanistic insights, comparative immunology, and implications for nano-engineered immunomodulatory platforms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus OC43?",
+      "cited_pmid": "42341040",
+      "title": "Temperature and developmental stage govern intestinal susceptibility to human coronavirus 229E.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus OC43?",
+      "cited_pmid": "42515557",
+      "title": "Genetic and Antigenic Characterization of Bovine and Porcine Respiratory Coronaviruses Circulating in Western Europe, 2020-2023.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42005"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42519317",
+      "title": "Fc\u03b3R-ACE2 cooperative antibody-dependent enhancement in human and veterinary coronaviruses: mechanistic insights, comparative immunology, and implications for nano-engineered immunomodulatory platforms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 pathogenesis and transmission?",
+      "cited_pmid": "42253925",
+      "title": "Human Coronavirus 229E Uses ORF4/4a to Antagonize the Host Restriction Factor SERINC5.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "cited_pmid": "42429749",
+      "title": "A coding-complete genome sequence of bovine-like coronavirus identified in white-tailed deer (Odocoileus virginianus) in the United States.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2509481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971260"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42160828",
+      "title": "Structure-activity relationship and nsp15-dependent mechanism of spirothiazolidinone derivatives with pan-coronavirus activity.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus NL63?",
+      "cited_pmid": "42341040",
+      "title": "Temperature and developmental stage govern intestinal susceptibility to human coronavirus 229E.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "How does Human coronavirus NL63 evade or modulate the host immune response?",
+      "cited_pmid": "42455848",
+      "title": "Systemic and lung-resident memory elicited by OC43 coronavirus infection in mice.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus NL63?",
+      "cited_pmid": "42515557",
+      "title": "Genetic and Antigenic Characterization of Bovine and Porcine Respiratory Coronaviruses Circulating in Western Europe, 2020-2023.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42005"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "41754577",
+      "title": "Development of a Complementation Assay to Monitor Pan-Coronavirus 3C-like Protease Activity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "How does Human coronavirus 229E evade or modulate the host immune response?",
+      "cited_pmid": "42455848",
+      "title": "Systemic and lung-resident memory elicited by OC43 coronavirus infection in mice.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "How does Bovine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42519317",
+      "title": "Fc\u03b3R-ACE2 cooperative antibody-dependent enhancement in human and veterinary coronaviruses: mechanistic insights, comparative immunology, and implications for nano-engineered immunomodulatory platforms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is known about Feline coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42514671",
+      "title": "Cross-Species Transmission and Recombination Between Feline and Canine Coronaviruses in Jiangsu-Zhejiang Region in 2025.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "How does Feline coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42519317",
+      "title": "Fc\u03b3R-ACE2 cooperative antibody-dependent enhancement in human and veterinary coronaviruses: mechanistic insights, comparative immunology, and implications for nano-engineered immunomodulatory platforms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -268120,6 +268292,36 @@
       "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
       "missed_pmid": "42352908",
       "title": "Longitudinal Analysis of HIV-2 Proviral DNA Reveals Archived Protease Inhibitor Resistance and Reservoir Evolution over Eight Years."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus OC43?",
+      "missed_pmid": "42357687",
+      "title": "Genomic Surveillance of Endemic Human Coronaviruses in C\u00f4te d'Ivoire Using Targeted Hybrid-Capture Sequencing."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "missed_pmid": "41749429",
+      "title": "Protective Association of Endemic HCoV-NL63 With Symptomatic COVID-19 in a Pediatric Cohort."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "missed_pmid": "42253925",
+      "title": "Human Coronavirus 229E Uses ORF4/4a to Antagonize the Host Restriction Factor SERINC5."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is known about Feline coronavirus pathogenesis and transmission?",
+      "missed_pmid": "42584933",
+      "title": "Longitudinal detection and genetic characterization of feline coronavirus in a captive cheetah population."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is the genome organization and replication cycle of Feline coronavirus?",
+      "missed_pmid": "42768131",
+      "title": "Molecular detection of feline viruses in free-ranging European wildcats (Felis s. silvestris) of the Harz Mountains, Germany."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
