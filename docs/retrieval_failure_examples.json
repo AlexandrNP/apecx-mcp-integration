@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:49:40.197218+00:00",
-  "runs": 145,
+  "updated": "2026-09-27T06:51:51.912050+00:00",
+  "runs": 146,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18665,
-  "n_false_negatives": 3483,
+  "n_false_positives": 18707,
+  "n_false_negatives": 3485,
   "new_this_run": {
-    "false_positives": 40,
-    "false_negatives": 1
+    "false_positives": 42,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -210928,6 +210928,465 @@
         "Lumpy skin disease virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37263686",
+      "title": "Age-specific and genotype-specific carcinogenic human papillomavirus prevalence in a country with a high cervical cancer burden: results of a cross-sectional study in Estonia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "34942562",
+      "title": "Human papillomavirus 68 prevalence and genetic variability based on E6/E7 genes in Sichuan.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "40038214",
+      "title": "Decoding codon usage in human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 68?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "38178597",
+      "title": "Human papillomavirus prevalence and genotype distribution in Liaocheng men between 2016 and 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "40038214",
+      "title": "Decoding codon usage in human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "37254637",
+      "title": "25-hydroxycholesterol inhibits human papillomavirus infection in cervical epithelial cells by perturbing cytoskeletal remodeling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37263686",
+      "title": "Age-specific and genotype-specific carcinogenic human papillomavirus prevalence in a country with a high cervical cancer burden: results of a cross-sectional study in Estonia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36541747",
+      "title": "Impact of high-risk Human Papillomavirus genotyping in cervical disease in the Northern region of Portugal: Real-world data from regional cervical cancer screening program.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "36890572",
+      "title": "TaME-seq2: tagmentation-assisted multiplex PCR enrichment sequencing for viral genomic profiling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 39?",
+      "cited_pmid": "37254637",
+      "title": "25-hydroxycholesterol inhibits human papillomavirus infection in cervical epithelial cells by perturbing cytoskeletal remodeling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "How does Human papillomavirus type 39 evade or modulate the host immune response?",
+      "cited_pmid": "40038214",
+      "title": "Decoding codon usage in human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "41423171",
+      "title": "Development of a rapid, real-time RT-RAA assay for sensitive detection of bovine enterovirus in fecal samples.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "42302993",
+      "title": "Prolonged cholestasis following severe neonatal echovirus 11 (genotype D5, new lineage 1) infection diagnosed by serum detection.",
+      "actual_organisms": [
+        "Echovirus 11"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "How does Coxsackievirus B5 evade or modulate the host immune response?",
+      "cited_pmid": "42497213",
+      "title": "EV-B 3D polymerase remodels viral populations through 5'UTR recombination to subvert cardiac antiviral innate immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "41163005",
+      "title": "ARFGAP1 serves as a critical host factor during E30 infection: QS11 inhibits viral pathogenesis in hFcRn-IFNAR-/- mice.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 11?",
+      "cited_pmid": "41163005",
+      "title": "ARFGAP1 serves as a critical host factor during E30 infection: QS11 inhibits viral pathogenesis in hFcRn-IFNAR-/- mice.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "How does Bovine enterovirus evade or modulate the host immune response?",
+      "cited_pmid": "42613835",
+      "title": "Mucosal Immunity: The Key to Combating Enteroviruses and Beyond.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "41163005",
+      "title": "ARFGAP1 serves as a critical host factor during E30 infection: QS11 inhibits viral pathogenesis in hFcRn-IFNAR-/- mice.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42475568",
+      "title": "Particles of echovirus 18 open to release their genomes in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "41471867",
+      "title": "Unraveling the Potential Antiviral Activity of Isoxazoline-Carbocyclic Monophosphate Nucleotides Against Echovirus 11.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "40966750",
+      "title": "Neonatal Enterovirus and Parechovirus Infections: National Enterovirus Surveillance System, United States, 2004-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "42482485",
+      "title": "Intestinal Organoids as Models to Study Viruses: Current Application and Future Perspective.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "42613835",
+      "title": "Mucosal Immunity: The Key to Combating Enteroviruses and Beyond.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "41705593",
+      "title": "The Common Immune Responses Differences from Transcriptomic Profiling in Cardiomyocytes upon Coxsackievirus B5 and Echovirus 6 Infection.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "42555657",
+      "title": "The C5a-C5aR1 axis facilitates blood-brain barrier disruption induced by EV-A71 infection through neutrophil activation.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "42514993",
+      "title": "Fulminant Hepatitis Due to Enterovirus E25 Systemic Infection in a Pediatric Patient.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "42535854",
+      "title": "KREMEN1 residue W94 is essential for receptor binding and infection by a major group of enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "How does Enterovirus A71 evade or modulate the host immune response?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
     }
   ],
   "false_negatives": [
@@ -231828,6 +232287,18 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Swinepox virus?",
       "missed_pmid": "35062331",
       "title": "Prolonged Viability of Senecavirus A in Exposed House Flies (Musca domestica)."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "missed_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "missed_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
