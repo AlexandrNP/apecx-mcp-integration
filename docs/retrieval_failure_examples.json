@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:13:58.008747+00:00",
-  "runs": 376,
+  "updated": "2026-09-27T20:16:05.624950+00:00",
+  "runs": 377,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24125,
+  "n_false_positives": 24141,
   "n_false_negatives": 4740,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 7
+    "false_positives": 16,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -271977,6 +271977,185 @@
       "actual_organisms": [
         "Rotavirus C",
         "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42037408",
+      "title": "A novel replication-deficient feline herpesvirus type 1 vector-based vaccine provides strong immune protection in cats.",
+      "actual_organisms": [
+        "Feline herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "41295745",
+      "title": "Development and Validation of a Droplet Digital PCR Assay for Detection of Feline Herpesvirus Type-1.",
+      "actual_organisms": [
+        "Feline herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83556"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "41779066",
+      "title": "Rapid and sensitive detection of feline herpesvirus-1 using fluorescent microspheres as labels for immunochromatographic test strips.",
+      "actual_organisms": [
+        "Feline herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "26244892",
+      "title": "A Genomic Approach to Unravel Host-Pathogen Interaction in Chelonians: The Example of Testudinid Herpesvirus 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560801",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "29479497",
+      "title": "Genomic evolution, recombination, and inter-strain diversity of chelonid alphaherpesvirus 5 from Florida and Hawaii green sea turtles with fibropapillomatosis.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "29960922",
+      "title": "Molecular evolution of fibropapilloma-associated herpesviruses infecting juvenile green and loggerhead sea turtles.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40872916",
+      "title": "A Bivalent mRNA Vaccine Efficiently Prevents Gammaherpesvirus Latent Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "41779066",
+      "title": "Rapid and sensitive detection of feline herpesvirus-1 using fluorescent microspheres as labels for immunochromatographic test strips.",
+      "actual_organisms": [
+        "Feline herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "40767544",
+      "title": "Novel Cereblon-Binding Immunomodulators Have Increased Potency Against Gammaherpesvirus- Associated Lymphomas In Vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "How does Gallid alphaherpesvirus 2 evade or modulate the host immune response?",
+      "cited_pmid": "40923861",
+      "title": "Model Systems of Gammaherpesvirus Infection, Immunity, and Disease.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is the genome organization and replication cycle of Chelonid herpesvirus 5?",
+      "cited_pmid": "40033018",
+      "title": "Noncanonical circRNA biogenesis driven by alpha and gamma herpesviruses.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What antiviral drugs or treatments are effective against Chelonid herpesvirus 5?",
+      "cited_pmid": "40767544",
+      "title": "Novel Cereblon-Binding Immunomodulators Have Increased Potency Against Gammaherpesvirus- Associated Lymphomas In Vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chelonid herpesvirus 5?",
+      "cited_pmid": "42492765",
+      "title": "Promiscuous binding of CXC chemokines to ORF74 receptors enables immunotoxin approaches in Gammaherpesvirus models.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3436869",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chelonid herpesvirus 5?",
+      "cited_pmid": "39818969",
+      "title": "Structure of the Kaposi's sarcoma-associated herpesvirus gB in post-fusion conformation.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "How does Chelonid herpesvirus 5 evade or modulate the host immune response?",
+      "cited_pmid": "40923861",
+      "title": "Model Systems of Gammaherpesvirus Infection, Immunity, and Disease.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "How does Chelonid herpesvirus 5 evade or modulate the host immune response?",
+      "cited_pmid": "41873763",
+      "title": "m5C RNA methylation is dysregulated by oncogenic herpesviruses via c-Myc signaling to counteract host antiviral factors.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
