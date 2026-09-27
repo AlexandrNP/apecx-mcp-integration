@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:21:29.454754+00:00",
-  "runs": 332,
+  "updated": "2026-09-27T18:23:31.168905+00:00",
+  "runs": 333,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23508,
-  "n_false_negatives": 4389,
+  "n_false_positives": 23514,
+  "n_false_negatives": 4398,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 4
+    "false_positives": 6,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -265328,6 +265328,78 @@
         "Human papillomavirus type 33",
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41893781",
+      "title": "The Recombinant Viral Capsid Protein rVP1 Induces Protective Immunity Against Coxsackievirus B3 (CVB3) Lethal Challenges in Balb/c Mouse Model.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "40838415",
+      "title": "A 2B Protein-Derived Peptide Effectively Inhibits Coxsackievirus B3 Infection.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "42043265",
+      "title": "Advances in Antiviral Drug Development Targeting Enteroviruses: From Viral Proteins to Host Factors.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "cited_pmid": "41934271",
+      "title": "Epidemiological and Clinical Characteristics of the Enterovirus D68 Outbreak in Spain in 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "36560629",
+      "title": "Switching of Receptor Binding Poses between Closely Related Enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606",
+        "http://purl.obolibrary.org/obo/NCBITaxon_96451"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "35993703",
+      "title": "Genome Sequences of Rare Human Enterovirus Genotypes Recovered from Clinical Respiratory Samples in Bern, Switzerland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1193974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749421",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -291664,6 +291736,60 @@
       "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
       "missed_pmid": "37103992",
       "title": "The possible impact of novel mutations in human papillomavirus 52 on the infection characteristics."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "missed_pmid": "40838415",
+      "title": "A 2B Protein-Derived Peptide Effectively Inhibits Coxsackievirus B3 Infection."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "missed_pmid": "41148832",
+      "title": "The Pathogenesis and Virulence of the Major Enterovirus Pathogens Associated with Severe Clinical Manifestations: A Comprehensive Review."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "missed_pmid": "41893781",
+      "title": "The Recombinant Viral Capsid Protein rVP1 Induces Protective Immunity Against Coxsackievirus B3 (CVB3) Lethal Challenges in Balb/c Mouse Model."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41150405",
+      "title": "Intertypic Recombination Between Coxsackievirus A16 and Enterovirus A71 Structural and Non-Structural Genes Modulates Virulence and Protection Efficacy."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "missed_pmid": "40842828",
+      "title": "Characteristics of CVA16 B1c strains isolated for the first time in the Heilongjiang Province of China."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "How does Coxsackievirus A16 evade or modulate the host immune response?",
+      "missed_pmid": "41148832",
+      "title": "The Pathogenesis and Virulence of the Major Enterovirus Pathogens Associated with Severe Clinical Manifestations: A Comprehensive Review."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 30?",
+      "missed_pmid": "35699079",
+      "title": "Outbreak of central nervous system infections among children in Thai Binh, Viet Nam."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "missed_pmid": "42012182",
+      "title": "Modeling human enterovirus A71 infection using an intestinal microphysiological system."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "missed_pmid": "41148832",
+      "title": "The Pathogenesis and Virulence of the Major Enterovirus Pathogens Associated with Severe Clinical Manifestations: A Comprehensive Review."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
