@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:12:01.247544+00:00",
-  "runs": 375,
+  "updated": "2026-09-27T20:13:58.008747+00:00",
+  "runs": 376,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24121,
-  "n_false_negatives": 4733,
+  "n_false_positives": 24125,
+  "n_false_negatives": 4740,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 1
+    "false_positives": 4,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -271937,6 +271937,48 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12071",
         "http://purl.obolibrary.org/obo/NCBITaxon_12073"
       ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29207506",
+      "title": "Longitudinal Surveillance of Porcine Rotavirus B Strains from the United States and Canada and In Silico Identification of Antigenically Important Sites.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_449582"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is the genome organization and replication cycle of Rotavirus C?",
+      "cited_pmid": "29670022",
+      "title": "Whole Genome Classification and Phylogenetic Analyses of Rotavirus B strains from the United States.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36298806",
+      "title": "Antibody Response to Rotavirus C Pre-Farrow Natural Planned Exposure to Gilts and Their Piglets.",
+      "actual_organisms": [
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B pathogenesis and transmission?",
+      "cited_pmid": "36560830",
+      "title": "Global Infection Rate of Rotavirus C during 1980-2022 and Analysis of Critical Factors in the Host Range Restriction of Virus VP4.",
+      "actual_organisms": [
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -300337,6 +300379,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Foot-and-mouth disease virus?",
       "missed_pmid": "42633377",
       "title": "Risk factor assessment and molecular characterization of foot-and-mouth disease virus in buffaloes in Bangladesh."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus C?",
+      "missed_pmid": "36169718",
+      "title": "Rotavirus C infections in asymptomatic piglets in India, 2009-2013: genotyping and phylogenetic analysis of all genomic segments."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29517476",
+      "title": "Complete genome characterization of a rotavirus B (RVB) strain identified in Alpine goat kids with enteritis reveals inter-species transmission with RVB bovine strains."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28063924",
+      "title": "Diversity in VP3, NSP3, and NSP4 of rotavirus B detected from Japanese cattle."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B pathogenesis and transmission?",
+      "missed_pmid": "28710858",
+      "title": "Identification of group B rotavirus as an etiological agent in the gastroenteritis outbreak in Maharashtra, India."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus B?",
+      "missed_pmid": "29207506",
+      "title": "Longitudinal Surveillance of Porcine Rotavirus B Strains from the United States and Canada and In Silico Identification of Antigenically Important Sites."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus B?",
+      "missed_pmid": "29670022",
+      "title": "Whole Genome Classification and Phylogenetic Analyses of Rotavirus B strains from the United States."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus B?",
+      "missed_pmid": "29677111",
+      "title": "Genome Characterization of a Pathogenic Porcine Rotavirus B Strain Identified in Buryat Republic, Russia in 2015."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
