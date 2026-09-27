@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:19:05.432286+00:00",
-  "runs": 465,
+  "updated": "2026-09-27T23:22:12.436069+00:00",
+  "runs": 466,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24929,
-  "n_false_negatives": 4880,
+  "n_false_positives": 24931,
+  "n_false_negatives": 4882,
   "new_this_run": {
     "false_positives": 2,
-    "false_negatives": 0
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -281031,6 +281031,27 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12066",
         "http://purl.obolibrary.org/obo/NCBITaxon_42786"
       ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "38065365",
+      "title": "Interferon-alpha and MxA inhibit BK polyomavirus replication by interaction with polyomavirus large T antigen.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "38035109",
+      "title": "Corrigendum: Dynamic risk prediction of BK polyomavirus reactivation after renal transplantation.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -310313,6 +310334,18 @@
       "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
       "missed_pmid": "42042771",
       "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "missed_pmid": "38499506",
+      "title": "Concurrent JCPyV-DNAemia Is Correlated With Poor Graft Outcome in Kidney Transplant Recipients With Polyomavirus-associated Nephropathy."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "missed_pmid": "42527809",
+      "title": "Case report: rare progressive cavitary lesion in progressive multifocal leukoencephalopathy."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
