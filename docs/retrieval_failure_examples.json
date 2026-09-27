@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:31:18.043536+00:00",
-  "runs": 384,
+  "updated": "2026-09-27T20:33:54.901655+00:00",
+  "runs": 385,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24252,
-  "n_false_negatives": 4759,
+  "n_false_positives": 24262,
+  "n_false_negatives": 4767,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 0
+    "false_positives": 10,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -273385,6 +273385,125 @@
         "Bovine alphaherpesvirus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38542433",
+      "title": "Exploring the Role of Platelets in Virus-Induced Inflammatory Demyelinating Disease and Myocarditis.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus pathogenesis and transmission?",
+      "cited_pmid": "26959376",
+      "title": "Neurotropism of Saffold virus in a mouse model.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus pathogenesis and transmission?",
+      "cited_pmid": "26901216",
+      "title": "The Pathogenesis of Saffold Virus in AG129 Mice and the Effects of Its Truncated L Protein in the Central Nervous System.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "26687438",
+      "title": "Saffold virus infection associated with human myocarditis.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What are the clinical symptoms and disease presentation of Encephalomyocarditis virus?",
+      "cited_pmid": "27723176",
+      "title": "Saffold virus, an emerging human cardiovirus.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40881810",
+      "title": "A potential surrogate for poliovirus in testing the efficacy of hand antiseptics according to the Global Poliovirus Containment Action Plan.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "26901216",
+      "title": "The Pathogenesis of Saffold Virus in AG129 Mice and the Effects of Its Truncated L Protein in the Central Nervous System.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "27605096",
+      "title": "Improved assembly procedure of viral RNA genomes amplified with Phi29 polymerase from new generation sequencing data.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1984779",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "26828718",
+      "title": "Neuropathogenicity of Two Saffold Virus Type 3 Isolates in Mouse Models.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "27279624",
+      "title": "Structure and Genome Release Mechanism of the Human Cardiovirus Saffold Virus 3.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1982742",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -301941,6 +302060,54 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Equine herpesvirus 4?",
       "missed_pmid": "37704182",
       "title": "Comprehensive Analysis of Equid Herpesvirus Recombination: An Insight Into the Repeat Regions."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40881810",
+      "title": "A potential surrogate for poliovirus in testing the efficacy of hand antiseptics according to the Global Poliovirus Containment Action Plan."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "missed_pmid": "40824083",
+      "title": "Encephalomyocarditis virus protein 2B* interacts with 14-3-3 proteins through a phosphorylated C-terminal binding motif."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "missed_pmid": "40608831",
+      "title": "Identification of picornavirus proteins that inhibit de novo nucleotide synthesis during infection."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "38989030",
+      "title": "Application of Theiler's murine encephalomyelitis virus in treatment of multiple sclerosis."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26905662",
+      "title": "Test and validation of methods to sample and detect human virus from environmental surfaces using norovirus as a model virus."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "missed_pmid": "26492198",
+      "title": "Cardiovirus Leader proteins bind exportins: Implications for virus replication and nucleocytoplasmic trafficking inhibition."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "missed_pmid": "26865716",
+      "title": "MicroRNA-Detargeted Mengovirus for Oncolytic Virotherapy."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "missed_pmid": "26383122",
+      "title": "Variability in the recovery of a virus concentration procedure in water: Implications for QMRA."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
