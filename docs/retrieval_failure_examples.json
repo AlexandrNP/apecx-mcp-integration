@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:20:34.388988+00:00",
-  "runs": 438,
+  "updated": "2026-09-27T22:22:00.387591+00:00",
+  "runs": 439,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24765,
+  "n_false_positives": 24780,
   "n_false_negatives": 4853,
   "new_this_run": {
-    "false_positives": 18,
+    "false_positives": 15,
     "false_negatives": 0
   },
   "false_positives": [
@@ -279189,6 +279189,188 @@
       "actual_organisms": [
         "Coxsackievirus A16",
         "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41949652",
+      "title": "Response of dendritic cells and T cells to virus-like particles formed from norovirus viral protein-1 (VP1N) or chimeric molecules containing a fragment of VP1N and polypeptides of echovirus 30.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "38932451",
+      "title": "A 3-month-old neonatal rhesus macaque HFMD model caused by coxsackievirus B1 infection and viral tissue tropism.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "38149210",
+      "title": "Optimization of RT-PCR methods for enterovirus detection in groundwater.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "38789394",
+      "title": "Phenotypic assessment of antiviral activity for spiro-annulated oxepanes and azepenes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "40075457",
+      "title": "Establishment and application of a wild neonatal mouse model infected with an Echovirus 30 isolate.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "39592765",
+      "title": "Synthesis, characterization, molecular docking, pharmacokinetics, and molecular dynamics of new bis-thiazoles based on bis-thiosemicarbazone as anti-coxsackievirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "40261447",
+      "title": "Circulation of non-polio enteroviruses in the Ural Federal District and Western Siberia in 2023: the return of an old foe?",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "42475568",
+      "title": "Particles of echovirus 18 open to release their genomes in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "41163005",
+      "title": "ARFGAP1 serves as a critical host factor during E30 infection: QS11 inhibits viral pathogenesis in hFcRn-IFNAR-/- mice.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "38392881",
+      "title": "Echovirus 30 in Bulgaria during the European Upsurge of the Virus, 2017-2018.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "42722143",
+      "title": "Crystal structures of Parechovirus A1 3Dpol reveal a mechanism of conformational stabilization in +ssRNA virus RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "38392881",
+      "title": "Echovirus 30 in Bulgaria during the European Upsurge of the Virus, 2017-2018.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171"
       ]
     }
   ],
