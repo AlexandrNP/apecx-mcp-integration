@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T12:14:24.081665+00:00",
-  "runs": 226,
+  "updated": "2026-09-27T12:16:04.771497+00:00",
+  "runs": 227,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21671,
+  "n_false_positives": 21682,
   "n_false_negatives": 3595,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -245157,6 +245157,138 @@
         "Andes orthohantavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
         "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rabies lyssavirus?",
+      "cited_pmid": "40127066",
+      "title": "Identification of a potential interspecies reassortant rotavirus G and avastrovirus 2 co-infection from black-headed gull (Chroicocephalus ridibundus) in Hungary.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239438",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_183407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249589",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Monkeypox virus?",
+      "cited_pmid": "42655042",
+      "title": "Molecular Epidemiological Characteristics and Genetic Evolution of Bluetongue Virus in Yunnan Province, China.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "cited_pmid": "42671895",
+      "title": "Prevalence and viral load dynamics of PCV-2 and PCV-3 on large Hungarian swine farms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1868221"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "38421167",
+      "title": "Cryo-EM structure of rotavirus B NSP2 reveals its unique tertiary architecture.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42777477",
+      "title": "Genetic evolution and identification of an unclassified cluster of porcine circovirus type 2 in southern China.",
+      "actual_organisms": [
+        "Porcine circovirus 2"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "38101077",
+      "title": "Outbreak of piglet diarrhea associated with a new reassortant porcine rotavirus B.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "cited_pmid": "42655844",
+      "title": "Suspected Type III Hypersensitivity Post-Inactivated Vaccination Leukocytoclastic Vasculitis in Two Sows.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Classical swine fever virus?",
+      "cited_pmid": "42321797",
+      "title": "High genetic diversity of porcine rotavirus A, B, and C in Hungary with putative novel VP4 genotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_626776"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "cited_pmid": "42778057",
+      "title": "Discovery of Mpox Virus in Bile: A Case with Multiple Coinfections.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "How does Bluetongue virus evade or modulate the host immune response?",
+      "cited_pmid": "42797636",
+      "title": "The Silent Vehicle: Validating the Biological Signals and Noises of Baculovirus Vectors in Macrophage-Targeted Vaccines.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Porcine circovirus 2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine circovirus 2?",
+      "cited_pmid": "42738429",
+      "title": "Development and Application of a Triplex RT-qPCR Assay for Differentiating Major Lineages of Porcine Reproductive and Respiratory Syndrome Virus.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
       ]
     }
   ],
