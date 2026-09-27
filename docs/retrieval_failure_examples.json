@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:48:59.799454+00:00",
-  "runs": 478,
+  "updated": "2026-09-27T23:50:37.655140+00:00",
+  "runs": 479,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25112,
-  "n_false_negatives": 4975,
+  "n_false_positives": 25116,
+  "n_false_negatives": 4977,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 6
+    "false_positives": 4,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -282997,6 +282997,49 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_162145",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "cited_pmid": "41305541",
+      "title": "Development of a Mass Antiviral Screening System Using Viral Hemorrhagic Septicemia Virus as an RNA Surrogate and Activity Confirmation with a Fish Rhabdovirus.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_103603",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "41403127",
+      "title": "Genomic Characterisation of Red Sea Bream Iridovirus (RSIV) Samples Collected in Japan in 2024 Revealed Genotype II and the First Detection of the Intermediate Type in Japan.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430774"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "35862188",
+      "title": "Whole-genome analysis of red sea bream iridovirus spread in 2021 in Japan provided epidemiological and viral traits insight.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What antiviral drugs or treatments are effective against Red sea bream iridovirus?",
+      "cited_pmid": "41819395",
+      "title": "Broad-spectrum antiviral activity of molnupiravir against fish rhabdoviruses through entry blockade and induced viral mutagenesis.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
     }
   ],
   "false_negatives": [
@@ -312849,6 +312892,18 @@
       "question": "How does Avian metapneumovirus evade or modulate the host immune response?",
       "missed_pmid": "42625918",
       "title": "Genetic Characterization and Subtype Isolation of Circulating Metapneumovirus in Commercial Turkeys in the Central Region."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genome organization and replication cycle of Infectious salmon anemia virus?",
+      "missed_pmid": "36991327",
+      "title": "Understanding host response to infectious salmon anaemia virus in an Atlantic salmon cell line using single-cell RNA sequencing."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What antiviral drugs or treatments are effective against Red sea bream iridovirus?",
+      "missed_pmid": "38367823",
+      "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
