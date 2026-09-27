@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:04:11.581365+00:00",
-  "runs": 203,
+  "updated": "2026-09-27T11:05:37.999861+00:00",
+  "runs": 204,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20730,
+  "n_false_positives": 20744,
   "n_false_negatives": 3585,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 2
+    "false_positives": 14,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -234251,6 +234251,159 @@
       "actual_organisms": [
         "Lumpy skin disease virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "40438408",
+      "title": "Rapid detection of avipoxvirus using a fluorescent probe-based multienzyme isothermal amplification assay.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10260",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "41247027",
+      "title": "Genome sequence of fowlpox virus from a field outbreak in Bangladesh.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "42294662",
+      "title": "Complete genome sequencing of the fowlpox virus vaccine strain from the Livestock Research Institute, Bangladesh.",
+      "actual_organisms": [
+        "Fowlpox virus"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Nipah henipavirus?",
+      "cited_pmid": "41910331",
+      "title": "Elucidating the enigmatic biology of arteriviruses through receptor discovery.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_76803",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nipah henipavirus?",
+      "cited_pmid": "42735355",
+      "title": "Colonisation history of a vector species of veterinary interest: phylogeography of Culicoides imicola (Diptera: Ceratopogonidae) in the Indian Ocean revealing low genetic structure.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "41653013",
+      "title": "Enhancing African horse sickness virus detection: comparing and adapting PCR assays.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "33177604",
+      "title": "Discovery and comparative genomic analysis of elk circovirus (ElkCV), a novel circovirus species and the first reported from a cervid host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "42076765",
+      "title": "First Complete Genome Sequencing of a Pigeonpox Virus Strain from Mainland China and Preliminary Evaluation of Its Attenuated Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10264",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_648998"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What antiviral drugs or treatments are effective against Fowlpox virus?",
+      "cited_pmid": "41471867",
+      "title": "Unraveling the Potential Antiviral Activity of Isoxazoline-Carbocyclic Monophosphate Nucleotides Against Echovirus 11.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "41910331",
+      "title": "Elucidating the enigmatic biology of arteriviruses through receptor discovery.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_76803",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "41805756",
+      "title": "Computational modelling of the equine arteritis virus GP5/M Dimer: Implications for immune evasion and virulence.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76803"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "42674244",
+      "title": "Nipah virus: an exceptionally virulent emerging zoonotic pathogen.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genome organization and replication cycle of Echovirus 11?",
+      "cited_pmid": "33177604",
+      "title": "Discovery and comparative genomic analysis of elk circovirus (ElkCV), a novel circovirus species and the first reported from a cervid host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What diagnostic assays or laboratory tests detect Equine arteritis virus?",
+      "cited_pmid": "41653013",
+      "title": "Enhancing African horse sickness virus detection: comparing and adapting PCR assays.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892"
       ]
     }
   ],
