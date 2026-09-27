@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:39:17.402647+00:00",
-  "runs": 339,
+  "updated": "2026-09-27T18:41:10.875464+00:00",
+  "runs": 340,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23588,
-  "n_false_negatives": 4457,
+  "n_false_positives": 23602,
+  "n_false_negatives": 4466,
   "new_this_run": {
     "false_positives": 14,
-    "false_negatives": 14
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -266205,6 +266205,150 @@
       "actual_organisms": [
         "Hantaan orthohantavirus"
       ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "cited_pmid": "16983602",
+      "title": "Microarray detection of human parainfluenzavirus 4 infection associated with respiratory failure in an immunocompetent adult.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is known about Human parainfluenza virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "18820572",
+      "title": "Current status of vaccines for parainfluenza virus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is known about Human parainfluenza virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17283630",
+      "title": "Human parainfluenza type 4 infections, Canada.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 1?",
+      "cited_pmid": "16983602",
+      "title": "Microarray detection of human parainfluenzavirus 4 infection associated with respiratory failure in an immunocompetent adult.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 1?",
+      "cited_pmid": "21994536",
+      "title": "The complete sequence of a human parainfluenzavirus 4 genome.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 1?",
+      "cited_pmid": "30856486",
+      "title": "Claudin-1 inhibits human parainfluenza virus type 2 dissemination.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 1?",
+      "cited_pmid": "30165310",
+      "title": "The V protein of human parainfluenza virus type 2 promotes RhoA-induced filamentous actin formation.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "18820572",
+      "title": "Current status of vaccines for parainfluenza virus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17283630",
+      "title": "Human parainfluenza type 4 infections, Canada.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "16983602",
+      "title": "Microarray detection of human parainfluenzavirus 4 infection associated with respiratory failure in an immunocompetent adult.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 2?",
+      "cited_pmid": "21994536",
+      "title": "The complete sequence of a human parainfluenzavirus 4 genome.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
+      "cited_pmid": "16983602",
+      "title": "Microarray detection of human parainfluenzavirus 4 infection associated with respiratory failure in an immunocompetent adult.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
+      "cited_pmid": "22361219",
+      "title": "A novel duplex real-time PCR for HPIV-4 detects co-circulation of both viral subtypes among ill children during 2008.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 4?",
+      "cited_pmid": "30856486",
+      "title": "Claudin-1 inhibits human parainfluenza virus type 2 dissemination.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -292949,6 +293093,60 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
       "missed_pmid": "40620662",
       "title": "Hemorrhagic Fever with Renal Syndrome and Diversity and Distribution of Hantaviruses - China, 2014-2023."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is known about Human parainfluenza virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "23343342",
+      "title": "Epidemiology and clinical presentation of the four human parainfluenza virus types."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 1?",
+      "missed_pmid": "29322811",
+      "title": "Establishment of reverse transcription polymerase chain reaction assay for simultaneous detection of human parainfluenza virus types 1 to 4 in children with influenza like illnesses."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 1?",
+      "missed_pmid": "34529742",
+      "title": "Human parainfluenza virus type 1 regulates cholesterol biosynthesis and establishes quiescent infection in human airway cells."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29909804",
+      "title": "Genotype replacement of the human parainfluenza virus type 2 in Croatia between 2011 and 2017 - the role of neutralising antibodies."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "missed_pmid": "23343342",
+      "title": "Epidemiology and clinical presentation of the four human parainfluenza virus types."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 2?",
+      "missed_pmid": "32100137",
+      "title": "Common and unique mechanisms of filamentous actin formation by viruses of the genus Orthorubulavirus."
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is known about Human parainfluenza virus 4 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "21994536",
+      "title": "The complete sequence of a human parainfluenzavirus 4 genome."
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is known about Human parainfluenza virus 4 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "21317680",
+      "title": "A prospective study of parainfluenza virus type 4 infections in children attending daycare."
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
+      "missed_pmid": "19261793",
+      "title": "Clinical and molecular epidemiology of human parainfluenza virus 4 infections in hong kong: subtype 4B as common as subtype 4A."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
