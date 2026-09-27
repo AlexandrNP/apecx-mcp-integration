@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:54:20.119770+00:00",
-  "runs": 238,
+  "updated": "2026-09-27T13:55:50.843288+00:00",
+  "runs": 239,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21855,
-  "n_false_negatives": 3638,
+  "n_false_positives": 21893,
+  "n_false_negatives": 3640,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 4
+    "false_positives": 38,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -247272,6 +247272,391 @@
       "actual_organisms": [
         "Mayaro virus"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40813785",
+      "title": "HPV vaccination improves immune response in children with respiratory papillomatosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 pathogenesis and transmission?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "36636851",
+      "title": "[Determination of Human Papilloma Virus (HPV) Genotype Prevalance and Distrubution in Adana: A Hospital-Based Study Between 2014-2021].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "36939123",
+      "title": "Evaluating the potential role of human papilloma virus infection in breast carcinogenesis via real-time polymerase chain reaction analyzes of breast fine needle aspiration samples from Greek patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 11?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 11?",
+      "cited_pmid": "40143250",
+      "title": "Therapeutic Impact of Gardasil\u00ae in Recurrent Respiratory Papillomatosis: A Retrospective Study on RRP Patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 11?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "How does Human papillomavirus 11 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "How does Human papillomavirus 11 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "36624228",
+      "title": "Genetic diversity of human papillomavirus (HPV) as specified by the detection method, gender, and year of sampling: a retrospective cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "38037452",
+      "title": "Genetic variability analysis of human\u00a0papillomavirus 58: Novel sublineage identification and persistent infection association.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is known about Human papillomavirus type 58 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 58?",
+      "cited_pmid": "36636851",
+      "title": "[Determination of Human Papilloma Virus (HPV) Genotype Prevalance and Distrubution in Adana: A Hospital-Based Study Between 2014-2021].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 58?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 58?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "9085547",
+      "title": "Identification of cis-regulatory elements in the upstream regulatory region of human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846106"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "How does Human papillomavirus type 58 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "How does Human papillomavirus type 58 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38013021",
+      "title": "Screening and identification of B cell epitope within the major capsid protein L1 of HPV 52, using monoclonal antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 pathogenesis and transmission?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 52?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 52?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 59?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 59?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 68?",
+      "cited_pmid": "37734188",
+      "title": "Effectiveness and safety of REBACIN as a non-invasive intervention for persistent high-risk human papillomavirus infection: A real-world prospective multicenter cohort study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 68?",
+      "cited_pmid": "37751562",
+      "title": "Prevalence and Risk Factors for High-Risk Human Papillomavirus Infection and Cervical Disorders: Baseline Findings From an Human Papillomavirus Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 68?",
+      "cited_pmid": "9085547",
+      "title": "Identification of cis-regulatory elements in the upstream regulatory region of human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846106"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 68?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "How does Human papillomavirus type 68 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "How does Human papillomavirus type 68 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
     }
   ],
   "false_negatives": [
@@ -269102,6 +269487,18 @@
       "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
       "missed_pmid": "40192485",
       "title": "First Phosphonic-Type Inhibitors and Activity-Based Probes Specific to the O'nyong-nyong Virus Capsid Protease."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 11?",
+      "missed_pmid": "39939590",
+      "title": "DNA immunotherapy for recurrent respiratory papillomatosis (RRP): phase 1/2 study assessing efficacy, safety, and immunogenicity of INO-3107."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "8873413",
+      "title": "Transforming activities of human papillomavirus type 59 E5, E6 and E7 open reading frames in mouse C127 cells."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
