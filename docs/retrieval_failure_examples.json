@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:04:11.654668+00:00",
-  "runs": 324,
+  "updated": "2026-09-27T18:06:13.223560+00:00",
+  "runs": 325,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23382,
-  "n_false_negatives": 4342,
+  "n_false_positives": 23395,
+  "n_false_negatives": 4346,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 8
+    "false_positives": 13,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -264030,6 +264030,134 @@
         "Canine distemper virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
       ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17014700",
+      "title": "Characterization of neutralizing epitopes within the major capsid protein of human papillomavirus type 33.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31545130",
+      "title": "Priming effect of bivalent and quadrivalent vaccine for HPV 31/33/45/52: an exploratory analysis from two clinical trials.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is known about Human papillomavirus type 31 pathogenesis and transmission?",
+      "cited_pmid": "16960775",
+      "title": "Human papillomavirus type 33 polymorphisms and high-grade squamous intraepithelial lesions of the uterine cervix.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 31?",
+      "cited_pmid": "32091596",
+      "title": "Durability of Cross-Protection by Different Schedules of the Bivalent HPV Vaccine: The CVT Trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31545130",
+      "title": "Priming effect of bivalent and quadrivalent vaccine for HPV 31/33/45/52: an exploratory analysis from two clinical trials.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37743201",
+      "title": "Immunogenicity and safety of an Escherichia coli-produced human papillomavirus (types 6/11/16/18/31/33/45/52/58) L1 virus-like-particle vaccine: a phase 2 double-blind, randomized, controlled trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10580",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "32871208",
+      "title": "Structural and functional impacts of E5 genetic variants of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 58?",
+      "cited_pmid": "28141822",
+      "title": "E6 and E7 Gene Polymorphisms in Human Papillomavirus Types-58 and 33 Identified in Southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "26382603",
+      "title": "Durable immunity to oncogenic human papillomaviruses elicited by adjuvanted recombinant Adeno-associated virus-like particle immunogen displaying L2 17-36 epitopes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_272636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "cited_pmid": "35963773",
+      "title": "Comparative pilot study about HPV test with partial genotyping in primary screening versus other strategies for cervical cancer population screening, CRYGEN 16/18 study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "32871208",
+      "title": "Structural and functional impacts of E5 genetic variants of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "16775357",
+      "title": "Identification of a dynein interacting domain in the papillomavirus minor capsid protein l2.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "28141822",
+      "title": "E6 and E7 Gene Polymorphisms in Human Papillomavirus Types-58 and 33 Identified in Southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
     }
   ],
   "false_negatives": [
@@ -290084,6 +290212,30 @@
       "question": "What antiviral drugs or treatments are effective against Cetacean morbillivirus?",
       "missed_pmid": "37583469",
       "title": "Epidemiological and genetic analysis of Cetacean Morbillivirus circulating on the Italian coast between 2018 and 2021."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "17708553",
+      "title": "Viral load of episomal and integrated forms of human papillomavirus type 33 in high-grade squamous intraepithelial lesions of the uterine cervix."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "16960775",
+      "title": "Human papillomavirus type 33 polymorphisms and high-grade squamous intraepithelial lesions of the uterine cervix."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "20716445",
+      "title": "Production and purification of human papillomavirus type 33 L1 virus-like particles from Spodoptera frugiperda 9 cells using two-step column chromatography."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "22305172",
+      "title": "Production of human papillomavirus type 33 L1 major capsid protein and virus-like particles from Bacillus subtilis to develop a prophylactic vaccine against cervical cancer."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
