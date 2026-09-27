@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:32:56.404957+00:00",
-  "runs": 364,
+  "updated": "2026-09-27T19:34:41.206797+00:00",
+  "runs": 365,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23941,
+  "n_false_positives": 23945,
   "n_false_negatives": 4692,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 1
+    "false_positives": 4,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -269921,6 +269921,53 @@
       "actual_organisms": [
         "Human alphaherpesvirus 3",
         "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "42782136",
+      "title": "Genomic characteristics of the first five monkeypox virus clade Ib cases in Thailand: August 2024-March 2025.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Variola virus?",
+      "cited_pmid": "41566003",
+      "title": "Efficient whole-genome sequencing of Monkeypox virus using a novel nuclease-multiple displacement amplification enrichment method.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What diagnostic assays or laboratory tests detect Ectromelia virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What diagnostic assays or laboratory tests detect Ectromelia virus?",
+      "cited_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
       ]
     }
   ],
