@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:55:18.469716+00:00",
-  "runs": 347,
+  "updated": "2026-09-27T18:57:11.422392+00:00",
+  "runs": 348,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23680,
-  "n_false_negatives": 4533,
+  "n_false_positives": 23683,
+  "n_false_negatives": 4540,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 11
+    "false_positives": 3,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -267162,6 +267162,41 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10811",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "39724221",
+      "title": "A novel tank-mix formulation increases the efficacy of alphabaculoviruses on different phylloplanes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What is known about Spodoptera frugiperda nucleopolyhedrovirus pathogenesis and transmission?",
+      "cited_pmid": "39936718",
+      "title": "New nucleopolyhedrovirus isolate in the management of Spodoptera eridania.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2315721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "cited_pmid": "38947876",
+      "title": "Characterisation of extracellular vesicles in baculovirus infection of Spodoptera frugiperda cells.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456"
+      ]
     }
   ],
   "false_negatives": [
@@ -294362,6 +294397,48 @@
       "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
       "missed_pmid": "38440193",
       "title": "A comprehensive review on Gossypium hirsutum resistance against cotton leaf curl virus."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41043582",
+      "title": "Involvement of Bombyx mori nucleopolyhedrovirus GP37 in the postmortem host liquefaction."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the epidemiology and outbreak history of Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41598933",
+      "title": "Transcriptome Dynamics of BmN Cells During the Early Phase of Bombyx mori Nucleopolyhedrovirus Infection."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "27995421",
+      "title": "Characterization of two monoclonal antibodies, 38F10 and 44D11, against the major envelope fusion protein of Helicoverpa armigera nucleopolyhedrovirus."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus pathogenesis and transmission?",
+      "missed_pmid": "26057202",
+      "title": "Ha83, a Chitin Binding Domain Encoding Gene, Is Important to Helicoverpa armigera Nucleopolyhedrovirus Budded Virus Production and Occlusion Body Assembling."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Helicoverpa armigera nucleopolyhedrovirus?",
+      "missed_pmid": "26067949",
+      "title": "Genomic Sequences of Five Helicoverpa armigera Nucleopolyhedrovirus Genotypes from Spain That Differ in Their Insecticidal Properties."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "How does Helicoverpa armigera nucleopolyhedrovirus evade or modulate the host immune response?",
+      "missed_pmid": "26296927",
+      "title": "Characterization of a new Helicoverpa armigera nucleopolyhedrovirus variant causing epizootic on a previously unreported host, Helicoverpa gelotopoeon (Lepidoptera: Noctuidae)."
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "missed_pmid": "40015841",
+      "title": "Differential pathogenicity of heterologous nucleopolyhedroviruses on Spodoptera frugiperda corresponds to modulated expression of immune-response-related genes."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
