@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:51:51.912050+00:00",
-  "runs": 146,
+  "updated": "2026-09-27T06:54:01.374227+00:00",
+  "runs": 147,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18707,
-  "n_false_negatives": 3485,
+  "n_false_positives": 18724,
+  "n_false_negatives": 3487,
   "new_this_run": {
-    "false_positives": 42,
+    "false_positives": 17,
     "false_negatives": 2
   },
   "false_positives": [
@@ -211387,6 +211387,176 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12072"
       ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genome organization and replication cycle of Feline leukemia virus?",
+      "cited_pmid": "42800592",
+      "title": "Comparison of integration sites of bovine leukemia virus-induced lymphoma between blood and lymphoma tissues using a high-density BLV-proviral capture sequencing method.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "How does Feline leukemia virus evade or modulate the host immune response?",
+      "cited_pmid": "42591436",
+      "title": "Differential protein abundance in colostrum-derived extracellular vesicles from bovine leukemia virus-infected cattle are implicated in immune regulation and inflammation.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mouse mammary tumor virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Visna-maedi virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Visna-maedi virus?",
+      "cited_pmid": "39392890",
+      "title": "Structures of the Foamy virus fusion protein reveal an unexpected link with the F protein of paramyxo- and pneumoviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Visna-maedi virus?",
+      "cited_pmid": "41864940",
+      "title": "Functional dissection of the prototype foamy virus glycoprotein heparan sulfate binding site.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Visna-maedi virus?",
+      "cited_pmid": "41668976",
+      "title": "Structure-guided engineering of prototype foamy virus Env identifies key residues for heparan sulfate binding and enhances transduction efficiency.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "How does Visna-maedi virus evade or modulate the host immune response?",
+      "cited_pmid": "41619651",
+      "title": "Maedi infection modulates oncogenic and inflammatory signaling in ovine pulmonary adenomatosis through TLR4/NF-\u03baB and JAK2/STAT3 pathways: A Trojan horse mechanism.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Caprine arthritis encephalitis virus?",
+      "cited_pmid": "42149916",
+      "title": "Acetylation-mediated regulation of ALV viral proteins: Implications for retroviral inhibition.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153057"
+      ]
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Caprine arthritis encephalitis virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "How does Caprine arthritis encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42515592",
+      "title": "Retrovirus-Induced Immunosuppression: Role of the Transmembrane Envelope Protein.",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_394239"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian foamy virus?",
+      "cited_pmid": "41864940",
+      "title": "Functional dissection of the prototype foamy virus glycoprotein heparan sulfate binding site.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian foamy virus?",
+      "cited_pmid": "39392890",
+      "title": "Structures of the Foamy virus fusion protein reveal an unexpected link with the F protein of paramyxo- and pneumoviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine foamy virus?",
+      "cited_pmid": "41668976",
+      "title": "Structure-guided engineering of prototype foamy virus Env identifies key residues for heparan sulfate binding and enhances transduction efficiency.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "How does Bovine foamy virus evade or modulate the host immune response?",
+      "cited_pmid": "42591436",
+      "title": "Differential protein abundance in colostrum-derived extracellular vesicles from bovine leukemia virus-infected cattle are implicated in immune regulation and inflammation.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Rous sarcoma virus?",
+      "cited_pmid": "40616964",
+      "title": "Ultrasound image abnormalities associated with the development of ovine pulmonary adenocarcinoma.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rous sarcoma virus?",
+      "cited_pmid": "41864940",
+      "title": "Functional dissection of the prototype foamy virus glycoprotein heparan sulfate binding site.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
     }
   ],
   "false_negatives": [
@@ -232299,6 +232469,18 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
       "missed_pmid": "42341523",
       "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid."
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Caprine arthritis encephalitis virus?",
+      "missed_pmid": "38950972",
+      "title": "A high hydrophobic moment arginine-rich peptide screened by a machine learning algorithm enhanced ADC antitumor activity."
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian foamy virus?",
+      "missed_pmid": "41668976",
+      "title": "Structure-guided engineering of prototype foamy virus Env identifies key residues for heparan sulfate binding and enhances transduction efficiency."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
