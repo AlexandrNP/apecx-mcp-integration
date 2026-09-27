@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T09:14:05.939957+00:00",
-  "runs": 192,
+  "updated": "2026-09-27T09:15:33.367291+00:00",
+  "runs": 193,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20212,
-  "n_false_negatives": 3579,
+  "n_false_positives": 20266,
+  "n_false_negatives": 3581,
   "new_this_run": {
-    "false_positives": 24,
-    "false_negatives": 0
+    "false_positives": 54,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -228287,6 +228287,642 @@
         "Rabies lyssavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "42750482",
+      "title": "Lipid raft protein Flotillin 2 facilitates alphavirus infection through promoting viral release.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42627681",
+      "title": "Targeting \u03b22-Adrenergic Receptor Stability With Lycorine Reveals a Host-Directed Pathway for Antiviral Defense Against Poxviruses.",
+      "actual_organisms": [
+        "Cowpox virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42116630",
+      "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Junin mammarenavirus?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Junin mammarenavirus?",
+      "cited_pmid": "42161271",
+      "title": "Decoding the human CD4+ T cell epitope repertoire for Lassa fever virus reveals T cell-based pan-mammarenavirus vaccine candidates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208896",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41077721",
+      "title": "Hantavirus GnH Nanoparticle Immunogen Elicits a Cross-Neutralizing Antibody Response in Mice.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052474",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42757803",
+      "title": "Preparation and evaluation of antisera for immunohistochemical detection of Zika virus in aldehyde-fixed tissues.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42116630",
+      "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "cited_pmid": "42708070",
+      "title": "Yellow Fever, an Arboviral Disease with Public Health Impacts: General Aspects and the Use of the One Health Approach in the Context of This Zoonosis.",
+      "actual_organisms": [
+        "Yellow fever virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
+      "cited_pmid": "40857262",
+      "title": "Differential tropisms of old and new world hantaviruses influence virulence and developing host-directed antiviral candidates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "How does Sindbis virus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "How does Sindbis virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42099561",
+      "title": "Development of monoclonal antibody-based methods for detecting mpox virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "42647575",
+      "title": "Potential threats of porcine Getah virus outbreaks and its specific antagonism of host antiviral response through proteasome-dependent degradation of P46 by nsP2.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cowpox virus?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "How does Cowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "42116630",
+      "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42647190",
+      "title": "Engineered fluorescence for live diagnostics and quantification of poxvirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11801",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42114492",
+      "title": "Ectromelia virus growth factor is not secreted from infected cells and plays no apparent role for virus replication in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12643"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "42708070",
+      "title": "Yellow Fever, an Arboviral Disease with Public Health Impacts: General Aspects and the Use of the One Health Approach in the Context of This Zoonosis.",
+      "actual_organisms": [
+        "Yellow fever virus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of JC polyomavirus?",
+      "cited_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "42039646",
+      "title": "SIRPA suppresses integrin-dependent virus endocytosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "42784973",
+      "title": "Characterization of a novel poxvirus associated with an epidermal keratinocytic dermatopathy in a captive population of the endangered Knysna seahorse Hippocampuscapensis.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "42116630",
+      "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
     }
   ],
   "false_negatives": [
@@ -249763,6 +250399,18 @@
       "question": "How does Rift Valley fever virus evade or modulate the host immune response?",
       "missed_pmid": "42788740",
       "title": "Establishment of an ex vivo vascular tissue model to investigate bunyavirus-triggered vascular endothelial injury."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42382784",
+      "title": "TLR7/8 agonist 3M-052 formulated in micelles induces local type I IFN response and antiviral immunity in zebrafish larvae."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "missed_pmid": "42390269",
+      "title": "Dysregulation of miRNAs has broad impacts on virus infection in Drosophila."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
