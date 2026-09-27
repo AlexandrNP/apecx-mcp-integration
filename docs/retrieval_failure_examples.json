@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:36:38.945217+00:00",
-  "runs": 366,
+  "updated": "2026-09-27T19:38:58.287546+00:00",
+  "runs": 367,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23947,
-  "n_false_negatives": 4698,
+  "n_false_positives": 23971,
+  "n_false_negatives": 4706,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 6
+    "false_positives": 24,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -269994,6 +269994,322 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
         "http://purl.obolibrary.org/obo/NCBITaxon_33926"
       ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40536098",
+      "title": "Dissection of Neurotropic Theiler's Murine Encephalomyelitis Virus Induced Brain Atrophy in Single MHC Class I Mice of C57BL/6 Background.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "40191085",
+      "title": "Evaluating the potential of anti-dsRNA antibodies as an alternative viral sensing tool in encephalitides of different species.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "30908431",
+      "title": "Clinical Characteristics of Saffold Virus Infection in Children.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "cited_pmid": "31207600",
+      "title": "Viral Metagenomics Revealed a Novel Cardiovirus in Feces of Wild Rats.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_529419"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "cited_pmid": "28446680",
+      "title": "Nonstructural Protein L* Species Specificity Supports a Mouse Origin for Vilyuisk Human Encephalitis Virus.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844052",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2881402",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "41701746",
+      "title": "Zoological transmission of encephalomyocarditis virus in the United States: Virus evolution, host ecology, and capsid antigenicity derived from an outbreak.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41866176",
+      "title": "Development of a conformation-specific nanobody-based ELISA for quantitative detection of intact Senecavirus A virions and virus-like particles.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_622691",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "28446680",
+      "title": "Nonstructural Protein L* Species Specificity Supports a Mouse Origin for Vilyuisk Human Encephalitis Virus.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844052",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2881402",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40191085",
+      "title": "Evaluating the potential of anti-dsRNA antibodies as an alternative viral sensing tool in encephalitides of different species.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "30814463",
+      "title": "Longitudinal Epidemiology of Viral Infectious Diseases Combining Virus Isolation, Antigenic Analysis, and Phylogenetic Analysis as Well as Seroepidemiology in Yamagata, Japan, between 1999 and 2018.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "27735999",
+      "title": "Multiplex RT-PCR for rapid detection of viruses commonly causing diarrhea in pediatric patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "31207600",
+      "title": "Viral Metagenomics Revealed a Novel Cardiovirus in Feces of Wild Rats.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_529419"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "30249971",
+      "title": "Recombination Located over 2A-2B Junction Ribosome Frameshifting Region of Saffold Cardiovirus.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "41623554",
+      "title": "Phorbol Myristate Acetate Inhibits Senecavirus A Replication by Activating IKBKE-Mediated IFN Pathway and NF-\u03baB Signal.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "41066960",
+      "title": "18\u03b2-glycyrrhetinic acid-amantadine hybrid: Synthesis and anti-EMCV activity via NF-\u03baB modulation.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "40916768",
+      "title": "Poliovirus surveillance in Mayotte, Indian Ocean, reveals encephalomyocarditis virus type 1 and a wide diversity of non-polio enteroviruses.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428505"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "30908431",
+      "title": "Clinical Characteristics of Saffold Virus Infection in Children.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "32475874",
+      "title": "Prevalence of Eleven Infectious Viruses Causing Diarrhea in Korea.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_329641",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "32827319",
+      "title": "Saffold virus infection in elderly people with acute gastroenteritis in Sweden.",
+      "actual_organisms": [
+        "Saffold virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "27729641",
+      "title": "Intracellular localization of Saffold virus Leader (L) protein differs in Vero and HEp-2 cells.",
+      "actual_organisms": [
+        "Saffold virus"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "40928249",
+      "title": "The leader proteins of Theiler's virus and Boone cardiovirus use a combination of short linear motifs (SLiMs) to target RSK kinases to the nuclear pore complex.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1281469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "42159395",
+      "title": "Dysregulation of RIG-I activation by picornavirus 3A protein.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "41214106",
+      "title": "CLEC12A signaling represses protective immune responses and contributes to hippocampal pathology in neurotropic picornavirus infection.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "42043227",
+      "title": "EMCV Non-Structural Protein 2C Antagonizes cGAS-STING-Mediated Type I Interferon Signaling via Promoting K48-Linked Polyubiquitination and Degradation of STING.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -298184,6 +298500,54 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Grapevine fanleaf virus?",
       "missed_pmid": "35215120",
       "title": "Prevalence of Virus Infections and GLRaV-3 Genetic Diversity in Selected Clones of Croatian Indigenous Grapevine Cultivar Plavac Mali."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41012668",
+      "title": "An RNAi Therapy That Attenuates Multi-Organ Viremia and Improves Animal Survival in a Lethal EMCV Challenge Model."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "missed_pmid": "41405988",
+      "title": "A 20-amino-acid Cardiovirus protein exhibits cytokine-mimicry activity to regulate viral replication."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "missed_pmid": "40916768",
+      "title": "Poliovirus surveillance in Mayotte, Indian Ocean, reveals encephalomyocarditis virus type 1 and a wide diversity of non-polio enteroviruses."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the epidemiology and outbreak history of Encephalomyocarditis virus?",
+      "missed_pmid": "41114500",
+      "title": "Gallic acid inhibits EMCV infection via targeting the interaction between TBK1 and IRF3 to promote IFN-\u03b2 expression."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "40352934",
+      "title": "Corrigendum: Infection of a \u03b2-galactosidase-deficient mouse strain with Theiler's murine encephalomyelitis virus reveals limited immunological dysregulations in this lysosomal storage disease."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28660425",
+      "title": "The Fate of Mengovirus on Fiberglass Filter of Air Handling Units."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "missed_pmid": "28391510",
+      "title": "Evaluation of Two Triplex One-Step qRT-PCR Assays for the Quantification of Human Enteric Viruses in Environmental Samples."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "missed_pmid": "28018329",
+      "title": "Propidium Monoazide Integrated with qPCR Enables the Detection and Enumeration of Infectious Enteric RNA and DNA Viruses in Clam and Fermented Sausages."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
