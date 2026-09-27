@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:50:04.280365+00:00",
-  "runs": 283,
+  "updated": "2026-09-27T15:54:17.881276+00:00",
+  "runs": 284,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22826,
-  "n_false_negatives": 4093,
+  "n_false_positives": 22848,
+  "n_false_negatives": 4110,
   "new_this_run": {
-    "false_positives": 21,
-    "false_negatives": 11
+    "false_positives": 22,
+    "false_negatives": 17
   },
   "false_positives": [
     {
@@ -257972,6 +257972,234 @@
       "actual_organisms": [
         "Tomato yellow leaf curl virus"
       ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "37375989",
+      "title": "Development, Validation, and Application of Reverse Transcription Real-Time and Droplet Digital PCR Assays for the Detection of the Potyviruses Watermelon Mosaic Virus and Zucchini Yellow Mosaic Virus in Cucurbits.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "34896458",
+      "title": "An experimental strategy for preparing circular ssDNA virus genomes for next-generation sequencing.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35342"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "37344614",
+      "title": "Genome segment ratios change during whitefly transmission of two bipartite cassava mosaic begomoviruses.",
+      "actual_organisms": [
+        "African cassava mosaic virus"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "34835016",
+      "title": "Coinfection of Cotton Plants with Watermelon Mosaic Virus and a Novel Polerovirus in China.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119164"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Turnip mosaic virus?",
+      "cited_pmid": "37303798",
+      "title": "Cassava begomovirus species diversity changes during plant vegetative cycles.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Turnip mosaic virus?",
+      "cited_pmid": "40094728",
+      "title": "Identification and Genome Characterization of Begomovirus and Satellite Molecules Associated with Lettuce (Lactuca sativa L.) Leaf Curl Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169907",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Turnip mosaic virus?",
+      "cited_pmid": "39162474",
+      "title": "Geminivirus C4/AC4 proteins hijack cellular COAT PROTEIN COMPLEX I for chloroplast targeting and viral infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10840"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Turnip mosaic virus?",
+      "cited_pmid": "35394500",
+      "title": "A single substitution in Vacuolar protein sorting 4 is responsible for resistance to Watermelon mosaic virus in melon.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "How does Turnip mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "40465802",
+      "title": "Comparative analysis of pattern-triggered and effector-triggered immunity gene expression in susceptible and tolerant cassava genotypes following begomovirus infection.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_63723"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "How does Turnip mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "36229931",
+      "title": "Rapid evolution of an RNA virus to escape recognition by a rice nucleotide-binding and leucine-rich repeat domain immune receptor.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Turnip mosaic virus?",
+      "cited_pmid": "34684194",
+      "title": "Genetic Variability and Evidence of a New Subgroup in Watermelon Mosaic Virus Isolates.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Turnip mosaic virus?",
+      "cited_pmid": "42397701",
+      "title": "Variability and population structure of watermelon mosaic virus in zucchini crops in Poland.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Turnip mosaic virus?",
+      "cited_pmid": "34310272",
+      "title": "Population diversity of cassava mosaic begomoviruses increases over the course of serial vegetative propagation.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2609695",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What diagnostic assays or laboratory tests detect Rice yellow mottle virus?",
+      "cited_pmid": "42119419",
+      "title": "A two-component RUBY reporter system to assess plant virus infection.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What is the genome organization and replication cycle of Rice yellow mottle virus?",
+      "cited_pmid": "34835016",
+      "title": "Coinfection of Cotton Plants with Watermelon Mosaic Virus and a Novel Polerovirus in China.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119164"
+      ]
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is known about African cassava mosaic virus pathogenesis and transmission?",
+      "cited_pmid": "35873883",
+      "title": "Epidemiological assessment of cassava mosaic disease in Burkina Faso.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is known about Watermelon mosaic virus pathogenesis and transmission?",
+      "cited_pmid": "34279983",
+      "title": "Occurrence of a Novel Strain of Moroccan Watermelon Mosaic Virus Infecting Pumpkins in Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167129"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus pathogenesis and transmission?",
+      "cited_pmid": "34835016",
+      "title": "Coinfection of Cotton Plants with Watermelon Mosaic Virus and a Novel Polerovirus in China.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119164"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus pathogenesis and transmission?",
+      "cited_pmid": "39787193",
+      "title": "Divergent Cotton leaf curl Multan betasatellite and three different alphasatellite species associated with cotton leaf curl disease outbreak in Northwest India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1458186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_656025"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What antiviral drugs or treatments are effective against Cotton leaf curl virus?",
+      "cited_pmid": "40621573",
+      "title": "Identification of potential target sites in cotton leaf Curl Multan Virus (CLCuMuV) after hybridization through candidate miRNAs in cotton to induce virus resistance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What antiviral drugs or treatments are effective against Cotton leaf curl virus?",
+      "cited_pmid": "39871813",
+      "title": "Cotton leaf curl Multan virus activates autophagy in the whitefly AsiaII7, weakening its vectorial capacity for transmission.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "cited_pmid": "39794883",
+      "title": "Papain-Like Cysteine Proteases Contribute to Functional Cleavage of Begomoviral V2 Effector Required for Relevant Virulences.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
     }
   ],
   "false_negatives": [
@@ -282532,6 +282760,108 @@
       "question": "What is the epidemiology and outbreak history of Beet curly top virus?",
       "missed_pmid": "37521933",
       "title": "A robust SNP-haplotype assay for Bct gene region conferring resistance to beet curly top virus in common bean (Phaseolus vulgaris L.)."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is known about Turnip mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41916399",
+      "title": "Brassica Yellows Virus and Turnip Mosaic Virus: Asymmetric Interaction in Mixed Infections in Nicotiana benthamiana and Brassica napus."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "missed_pmid": "41701625",
+      "title": "Large ribosomal protein 4 inhibits tobacco vein banding mosaic virus replication by impairing nuclear export of viral NIb."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "missed_pmid": "42068042",
+      "title": "Engineering the 3'-UTR of Tobacco Vein Mottling Virus to Confer Cross-Protection Against Potyviruses."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Turnip mosaic virus?",
+      "missed_pmid": "41975583",
+      "title": "Turnip mosaic virus resistance breaking strain in canola: Symptomatology, seed and contact transmission, yield losses and seed germination."
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What is known about Rice yellow mottle virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34267770",
+      "title": "Insights Into Natural Genetic Resistance to Rice Yellow Mottle Virus and Implications on Breeding for Durable Resistance."
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What diagnostic assays or laboratory tests detect Rice yellow mottle virus?",
+      "missed_pmid": "31919155",
+      "title": "Near-Complete Genome Sequences of Rice Yellow Mottle Virus Isolates from Senegal."
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What antiviral drugs or treatments are effective against Rice yellow mottle virus?",
+      "missed_pmid": "34365749",
+      "title": "Resistance of Oryza sativa and Oryza glaberrima Genotypes to RBe24 Isolate of Rice Yellow Mottle Virus in Benin and Effects of Silicon on Host Response."
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rice yellow mottle virus?",
+      "missed_pmid": "31646461",
+      "title": "Estimation of the functions of viral RNA silencing suppressors by apple latent spherical virus vector."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is known about African cassava mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36298720",
+      "title": "Epidemiological Analysis of Cassava Mosaic and Brown Streak Diseases, and Bemisia tabaci in the Comoros Islands."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is known about African cassava mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37303798",
+      "title": "Cassava begomovirus species diversity changes during plant vegetative cycles."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is known about African cassava mosaic virus pathogenesis and transmission?",
+      "missed_pmid": "41069991",
+      "title": "Cassava mosaic disease in Burkina Faso: epidemiological aspects and disease management perspectives."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect African cassava mosaic virus?",
+      "missed_pmid": "34466634",
+      "title": "Survey dataset on the epidemiological assessment of cassava mosaic disease in South West and North Central regions of Nigeria reveals predominance of single viral infection."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is known about Watermelon mosaic virus pathogenesis and transmission?",
+      "missed_pmid": "39597726",
+      "title": "One-Step Multiplex RT-PCR Method for Detection of Melon Viruses."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is the genome organization and replication cycle of Watermelon mosaic virus?",
+      "missed_pmid": "34835016",
+      "title": "Coinfection of Cotton Plants with Watermelon Mosaic Virus and a Novel Polerovirus in China."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Watermelon mosaic virus?",
+      "missed_pmid": "39639665",
+      "title": "Construction and Characterization of a Full-Length Infectious cDNA Clone of a Strain of Watermelon Mosaic Virus Isolated from Melon."
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39542922",
+      "title": "In Silico Investigation of the Interactions Between Cotton Leaf Curl Multan Virus Proteins and the Transcriptional Gene Silencing Factors of Gossypium hirsutum L."
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "missed_pmid": "39412854",
+      "title": "Introgression and Mapping of Cotton Leaf Curl Disease Resistance from Wild Gossypium armourianum Kearney into Upland Cotton (G. hirsutum)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
