@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:59:02.978310+00:00",
-  "runs": 241,
+  "updated": "2026-09-27T14:00:39.717502+00:00",
+  "runs": 242,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21936,
-  "n_false_negatives": 3650,
+  "n_false_positives": 21948,
+  "n_false_negatives": 3652,
   "new_this_run": {
-    "false_positives": 23,
-    "false_negatives": 5
+    "false_positives": 12,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -248134,6 +248134,143 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_36362"
       ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "38522136",
+      "title": "An isothermal nucleic acid amplification-based enzymatic recombinase amplification method for dual detection of porcine epidemic diarrhea virus and porcine rotavirus A.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "42075254",
+      "title": "Complex Recombination Landscape and Lineage Turnover in Classical Human Astroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430629",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "42159811",
+      "title": "Three-dimensional peptide modeling and subcellular localization of the VPg protein of human astrovirus 8 in infected Caco-2 cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39733",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "cited_pmid": "37631969",
+      "title": "Quadruplex Real-Time TaqMan\u00ae RT-qPCR Assay for Differentiation of Equine Group A and B Rotaviruses and Identification of Group A G3 and G14 Genotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10850",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10937",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31590"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus C?",
+      "cited_pmid": "38077390",
+      "title": "Prevalence and genetic diversity of rotavirus in Bangladesh during pre-vaccination period, 1973-2023: a meta-analysis.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_215680",
+        "http://purl.obolibrary.org/obo/NCBITaxon_72132"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus C?",
+      "cited_pmid": "38543818",
+      "title": "Recent Molecular Characterization of Porcine Rotaviruses Detected in China and Their Phylogenetic Relationships with Human Rotaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B pathogenesis and transmission?",
+      "cited_pmid": "33319798",
+      "title": "Porcine rotavirus B as primary causative agent of diarrhea outbreaks in newborn piglets.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_449582"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus B?",
+      "cited_pmid": "37631969",
+      "title": "Quadruplex Real-Time TaqMan\u00ae RT-qPCR Assay for Differentiation of Equine Group A and B Rotaviruses and Identification of Group A G3 and G14 Genotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10850",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10937",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31590"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus B?",
+      "cited_pmid": "38522136",
+      "title": "An isothermal nucleic acid amplification-based enzymatic recombinase amplification method for dual detection of porcine epidemic diarrhea virus and porcine rotavirus A.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus B?",
+      "cited_pmid": "38543818",
+      "title": "Recent Molecular Characterization of Porcine Rotaviruses Detected in China and Their Phylogenetic Relationships with Human Rotaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42075254",
+      "title": "Complex Recombination Landscape and Lineage Turnover in Classical Human Astroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430629",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "How does Human astrovirus evade or modulate the host immune response?",
+      "cited_pmid": "42525775",
+      "title": "CD36 is a receptor for human sapovirus.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -270036,6 +270173,18 @@
       "question": "What is known about KI polyomavirus and neutralizing antibodies or vaccines?",
       "missed_pmid": "33895421",
       "title": "Heterogeneous associations of polyomaviruses and herpesviruses with allergy-related phenotypes in childhood."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "missed_pmid": "42055692",
+      "title": "Propagation of human sapovirus GII.7 strain in HuTu80 subcloned cells."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42045835",
+      "title": "Prevalence and genetic diversity of enteric viruses in Sub-Saharan Africa: a systematic review and meta-analysis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
