@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T08:34:34.610235+00:00",
-  "runs": 181,
+  "updated": "2026-09-27T08:36:19.023699+00:00",
+  "runs": 182,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19852,
-  "n_false_negatives": 3563,
+  "n_false_positives": 19884,
+  "n_false_negatives": 3567,
   "new_this_run": {
-    "false_positives": 46,
-    "false_negatives": 2
+    "false_positives": 32,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -224212,6 +224212,338 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12089"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of SARS-CoV-2?",
+      "cited_pmid": "42730980",
+      "title": "Phylogenetic Divergence and Molecular Signatures of Porcine Epidemic Diarrhea Virus S-INDEL Subtype.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of SARS-CoV-2?",
+      "cited_pmid": "42655726",
+      "title": "A Review: Bovine Coronavirus Evolution, Molecular Epidemiology, and Genetic Variation.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "How does Human coronavirus OC43 evade or modulate the host immune response?",
+      "cited_pmid": "42735537",
+      "title": "Host C3 complement restricts bovine coronavirus infection in vitro via virus-induced IL-1\u03b2 signaling.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus OC43?",
+      "cited_pmid": "42772549",
+      "title": "Detection and Genomic Characterization of an Emerging Bovine Coronavirus in Southwest China.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "cited_pmid": "42535959",
+      "title": "Coronavirus Nsp15 endoribonuclease: linking viral RNA regulation to immune evasion and viral fitness.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus NL63?",
+      "cited_pmid": "42714166",
+      "title": "Mutations in the macrodomain 1 of nsp3 attenuate PEDV virulence in vivo without impairing in vitro replication.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "Porcine epidemic diarrhea virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus NL63?",
+      "cited_pmid": "42797868",
+      "title": "Balancing Genome Plasticity and Evolutionary Constraint During the Long-Term Evolution of Feline Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus NL63?",
+      "cited_pmid": "42655726",
+      "title": "A Review: Bovine Coronavirus Evolution, Molecular Epidemiology, and Genetic Variation.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "How does Human coronavirus 229E evade or modulate the host immune response?",
+      "cited_pmid": "42535959",
+      "title": "Coronavirus Nsp15 endoribonuclease: linking viral RNA regulation to immune evasion and viral fitness.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "How does Human coronavirus 229E evade or modulate the host immune response?",
+      "cited_pmid": "42735537",
+      "title": "Host C3 complement restricts bovine coronavirus infection in vitro via virus-induced IL-1\u03b2 signaling.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42611143",
+      "title": "Performance evaluation of methods for detecting enteric viruses in meat products.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_223997",
+        "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What antiviral drugs or treatments are effective against Porcine epidemic diarrhea virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42606349",
+      "title": "Epidemiological characteristics and structural-functional implications of spike protein variations in a bovine coronavirus isolate from diarrheic calves.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42655726",
+      "title": "A Review: Bovine Coronavirus Evolution, Molecular Epidemiology, and Genetic Variation.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is known about Bovine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014629",
+      "title": "Covid-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine coronavirus?",
+      "cited_pmid": "42797868",
+      "title": "Balancing Genome Plasticity and Evolutionary Constraint During the Long-Term Evolution of Feline Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "How does Feline coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42795466",
+      "title": "Hyperglycemia in Cats Infected by SARS-CoV-2: Pancreatic Alterations and Potential Antiviral Therapeutics.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014629",
+      "title": "Covid-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42653849",
+      "title": "Oral Food-Derived Proanthocyanidins as Immunostimulants: Enhanced Vaccine Immunogenicity via Host Immune Modulation in a Murine CSFV Model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42709888",
+      "title": "PRMT3 restricts porcine epidemic diarrhea virus replication by disrupting the interaction between VAPA and the viral nucleocapsid protein.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137208"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "42753880",
+      "title": "Fe-Co bimetallic nanozyme-amplified lateral-flow immunoassay for the sensitive detection of porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1586324",
+        "http://purl.obolibrary.org/obo/NCBITaxon_686984"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "42564716",
+      "title": "Measuring the efficiency of a solids-based wastewater extraction using BCoV and validation of a BCoV and PMMoV RT-qPCR duplex assay.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42704694",
+      "title": "Molecular Epidemiology and Pathogenicity Evaluation of Porcine Teschovirus in Tibetan Pigs on the Qinghai-Tibet Plateau of China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_118139",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "33734656",
+      "title": "Infections in Endocrinology: Viruses",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "42620651",
+      "title": "Sustained clinical remission and long-term safety of molnupiravir as first-line therapy for effusive feline infectious peritonitis: a 40-week retrospective study.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murine hepatitis virus?",
+      "cited_pmid": "42584930",
+      "title": "Rift Valley fever virus infects trophoblast cell lines in an LRP1-dependent manner.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murine hepatitis virus?",
+      "cited_pmid": "42746356",
+      "title": "Evaluation of the Therapeutic Potential of Natural Peptides Against Hemagglutinin-Esterase of Bovine Coronavirus Based on Molecular Dynamics Simulation Studies.",
+      "actual_organisms": [
+        "Bovine coronavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42797868",
+      "title": "Balancing Genome Plasticity and Evolutionary Constraint During the Long-Term Evolution of Feline Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
     }
   ],
   "false_negatives": [
@@ -245592,6 +245924,30 @@
       "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
       "missed_pmid": "42799644",
       "title": "Evolutionary and Spatiotemporal Dynamics of Foot-and-Mouth Disease Virus in Ethiopia (1957-2025): A Molecular Perspective on Serotype Persistence and Emergence."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "42438688",
+      "title": "Respiratory virus genomic epidemiology during post-pandemic re-emergence of influenza in Australia."
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine epidemic diarrhea virus?",
+      "missed_pmid": "42734722",
+      "title": "Establishment of a blocking ELISA for assessing neutralizing antibody levels against porcine epidemic diarrhea virus."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "How does Feline coronavirus evade or modulate the host immune response?",
+      "missed_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Feline coronavirus?",
+      "missed_pmid": "42731278",
+      "title": "PD-L1 expression in tissues of cats with naturally occurring feline infectious peritonitis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
