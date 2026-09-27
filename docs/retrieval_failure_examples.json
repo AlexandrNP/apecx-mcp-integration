@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:55:55.962608+00:00",
-  "runs": 298,
+  "updated": "2026-09-27T16:57:30.319864+00:00",
+  "runs": 299,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23060,
-  "n_false_negatives": 4157,
+  "n_false_positives": 23089,
+  "n_false_negatives": 4164,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 8
+    "false_positives": 29,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -260452,6 +260452,308 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
       ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42601002",
+      "title": "Binding capacity of Intravenous immunoglobulin G to BK polyomavirus determines its anti-BK polyomavirus activity in infected cultures.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42607931",
+      "title": "BK polyomavirus reactivation in renal transplant recipients: A cross-sectional study using combined qualitative and quantitative PCR.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42691630",
+      "title": "HMGB1 as a convergent host factor in virus-induced carcinogenesis.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "42624173",
+      "title": "Unlocking the impact of BK virus in renal transplant recipients in North India: viral load dynamics, genotypes, and clinical outcomes.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "42583999",
+      "title": "Research Output and Global Trends in Lassa Fever: A 50-Year Bibliometric Analysis (1975-2025).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of JC polyomavirus?",
+      "cited_pmid": "42592185",
+      "title": "BK Polyomavirus-Associated Urothelial Carcinoma Presenting as Obstructive Uropathy in a Long-Term Lung Transplant Recipient.",
+      "actual_organisms": [
+        "Simian virus 40"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "42323496",
+      "title": "mRNA vaccine design targeting Merkel cell polyomavirus for immunotherapy of Merkel cell carcinoma.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42315907",
+      "title": "Beyond oncogenesis: the unexplored benefits of viruses in cancer immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3436869",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "42617435",
+      "title": "TLR9 and CYP3A5 polymorphisms influence the risk of BK polyomavirus reactivation in Chinese kidney transplant recipients.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is known about Merkel cell polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42601002",
+      "title": "Binding capacity of Intravenous immunoglobulin G to BK polyomavirus determines its anti-BK polyomavirus activity in infected cultures.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the epidemiology and outbreak history of Merkel cell polyomavirus?",
+      "cited_pmid": "42629671",
+      "title": "Research trends and hotspots in BK polyomavirus infection in kidney transplantation: A bibliometric analysis.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42323496",
+      "title": "mRNA vaccine design targeting Merkel cell polyomavirus for immunotherapy of Merkel cell carcinoma.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42601002",
+      "title": "Binding capacity of Intravenous immunoglobulin G to BK polyomavirus determines its anti-BK polyomavirus activity in infected cultures.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "42629671",
+      "title": "Research trends and hotspots in BK polyomavirus infection in kidney transplantation: A bibliometric analysis.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "42335122",
+      "title": "Merkel cell polyomavirus exploits extracellular vesicles for skin infection and host immune evasion through activated Wnt signaling.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "42671253",
+      "title": "BKV activates the interferon-\u03b2 response in primary and immortalized microvascular endothelial cells late in the infectious cycle, resulting in persistence.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42796751",
+      "title": "Development and Evaluation of Three Indirect ELISA Methods Based on Novel Recombinant ASFV Antigens for Serological Detection of African Swine Fever.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12405"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42554489",
+      "title": "Rapid, low-cost, and portable molecular detection of HIV-1 subtype B and HCV 1a directly from blood.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_388795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42751279",
+      "title": "The Impact of Respiratory Syncytial Virus Undertesting on Estimates of Disease Burden and Vaccine Effectiveness in a Large Integrated Healthcare System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42638692",
+      "title": "\"Innovative diagnostics and treatments of infections in transplantation,\" report from the 2025 spring highlights in transplantation sciences meeting.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "42691630",
+      "title": "HMGB1 as a convergent host factor in virus-induced carcinogenesis.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "42655029",
+      "title": "Ubiquitin-Dependent Regulation of Influenza A Virus Polymerase and vRNP Function: Mechanisms and Therapeutic Opportunities.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "42768217",
+      "title": "A consensus-based guideline for personalized bacteriophage therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "42552339",
+      "title": "Development of an investigational medicinal stem cell gene therapy product to attempt curing human immunodeficiency virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the epidemiology and outbreak history of Simian virus 40?",
+      "cited_pmid": "42583999",
+      "title": "Research Output and Global Trends in Lassa Fever: A 50-Year Bibliometric Analysis (1975-2025).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the epidemiology and outbreak history of Simian virus 40?",
+      "cited_pmid": "42758792",
+      "title": "Burden of respiratory syncytial virus (RSV) hospitalizations among adults aged 60 years or more in Brazil: A retrospective surveillance database analysis (2013-2024).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the epidemiology and outbreak history of Simian virus 40?",
+      "cited_pmid": "42562831",
+      "title": "Influenza.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the clinical symptoms and disease presentation of Simian virus 40?",
+      "cited_pmid": "42656208",
+      "title": "Progressive multifocal leukoencephalopathy in an untreated chronic lymphocytic leukemia patient: Case report and review of the literature.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the clinical symptoms and disease presentation of Simian virus 40?",
+      "cited_pmid": "42647081",
+      "title": "[Progressive multifocal leukoencephalopathy associated with rituximab treatment].",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -285396,6 +285698,48 @@
       "question": "What antiviral drugs or treatments are effective against Usutu virus?",
       "missed_pmid": "42009039",
       "title": "Usutu virus meningitis: another overlooked mosquito-borne disease in central Europe."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42592097",
+      "title": "Inter-assay variability in anti-JC virus serology in the era of natalizumab biosimilars: implications for PML risk stratification."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is known about Merkel cell polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42335122",
+      "title": "Merkel cell polyomavirus exploits extracellular vesicles for skin infection and host immune evasion through activated Wnt signaling."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the epidemiology and outbreak history of Merkel cell polyomavirus?",
+      "missed_pmid": "42319000",
+      "title": "Merkel cell carcinoma following photodynamic therapy in a high-risk patient."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of Merkel cell polyomavirus?",
+      "missed_pmid": "42192952",
+      "title": "Merkel Cell Polyomavirus and DNA Damage Response (DDR): Transcriptional Analysis of DDR Pathways in the Context of Merkel Cell Carcinoma."
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42596021",
+      "title": "Dual-expression-site fowl adenovirus 4 (FAdV-4) with high viral titer: a promising viral vector for multivalent poultry vaccines."
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42592185",
+      "title": "BK Polyomavirus-Associated Urothelial Carcinoma Presenting as Obstructive Uropathy in a Long-Term Lung Transplant Recipient."
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42629278",
+      "title": "BK Polyomavirus-Associated Carcinoma In Situ of the Renal Allograft: Balancing Oncologic Control and Graft Preservation."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
