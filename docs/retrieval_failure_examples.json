@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:24:48.899122+00:00",
-  "runs": 161,
+  "updated": "2026-09-27T07:27:10.318214+00:00",
+  "runs": 162,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19414,
-  "n_false_negatives": 3536,
+  "n_false_positives": 19458,
+  "n_false_negatives": 3539,
   "new_this_run": {
-    "false_positives": 27,
-    "false_negatives": 1
+    "false_positives": 44,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -219366,6 +219366,496 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10090",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "cited_pmid": "42282816",
+      "title": "A phage display library to dissect antibody responses to human coronavirus spike proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of SARS-CoV-2?",
+      "cited_pmid": "42357687",
+      "title": "Genomic Surveillance of Endemic Human Coronaviruses in C\u00f4te d'Ivoire Using Targeted Hybrid-Capture Sequencing.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290028",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42722670",
+      "title": "Single-component self-assembling protein nanoparticles displaying stabilized prefusion-closed hemagglutinin trimers for influenza vaccine development.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42729852",
+      "title": "Exposure of dogs to influenza A and B viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42225939",
+      "title": "IFI16 restricts SARS-CoV-2 replication by disrupting nucleocapsid-driven phase separation.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Influenza A virus?",
+      "cited_pmid": "42762643",
+      "title": "Transcriptional decoupling of the epithelial-immune bridge is associated with suboptimal influenza B virus immunogenicity.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11120"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "How does Influenza A virus evade or modulate the host immune response?",
+      "cited_pmid": "42420525",
+      "title": "ALOX15 orchestrates mitochondrial antiviral immunity and serves as a host target for anti-influenza therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What diagnostic assays or laboratory tests detect Ebola virus?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2014254",
+      "title": "Observations after human immunodeficiency virus immunization and challenge of human immunodeficiency virus seropositive and seronegative chimpanzees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42765626",
+      "title": "Systemic and Mucosal Immune Responses From Serotype-Switched Viral-Vectored Ebola Vaccines.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014629",
+      "title": "Covid-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42729852",
+      "title": "Exposure of dogs to influenza A and B viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "4246007",
+      "title": "A new influenza A virus infection in turkeys. VI. Artificial immunization against the malignant virus strain turkey-Ontario 7732-66.",
+      "actual_organisms": [
+        "Influenza A virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42723125",
+      "title": "Comparison of viral respiratory pathogens circulation among Iranian pilgrims during two large religious mass gatherings: the Hajj and Arbaeen walk 2025.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1335626"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Influenza A virus",
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42797814",
+      "title": "Ebola Virus RNA Persists in Reproductive Tissues and Sperm of Male Ifnar1-/- Mice After Resolution of Viremia.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42747795",
+      "title": "Wastewater Respiratory Virus Surveillance in Remote Community, Alaska, USA, 2022-2024.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "Influenza B virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42225939",
+      "title": "IFI16 restricts SARS-CoV-2 replication by disrupting nucleocapsid-driven phase separation.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "42766081",
+      "title": "The Role of Mortality Surveillance in Case Detection and Response During the 2025 Sudan Virus Disease Outbreak in Uganda.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "5312525",
+      "title": "Virological study of an epidemic of febrile illness with haemorrhagic manifestations at Kanpur, India, during 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "5358980",
+      "title": "Diseases from Vietnam.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "2014240",
+      "title": "Effect of mutations affecting the p6 gag protein on human immunodeficiency virus particle release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "42779995",
+      "title": "Mapping First In Vivo Ebolavirus Infection Events.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "42770795",
+      "title": "Differential glycosylation in the envelope glycoprotein enhances DC-SIGN-mediated cell entry of the West African Ebolavirus Makona.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "5391162",
+      "title": "Morphogenesis of influenza A virus in Ehrlich ascites tumor cells as revealed by thin-sectioning and freeze-etching.",
+      "actual_organisms": [
+        "Influenza A virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "42779931",
+      "title": "Self-adjuvanting Ebola virus-like particles that incorporate a cellular interferon-inducing domain.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1773",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepacivirus hominis?",
+      "cited_pmid": "42357687",
+      "title": "Genomic Surveillance of Endemic Human Coronaviruses in C\u00f4te d'Ivoire Using Targeted Hybrid-Capture Sequencing.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290028",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepacivirus hominis?",
+      "cited_pmid": "42748356",
+      "title": "Mid-season influenza virus genetic characterizations in U.S. Department of War populations, 2025-2026.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "cited_pmid": "15560064",
+      "title": "Treatment of HCV: approach to difficult cases.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "cited_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus pathogenesis and transmission?",
+      "cited_pmid": "42438688",
+      "title": "Respiratory virus genomic epidemiology during post-pandemic re-emergence of influenza in Australia.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza B virus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "How does Influenza B virus evade or modulate the host immune response?",
+      "cited_pmid": "42743771",
+      "title": "Activation of serum and glucocorticoid-induced kinase 1 promotes the release of coronavirus infectious bronchitis virus particles in cultured cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11120",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694013",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "How does Influenza B virus evade or modulate the host immune response?",
+      "cited_pmid": "42420525",
+      "title": "ALOX15 orchestrates mitochondrial antiviral immunity and serves as a host target for anti-influenza therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza B virus?",
+      "cited_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -240584,6 +241074,24 @@
       "question": "What antiviral drugs or treatments are effective against Zika virus?",
       "missed_pmid": "39480108",
       "title": "Emerging mosquito-borne flaviviruses."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "missed_pmid": "42698509",
+      "title": "Population Surveillance of Respiratory Viral Diseases among Arrivals at National Airports and Seaports in the Republic of Korea, February-September 2025."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "missed_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
