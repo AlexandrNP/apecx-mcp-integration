@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:58:06.042614+00:00",
-  "runs": 149,
+  "updated": "2026-09-27T07:01:18.654256+00:00",
+  "runs": 150,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18907,
-  "n_false_negatives": 3489,
+  "n_false_positives": 18927,
+  "n_false_negatives": 3490,
   "new_this_run": {
-    "false_positives": 139,
+    "false_positives": 20,
     "false_negatives": 1
   },
   "false_positives": [
@@ -213609,6 +213609,227 @@
       "actual_organisms": [
         "unknown"
       ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42129034",
+      "title": "Construction of Attenuated Viruses by Changing the UpA Dinucleotide Frequency.",
+      "actual_organisms": [
+        "Turnip mosaic virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42129044",
+      "title": "VIGS-Based Screening for NLR Genes Regulating Viral Effector-Induced Hypersensitive Response.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "42799886",
+      "title": "CRISPR-Cas13-based amplification-free detection of three quarantine-significant sugarcane viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_53954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_94290"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tobacco mosaic virus?",
+      "cited_pmid": "42347223",
+      "title": "Contrasting Effects of Tagging Turnip Mosaic Virus Proteins.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240607"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "How does Tobacco mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42341164",
+      "title": "Potyviral genome-linked protein targets NbMYB330 to attenuate hydrogen-peroxide-induced antiviral immunity in plants.",
+      "actual_organisms": [
+        "Potato virus Y",
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42800523",
+      "title": "A newly discovered 5' translation-regulatory element with a unique three stem-loop structure in sweet potato feathery mottle virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12844",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42347223",
+      "title": "Contrasting Effects of Tagging Turnip Mosaic Virus Proteins.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240607"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42129034",
+      "title": "Construction of Attenuated Viruses by Changing the UpA Dinucleotide Frequency.",
+      "actual_organisms": [
+        "Turnip mosaic virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "cited_pmid": "42308425",
+      "title": "Indolylurea SST21 Targets Turnip Mosaic Virus Coat Protein to Disrupt Virion Assembly and Activate Host Defense.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "cited_pmid": "42789717",
+      "title": "Specific and efficient translation inhibition-transcription activation resistance module against viruses in plants.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Plum pox virus",
+      "question": "What is the epidemiology and outbreak history of Plum pox virus?",
+      "cited_pmid": "42231872",
+      "title": "Southward Spread of Pepper Necrotic Spot Orthotospovirus into Chile: Identification and Characterization.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1078947",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "40200701",
+      "title": "Viral Detection in Phalaenopsis Orchids Using High-Throughput Sequencing and One-Step Multiplex RT-PCR.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12227",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12238",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1391702",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28869",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "42493612",
+      "title": "Satellite RNAs of Cucumber Mosaic Virus: Molecular Features, Pathogenic Roles, and Ecological Dynamics.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Turnip mosaic virus?",
+      "cited_pmid": "42231872",
+      "title": "Southward Spread of Pepper Necrotic Spot Orthotospovirus into Chile: Identification and Characterization.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1078947",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Turnip mosaic virus?",
+      "cited_pmid": "42548270",
+      "title": "Systemic infection of tobacco mosaic virus is limited by upward transport and phloem unloading without coat protein.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "How does Turnip mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42556132",
+      "title": "Mechanistic insights into potyviral and cucumoviral subversion of plant resistance.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -234545,6 +234766,12 @@
       "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
       "missed_pmid": "41725835",
       "title": "Spatial Modelling of Environmental Risk Factors Influencing Schmallenberg Virus Exposure in German Sheep."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "missed_pmid": "40200701",
+      "title": "Viral Detection in Phalaenopsis Orchids Using High-Throughput Sequencing and One-Step Multiplex RT-PCR."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
