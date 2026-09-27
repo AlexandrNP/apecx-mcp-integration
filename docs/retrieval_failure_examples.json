@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:18:49.186772+00:00",
-  "runs": 378,
+  "updated": "2026-09-27T20:20:50.459259+00:00",
+  "runs": 379,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24151,
-  "n_false_negatives": 4740,
+  "n_false_positives": 24180,
+  "n_false_negatives": 4741,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 0
+    "false_positives": 29,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -272266,6 +272266,313 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_90371",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "9551475",
+      "title": "Comparison of ELISA and HI for detection of antibodies against Wesselsbron disease virus.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "6300226",
+      "title": "An investigation of flavivirus infections of cattle in Zimbabwe Rhodesia with particular reference to Wesselsbron virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is known about Spondweni virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What diagnostic assays or laboratory tests detect Spondweni virus?",
+      "cited_pmid": "10099030",
+      "title": "Preliminary studies on the use of solid-phase immunosorbent techniques for the rapid detection of Wesselsbron virus (WSLV) IgM by haemagglutination-inhibition.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What diagnostic assays or laboratory tests detect Spondweni virus?",
+      "cited_pmid": "9551475",
+      "title": "Comparison of ELISA and HI for detection of antibodies against Wesselsbron disease virus.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is the genome organization and replication cycle of Spondweni virus?",
+      "cited_pmid": "26980239",
+      "title": "Comparative genomic analysis of pre-epidemic and epidemic Zika virus strains for virological factors potentially associated with the rapidly expanding epidemic.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42314066",
+      "title": "Kyasanur Forest Disease: Advances in Experimental Animal Models, Immune Assays, and Challenges in Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Kyasanur Forest disease virus?",
+      "cited_pmid": "10099030",
+      "title": "Preliminary studies on the use of solid-phase immunosorbent techniques for the rapid detection of Wesselsbron virus (WSLV) IgM by haemagglutination-inhibition.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "41760960",
+      "title": "Rocio virus sustained circulation in Brazil: first infection case in a horse highlights the need for enhanced arbovirus surveillance.",
+      "actual_organisms": [
+        "Rocio virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "10436653",
+      "title": "Antigenic relatedness of selected flaviviruses: study with homologous and heterologous immune mouse ascitic fluids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "10099030",
+      "title": "Preliminary studies on the use of solid-phase immunosorbent techniques for the rapid detection of Wesselsbron virus (WSLV) IgM by haemagglutination-inhibition.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "30574581",
+      "title": "Complete Genome Sequences of Spondweni Viruses Isolated between 1958 and 1960.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "19741066",
+      "title": "Genomics and evolution of Aedes-borne flaviviruses.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64283"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "36177383",
+      "title": "High Dose Intravenous Vitamin C Treatment for Zika Fever.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "42084546",
+      "title": "The Troll Is Weakened but Not yet Defeated: An Update on Cytomegalovirus Management in Transplantation From the International CMV Symposium 2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "23765703",
+      "title": "[The concept of emerging viral diseases: what risk for Reunion Island?].",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "30124422",
+      "title": "Spondweni Virus in Field-Caught Culex quinquefasciatus Mosquitoes, Haiti, 2016.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "29845522",
+      "title": "Historical Perspective of Arboviruses in Mozambique and Its Implication for Current and Future Epidemics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the clinical symptoms and disease presentation of Rocio virus?",
+      "cited_pmid": "6128599",
+      "title": "Spondweni virus infection in a foreign resident of Upper Volta.",
+      "actual_organisms": [
+        "Spondweni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the clinical symptoms and disease presentation of Rocio virus?",
+      "cited_pmid": "41651732",
+      "title": "Neuroinvasive West Nile Virus Infection in Kidney Transplantation: Three Case Reports.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "42397903",
+      "title": "Structures of asymmetric particles of tick-borne encephalitis virus provide insight into flavivirus assembly and maturation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_407836",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "42515600",
+      "title": "Cellular Responses to Flavivirus Infections: Stress Signaling at the Crossroads of Host Defense and Virus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "42577415",
+      "title": "Characterization of virus neuroinvasion, blood-brain barrier integrity and neuroinflammation following Powassan virus infection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "42410041",
+      "title": "Restraint of Powassan virus replication by TRIM5\u03b1 facilitates viral avoidance of antiviral immunity.",
+      "actual_organisms": [
+        "Kyasanur Forest disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "42409079",
+      "title": "Landscape and ecological correlates of tick-associated viruses in Inner Mongolia, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2269360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -300708,6 +301015,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus B?",
       "missed_pmid": "29677111",
       "title": "Genome Characterization of a Pathogenic Porcine Rotavirus B Strain Identified in Buryat Republic, Russia in 2015."
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "10099030",
+      "title": "Preliminary studies on the use of solid-phase immunosorbent techniques for the rapid detection of Wesselsbron virus (WSLV) IgM by haemagglutination-inhibition."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
