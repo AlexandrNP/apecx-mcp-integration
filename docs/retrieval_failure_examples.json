@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:40:28.751270+00:00",
-  "runs": 368,
+  "updated": "2026-09-27T19:54:01.490772+00:00",
+  "runs": 369,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24000,
-  "n_false_negatives": 4710,
+  "n_false_positives": 24003,
+  "n_false_negatives": 4712,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 4
+    "false_positives": 3,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -270626,6 +270626,38 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_42786"
       ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bundibugyo ebolavirus?",
+      "cited_pmid": "36123040",
+      "title": "Detection of anti-ebolavirus antibodies in Ghanaian pigs.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bundibugyo ebolavirus?",
+      "cited_pmid": "42770795",
+      "title": "Differential glycosylation in the envelope glycoprotein enhances DC-SIGN-mediated cell entry of the West African Ebolavirus Makona.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tai Forest ebolavirus?",
+      "cited_pmid": "42779995",
+      "title": "Mapping First In Vivo Ebolavirus Infection Events.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
+      ]
     }
   ],
   "false_negatives": [
@@ -298888,6 +298920,18 @@
       "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
       "missed_pmid": "41348408",
       "title": "Surveillance of Enteric Viruses, Enterococci, and PMMoV in Sargassum-Impacted Coastal Waters in the Mexican Caribbean."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bundibugyo ebolavirus?",
+      "missed_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "How does Bundibugyo ebolavirus evade or modulate the host immune response?",
+      "missed_pmid": "40173257",
+      "title": "Ebola virus vaccination elicits Ebola virus-specific immune responses without substantial cross-reactivity to other filoviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
