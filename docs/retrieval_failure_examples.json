@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:42:53.089107+00:00",
-  "runs": 258,
+  "updated": "2026-09-27T14:44:33.616077+00:00",
+  "runs": 259,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22213,
-  "n_false_negatives": 3787,
+  "n_false_positives": 22255,
+  "n_false_negatives": 3794,
   "new_this_run": {
-    "false_positives": 48,
-    "false_negatives": 10
+    "false_positives": 42,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -251219,6 +251219,475 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2733268",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "33690212",
+      "title": "The Bayesian reconstruction and the evolutionary history of Salivirus type 1 and type 2: the worldwide spreading.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "How does Saffold virus evade or modulate the host immune response?",
+      "cited_pmid": "41643365",
+      "title": "Seneca Valley virus 2B and 3\u202fC proteins attenuate the cGAS-STING signaling pathway by targeting STING for degradation.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What are the clinical symptoms and disease presentation of Seneca Valley virus?",
+      "cited_pmid": "30908431",
+      "title": "Clinical Characteristics of Saffold Virus Infection in Children.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seneca Valley virus?",
+      "cited_pmid": "41733345",
+      "title": "A novel glycoform of the rotavirus outer capsid protein VP7 is secreted from polarized cells and activates innate immune cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seneca Valley virus?",
+      "cited_pmid": "41397982",
+      "title": "Saffold virus exploits integrin \u03b1v\u03b28 and sulfated glycosaminoglycans as cooperative attachment receptors for infection.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427731"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seneca Valley virus?",
+      "cited_pmid": "33690212",
+      "title": "The Bayesian reconstruction and the evolutionary history of Salivirus type 1 and type 2: the worldwide spreading.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "33690212",
+      "title": "The Bayesian reconstruction and the evolutionary history of Salivirus type 1 and type 2: the worldwide spreading.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "31641938",
+      "title": "Molecular Detection of Human Salivirus in Italy Through Monitoring of Urban Sewages.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1548189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "30021210",
+      "title": "Prevalence and Clinical Profile of Human Salivirus in Children with Acute Gastroenteritis in Northern Italy, 2014-2015.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1548189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95341"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is known about Salivirus A pathogenesis and transmission?",
+      "cited_pmid": "30895522",
+      "title": "Occurrence of Salivirus in Sewage and River Water Samples in Karaj, Iran.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is the genome organization and replication cycle of Salivirus A?",
+      "cited_pmid": "30249971",
+      "title": "Recombination Located over 2A-2B Junction Ribosome Frameshifting Region of Saffold Cardiovirus.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What antiviral drugs or treatments are effective against Salivirus A?",
+      "cited_pmid": "41642933",
+      "title": "A novel SO2 probe inhibits lysophagy induced by Senecavirus A infection by promoting LAMP1 Cys375 sulfenylation.",
+      "actual_organisms": [
+        "Seneca Valley virus"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What are the clinical symptoms and disease presentation of Salivirus A?",
+      "cited_pmid": "30908431",
+      "title": "Clinical Characteristics of Saffold Virus Infection in Children.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Salivirus A?",
+      "cited_pmid": "41733345",
+      "title": "A novel glycoform of the rotavirus outer capsid protein VP7 is secreted from polarized cells and activates innate immune cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Salivirus A?",
+      "cited_pmid": "42010077",
+      "title": "A New Model for the Transmembrane Heterocomplex of Hemagglutinin HA and Ionic Channel M2 Proteins in Influenza A Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "How does Salivirus A evade or modulate the host immune response?",
+      "cited_pmid": "41643365",
+      "title": "Seneca Valley virus 2B and 3\u202fC proteins attenuate the cGAS-STING signaling pathway by targeting STING for degradation.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "How does Salivirus A evade or modulate the host immune response?",
+      "cited_pmid": "42001951",
+      "title": "STING1 negatively regulates translation and replication of foot-and-mouth disease virus independently of interferon and is antagonized by the viral proteins 3C and 2B.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Salivirus A?",
+      "cited_pmid": "30145388",
+      "title": "Molecular detection and genetic characterization of Salivirus in environmental water in Thailand.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55883",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is known about Human cosavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41666788",
+      "title": "Humoral immunity induced by XEC monovalent vaccines against SARS-CoV-2 variants including XEC, LP.8.1, NB.1.8.1, XFG, and BA.3.2.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is known about Human cosavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41866176",
+      "title": "Development of a conformation-specific nanobody-based ELISA for quantitative detection of intact Senecavirus A virions and virus-like particles.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_622691",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What antiviral drugs or treatments are effective against Human cosavirus?",
+      "cited_pmid": "41642933",
+      "title": "A novel SO2 probe inhibits lysophagy induced by Senecavirus A infection by promoting LAMP1 Cys375 sulfenylation.",
+      "actual_organisms": [
+        "Seneca Valley virus"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What antiviral drugs or treatments are effective against Human cosavirus?",
+      "cited_pmid": "42224368",
+      "title": "A designed peptide disrupting viral protease cleavage restores cGAS-DNA phase separation and type I interferon responses.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is the epidemiology and outbreak history of Human cosavirus?",
+      "cited_pmid": "33690212",
+      "title": "The Bayesian reconstruction and the evolutionary history of Salivirus type 1 and type 2: the worldwide spreading.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human cosavirus?",
+      "cited_pmid": "42010077",
+      "title": "A New Model for the Transmembrane Heterocomplex of Hemagglutinin HA and Ionic Channel M2 Proteins in Influenza A Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human cosavirus?",
+      "cited_pmid": "41733345",
+      "title": "A novel glycoform of the rotavirus outer capsid protein VP7 is secreted from polarized cells and activates innate immune cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human cosavirus?",
+      "cited_pmid": "41397982",
+      "title": "Saffold virus exploits integrin \u03b1v\u03b28 and sulfated glycosaminoglycans as cooperative attachment receptors for infection.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427731"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "How does Human cosavirus evade or modulate the host immune response?",
+      "cited_pmid": "41643365",
+      "title": "Seneca Valley virus 2B and 3\u202fC proteins attenuate the cGAS-STING signaling pathway by targeting STING for degradation.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "How does Human cosavirus evade or modulate the host immune response?",
+      "cited_pmid": "31292248",
+      "title": "The Leader Protein of Theiler's Virus Prevents the Activation of PKR.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41666788",
+      "title": "Humoral immunity induced by XEC monovalent vaccines against SARS-CoV-2 variants including XEC, LP.8.1, NB.1.8.1, XFG, and BA.3.2.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41866176",
+      "title": "Development of a conformation-specific nanobody-based ELISA for quantitative detection of intact Senecavirus A virions and virus-like particles.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_622691",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353466",
+      "title": "Identification of a Conserved Linear Antigenic Determinant in the Senecavirus A VP1 Protein.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42054148",
+      "title": "Senecavirus A non-structural protein 2C and 3A-specific T cell-epitopes promote inactivated vaccine efficacy in pigs via synergistic cellular and humoral immunity.",
+      "actual_organisms": [
+        "Seneca Valley virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "27735999",
+      "title": "Multiplex RT-PCR for rapid detection of viruses commonly causing diarrhea in pediatric patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "33690212",
+      "title": "The Bayesian reconstruction and the evolutionary history of Salivirus type 1 and type 2: the worldwide spreading.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "33254887",
+      "title": "Detection of multiple viruses potentially infecting humans in sewage water from Xinjiang Uygur Autonomous Region, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39733",
+        "http://purl.obolibrary.org/obo/NCBITaxon_585893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "30814463",
+      "title": "Longitudinal Epidemiology of Viral Infectious Diseases Combining Virus Isolation, Antigenic Analysis, and Phylogenetic Analysis as Well as Seroepidemiology in Yamagata, Japan, between 1999 and 2018.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "30908431",
+      "title": "Clinical Characteristics of Saffold Virus Infection in Children.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "32475874",
+      "title": "Prevalence of Eleven Infectious Viruses Causing Diarrhea in Korea.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_329641",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "41397982",
+      "title": "Saffold virus exploits integrin \u03b1v\u03b28 and sulfated glycosaminoglycans as cooperative attachment receptors for infection.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427731"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "41643365",
+      "title": "Seneca Valley virus 2B and 3\u202fC proteins attenuate the cGAS-STING signaling pathway by targeting STING for degradation.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "40815335",
+      "title": "Detection and Genetic Characteristics of Cosavirus and Salivirus in the Wastewater, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "42188899",
+      "title": "Integrated Genomic Analysis Uncovers the Evolutionary Landscape and Global Dissemination of Senecavirus A.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
     }
   ],
   "false_negatives": [
@@ -273943,6 +274412,48 @@
       "question": "What is the genome organization and replication cycle of Mengovirus?",
       "missed_pmid": "30236897",
       "title": "Efficiency evaluation of the process control virus \"Mengovirus\" in real time RT-PCR viral detection in the bivalve mollusc Donax sp."
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Saffold virus?",
+      "missed_pmid": "28495647",
+      "title": "Prevalence of human cosavirus and saffold virus with an emergence of saffold virus genotype 6 in patients hospitalized with acute gastroenteritis in Chiang Mai, Thailand, 2014-2016."
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Saffold virus?",
+      "missed_pmid": "30249971",
+      "title": "Recombination Located over 2A-2B Junction Ribosome Frameshifting Region of Saffold Cardiovirus."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seneca Valley virus?",
+      "missed_pmid": "41865606",
+      "title": "Adaptive VP1 sites 93 and 97 modulate antigenic evolution and receptor binding of Senecavirus A: Phylogenetic analysis and validation with recombinant viruses."
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is known about Human cosavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28223146",
+      "title": "Identification of a novel cosavirus species in faeces of children and its relationship with acute gastroenteritis in China."
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human cosavirus?",
+      "missed_pmid": "30167976",
+      "title": "Occurrence and Genetic Diversity of Human Cosavirus in Sewage in Italy."
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is the genome organization and replication cycle of Human cosavirus?",
+      "missed_pmid": "27729038",
+      "title": "A novel type of cosavirus from children with nonpolio acute flaccid paralysis."
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "30248857",
+      "title": "Quito's virome: Metagenomic analysis of viral diversity in urban streams of Ecuador's capital city."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
