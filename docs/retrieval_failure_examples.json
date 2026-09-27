@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:38:00.037234+00:00",
-  "runs": 255,
+  "updated": "2026-09-27T14:39:39.785916+00:00",
+  "runs": 256,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22124,
-  "n_false_negatives": 3762,
+  "n_false_positives": 22136,
+  "n_false_negatives": 3770,
   "new_this_run": {
-    "false_positives": 21,
-    "false_negatives": 10
+    "false_positives": 12,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -250199,6 +250199,141 @@
       "actual_organisms": [
         "Bluetongue virus"
       ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "8724858",
+      "title": "The relationship of Piry virus to other vesiculoviruses: a re-evaluation based on the glycoprotein gene sequence.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "How does Chandipura virus evade or modulate the host immune response?",
+      "cited_pmid": "42457064",
+      "title": "Regulatory role of noncoding RNAs in infections caused by Rhabdoviridae family viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42300735",
+      "title": "A VSV-vector vaccine simultaneously targeting H5N1 hemagglutinin and matrix protein 2 induces robust neutralizing and ADCC antibody responses and provides full protection against lethal H5N1 infection in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_102793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42531822",
+      "title": "Native elution immunoaffinity chromatography for the efficient purification of vesicular stomatitis virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "How does Piry virus evade or modulate the host immune response?",
+      "cited_pmid": "42294925",
+      "title": "A dominant role of cell death in limiting Chandipura virus propagation at cell-saturating high multiplicity of infection.",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What diagnostic assays or laboratory tests detect Cocal virus?",
+      "cited_pmid": "8209171",
+      "title": "[Comparison of two neutralization tests, used in vesiculovirus Piry serodiagnosis].",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972575"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What diagnostic assays or laboratory tests detect Cocal virus?",
+      "cited_pmid": "16021308",
+      "title": "Diagnosis of Brazilian vesiculoviruses by reverse transcription-polymerase chain reaction.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "15614433",
+      "title": "Complete genome sequences of Chandipura and Isfahan vesiculoviruses.",
+      "actual_organisms": [
+        "Chandipura virus",
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "8724858",
+      "title": "The relationship of Piry virus to other vesiculoviruses: a re-evaluation based on the glycoprotein gene sequence.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the epidemiology and outbreak history of Cocal virus?",
+      "cited_pmid": "38402042",
+      "title": "Vesicular Stomatitis Virus.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cocal virus?",
+      "cited_pmid": "32504705",
+      "title": "Distribution and evolution of the major viruses infecting cucurbitaceous and solanaceous crops in the French Mediterranean area.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_146500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91753",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cocal virus?",
+      "cited_pmid": "35553417",
+      "title": "Phylodynamics of Alagoas vesiculovirus in Brazil.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972579",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -272773,6 +272908,54 @@
       "question": "What is known about Banna virus pathogenesis and transmission?",
       "missed_pmid": "35632713",
       "title": "Full Genome Sequencing of Three Sedoreoviridae Viruses Isolated from Culicoides spp. (Diptera, Ceratopogonidae) in China."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "missed_pmid": "15614433",
+      "title": "Complete genome sequences of Chandipura and Isfahan vesiculoviruses."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "missed_pmid": "42260362",
+      "title": "Epidemiological investigation of Chandipura virus disease outbreak, Gujarat, India, July 2024: a matched case-control study."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "How does Chandipura virus evade or modulate the host immune response?",
+      "missed_pmid": "22116291",
+      "title": "Reviewing host proteins of Rhabdoviridae: possible leads for lesser studied viruses."
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "missed_pmid": "22116291",
+      "title": "Reviewing host proteins of Rhabdoviridae: possible leads for lesser studied viruses."
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "missed_pmid": "16021308",
+      "title": "Diagnosis of Brazilian vesiculoviruses by reverse transcription-polymerase chain reaction."
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "missed_pmid": "15614433",
+      "title": "Complete genome sequences of Chandipura and Isfahan vesiculoviruses."
+    },
+    {
+      "organism": "Piry virus",
+      "question": "How does Piry virus evade or modulate the host immune response?",
+      "missed_pmid": "21264301",
+      "title": "Influence of enriched environment on viral encephalitis outcomes: behavioral and neuropathological changes in albino Swiss mice."
+    },
+    {
+      "organism": "Piry virus",
+      "question": "How does Piry virus evade or modulate the host immune response?",
+      "missed_pmid": "8209171",
+      "title": "[Comparison of two neutralization tests, used in vesiculovirus Piry serodiagnosis]."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
