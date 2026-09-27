@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:41:14.229514+00:00",
-  "runs": 257,
+  "updated": "2026-09-27T14:42:53.089107+00:00",
+  "runs": 258,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22165,
-  "n_false_negatives": 3777,
+  "n_false_positives": 22213,
+  "n_false_negatives": 3787,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 7
+    "false_positives": 48,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -250654,6 +250654,571 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_381707",
         "http://purl.obolibrary.org/obo/NCBITaxon_54315"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42234771",
+      "title": "Neutralizing antibodies elicited in nonhuman primates by an enterovirus D68 virus-like particle vaccine target receptor binding sites.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39442312",
+      "title": "Immunogenicity analysis based on VP1 and VP2 proteins of bovine enterovirus.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "39956903",
+      "title": "BEV 2C protein inhibits the NF-\u03baB signalling pathway to promote viral replication by targeting IKBKB and p65.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "41423171",
+      "title": "Development of a rapid, real-time RT-RAA assay for sensitive detection of bovine enterovirus in fecal samples.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "40548730",
+      "title": "Wastewater monitoring allows the detection of uncommon and highly pathogenic enterovirus types.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42772"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42514079",
+      "title": "Twenty-Two Months of Syndromic Multiplex-PCR Testing for Acute Infections in a Southern Italian Hospital: Pathogen Epidemiology, Diagnostic Appropriateness and the Cost of Negative Results.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1313",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1496",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91347",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "41992312",
+      "title": "Construction of a reverse genetics and fluorescent reporter system for a bovine enterovirus isolated from cattle with diarrhea.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "40318791",
+      "title": "Peptides designed based on 3C substrates exhibit antiviral efficacy in vivo.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "42366172",
+      "title": "Household Transmission of Enterovirus D68, Washington and Oregon, United States, 2022-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "40184501",
+      "title": "Epidemiological and Clinical Insights into Enterovirus Circulation in Europe, 2018-2023: A Multicenter Retrospective Surveillance Study.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "42365938",
+      "title": "National Surveillance of Enterovirus D68 Upsurge, France, 2024.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "40129758",
+      "title": "Hemophagocytic lymphohistiocytosis in a neonate with enterovirus infection: Case report and literature review.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "42376601",
+      "title": "Conjunctivitis outbreak associated with Enterovirus Type C in Luzira Prisons, Uganda, February-April 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "41276054",
+      "title": "Preparation of monoclonal antibodies for the VP1 protein of bovine enterovirus and precise mapping of linear B-cell epitopes.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "40427334",
+      "title": "Emergence of a Recombinant Bovine Enterovirus in China: Insights from Phylogenetic and Temporal Analysis.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "41538891",
+      "title": "Molecular epidemiological investigation and genetic diversity of bovine enterovirus in China.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "40425923",
+      "title": "A 3-Year Environmental Surveillance Reveals Multiple Enteroviruses Including Types A76, A89, A90 and C113 in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185940",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is known about Enterovirus D68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is known about Enterovirus D68 pathogenesis and transmission?",
+      "cited_pmid": "42366172",
+      "title": "Household Transmission of Enterovirus D68, Washington and Oregon, United States, 2022-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "40466758",
+      "title": "Voxtalisib inhibits enterovirus 71 replication by downregulating host RAN and restoring IFN-STAT signaling.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus D68?",
+      "cited_pmid": "41276054",
+      "title": "Preparation of monoclonal antibodies for the VP1 protein of bovine enterovirus and precise mapping of linear B-cell epitopes.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "cited_pmid": "40425923",
+      "title": "A 3-Year Environmental Surveillance Reveals Multiple Enteroviruses Including Types A76, A89, A90 and C113 in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185940",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "cited_pmid": "42757737",
+      "title": "Characterization and Evolutionary Analysis of Type E4 Bovine Enterovirus From Clinical Cattle With Diarrhea in Inner Mongolia, China.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genome organization and replication cycle of Echovirus 11?",
+      "cited_pmid": "41252368",
+      "title": "Disrupted glycosylphosphatidylinositol anchoring induces ER stress and restricts enterovirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46018"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41012728",
+      "title": "Immunogenicity of Virus-like Particles Based on VP1 Protein of Bovine Norovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42234771",
+      "title": "Neutralizing antibodies elicited in nonhuman primates by an enterovirus D68 virus-like particle vaccine target receptor binding sites.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "41328592",
+      "title": "Genome-scale CRISPR screen identifies host factors associated with bovine parainfluenza virus 3 infection.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052729"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "31164575",
+      "title": "Two-Step Concentration of Complex Water Samples for the Detection of Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42514079",
+      "title": "Twenty-Two Months of Syndromic Multiplex-PCR Testing for Acute Infections in a Southern Italian Hospital: Pathogen Epidemiology, Diagnostic Appropriateness and the Cost of Negative Results.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1313",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1496",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91347",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "40466758",
+      "title": "Voxtalisib inhibits enterovirus 71 replication by downregulating host RAN and restoring IFN-STAT signaling.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "40425923",
+      "title": "A 3-Year Environmental Surveillance Reveals Multiple Enteroviruses Including Types A76, A89, A90 and C113 in Eastern China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185940",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "40184501",
+      "title": "Epidemiological and Clinical Insights into Enterovirus Circulation in Europe, 2018-2023: A Multicenter Retrospective Surveillance Study.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42365938",
+      "title": "National Surveillance of Enterovirus D68 Upsurge, France, 2024.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42007820",
+      "title": "Emergence of Echovirus 11 in Severe and Neonatal Enterovirus Infections: A 9-Year Retrospective Study in Taiwan Before and After the COVID-19 Pandemic.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42424163",
+      "title": "Acute Flaccid Myelitis Surveillance - United States, January 2020-December 2025.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "40129758",
+      "title": "Hemophagocytic lymphohistiocytosis in a neonate with enterovirus infection: Case report and literature review.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42429385",
+      "title": "Molecular Types of Rhinovirus Among Cases of Acute Respiratory Infections in a University Hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "42637770",
+      "title": "A dual-receptor checkpoint primes enterovirus D68 for respiratory cell entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "41276054",
+      "title": "Preparation of monoclonal antibodies for the VP1 protein of bovine enterovirus and precise mapping of linear B-cell epitopes.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "41410465",
+      "title": "Environmental surveillance reveals enterovirus diversity in Jinan, China: detection of types D68, A71, A76, B88, A90, and C99.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1295563",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "40483486",
+      "title": "Metagenomic insights into the complex viral composition of the enteric RNA virome in healthy and diarrheic calves from Ethiopia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1431456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733268",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -273318,6 +273883,66 @@
       "question": "What is known about Kyasanur Forest disease virus pathogenesis and transmission?",
       "missed_pmid": "42410041",
       "title": "Restraint of Powassan virus replication by TRIM5\u03b1 facilitates viral avoidance of antiviral immunity."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "missed_pmid": "30944213",
+      "title": "Bacterial Stabilization of a Panel of Picornaviruses."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "missed_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus D68?",
+      "missed_pmid": "40184501",
+      "title": "Epidemiological and Clinical Insights into Enterovirus Circulation in Europe, 2018-2023: A Multicenter Retrospective Surveillance Study."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus D68?",
+      "missed_pmid": "42357629",
+      "title": "Enterovirus D68 VP1 and VP3 Determine Neurotropism in Human Spinal Cord Organoids."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus D68?",
+      "missed_pmid": "42365938",
+      "title": "National Surveillance of Enterovirus D68 Upsurge, France, 2024."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is the genome organization and replication cycle of Bovine enterovirus?",
+      "missed_pmid": "40711320",
+      "title": "Genomic Characterization of Two Bovine Enterovirus Strains Isolated from Newly Transported Cattle."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "30944213",
+      "title": "Bacterial Stabilization of a Panel of Picornaviruses."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "30150981",
+      "title": "Atopy-Dependent and Independent Immune Responses in the Heightened Severity of Atopics to Respiratory Viral Infections: Rat Model Studies."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32574649",
+      "title": "Evaluation of a commercial exogenous internal process control for diagnostic RNA virus metagenomics from different animal clinical samples."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "missed_pmid": "30236897",
+      "title": "Efficiency evaluation of the process control virus \"Mengovirus\" in real time RT-PCR viral detection in the bivalve mollusc Donax sp."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
