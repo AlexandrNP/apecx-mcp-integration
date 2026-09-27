@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:41:48.377751+00:00",
-  "runs": 418,
+  "updated": "2026-09-27T21:43:32.986996+00:00",
+  "runs": 419,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24567,
+  "n_false_positives": 24581,
   "n_false_negatives": 4845,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 3
+    "false_positives": 14,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -276910,6 +276910,189 @@
       "actual_organisms": [
         "Japanese encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "24586469",
+      "title": "Population structure and evolution of Rhinoviruses.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "42606511",
+      "title": "Hepatitis Overview: Viral Hepatitis.",
+      "actual_organisms": [
+        "Hepatitis A virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42448046",
+      "title": "Rapid neutralization test based on ELISPOT for detecting antibodies against rhinovirus 1B.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "28696310",
+      "title": "Antibody-induced uncoating of human rhinovirus B14.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "25574400",
+      "title": "Type I diabetes mellitus: genetic factors and presumptive enteroviral etiology or protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_463676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "37348715",
+      "title": "Unveiling indicator, enteric, and respiratory viruses in aircraft lavatory wastewater using adsorption-extraction and Nanotrap\u00ae Microbiome A Particles workflows.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1211417",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "38004704",
+      "title": "Development of a Melting-Curve-Based Multiplex Real-Time PCR Assay for the Simultaneous Detection of Viruses Causing Respiratory Infection.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "37951882",
+      "title": "Establishment of RT-RPA-Cas12a assay for rapid and sensitive detection of human rhinovirus B.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "41690908",
+      "title": "Structures of the eIF4G-binding RNA domains among picornaviral IRES types are topologically conserved.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "41066960",
+      "title": "18\u03b2-glycyrrhetinic acid-amantadine hybrid: Synthesis and anti-EMCV activity via NF-\u03baB modulation.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "41701746",
+      "title": "Zoological transmission of encephalomyocarditis virus in the United States: Virus evolution, host ecology, and capsid antigenicity derived from an outbreak.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "24586469",
+      "title": "Population structure and evolution of Rhinoviruses.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "41957126",
+      "title": "Fecal metatranscriptomics and virus isolation reveal picornavirus diversity and evolution in Japanese wild boars and pigs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_106966",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118139",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1406340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1454551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2234086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_686984"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Encephalomyocarditis virus?",
+      "cited_pmid": "24586469",
+      "title": "Population structure and evolution of Rhinoviruses.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
