@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:31:25.365493+00:00",
-  "runs": 311,
+  "updated": "2026-09-27T17:33:30.368524+00:00",
+  "runs": 312,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23246,
-  "n_false_negatives": 4258,
+  "n_false_positives": 23252,
+  "n_false_negatives": 4260,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 13
+    "false_positives": 6,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -262459,6 +262459,73 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "38848817",
+      "title": "Insights into the genetic characteristics, clustering patterns, and phylogeographic dynamics of the JC polyomavirus, 1993 to 2023.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "38848817",
+      "title": "Insights into the genetic characteristics, clustering patterns, and phylogeographic dynamics of the JC polyomavirus, 1993 to 2023.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42601002",
+      "title": "Binding capacity of Intravenous immunoglobulin G to BK polyomavirus determines its anti-BK polyomavirus activity in infected cultures.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "38848817",
+      "title": "Insights into the genetic characteristics, clustering patterns, and phylogeographic dynamics of the JC polyomavirus, 1993 to 2023.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "42607931",
+      "title": "BK polyomavirus reactivation in renal transplant recipients: A cross-sectional study using combined qualitative and quantitative PCR.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "42652202",
+      "title": "Divergent Cellular and Humoral Immunity to BK Polyomavirus in Healthy Adults and Renal Transplant Recipients Based on Blood and Urine Samples: Implications for Immune-Guided Monitoring.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -288009,6 +288076,18 @@
       "question": "What is the epidemiology and outbreak history of Laguna Negra orthohantavirus?",
       "missed_pmid": "11791973",
       "title": "Patterns of infection with Laguna Negra virus in wild populations of Calomys laucha in the central Paraguayan chaco."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "missed_pmid": "42601002",
+      "title": "Binding capacity of Intravenous immunoglobulin G to BK polyomavirus determines its anti-BK polyomavirus activity in infected cultures."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "missed_pmid": "38848817",
+      "title": "Insights into the genetic characteristics, clustering patterns, and phylogeographic dynamics of the JC polyomavirus, 1993 to 2023."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
