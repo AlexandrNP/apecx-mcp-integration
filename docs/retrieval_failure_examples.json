@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:11:39.390005+00:00",
-  "runs": 306,
+  "updated": "2026-09-27T17:13:32.611641+00:00",
+  "runs": 307,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23169,
-  "n_false_negatives": 4206,
+  "n_false_positives": 23180,
+  "n_false_negatives": 4216,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 9
+    "false_positives": 11,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -261623,6 +261623,127 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1239569",
         "http://purl.obolibrary.org/obo/NCBITaxon_249588"
       ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "cited_pmid": "41993518",
+      "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "41993518",
+      "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993518",
+      "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Machupo mammarenavirus?",
+      "cited_pmid": "42066794",
+      "title": "Placental Vascular Pathology Associated with Congenital Lymphocytic Choriomeningitis Virus Infection, Philadelphia, Pennsylvania, USA.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42391156",
+      "title": "Development and qualification of an enzyme-linked immunosorbent assay to detect human serum immunoglobulin G reactive to multiple lineages of Lassa virus nucleoprotein.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42061916",
+      "title": "A Clinical Review of Congenital and Perinatal Infections: From Womb to Follow-Up.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "39921799",
+      "title": "Comparative genetic analysis of pathogenic and attenuated strains of Jun\u00edn virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42327048",
+      "title": "Computationally hybridized pathogenic mammarenavirus receptor binding domains reveal cryptic variants that elicit cross-neutralizing immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -286861,6 +286982,66 @@
       "question": "What is the genome organization and replication cycle of Human astrovirus?",
       "missed_pmid": "42037360",
       "title": "Human astrovirus draft genomes from under-five children presenting with gastroenteritis in Malawi from 2012 to 2024."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "missed_pmid": "42365235",
+      "title": "Lessons in the Wake of a Lassa fever case in the Midwest U.S: epidemiology, management and preparedness gaps."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "missed_pmid": "42361202",
+      "title": "Evaluating vectors for the design of a spillover-disrupting Lassa virus transmissible vaccine."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lassa mammarenavirus?",
+      "missed_pmid": "42379202",
+      "title": "Incidence of symptomatic Lassa virus infection in West African countries (Enable 1.0 Lassa Research Study): a prospective, multisite, cohort study."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lassa mammarenavirus?",
+      "missed_pmid": "42358566",
+      "title": "Missed Opportunities for Timely Diagnosis and Effective Therapeutic Management of Prolonged Fever: A Case Study of Confirmed Lassa Fever in N'Z\u00e9r\u00e9kor\u00e9, Guinea, 2022."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40632652",
+      "title": "In situ insights into antibody-mediated neutralization of a pre-fusion Junin virus glycoprotein complex."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39693032",
+      "title": "Immunoinformatic based designing of highly immunogenic multi-epitope subunit vaccines to stimulate an adaptive immune response against Junin virus."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "40381661",
+      "title": "Mode of antiviral action of the galactose-specific lectin, AJLec, on the Junin virus propagation."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39854593",
+      "title": "Development and characterization of a reverse genetics system for the lineage II Chicava strain of Machupo virus in a guinea pig model."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Machupo mammarenavirus?",
+      "missed_pmid": "40733611",
+      "title": "Characterization of a STAT-1 Knockout Mouse Model for Machupo Virus Infection and Pathogenesis."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "41993518",
+      "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
