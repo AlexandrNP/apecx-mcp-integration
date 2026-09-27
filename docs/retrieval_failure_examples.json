@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:01:15.373135+00:00",
-  "runs": 350,
+  "updated": "2026-09-27T19:03:08.887703+00:00",
+  "runs": 351,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23695,
-  "n_false_negatives": 4555,
+  "n_false_positives": 23713,
+  "n_false_negatives": 4564,
   "new_this_run": {
-    "false_positives": 0,
-    "false_negatives": 4
+    "false_positives": 18,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -267345,6 +267345,185 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_40120",
         "http://purl.obolibrary.org/obo/NCBITaxon_6157"
       ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious salmon anemia virus?",
+      "cited_pmid": "40583844",
+      "title": "Field-Usable Lateral Flow Immunochromatographic Assay for Rapid Detection of Infectious Haematopoietic Necrosis Virus (IHNV).",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "cited_pmid": "40089086",
+      "title": "Antiviral potential of the arctigenin derivative COA in reducing viral adhesion to the epithelial cell surface against IHNV infection.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Infectious salmon anemia virus?",
+      "cited_pmid": "34960697",
+      "title": "No Evidence of the Vertical Transmission of Non-Virulent Infectious Salmon Anaemia Virus (ISAV-HPR0) in Farmed Atlantic Salmon.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907958"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "40571062",
+      "title": "Evaluation of the flinders technology associates cards for storage and molecular detection of Infectious hypodermal and hematopoietic necrosis virus (IHHNV) DNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1513224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "35337038",
+      "title": "Infectious Salmon Anemia Virus Infectivity Is Determined by Multiple Segments with an Important Contribution from Segment 5.",
+      "actual_organisms": [
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_324913"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "41305541",
+      "title": "Development of a Mass Antiviral Screening System Using Viral Hemorrhagic Septicemia Virus as an RNA Surrogate and Activity Confirmation with a Fish Rhabdovirus.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_103603",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "40513982",
+      "title": "A case report about the detection of infectious hypodermal and hematopoietic necrosis virus (IHHNV) in shrimp displaying no clinical signs or histopathological lesions from farms on Colombia's north coast.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1513224"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "41775811",
+      "title": "Long-COVID: assessment of circulating markers suggests no cerebral neuronal damage, neuroinflammation or systemic inflammation-a controlled study.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "36240255",
+      "title": "Destruction of the vascular viral receptor in infectious salmon anaemia provides in vivo evidence of homologous attachment interference.",
+      "actual_organisms": [
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907958"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "41738767",
+      "title": "Marine medaka PKC\u03b1 promotes red-spotted grouper nervous necrosis virus entry by orchestrating MYL3-mediated macropinocytosis and cofilin-dependent actin remodeling.",
+      "actual_organisms": [
+        "Nervous necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "How does Infectious hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "41790267",
+      "title": "Nervous necrosis virus capsid protein functions as a SUMO E3 ligase to activate MAVS-dependent NF-\u03baB signaling.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "40583844",
+      "title": "Field-Usable Lateral Flow Immunochromatographic Assay for Rapid Detection of Infectious Haematopoietic Necrosis Virus (IHNV).",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "41775811",
+      "title": "Long-COVID: assessment of circulating markers suggests no cerebral neuronal damage, neuroinflammation or systemic inflammation-a controlled study.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What is the genome organization and replication cycle of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "35337038",
+      "title": "Infectious Salmon Anemia Virus Infectivity Is Determined by Multiple Segments with an Important Contribution from Segment 5.",
+      "actual_organisms": [
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_324913"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Nervous necrosis virus?",
+      "cited_pmid": "41775811",
+      "title": "Long-COVID: assessment of circulating markers suggests no cerebral neuronal damage, neuroinflammation or systemic inflammation-a controlled study.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Nervous necrosis virus?",
+      "cited_pmid": "40583844",
+      "title": "Field-Usable Lateral Flow Immunochromatographic Assay for Rapid Detection of Infectious Haematopoietic Necrosis Virus (IHNV).",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Nervous necrosis virus?",
+      "cited_pmid": "41305541",
+      "title": "Development of a Mass Antiviral Screening System Using Viral Hemorrhagic Septicemia Virus as an RNA Surrogate and Activity Confirmation with a Fish Rhabdovirus.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_103603",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Nervous necrosis virus?",
+      "cited_pmid": "41790576",
+      "title": "Long COVID neuropathy: The role of mast cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
     }
   ],
   "false_negatives": [
@@ -294677,6 +294856,60 @@
       "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
       "missed_pmid": "12083831",
       "title": "Antigenic peptides of the epizootic hematopoietic necrosis virus."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is known about Infectious salmon anemia virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35963560",
+      "title": "In silico prediction of B and T cell epitopes of infectious salmon anemia virus proteins and molecular modeling of T cell epitopes to salmon major histocompatibility complex (MHC) class I."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "missed_pmid": "35337038",
+      "title": "Infectious Salmon Anemia Virus Infectivity Is Determined by Multiple Segments with an Important Contribution from Segment 5."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "missed_pmid": "35397120",
+      "title": "Descriptive epidemiology of variants of infectious salmon anaemia virus in four Atlantic salmon farms in Newfoundland and Labrador, Canada."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Infectious salmon anemia virus?",
+      "missed_pmid": "38873156",
+      "title": "Development and application of a whole genome amplicon sequencing method for infectious salmon anemia virus (ISAV)."
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Infectious hematopoietic necrosis virus?",
+      "missed_pmid": "40460984",
+      "title": "Comparative virulence and evolution analysis of infectious hematopoietic necrosis virus (IHNV) isolated from cultured Oncorhynchus mykiss in three different regions of China."
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious hematopoietic necrosis virus?",
+      "missed_pmid": "40583844",
+      "title": "Field-Usable Lateral Flow Immunochromatographic Assay for Rapid Detection of Infectious Haematopoietic Necrosis Virus (IHNV)."
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "missed_pmid": "41305541",
+      "title": "Development of a Mass Antiviral Screening System Using Viral Hemorrhagic Septicemia Virus as an RNA Surrogate and Activity Confirmation with a Fish Rhabdovirus."
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "missed_pmid": "41232635",
+      "title": "Development of a neutralization ccombody, synthetic hagfish antibody, for viral hemorrhagic septicemia virus (VHSV) targeting glycoprotein G."
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41912043",
+      "title": "De novo establishment of a stable brain cell line from Cephalopholis sonnerati (tomato grouper) and transcriptomic dissection of its response to nervous necrosis virus (NNV) infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
