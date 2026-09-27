@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:13:32.611641+00:00",
-  "runs": 307,
+  "updated": "2026-09-27T17:18:32.108025+00:00",
+  "runs": 308,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23180,
-  "n_false_negatives": 4216,
+  "n_false_positives": 23209,
+  "n_false_negatives": 4231,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 10
+    "false_positives": 29,
+    "false_negatives": 15
   },
   "false_positives": [
     {
@@ -261744,6 +261744,329 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "38526320",
+      "title": "Case of Human Orthohantavirus Infection, Michigan, USA, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "30020615",
+      "title": "Hantavirus Pulmonary Syndrome",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "37632047",
+      "title": "Zoonotic Hantaviridae with Global Public Health Significance.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "40733543",
+      "title": "Characterisation of Orthohantavirus Serotypes in Human Infections in Kazakhstan.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "37142192",
+      "title": "Development of a novel minigenome and recombinant VSV expressing Seoul hantavirus glycoprotein-based assays to identify anti-hantavirus therapeutics.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2497569"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "cited_pmid": "29083610",
+      "title": "Hantavirus Cardiopulmonary Syndrome (Archived)",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "cited_pmid": "40285020",
+      "title": "Clinical Manifestations of Hemorrhagic Fever with Renal Syndrome, Various Nosologic Forms and Issues of Hantavirus Infections Terminology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hantaan orthohantavirus?",
+      "cited_pmid": "37488123",
+      "title": "Two point mutations in protocadherin-1 disrupt hantavirus recognition and afford protection against lethal infection.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hantaan orthohantavirus?",
+      "cited_pmid": "40406115",
+      "title": "Puumala orthohantavirus: prevalence, biology, disease, animal models and recent advances in therapeutics development and structural biology.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39423729",
+      "title": "Identification and validation of cross-reactivity of anti-Thailand orthohantavirus nucleocapsid peptides.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "38526320",
+      "title": "Case of Human Orthohantavirus Infection, Michigan, USA, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "40406115",
+      "title": "Puumala orthohantavirus: prevalence, biology, disease, animal models and recent advances in therapeutics development and structural biology.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "40733543",
+      "title": "Characterisation of Orthohantavirus Serotypes in Human Infections in Kazakhstan.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "9298732",
+      "title": "Puumala and Dobrava viruses cause hemorrhagic fever with renal syndrome in Bosnia-Herzegovina: evidence of highly cross-neutralizing antibody responses in early patient sera.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "37142192",
+      "title": "Development of a novel minigenome and recombinant VSV expressing Seoul hantavirus glycoprotein-based assays to identify anti-hantavirus therapeutics.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2497569"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "cited_pmid": "30020615",
+      "title": "Hantavirus Pulmonary Syndrome",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "cited_pmid": "40285020",
+      "title": "Clinical Manifestations of Hemorrhagic Fever with Renal Syndrome, Various Nosologic Forms and Issues of Hantavirus Infections Terminology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39423729",
+      "title": "Identification and validation of cross-reactivity of anti-Thailand orthohantavirus nucleocapsid peptides.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Puumala orthohantavirus?",
+      "cited_pmid": "39850002",
+      "title": "Outbreak of hantavirus disease caused by Puumala virus, Croatia, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39423729",
+      "title": "Identification and validation of cross-reactivity of anti-Thailand orthohantavirus nucleocapsid peptides.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36971354",
+      "title": "Antigenic mapping and functional characterization of human New World hantavirus neutralizing antibodies.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39551791",
+      "title": "Phase 1 clinical trial of Hantaan and Puumala virus DNA vaccines delivered by needle-free injection.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "38526320",
+      "title": "Case of Human Orthohantavirus Infection, Michigan, USA, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "40733543",
+      "title": "Characterisation of Orthohantavirus Serotypes in Human Infections in Kazakhstan.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "40879634",
+      "title": "Molecular Evolution and Zoonotic Potential of Muju Virus (Orthohantavirus puumalaense) in Craseomys regulus, Republic of Korea.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_340093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Seoul orthohantavirus?",
+      "cited_pmid": "41351900",
+      "title": "Direct targeting of the nucleocapsid protein by morin inhibits Hantaan virus infection.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Seoul orthohantavirus?",
+      "cited_pmid": "41321098",
+      "title": "Seasonal Trends of Major Respiratory, Gastrointestinal, and Other Viral Infections in Korea: An Analysis Before, During, and After the Coronavirus Disease 2019 Pandemic.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Seoul orthohantavirus?",
+      "cited_pmid": "30020615",
+      "title": "Hantavirus Pulmonary Syndrome",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Seoul orthohantavirus?",
+      "cited_pmid": "29083610",
+      "title": "Hantavirus Cardiopulmonary Syndrome (Archived)",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
     }
   ],
   "false_negatives": [
@@ -287042,6 +287365,96 @@
       "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
       "missed_pmid": "41993518",
       "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9362032",
+      "title": "Hantavirus infection in SCID mice."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "missed_pmid": "39551791",
+      "title": "Phase 1 clinical trial of Hantaan and Puumala virus DNA vaccines delivered by needle-free injection."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Hantaan orthohantavirus?",
+      "missed_pmid": "37428512",
+      "title": "Hantavirus Infections among Military Forces."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37322112",
+      "title": "Mechanistic basis for potent neutralization of Sin Nombre hantavirus by a human monoclonal antibody."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "missed_pmid": "38236803",
+      "title": "Distribution and prevalence of Sin Nombre hantavirus in rodent species in eastern New Mexico."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "missed_pmid": "37549153",
+      "title": "Structural and functional characterization of the Sin Nombre virus L protein."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "missed_pmid": "37998012",
+      "title": "Sin Nombre Virus and the Emergence of Other Hantaviruses: A Review of the Biology, Ecology, and Disease of a Zoonotic Pathogen."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "missed_pmid": "29083610",
+      "title": "Hantavirus Cardiopulmonary Syndrome (Archived)"
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Puumala orthohantavirus?",
+      "missed_pmid": "39551791",
+      "title": "Phase 1 clinical trial of Hantaan and Puumala virus DNA vaccines delivered by needle-free injection."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9362032",
+      "title": "Hantavirus infection in SCID mice."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9298732",
+      "title": "Puumala and Dobrava viruses cause hemorrhagic fever with renal syndrome in Bosnia-Herzegovina: evidence of highly cross-neutralizing antibody responses in early patient sera."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "missed_pmid": "41419169",
+      "title": "Characterization of minigenome systems for Hantaan and Seoul hantaviruses."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "missed_pmid": "37142192",
+      "title": "Development of a novel minigenome and recombinant VSV expressing Seoul hantavirus glycoprotein-based assays to identify anti-hantavirus therapeutics."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Seoul orthohantavirus?",
+      "missed_pmid": "37428512",
+      "title": "Hantavirus Infections among Military Forces."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "missed_pmid": "41597762",
+      "title": "Effect of Hantavirus Infection on the Rodent Lung Microbiome: Specific Regulatory Roles of Host Species and Virus Types."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
