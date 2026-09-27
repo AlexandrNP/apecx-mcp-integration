@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:43:56.554349+00:00",
-  "runs": 450,
+  "updated": "2026-09-27T22:45:40.913813+00:00",
+  "runs": 451,
   "model": "mistral-nemo:latest",
   "n_false_positives": 24868,
-  "n_false_negatives": 4865,
+  "n_false_negatives": 4866,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 0
+    "false_positives": 0,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -309564,6 +309564,12 @@
       "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
       "missed_pmid": "41583791",
       "title": "Coxsackievirus A6 was the predominant pathogen of hand, foot, and mouth disease with frequent recombination and mutations in Shandong Province, 2023."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
+      "missed_pmid": "38072991",
+      "title": "Down-regulated TAB1 suppresses the replication of Coxsackievirus B5 via activating the NF-\u03baB pathways through interaction with viral 3D polymerase."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
