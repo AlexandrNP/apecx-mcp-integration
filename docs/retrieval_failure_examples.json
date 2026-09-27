@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:38:58.287546+00:00",
-  "runs": 367,
+  "updated": "2026-09-27T19:40:28.751270+00:00",
+  "runs": 368,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23971,
-  "n_false_negatives": 4706,
+  "n_false_positives": 24000,
+  "n_false_negatives": 4710,
   "new_this_run": {
-    "false_positives": 24,
-    "false_negatives": 8
+    "false_positives": 29,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -270310,6 +270310,322 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42580485",
+      "title": "Pre-clinical immunogenicity and safety evaluation of H2 strain Hepatitis A Inactivated Vaccine in rhesus macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "41485922",
+      "title": "Sofosbuvir/Velpatasvir in Chronic Hepatitis C, Compensated and Decompensated Cirrhosis, and Retreatment Settings.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis A virus?",
+      "cited_pmid": "42010077",
+      "title": "A New Model for the Transmembrane Heterocomplex of Hemagglutinin HA and Ionic Channel M2 Proteins in Influenza A Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41321794",
+      "title": "Parechovirus meningitis in infants: report of the first cluster of cases in Saudi Arabia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus pathogenesis and transmission?",
+      "cited_pmid": "41570237",
+      "title": "Genetic diversity of parechoviruses (Picornaviridae: Paavivirinae: Parechovirus: Parechovirus ahumpari) circulating in Nizhny Novgorod in 2021-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the epidemiology and outbreak history of Human parechovirus?",
+      "cited_pmid": "41206097",
+      "title": "Parechovirus-A3 Infection in Neonates and Young Infants from the Pre-Coronavirus Disease 2019 Pandemic Period to the Post-Restriction Era from the Pediatric Parechovirus Surveillance Group in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "41733345",
+      "title": "A novel glycoform of the rotavirus outer capsid protein VP7 is secreted from polarized cells and activates innate immune cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Foot-and-mouth disease virus?",
+      "cited_pmid": "42655817",
+      "title": "Development of a mu3ABC-Based Lateral Flow Immunochromatographic Strip for Rapid DIVA-Compatible Detection of Antibodies Specific to Foot-and-Mouth Disease Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42678738",
+      "title": "Glycyrrhizic acid increased FMD vaccine potency\u00a0in a mineral-based adjuvant, but not\u00a0in\u00a0an oil-based adjuvant.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42661957",
+      "title": "Review and evaluation of data defining FMD vaccine potency standards for endemic countries.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "41321794",
+      "title": "Parechovirus meningitis in infants: report of the first cluster of cases in Saudi Arabia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "42061817",
+      "title": "Sepsis-like symptoms from parechovirus A type 5 in a neonate: First Japanese case and literature review.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "42655817",
+      "title": "Development of a mu3ABC-Based Lateral Flow Immunochromatographic Strip for Rapid DIVA-Compatible Detection of Antibodies Specific to Foot-and-Mouth Disease Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "42736308",
+      "title": "Redox cycling of viral RNA polymerase controls picornavirus replication.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42049139",
+      "title": "Human intestinal organoid-derived epithelium reveals donor-dependent antiviral responses to therapeutics against enteric picornaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42606511",
+      "title": "Hepatitis Overview: Viral Hepatitis.",
+      "actual_organisms": [
+        "Hepatitis A virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "42055673",
+      "title": "A Rare Case of Adult-Onset Human Parechovirus Type A3 Encephalitis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "42001594",
+      "title": "Human parechovirus infection in neonates and young infants: Clinical features, diagnostic challenges, and neurodevelopmental outcomes.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684",
+        "http://purl.obolibrary.org/obo/NCBITaxon_195055",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "41733345",
+      "title": "A novel glycoform of the rotavirus outer capsid protein VP7 is secreted from polarized cells and activates innate immune cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "42010077",
+      "title": "A New Model for the Transmembrane Heterocomplex of Hemagglutinin HA and Ionic Channel M2 Proteins in Influenza A Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "42680043",
+      "title": "Heat shock protein 90\u03b1 mediates endocytosis of duck hepatitis a virus type 3 (DHAV-3) via interaction with viral capsid protein 1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1006063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_691956"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "41348544",
+      "title": "Quiescent ILC1 cells confer protection against MCMV infection during undernutrition.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12138"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "42488850",
+      "title": "Phylogenetic analysis of enteroviruses from non-human primates suggests two new species within the genus Enterovirus and inter-species recombination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "42501789",
+      "title": "First report and molecular characterization of bovine kobuvirus in beef cattle from eastern Inner Mongolia, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
     }
   ],
   "false_negatives": [
@@ -298548,6 +298864,30 @@
       "question": "What is the epidemiology and outbreak history of Mengovirus?",
       "missed_pmid": "28018329",
       "title": "Propidium Monoazide Integrated with qPCR Enables the Detection and Enumeration of Infectious Enteric RNA and DNA Viruses in Clam and Fermented Sausages."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "missed_pmid": "42606511",
+      "title": "Hepatitis Overview: Viral Hepatitis."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "missed_pmid": "42001594",
+      "title": "Human parechovirus infection in neonates and young infants: Clinical features, diagnostic challenges, and neurodevelopmental outcomes."
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "missed_pmid": "42655665",
+      "title": "Phylogenetic Analysis of Foot-and-Mouth Disease Virus from Cattle in Nigeria, 2017-2020."
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41348408",
+      "title": "Surveillance of Enteric Viruses, Enterococci, and PMMoV in Sargassum-Impacted Coastal Waters in the Mexican Caribbean."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
