@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:07:29.303047+00:00",
-  "runs": 246,
+  "updated": "2026-09-27T14:09:25.398826+00:00",
+  "runs": 247,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22000,
-  "n_false_negatives": 3684,
+  "n_false_positives": 22019,
+  "n_false_negatives": 3695,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 14
+    "false_positives": 19,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -248831,6 +248831,211 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_561",
         "http://purl.obolibrary.org/obo/NCBITaxon_562"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42024482",
+      "title": "A Rapid and Ultrasensitive Detection of Coxsackievirus A16 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with the CRISPR-Cas12a-Based Biosensing System.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2994055",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "42262130",
+      "title": "Research progress on the association between viruses and cardiac diseases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 pathogenesis and transmission?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 pathogenesis and transmission?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "40608831",
+      "title": "Identification of picornavirus proteins that inhibit de novo nucleotide synthesis during infection.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "39592765",
+      "title": "Synthesis, characterization, molecular docking, pharmacokinetics, and molecular dynamics of new bis-thiazoles based on bis-thiosemicarbazone as anti-coxsackievirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "How does Coxsackievirus A16 evade or modulate the host immune response?",
+      "cited_pmid": "42325006",
+      "title": "Targeting the Myocardial Microenvironment: Novel Antiviral Strategies and Therapeutic Perspectives for Coxsackievirus B-Induced Myocarditis.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is known about Echovirus 30 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40733627",
+      "title": "Investigation of the Mouse Infection Model for Echovirus 18.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40733627",
+      "title": "Investigation of the Mouse Infection Model for Echovirus 18.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40075457",
+      "title": "Establishment and application of a wild neonatal mouse model infected with an Echovirus 30 isolate.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "39790073",
+      "title": "Neonatal acute liver failure cases with echovirus 11 infections, Japan, August to November 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "39828573",
+      "title": "[Genetic evolution analysis of enteric cytopathogenic human orphan virus type 30 in three cases of infants and young children in Hubei Province].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42170749",
+      "title": "Prospective use of wastewater surveillance for early detection of enterovirus D68 in community outbreaks among children, Niigata City, Japan, 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "40548730",
+      "title": "Wastewater monitoring allows the detection of uncommon and highly pathogenic enterovirus types.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42772"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "39790073",
+      "title": "Neonatal acute liver failure cases with echovirus 11 infections, Japan, August to November 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -270937,6 +271142,72 @@
       "question": "What is known about Human papillomavirus type 45 pathogenesis and transmission?",
       "missed_pmid": "29981762",
       "title": "Genetic variability and lineage phylogeny of human papillomavirus type 45 based on E6 and E7 genes in Southwest China."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "missed_pmid": "42325006",
+      "title": "Targeting the Myocardial Microenvironment: Novel Antiviral Strategies and Therapeutic Perspectives for Coxsackievirus B-Induced Myocarditis."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "missed_pmid": "39772264",
+      "title": "Optimized Directed Virus Evolution to Accelerate the Generation of Oncolytic Coxsackievirus B3 Adapted to Resistant Colorectal Cancer Cells."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B3?",
+      "missed_pmid": "42320606",
+      "title": "NAE inhibitor MLN4924 effectively suppresses Coxsackievirus B3 replication."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B3?",
+      "missed_pmid": "40608831",
+      "title": "Identification of picornavirus proteins that inhibit de novo nucleotide synthesis during infection."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42024482",
+      "title": "A Rapid and Ultrasensitive Detection of Coxsackievirus A16 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with the CRISPR-Cas12a-Based Biosensing System."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "missed_pmid": "41927810",
+      "title": "Enterovirus A71 3AB protein facilitates immune evasion by blocking cGAS recognition of mtDNA."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is known about Echovirus 30 pathogenesis and transmission?",
+      "missed_pmid": "39828573",
+      "title": "[Genetic evolution analysis of enteric cytopathogenic human orphan virus type 30 in three cases of infants and young children in Hubei Province]."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 30?",
+      "missed_pmid": "40075457",
+      "title": "Establishment and application of a wild neonatal mouse model infected with an Echovirus 30 isolate."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "missed_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "missed_pmid": "41902671",
+      "title": "Epidemiological shifts in coxsackievirus A-induced hand, foot, and mouth disease in China, 2008-2024."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
