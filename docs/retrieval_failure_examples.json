@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:57:18.808467+00:00",
-  "runs": 225,
+  "updated": "2026-09-27T12:14:24.081665+00:00",
+  "runs": 226,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21665,
-  "n_false_negatives": 3594,
+  "n_false_positives": 21671,
+  "n_false_negatives": 3595,
   "new_this_run": {
-    "false_positives": 16,
-    "false_negatives": 0
+    "false_positives": 6,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -245092,6 +245092,72 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_46018",
         "http://purl.obolibrary.org/obo/NCBITaxon_47515"
       ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "20648614",
+      "title": "Confirmation of Choclo virus as the cause of hantavirus cardiopulmonary syndrome and high serum antibody prevalence in Panama.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_169173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "cited_pmid": "38856680",
+      "title": "Use of a diagnostic Puumala virus real-time RT-PCR in an orthohantavirus endemic region in the Netherlands.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the epidemiology and outbreak history of Prospect Hill virus?",
+      "cited_pmid": "37376694",
+      "title": "Hantavirus in Panama: Twenty Years of Epidemiological Surveillance Experience.",
+      "actual_organisms": [
+        "Choclo orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the epidemiology and outbreak history of Prospect Hill virus?",
+      "cited_pmid": "42620593",
+      "title": "Rapid response and surveillance for high-risk contacts during May 2026 Andes hantavirus outbreak: a Northern Italy experience.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Prospect Hill virus?",
+      "cited_pmid": "23055565",
+      "title": "Diversity and distribution of hantaviruses in South America.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Choclo orthohantavirus?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
     }
   ],
   "false_negatives": [
@@ -266658,6 +266724,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
       "missed_pmid": "42765537",
       "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Andes orthohantavirus?",
+      "missed_pmid": "29077702",
+      "title": "A lethal disease model for New World hantaviruses using immunosuppressed Syrian hamsters."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
