@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:34:05.820946+00:00",
-  "runs": 445,
+  "updated": "2026-09-27T22:36:05.659337+00:00",
+  "runs": 446,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24831,
-  "n_false_negatives": 4856,
+  "n_false_positives": 24839,
+  "n_false_negatives": 4857,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 2
+    "false_positives": 8,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -279951,6 +279951,90 @@
         "Coxsackievirus A16",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Foot-and-mouth disease virus?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "39495348",
+      "title": "A meningoencephalitis outbreak associated with echovirus type 18 (E18) in south-western Hungary in mid-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 11?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42595093",
+      "title": "Construction of a suckling mouse model based on an EV-C96 clinical isolate and its application in drug screening and vaccine development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1193974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_325445"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42630966",
+      "title": "Enterovirus infections in children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "39495348",
+      "title": "A meningoencephalitis outbreak associated with echovirus type 18 (E18) in south-western Hungary in mid-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
     }
   ],
   "false_negatives": [
@@ -309089,6 +309173,12 @@
       "question": "What is known about Enterovirus D68 pathogenesis and transmission?",
       "missed_pmid": "42037410",
       "title": "EV-D68 exploits clathrin-mediated endocytosis and compensatory macropinocytosis for cellular entry."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 11?",
+      "missed_pmid": "39599886",
+      "title": "Recent Molecular Epidemiology of Echovirus 11 Throughout North and West Africa Resulted in the First Identification of a Recombinant Strain from an Acute Flaccid Paralysis Case in West Africa."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
