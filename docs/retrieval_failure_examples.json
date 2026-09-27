@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:09:07.100764+00:00",
-  "runs": 293,
+  "updated": "2026-09-27T16:14:26.489097+00:00",
+  "runs": 294,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23000,
-  "n_false_negatives": 4125,
+  "n_false_positives": 23013,
+  "n_false_negatives": 4129,
   "new_this_run": {
     "false_positives": 13,
-    "false_negatives": 0
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -259811,6 +259811,150 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B5?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "38729515",
+      "title": "Echovirus 11 lineage I and other enteroviruses in hospitalized children with acute respiratory infection in Southern Italy, 2022- 2023.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "40425923",
+      "title": "A 3-Year Environmental Surveillance Reveals Multiple Enteroviruses Including Types A76, A89, A90 and C113 in Eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185940",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233640",
+      "title": "Progress in enterovirus D68-neutralizing antibodies and vaccines.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "42366172",
+      "title": "Household Transmission of Enterovirus D68, Washington and Oregon, United States, 2022-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
     }
   ],
   "false_negatives": [
@@ -284563,6 +284707,30 @@
       "question": "How does Echovirus 11 evade or modulate the host immune response?",
       "missed_pmid": "39790073",
       "title": "Neonatal acute liver failure cases with echovirus 11 infections, Japan, August to November 2024."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus D68?",
+      "missed_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42287823",
+      "title": "Differential immune responses elicited by two tetravalent epitope-based DNA vaccines differently designed for human hand-foot-and-mouth disease."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "missed_pmid": "42404790",
+      "title": "A CRISPR/Cas12a-based reverse transcription multiple cross displacement amplification technique for sensitive, rapid, and highly specific detection of human enterovirus A71 in clinical application."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "How does Enterovirus A71 evade or modulate the host immune response?",
+      "missed_pmid": "41927810",
+      "title": "Enterovirus A71 3AB protein facilitates immune evasion by blocking cGAS recognition of mtDNA."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
