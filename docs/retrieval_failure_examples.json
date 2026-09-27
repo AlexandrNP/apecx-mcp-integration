@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:49:31.072261+00:00",
-  "runs": 262,
+  "updated": "2026-09-27T14:51:09.716480+00:00",
+  "runs": 263,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22361,
-  "n_false_negatives": 3816,
+  "n_false_positives": 22374,
+  "n_false_negatives": 3825,
   "new_this_run": {
-    "false_positives": 21,
-    "false_negatives": 0
+    "false_positives": 13,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -252839,6 +252839,143 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39340018",
+      "title": "Long-Term Immunogenicity Study of an Aluminum Phosphate-Adjuvanted Inactivated Enterovirus A71 Vaccine in Children: An Extension to a Phase 2 Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis A virus?",
+      "cited_pmid": "42037415",
+      "title": "A single residue in the VP3 capsid protein governs virulence and informs live-attenuated vaccine design for coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "42049139",
+      "title": "Human intestinal organoid-derived epithelium reveals donor-dependent antiviral responses to therapeutics against enteric picornaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "28696310",
+      "title": "Antibody-induced uncoating of human rhinovirus B14.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B pathogenesis and transmission?",
+      "cited_pmid": "29684211",
+      "title": "Heterotypic Infection and Spread of Rhinovirus A, B, and C among Childcare Attendees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the epidemiology and outbreak history of Rhinovirus B?",
+      "cited_pmid": "30201131",
+      "title": "Molecular epidemiology and clinical features of rhinovirus infections among hospitalized patients in a medical center in Taiwan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4753"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the epidemiology and outbreak history of Rhinovirus B?",
+      "cited_pmid": "30933255",
+      "title": "Association of Rhinovirus C Bronchiolitis and Immunoglobulin E Sensitization During Infancy With Development of Recurrent Wheeze.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_463676"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "How does Rhinovirus B evade or modulate the host immune response?",
+      "cited_pmid": "29124902",
+      "title": "T-cell responses against rhinovirus species A and C in asthmatic and healthy children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 pathogenesis and transmission?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42049139",
+      "title": "Human intestinal organoid-derived epithelium reveals donor-dependent antiviral responses to therapeutics against enteric picornaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42037415",
+      "title": "A single residue in the VP3 capsid protein governs virulence and informs live-attenuated vaccine design for coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B5?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -275737,6 +275874,60 @@
       "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
       "missed_pmid": "10951274",
       "title": "Erythroplasia of queyrat: coinfection with cutaneous carcinogenic human papillomavirus type 8 and genital papillomaviruses in a carcinoma in situ."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the epidemiology and outbreak history of Hepatitis A virus?",
+      "missed_pmid": "42606884",
+      "title": "Serologic Immunity to Hepatitis A and B in US Adults and High-Risk Populations."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "missed_pmid": "42055673",
+      "title": "A Rare Case of Adult-Onset Human Parechovirus Type A3 Encephalitis."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "missed_pmid": "42061817",
+      "title": "Sepsis-like symptoms from parechovirus A type 5 in a neonate: First Japanese case and literature review."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "missed_pmid": "41810583",
+      "title": "Neonatal CNS Human Parechovirus Infections in Western Pennsylvania in the 2024 Season."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28608756",
+      "title": "Effects of Omalizumab on Rhinovirus Infections, Illnesses, and Exacerbations of Asthma."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "42037415",
+      "title": "A single residue in the VP3 capsid protein governs virulence and informs live-attenuated vaccine design for coxsackievirus A6."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "missed_pmid": "42001055",
+      "title": "Viral shedding dynamics in coxsackievirus A6 hand, foot, and mouth disease: a prospective, individual-level analysis."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "missed_pmid": "42116129",
+      "title": "Estimating the nationwide incidence of coxsackievirus A6-associated hand, foot and mouth disease in China, 2008-2022."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 pathogenesis and transmission?",
+      "missed_pmid": "39647532",
+      "title": "CircPTPN11 inhibits the replication of Coxsackievirus B5 through regulating the IFN-I pathway by targeting miR-152-3p/SIRPA axis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
