@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:38:37.794113+00:00",
-  "runs": 212,
+  "updated": "2026-09-27T11:40:04.788487+00:00",
+  "runs": 213,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21112,
-  "n_false_negatives": 3590,
+  "n_false_positives": 21157,
+  "n_false_negatives": 3591,
   "new_this_run": {
-    "false_positives": 55,
-    "false_negatives": 0
+    "false_positives": 45,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -238670,6 +238670,516 @@
         "Murray Valley encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
       ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Japanese encephalitis virus?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Japanese encephalitis virus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Japanese encephalitis virus?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "How does Venezuelan equine encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Puumala orthohantavirus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Puumala orthohantavirus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Puumala orthohantavirus?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Puumala orthohantavirus?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Puumala orthohantavirus?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "41902274",
+      "title": "Human Hantavirus Infections in Hungary (2018-2025): Epidemiology, Molecular Detection Across Clinical Sample Types, and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "42663734",
+      "title": "Development of a rapid antiviral screening assay based on GFP reporter virus of bovine enterovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the epidemiology and outbreak history of Human respirovirus 3?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "How does Human respirovirus 3 evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "42743357",
+      "title": "Genomic epidemiology of coxsackievirus A24 variant during the 2024 acute hemorrhagic conjunctivitis outbreak in Coastal Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12089"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42733724",
+      "title": "Japanese encephalitis virus reprograms host pyrimidine metabolism to facilitate viral replication.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of JC polyomavirus?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "42350480",
+      "title": "A drug repurposing screen identifies antiviral compounds against Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "42130922",
+      "title": "Diagnostic and Clinical Challenges of Hantavirus-Associated Acute Kidney Injury.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "42455865",
+      "title": "Bleeding in haemorrhagic fever with renal syndrome: A systematic review characterising the loss of haemostasis in hantavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "How does Enterovirus C evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "How does Enterovirus C evade or modulate the host immune response?",
+      "cited_pmid": "42742229",
+      "title": "Enterovirus 71 drives TLR2-NF-\u03baB-dependent inflammatory skeletal muscle injury in neonatal BALB/c mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2045071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -260212,6 +260722,12 @@
       "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
       "missed_pmid": "40420030",
       "title": "Spatial and temporal analysis of Rift Valley fever outbreaks in livestock in Uganda: a retrospective study from 2013 to 2022."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "How does Venezuelan equine encephalitis virus evade or modulate the host immune response?",
+      "missed_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
