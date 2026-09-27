@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:36:10.787607+00:00",
-  "runs": 313,
+  "updated": "2026-09-27T17:38:16.907921+00:00",
+  "runs": 314,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23276,
-  "n_false_negatives": 4267,
+  "n_false_positives": 23285,
+  "n_false_negatives": 4276,
   "new_this_run": {
-    "false_positives": 24,
-    "false_negatives": 7
+    "false_positives": 9,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -262796,6 +262796,122 @@
         "Bean common mosaic virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_43240"
       ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "39763273",
+      "title": "A new disease symptomology observed in wheat is associated with high levels of Triticum mosaic virus transcripts.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "40990692",
+      "title": "Relative Occurrence and Seasonal Variations of Wheat-Infecting Viruses in Texas.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169986",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_460364",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42043263",
+      "title": "Investigation of the Viromes of Solanaceous Weeds in Hungary Using High-Throughput Sequencing Adds New Insights to Their Hidden Complexity.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046402",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12167",
+        "http://purl.obolibrary.org/obo/NCBITaxon_131083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2080462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95622"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tobacco mosaic virus?",
+      "cited_pmid": "41537910",
+      "title": "Evolutionary origin and demographic trajectory of tomato spotted wilt virus (Orthotospovirus tomatomaculae).",
+      "actual_organisms": [
+        "Tomato spotted wilt virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tobacco mosaic virus?",
+      "cited_pmid": "41269354",
+      "title": "Hidden diversity of yellow dwarf viruses in Australian cereals.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119164",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1825924",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169985",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169986",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_228582",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844012",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39738"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is known about Cucumber mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41754593",
+      "title": "Generation of a Bivalent Recombinant Vaccine Conferring Dual Protection Against Potyvirus and Orthotospovirus in Cucurbits.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Tomato spotted wilt virus",
+      "question": "How does Tomato spotted wilt virus evade or modulate the host immune response?",
+      "cited_pmid": "42467663",
+      "title": "The durable resistance gene Tm-22 remains partially resistant to tomato brown rugose fruit virus.",
+      "actual_organisms": [
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What diagnostic assays or laboratory tests detect Barley yellow dwarf virus?",
+      "cited_pmid": "38916923",
+      "title": "Yellow Dwarf Virus Resistance in Barley: Phenotyping, Remote Imagery, and Virus-Vector Characterization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What antiviral drugs or treatments are effective against Barley yellow dwarf virus?",
+      "cited_pmid": "42515608",
+      "title": "Plant-Derived Anti-TMV Metabolites: Mechanisms, Limitations and Future Perspectives.",
+      "actual_organisms": [
+        "Tobacco mosaic virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -288400,6 +288516,60 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Watermelon mosaic virus?",
       "missed_pmid": "33445406",
       "title": "Assessment of the Current Status of Potyviruses in Watermelon and Pumpkin Crops in Spain: Epidemiological Impact of Cultivated Plants and Mixed Infections."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "missed_pmid": "42371416",
+      "title": "Development and validation of diagnostic KASP markers for MYMIV resistance in urdbean."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "missed_pmid": "42324686",
+      "title": "Identification of (-)-Epicatechin 3-gallate from seeds of Platycarya strobilacea with dual-functions of direct antivirus and plant immune elicitation against TMV."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "How does Tobacco mosaic virus evade or modulate the host immune response?",
+      "missed_pmid": "42467663",
+      "title": "The durable resistance gene Tm-22 remains partially resistant to tomato brown rugose fruit virus."
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "missed_pmid": "41975583",
+      "title": "Turnip mosaic virus resistance breaking strain in canola: Symptomatology, seed and contact transmission, yield losses and seed germination."
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Cucumber mosaic virus?",
+      "missed_pmid": "42043263",
+      "title": "Investigation of the Viromes of Solanaceous Weeds in Hungary Using High-Throughput Sequencing Adds New Insights to Their Hidden Complexity."
+    },
+    {
+      "organism": "Tomato spotted wilt virus",
+      "question": "What is the genome organization and replication cycle of Tomato spotted wilt virus?",
+      "missed_pmid": "41678993",
+      "title": "Characterization of Italian resistance-breaking isolates of tomato spotted wilt virus reveals double resistance-breaking strains in tomato and pepper and new insights into the occurrence of the recently reported D122G substitution in the NSm protein."
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the genome organization and replication cycle of Barley yellow dwarf virus?",
+      "missed_pmid": "39306539",
+      "title": "Beyond movement: expanding functional landscape of luteovirus movement proteins."
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Barley yellow dwarf virus?",
+      "missed_pmid": "39219006",
+      "title": "Effect of Barley Yellow Dwarf Virus (BYDV) on Barley: A Precise Assessment of Reductions in Yield Components Under Variable Disease Severities."
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Barley yellow dwarf virus?",
+      "missed_pmid": "39853960",
+      "title": "A novel quantitative trait locus for barley yellow dwarf virus resistance and kernel traits on chromosome 2D of a wheat cultivar Jagger."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
