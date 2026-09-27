@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:57:11.422392+00:00",
-  "runs": 348,
+  "updated": "2026-09-27T18:59:41.814491+00:00",
+  "runs": 349,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23683,
-  "n_false_negatives": 4540,
+  "n_false_positives": 23695,
+  "n_false_negatives": 4551,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 7
+    "false_positives": 12,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -267197,6 +267197,154 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_307456"
       ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "cited_pmid": "32533071",
+      "title": "Ivermectin: a systematic review from antiviral effects to COVID-19 complementary regimen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of White spot syndrome virus?",
+      "cited_pmid": "37347193",
+      "title": "Deciphering the Origin of DNA Viruses (Replication-Associated Parvo-NS1) That Infect Vertebrates from Invertebrate-Infecting Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10803",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40119",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6157"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "cited_pmid": "32533071",
+      "title": "Ivermectin: a systematic review from antiviral effects to COVID-19 complementary regimen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33685778",
+      "title": "Next generation live-attenuated yellow fever vaccine candidate: Safety and immuno-efficacy in small animal models.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32533071",
+      "title": "Ivermectin: a systematic review from antiviral effects to COVID-19 complementary regimen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "cited_pmid": "37689373",
+      "title": "Establishment of two visual interpretation methods of DIV1 LAMP amplification products.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560405",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27971",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_670"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "cited_pmid": "38396559",
+      "title": "Development of a Melting Curve-Based Triple Eva Green Real-Time PCR Assay for Simultaneous Detection of Three Shrimp Pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560405",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27971",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844058"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "37486432",
+      "title": "In vitro propagation of infectious hypodermal hematopoietic necrosis virus (Penaeus stylirostris penstyldensovirus) in PmLyO-Sf9 cells.",
+      "actual_organisms": [
+        "Infectious hypodermal and hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733234"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "38676657",
+      "title": "Ben-JNK signaling is required for host mortality during Periplaneta fuliginosa densovirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_97344"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "41966821",
+      "title": "White Spot Syndrome Virus Envelope Protein VP53B Functions as a Trypsin Inhibitor and Interacts With Hemocyanin.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "41895642",
+      "title": "Evaluation of white spot syndrome virus genome stability across serial passages.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "37347193",
+      "title": "Deciphering the Origin of DNA Viruses (Replication-Associated Parvo-NS1) That Infect Vertebrates from Invertebrate-Infecting Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10803",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40119",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6157"
+      ]
     }
   ],
   "false_negatives": [
@@ -294439,6 +294587,72 @@
       "question": "What is the genome organization and replication cycle of Spodoptera frugiperda nucleopolyhedrovirus?",
       "missed_pmid": "40015841",
       "title": "Differential pathogenicity of heterologous nucleopolyhedroviruses on Spodoptera frugiperda corresponds to modulated expression of immune-response-related genes."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus pathogenesis and transmission?",
+      "missed_pmid": "41966821",
+      "title": "White Spot Syndrome Virus Envelope Protein VP53B Functions as a Trypsin Inhibitor and Interacts With Hemocyanin."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus pathogenesis and transmission?",
+      "missed_pmid": "42315067",
+      "title": "The membrane receptor Basigin facilitates WSSV infection by binding envelope proteins and suppressing antiviral gene expression in shrimp."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "missed_pmid": "42523091",
+      "title": "The white spot syndrome virus wsv156 protein hijacks Parkin-dependent mitophagy to promote viral infection."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "missed_pmid": "42312655",
+      "title": "White spot syndrome virus hypothetical protein GP017 functions as a putative RNA interference suppressor."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the clinical symptoms and disease presentation of White spot syndrome virus?",
+      "missed_pmid": "21906627",
+      "title": "Multiplex real-time PCR and high-resolution melting analysis for detection of white spot syndrome virus, yellow-head virus, and Penaeus monodon densovirus in penaeid shrimp."
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "missed_pmid": "21192980",
+      "title": "Multiplication of Taura syndrome virus in primary hemocyte culture of shrimp (Penaeus vannamei)."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32663545",
+      "title": "Effective suppression of yellow head virus replication in Penaeus monodon hemocytes using constitutive expression vector for long-hairpin RNA (lhRNA)."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "missed_pmid": "21906627",
+      "title": "Multiplex real-time PCR and high-resolution melting analysis for detection of white spot syndrome virus, yellow-head virus, and Penaeus monodon densovirus in penaeid shrimp."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "missed_pmid": "32615142",
+      "title": "A multi-target dsRNA for simultaneous inhibition of yellow head virus and white spot syndrome virus in shrimp."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "missed_pmid": "33864947",
+      "title": "Caspase-3, a shrimp phosphorylated hemocytic protein is necessary to control YHV infection."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "missed_pmid": "33108263",
+      "title": "ICTV Virus Taxonomy Profile: Roniviridae."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
