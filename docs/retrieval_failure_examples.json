@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:46:01.107946+00:00",
-  "runs": 236,
+  "updated": "2026-09-27T13:47:39.163751+00:00",
+  "runs": 237,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21827,
-  "n_false_negatives": 3630,
+  "n_false_positives": 21843,
+  "n_false_negatives": 3634,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 3
+    "false_positives": 16,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -246947,6 +246947,201 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What antiviral drugs or treatments are effective against La Crosse virus?",
+      "cited_pmid": "42515606",
+      "title": "Antiviral Candidates and Vaccine Development for the Neglected Oropouche Virus.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "28726628",
+      "title": "California Serogroup Virus Infection Associated with Encephalitis and Cognitive Decline, Canada, 2015.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What diagnostic assays or laboratory tests detect Oropouche virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What antiviral drugs or treatments are effective against Bunyamwera virus?",
+      "cited_pmid": "42515606",
+      "title": "Antiviral Candidates and Vaccine Development for the Neglected Oropouche Virus.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the epidemiology and outbreak history of Bunyamwera virus?",
+      "cited_pmid": "26855300",
+      "title": "Serological Survey for Antibodies to Mosquito-Borne Bunyaviruses Among US National Park Service and US Forest Service Employees.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What are the clinical symptoms and disease presentation of Bunyamwera virus?",
+      "cited_pmid": "28726628",
+      "title": "California Serogroup Virus Infection Associated with Encephalitis and Cognitive Decline, Canada, 2015.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052384"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What diagnostic assays or laboratory tests detect Cache Valley virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genome organization and replication cycle of Cache Valley virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What antiviral drugs or treatments are effective against Cache Valley virus?",
+      "cited_pmid": "42515606",
+      "title": "Antiviral Candidates and Vaccine Development for the Neglected Oropouche Virus.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "How does Cache Valley virus evade or modulate the host immune response?",
+      "cited_pmid": "39772143",
+      "title": "Innate Immune Response Against Batai Virus, Bunyamwera Virus, and Their Reassortants.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genome organization and replication cycle of Snowshoe hare virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What antiviral drugs or treatments are effective against Snowshoe hare virus?",
+      "cited_pmid": "42515606",
+      "title": "Antiviral Candidates and Vaccine Development for the Neglected Oropouche Virus.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
     }
   ],
   "false_negatives": [
@@ -268729,6 +268924,30 @@
       "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
       "missed_pmid": "41544545",
       "title": "Human parainfluenza virus type 3 viruses with the furin-susceptible motif at the cleavage site of the fusion protein arose from original wild strains during their propagation in vitro."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "missed_pmid": "41463544",
+      "title": "Contrasting La Crosse Virus Lineage III Vector Competency in Two Geographical Populations of Aedes triseriatus and Aedes albopictus Mosquitoes."
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What antiviral drugs or treatments are effective against Bunyamwera virus?",
+      "missed_pmid": "39205310",
+      "title": "Bunyamwera Virus Infection of Wolbachia-Carrying Aedes aegypti Mosquitoes Reduces Wolbachia Density."
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is known about Cache Valley virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26855300",
+      "title": "Serological Survey for Antibodies to Mosquito-Borne Bunyaviruses Among US National Park Service and US Forest Service Employees."
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the epidemiology and outbreak history of Cache Valley virus?",
+      "missed_pmid": "25487728",
+      "title": "Arboviruses in North Dakota, 2003-2006."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
