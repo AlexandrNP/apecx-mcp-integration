@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:17:04.183484+00:00",
-  "runs": 330,
+  "updated": "2026-09-27T18:19:20.463836+00:00",
+  "runs": 331,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23481,
-  "n_false_negatives": 4381,
+  "n_false_positives": 23499,
+  "n_false_negatives": 4385,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 9
+    "false_positives": 18,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -265055,6 +265055,191 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "37217029",
+      "title": "Genetic diversity and functional implication of the long control region in human papillomavirus types 52, 58, and 16 from Central China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "12202231",
+      "title": "Analysis of the infectious entry pathway of human papillomavirus type 33 pseudovirions.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "How does Human papillomavirus 16 evade or modulate the host immune response?",
+      "cited_pmid": "42266136",
+      "title": "Synergistic Interaction Between HPV-16 E7 Oncoprotein and Severe Vitamin A Deficiency in Regulating Adaptive Immunity in a Preclinical Cervical Cancer Model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "37217029",
+      "title": "Genetic diversity and functional implication of the long control region in human papillomavirus types 52, 58, and 16 from Central China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 18?",
+      "cited_pmid": "41627058",
+      "title": "An mRNA-encoded scFv antibody targeting the helix-\u03b13 of HPV18 E7 oncoprotein as a novel antiviral strategy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "12202231",
+      "title": "Analysis of the infectious entry pathway of human papillomavirus type 33 pseudovirions.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "37294390",
+      "title": "Carcinogenesis and management of human papillomavirus-associated cervical cancer.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "42266136",
+      "title": "Synergistic Interaction Between HPV-16 E7 Oncoprotein and Severe Vitamin A Deficiency in Regulating Adaptive Immunity in a Preclinical Cervical Cancer Model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "42230578",
+      "title": "HPV16 genetic variation provides evidence of positive natural selection driven by HLA class I.",
+      "actual_organisms": [
+        "Human papillomavirus 16"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 33?",
+      "cited_pmid": "12359456",
+      "title": "Human papillomavirus type 32 does not display in vitro transforming properties.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_333763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 pathogenesis and transmission?",
+      "cited_pmid": "12359456",
+      "title": "Human papillomavirus type 32 does not display in vitro transforming properties.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_333763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 52?",
+      "cited_pmid": "41849492",
+      "title": "Analyzing Codon Usage Patterns in Human Papillomavirus Type 18.",
+      "actual_organisms": [
+        "Human papillomavirus 18",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 52?",
+      "cited_pmid": "16350418",
+      "title": "Generation and applications of HPV pseudovirions using vaccinia virus.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 52?",
+      "cited_pmid": "37442188",
+      "title": "Clinical Characteristics of Human Papillomavirus Infection in the Male Genital Tract.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "15507710",
+      "title": "Pseudovirions as specific tools for investigation of virus interactions with cells.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 52?",
+      "cited_pmid": "12202231",
+      "title": "Analysis of the infectious entry pathway of human papillomavirus type 33 pseudovirions.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "24314666",
+      "title": "Human papillomavirus 33 worldwide genetic variation and associated risk of cervical cancer.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
     }
   ],
   "false_negatives": [
@@ -291343,6 +291528,30 @@
       "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 33?",
       "missed_pmid": "16350418",
       "title": "Generation and applications of HPV pseudovirions using vaccinia virus."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "17014700",
+      "title": "Characterization of neutralizing epitopes within the major capsid protein of human papillomavirus type 33."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "11448530",
+      "title": "Analysis of E6 variants of human papillomavirus type 33, 52 and 58 in Japanese women with cervical intraepithelial neoplasia/cervical cancer in relation to their oncogenic potential."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "missed_pmid": "42230578",
+      "title": "HPV16 genetic variation provides evidence of positive natural selection driven by HLA class I."
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41593213",
+      "title": "Inverted Sinonasal Papilloma: Pheno-endotyping and Predictive Markers of Recurrence and Malignancy - A Systematic Review."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
