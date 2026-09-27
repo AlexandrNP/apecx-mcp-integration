@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:02:15.688240+00:00",
-  "runs": 323,
+  "updated": "2026-09-27T18:04:11.654668+00:00",
+  "runs": 324,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23379,
-  "n_false_negatives": 4334,
+  "n_false_positives": 23382,
+  "n_false_negatives": 4342,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 4
+    "false_positives": 3,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -263997,6 +263997,39 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12078",
         "http://purl.obolibrary.org/obo/NCBITaxon_33758"
       ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32035105",
+      "title": "Development of vaccines for prevention of peste-des-petits-ruminants virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2593991"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "34089875",
+      "title": "Cryo-EM structure of the cetacean morbillivirus nucleoprotein-RNA complex.",
+      "actual_organisms": [
+        "Cetacean morbillivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Phocine distemper virus?",
+      "cited_pmid": "41961182",
+      "title": "Evaluation of Selected Brain Damage Biomarkers in the Determination of Brain Damage in Dogs With Neurological Distemper.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
     }
   ],
   "false_negatives": [
@@ -290003,6 +290036,54 @@
       "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
       "missed_pmid": "41709303",
       "title": "Detection rate, clinical characteristics, and molecular characterization of enterovirus and parechovirus infections in Thai infants during the first three months of life."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32300201",
+      "title": "Full genome sequencing of archived wild type and vaccine rinderpest virus isolates prior to their destruction."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus pathogenesis and transmission?",
+      "missed_pmid": "27477502",
+      "title": "Evolutionary characteristics of morbilliviruses during serial passages in vitro: Gradual attenuation of virus virulence."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "missed_pmid": "35275128",
+      "title": "Sero-epidemiology of peste des petits ruminants in Oromia and Afar regional states of Ethiopia."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "missed_pmid": "32554594",
+      "title": "Measles virus and rinderpest virus divergence dated to the sixth century BCE."
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26790934",
+      "title": "Phocine distemper virus (PDV) seroprevalence as predictor for future outbreaks in harbour seals."
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34331405",
+      "title": "Systematic beach monitoring as a health assessment tool: Cetacean morbillivirus under non-epizootic circumstances in stranded dolphins."
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is the genome organization and replication cycle of Cetacean morbillivirus?",
+      "missed_pmid": "34779039",
+      "title": "Molecular signatures in cetacean morbillivirus and host species proteomes: Unveiling the evolutionary dynamics of an enigmatic pathogen?"
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What antiviral drugs or treatments are effective against Cetacean morbillivirus?",
+      "missed_pmid": "37583469",
+      "title": "Epidemiological and genetic analysis of Cetacean Morbillivirus circulating on the Italian coast between 2018 and 2021."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
