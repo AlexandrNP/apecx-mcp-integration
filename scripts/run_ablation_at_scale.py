@@ -476,6 +476,17 @@ _QUESTION_TEMPLATES: list[str] = [
     "What is the genetic diversity, phylogeny, and evolution of {name}?",
 ]
 
+# Optional single-aspect selector: APECX_ABLATION_ASPECT is a 1-indexed position
+# into _QUESTION_TEMPLATES; when set, only that one question aspect is asked this
+# pass. Running a FIXED organism set once per aspect isolates how the QUESTION
+# asked (not the organism pool) modulates pure-RAG confusability. Empty = all aspects.
+_ASPECT_SEL = os.environ.get("APECX_ABLATION_ASPECT", "").strip()
+if _ASPECT_SEL:
+    _idx = int(_ASPECT_SEL)
+    if not 1 <= _idx <= len(_QUESTION_TEMPLATES):
+        raise SystemExit(f"APECX_ABLATION_ASPECT={_idx} out of range 1..{len(_QUESTION_TEMPLATES)}")
+    _QUESTION_TEMPLATES = [_QUESTION_TEMPLATES[_idx - 1]]
+
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
 _FAILURES_PATH = Path(__file__).resolve().parent.parent / "docs" / "rag_failure_examples.json"
 _RETRIEVAL_RESULTS_PATH = (
