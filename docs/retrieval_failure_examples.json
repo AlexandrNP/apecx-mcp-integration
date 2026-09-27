@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:27:08.750015+00:00",
-  "runs": 361,
+  "updated": "2026-09-27T19:29:14.586424+00:00",
+  "runs": 362,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23879,
-  "n_false_negatives": 4664,
+  "n_false_positives": 23881,
+  "n_false_negatives": 4668,
   "new_this_run": {
-    "false_positives": 36,
-    "false_negatives": 16
+    "false_positives": 2,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -269273,6 +269273,32 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "41848953",
+      "title": "Tracking the occurrence and fate of human bocavirus 2 in municipal wastewater from a small city.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2576882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_573977",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "41985372",
+      "title": "Transcriptome alterations induced by acute and persistent human bocavirus 1 infection in human airway epithelial cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -297259,6 +297285,30 @@
       "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
       "missed_pmid": "27865267",
       "title": "Occurrence of Pseudocowpox virus associated to Bovine viral diarrhea virus-1, Brazilian Amazon."
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "missed_pmid": "41965624",
+      "title": "Disease burden and outcomes of pediatric human bocavirus mono-infections: a three-year retrospective study from a large tertiary cohort."
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "missed_pmid": "41935272",
+      "title": "Molecular epidemiology and whole-genome characterization of human bocavirus in hospitalized children with pneumonia in Suzhou, China, 2022-2025."
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "missed_pmid": "42198612",
+      "title": "Differential Interactions of Tissue-Restricted Host Proteins SPLUNC1 and VAMP8 with VP3 of Human Bocaviruses 1 and 2."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is known about Canine parvovirus pathogenesis and transmission?",
+      "missed_pmid": "42233361",
+      "title": "Fatal Myocarditis Caused by Canine Parvovirus in a Litter of One-Day-Old German Shepherd Puppies: Molecular and Histopathological Findings."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
