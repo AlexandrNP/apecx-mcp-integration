@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:22:45.288561+00:00",
-  "runs": 380,
+  "updated": "2026-09-27T20:24:25.639086+00:00",
+  "runs": 381,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24191,
-  "n_false_negatives": 4748,
+  "n_false_positives": 24205,
+  "n_false_negatives": 4753,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 7
+    "false_positives": 14,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -272703,6 +272703,196 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_80942",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Rift Valley fever virus?",
+      "cited_pmid": "41579255",
+      "title": "Cutaneous Manifestations of Emerging Arbovirus Infections Including West Nile, Dengue, Zika, Chikungunya, Usutu, and Toscana Viruses: A Clinical Overview for Dermatologists.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Rift Valley fever virus?",
+      "cited_pmid": "28418305",
+      "title": "Clinical Manifestations of Punta Toro Virus Species Complex Infections, Panama, 2009.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "23283959",
+      "title": "Characterization of the Uukuniemi virus group (Phlebovirus: Bunyaviridae): evidence for seven distinct species.",
+      "actual_organisms": [
+        "Uukuniemi virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1010668",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1204160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "22806684",
+      "title": "Genetic characterization of Bhanja virus and Palma virus, two tick-borne phleboviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213620",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213621",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "17606691",
+      "title": "In vitro and in vivo activities of T-705 against arenavirus and bunyavirus infections.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "16723561",
+      "title": "Recombinant Eimeria protozoan protein elicits resistance to acute phlebovirus infection in mice but not hamsters.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5800",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Toscana virus?",
+      "cited_pmid": "23283959",
+      "title": "Characterization of the Uukuniemi virus group (Phlebovirus: Bunyaviridae): evidence for seven distinct species.",
+      "actual_organisms": [
+        "Uukuniemi virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1010668",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1204160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genome organization and replication cycle of Punta Toro virus?",
+      "cited_pmid": "22806684",
+      "title": "Genetic characterization of Bhanja virus and Palma virus, two tick-borne phleboviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213620",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213621",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What are the clinical symptoms and disease presentation of Punta Toro virus?",
+      "cited_pmid": "41579255",
+      "title": "Cutaneous Manifestations of Emerging Arbovirus Infections Including West Nile, Dengue, Zika, Chikungunya, Usutu, and Toscana Viruses: A Clinical Overview for Dermatologists.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "17606691",
+      "title": "In vitro and in vivo activities of T-705 against arenavirus and bunyavirus infections.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "18222548",
+      "title": "Prophylactic and therapeutic intervention of Punta Toro virus (Phlebovirus, Bunyaviridae) infection in hamsters with interferon alfacon-1.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What is the epidemiology and outbreak history of Uukuniemi virus?",
+      "cited_pmid": "23905480",
+      "title": "[Recent advance in phlebovirus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What are the clinical symptoms and disease presentation of Uukuniemi virus?",
+      "cited_pmid": "41579255",
+      "title": "Cutaneous Manifestations of Emerging Arbovirus Infections Including West Nile, Dengue, Zika, Chikungunya, Usutu, and Toscana Viruses: A Clinical Overview for Dermatologists.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
     }
   ],
   "false_negatives": [
@@ -301193,6 +301383,36 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
       "missed_pmid": "40718474",
       "title": "Screening and Identification of Multiple Peptides Homologous to the Fusion Glycoprotein Gc of Schmallenberg Virus Able to Inhibit Viral Infection."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "missed_pmid": "41615838",
+      "title": "Imported aseptic meningitis due to Toscana virus infection in Austria since 2006, including a case series from 2023."
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Punta Toro virus?",
+      "missed_pmid": "17050607",
+      "title": "The S segment of Punta Toro virus (Bunyaviridae, Phlebovirus) is a major determinant of lethality in the Syrian hamster and codes for a type I interferon antagonist."
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What diagnostic assays or laboratory tests detect Uukuniemi virus?",
+      "missed_pmid": "22808531",
+      "title": "Mutational analysis of positively charged amino acid residues of Uukuniemi phlebovirus nucleocapsid protein."
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "missed_pmid": "23283959",
+      "title": "Characterization of the Uukuniemi virus group (Phlebovirus: Bunyaviridae): evidence for seven distinct species."
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Uukuniemi virus?",
+      "missed_pmid": "24772641",
+      "title": "[Genetic characterization of new Komandory virus (KOMV; Bunyaviridae, Phlebovirus) isolated from the ticks Ixodes uriae, collected in guillemot (Uria aalge) nesting sites on Komandorski islands, the Bering sea]."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
