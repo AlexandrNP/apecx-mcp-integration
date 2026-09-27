@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:37:44.054967+00:00",
-  "runs": 447,
+  "updated": "2026-09-27T22:39:24.609371+00:00",
+  "runs": 448,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24846,
-  "n_false_negatives": 4863,
+  "n_false_positives": 24854,
+  "n_false_negatives": 4865,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 6
+    "false_positives": 8,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -280112,6 +280112,101 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_42789"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "41485562",
+      "title": "An orally available peptidomimetic with broad-spectrum antiviral activity targeting the enterovirus 2C helicase.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "18066110",
+      "title": "In vitro evaluation of the antiviral effects of the homeopathic preparation Gripp-Heel on selected respiratory viruses.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "42063851",
+      "title": "Rational Design of Capsid Protein VP1 Degraders to Overcome Pleconaril Resistance in Inhibiting Enterovirus D68.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "41586838",
+      "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6].",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "41994369",
+      "title": "Enterovirus D68 and mycobacterial coinfection: case report.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "42037410",
+      "title": "EV-D68 exploits clathrin-mediated endocytosis and compensatory macropinocytosis for cellular entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42212125",
+      "title": "Antigenic characterization and mapping of a conserved neutralizing epitope on VP1 of coxsackievirus A5.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "18066110",
+      "title": "In vitro evaluation of the antiviral effects of the homeopathic preparation Gripp-Heel on selected respiratory viruses.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -309292,6 +309387,18 @@
       "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
       "missed_pmid": "42198730",
       "title": "Enterovirus Testing in Hand, Foot, and Mouth Disease and Herpangina: A Highly Sensitive Single-Round VP4-VP2 Reverse-Transcription Polymerase Chain Reaction Assay with a Redesigned Reverse Primer."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "41413343",
+      "title": "Molecular mechanisms of receptor recognition and antibody neutralization of coxsackievirus A6."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "missed_pmid": "41583791",
+      "title": "Coxsackievirus A6 was the predominant pathogen of hand, foot, and mouth disease with frequent recombination and mutations in Shandong Province, 2023."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
