@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:01:15.234718+00:00",
-  "runs": 288,
+  "updated": "2026-09-27T16:02:46.461737+00:00",
+  "runs": 289,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22932,
-  "n_false_negatives": 4119,
+  "n_false_positives": 22948,
+  "n_false_negatives": 4121,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 1
+    "false_positives": 16,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -259099,6 +259099,171 @@
       "actual_organisms": [
         "Coxsackievirus A6"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "37468974",
+      "title": "Cervical carcinogenesis risk association of HPV33 E6 and E7 genetic variations in Taizhou, Southeast China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "36100161",
+      "title": "Differences in integration frequencies and APOBEC3 profiles of five high-risk HPV types adheres to phylogeny.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 pathogenesis and transmission?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 33?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "36100161",
+      "title": "Differences in integration frequencies and APOBEC3 profiles of five high-risk HPV types adheres to phylogeny.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "35963773",
+      "title": "Comparative pilot study about HPV test with partial genotyping in primary screening versus other strategies for cervical cancer population screening, CRYGEN 16/18 study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 59?",
+      "cited_pmid": "37468974",
+      "title": "Cervical carcinogenesis risk association of HPV33 E6 and E7 genetic variations in Taizhou, Southeast China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 59?",
+      "cited_pmid": "38346260",
+      "title": "Codon usage bias of human papillomavirus type 33 and 58: A comprehensive analysis.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 68?",
+      "cited_pmid": "35963773",
+      "title": "Comparative pilot study about HPV test with partial genotyping in primary screening versus other strategies for cervical cancer population screening, CRYGEN 16/18 study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "37461035",
+      "title": "Transcriptional activity of the long control region in human papillomavirus type 33 intratype variants.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "38346260",
+      "title": "Codon usage bias of human papillomavirus type 33 and 58: A comprehensive analysis.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 68?",
+      "cited_pmid": "36624228",
+      "title": "Genetic diversity of human papillomavirus (HPV) as specified by the detection method, gender, and year of sampling: a retrospective cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 68?",
+      "cited_pmid": "41454963",
+      "title": "Codon usage bias of low-risk human papillomavirus types 6 and 11.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -283815,6 +283980,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
       "missed_pmid": "42042771",
       "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "42456052",
+      "title": "HPV16 genomic status stratifies risk of disease recurrence in oropharyngeal squamous cell carcinoma."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "missed_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
