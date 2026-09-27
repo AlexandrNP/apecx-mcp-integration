@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:37:17.753274+00:00",
-  "runs": 338,
+  "updated": "2026-09-27T18:39:17.402647+00:00",
+  "runs": 339,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23574,
-  "n_false_negatives": 4443,
+  "n_false_positives": 23588,
+  "n_false_negatives": 4457,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 9
+    "false_positives": 14,
+    "false_negatives": 14
   },
   "false_positives": [
     {
@@ -266059,6 +266059,152 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "38996377",
+      "title": "[Enzyme immunoassay system for serological diagnosis of hemorrhagic fever with renal syndrome based on inactivated purified Puumala virus (Hantaviridae: Orthohantavirus)].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "9114393",
+      "title": "Serological diagnosis of hantavirus infections by an enzyme-linked immunosorbent assay based on detection of immunoglobulin G and M responses to recombinant nucleocapsid proteins of five viral serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "38843022",
+      "title": "Phylogenetic analysis of variants of the Puumala virus (Hantaviridae: Orthohantavirus) circulating in the Saratov region.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "38991257",
+      "title": "Molecular evolution of Hokkaido virus, a genotype of Orthohantavirus puumalaense, among Myodes rodents.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1100878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36439095",
+      "title": "Integrativesubtractive proteomics, immunoinformatics, docking, and simulation approaches reveal candidate vaccine against Sin Nombre orthohantavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "38996377",
+      "title": "[Enzyme immunoassay system for serological diagnosis of hemorrhagic fever with renal syndrome based on inactivated purified Puumala virus (Hantaviridae: Orthohantavirus)].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "40267591",
+      "title": "Establishment and optimization of a rapid and convenient viral RNA transcript copy reduction neutralization test (VcRNT) for quantification of hantaan orthohantavirus (HTNV) neutralizing antibodies.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Sin Nombre orthohantavirus?",
+      "cited_pmid": "33666908",
+      "title": "The 1993 Hantavirus Pulmonary Syndrome Outbreak and Lessons for Today.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "38991257",
+      "title": "Molecular evolution of Hokkaido virus, a genotype of Orthohantavirus puumalaense, among Myodes rodents.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1100878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "38996377",
+      "title": "[Enzyme immunoassay system for serological diagnosis of hemorrhagic fever with renal syndrome based on inactivated purified Puumala virus (Hantaviridae: Orthohantavirus)].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "40267591",
+      "title": "Establishment and optimization of a rapid and convenient viral RNA transcript copy reduction neutralization test (VcRNT) for quantification of hantaan orthohantavirus (HTNV) neutralizing antibodies.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "9114393",
+      "title": "Serological diagnosis of hantavirus infections by an enzyme-linked immunosorbent assay based on detection of immunoglobulin G and M responses to recombinant nucleocapsid proteins of five viral serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "40634677",
+      "title": "Molecular evolution and reassortment dynamics of Orthohantavirus hantanense revealed through longitudinal genomic surveillance in the Republic of Korea.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "cited_pmid": "40828876",
+      "title": "Phylogenetic diversity and molecular evolution of Hantaan virus harbored by Apodemus chejuensis on Jeju Island, Republic of Korea, 2022-2023.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -292719,6 +292865,90 @@
       "question": "What are the clinical symptoms and disease presentation of Lymphocytic choriomeningitis mammarenavirus?",
       "missed_pmid": "41863505",
       "title": "Lymphocytic Choriomeningitis Virus Seroprevalence among Urban Pregnant Women and Newborns, Philadelphia, Pennsylvania, USA, 2021."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "missed_pmid": "40453471",
+      "title": "Development of an in-house dual RT-qPCR assay for detecting SFTSV and Hantaan virus simultaneously."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "missed_pmid": "40634677",
+      "title": "Molecular evolution and reassortment dynamics of Orthohantavirus hantanense revealed through longitudinal genomic surveillance in the Republic of Korea."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "missed_pmid": "40828876",
+      "title": "Phylogenetic diversity and molecular evolution of Hantaan virus harbored by Apodemus chejuensis on Jeju Island, Republic of Korea, 2022-2023."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "missed_pmid": "41419169",
+      "title": "Characterization of minigenome systems for Hantaan and Seoul hantaviruses."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Hantaan orthohantavirus?",
+      "missed_pmid": "40620662",
+      "title": "Hemorrhagic Fever with Renal Syndrome and Diversity and Distribution of Hantaviruses - China, 2014-2023."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "missed_pmid": "40368824",
+      "title": "Urinalysis of a Hantaan virus-infected mouse model of hemorrhagic fever with renal syndrome."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "missed_pmid": "35997624",
+      "title": "Experimental Infection of Peromyscus Species Rodents with Sin Nombre Virus."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "missed_pmid": "35458412",
+      "title": "Use of a Novel Detection Tool to Survey Orthohantaviruses in Wild-Caught Rodent Populations."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Sin Nombre orthohantavirus?",
+      "missed_pmid": "34549977",
+      "title": "Tracing Transmission of Sin Nombre Virus and Discovery of Infection in Multiple Rodent Species."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "missed_pmid": "34603804",
+      "title": "Hantavirus Cardiopulmonary Syndrome and Diffuse Alveolar Hemorrhage in the Era of COVID-19."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "missed_pmid": "33951434",
+      "title": "Broad and potently neutralizing monoclonal antibodies isolated from human survivors of New World hantavirus infection."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Puumala orthohantavirus?",
+      "missed_pmid": "38820375",
+      "title": "A simple clinical score to reduce unnecessary testing for Puumala hantavirus."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Puumala orthohantavirus?",
+      "missed_pmid": "40233340",
+      "title": "[Identification of orthohantaviruses detected for the first time in the Republic of Belarus]."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "missed_pmid": "40620662",
+      "title": "Hemorrhagic Fever with Renal Syndrome and Diversity and Distribution of Hantaviruses - China, 2014-2023."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
