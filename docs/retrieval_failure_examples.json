@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:07:48.452782+00:00",
-  "runs": 304,
+  "updated": "2026-09-27T17:09:46.860951+00:00",
+  "runs": 305,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23148,
-  "n_false_negatives": 4191,
+  "n_false_positives": 23159,
+  "n_false_negatives": 4197,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 3
+    "false_positives": 11,
+    "false_negatives": 6
   },
   "false_positives": [
     {
@@ -261390,6 +261390,132 @@
         "Coxsackievirus A6",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is known about Human parainfluenza virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35313864",
+      "title": "Detection of porcine parainfluenza virus type-1 antibody in swine serum using whole-virus ELISA, indirect fluorescence antibody and virus neutralizing assays.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_251774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052733",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "31956229",
+      "title": "Inhibitions of human parainfluenza virus type 2 replication by ribavirin and mycophenolate mofetil are restored by guanosine and S-(4-nitrobenzyl)-6-thioinosine.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "26591662",
+      "title": "[Inosine pranobex - cytotoxic activities and effect of on replication of human parainfluenza viruses (HPIV-2, HPIV-4), entroviruses (CA16, EV71) and adenoviruses (HAdV-2, HAdV-5) in vitro].",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 1?",
+      "cited_pmid": "35763690",
+      "title": "Liver Enzyme Elevation Related to Human Parainfluenza Virus Type 3 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 1?",
+      "cited_pmid": "32100137",
+      "title": "Common and unique mechanisms of filamentous actin formation by viruses of the genus Orthorubulavirus.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35313864",
+      "title": "Detection of porcine parainfluenza virus type-1 antibody in swine serum using whole-virus ELISA, indirect fluorescence antibody and virus neutralizing assays.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_251774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052733",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 2?",
+      "cited_pmid": "35763690",
+      "title": "Liver Enzyme Elevation Related to Human Parainfluenza Virus Type 3 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is known about Human parainfluenza virus 4 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24133181",
+      "title": "Epidemiology and clinical presentation of parainfluenza type 4 in children: a 3-year comparative study to parainfluenza types 1-3.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "31956229",
+      "title": "Inhibitions of human parainfluenza virus type 2 replication by ribavirin and mycophenolate mofetil are restored by guanosine and S-(4-nitrobenzyl)-6-thioinosine.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "26591662",
+      "title": "[Inosine pranobex - cytotoxic activities and effect of on replication of human parainfluenza viruses (HPIV-2, HPIV-4), entroviruses (CA16, EV71) and adenoviruses (HAdV-2, HAdV-5) in vitro].",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 4?",
+      "cited_pmid": "35763690",
+      "title": "Liver Enzyme Elevation Related to Human Parainfluenza Virus Type 3 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -286538,6 +286664,42 @@
       "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
       "missed_pmid": "41903847",
       "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 1?",
+      "missed_pmid": "24133181",
+      "title": "Epidemiology and clinical presentation of parainfluenza type 4 in children: a 3-year comparative study to parainfluenza types 1-3."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parainfluenza virus 1?",
+      "missed_pmid": "35335699",
+      "title": "European and American Strains of Porcine Parainfluenza Virus 1 (PPIV-1) Belong to Two Distinct Genetic Lineages."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31956229",
+      "title": "Inhibitions of human parainfluenza virus type 2 replication by ribavirin and mycophenolate mofetil are restored by guanosine and S-(4-nitrobenzyl)-6-thioinosine."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "missed_pmid": "24133181",
+      "title": "Epidemiology and clinical presentation of parainfluenza type 4 in children: a 3-year comparative study to parainfluenza types 1-3."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "missed_pmid": "29322811",
+      "title": "Establishment of reverse transcription polymerase chain reaction assay for simultaneous detection of human parainfluenza virus types 1 to 4 in children with influenza like illnesses."
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is known about Human parainfluenza virus 4 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "24002378",
+      "title": "Discovery of a divergent HPIV4 from respiratory secretions using second and third generation metagenomic sequencing."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
