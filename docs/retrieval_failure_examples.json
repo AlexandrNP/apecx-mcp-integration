@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:00:39.717502+00:00",
-  "runs": 242,
+  "updated": "2026-09-27T14:02:23.773881+00:00",
+  "runs": 243,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21948,
-  "n_false_negatives": 3652,
+  "n_false_positives": 21958,
+  "n_false_negatives": 3661,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 2
+    "false_positives": 10,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -248271,6 +248271,114 @@
         "Sapovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "9481070",
+      "title": "Surveillance of anti-hantavirus antibodies among certain high-risk groups in Taiwan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "39100240",
+      "title": "Human Orthohantavirus disease prevalence and genotype distribution in the U.S., 2008-2020: a retrospective observational study.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "How does Hantaan orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "39836687",
+      "title": "A human pathogenic hantavirus circulates and is shed in taxonomically diverse rodent reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "41678361",
+      "title": "Remodelling of P-bodies and the cytoskeleton by Orthohantavirus puumalaense (Puumala virus).",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42008533",
+      "title": "A molecular survey of orthohantaviruses in rodents across the tri-border region of China, Russia, and North Korea.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86782"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "How does Puumala orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "9481070",
+      "title": "Surveillance of anti-hantavirus antibodies among certain high-risk groups in Taiwan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -270185,6 +270293,60 @@
       "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
       "missed_pmid": "42045835",
       "title": "Prevalence and genetic diversity of enteric viruses in Sub-Saharan Africa: a systematic review and meta-analysis."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "How does Hantaan orthohantavirus evade or modulate the host immune response?",
+      "missed_pmid": "39258903",
+      "title": "Preclinical evaluation of a fully human, quadrivalent-hantavirus polyclonal antibody derived from a non-human source."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "missed_pmid": "41699188",
+      "title": "Multiplex PCR and nanopore sequencing reveal the genetic stability of Hantaan virus in Xi'an, China."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39258903",
+      "title": "Preclinical evaluation of a fully human, quadrivalent-hantavirus polyclonal antibody derived from a non-human source."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "missed_pmid": "39836687",
+      "title": "A human pathogenic hantavirus circulates and is shed in taxonomically diverse rodent reservoirs."
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "missed_pmid": "39100240",
+      "title": "Human Orthohantavirus disease prevalence and genotype distribution in the U.S., 2008-2020: a retrospective observational study."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39258903",
+      "title": "Preclinical evaluation of a fully human, quadrivalent-hantavirus polyclonal antibody derived from a non-human source."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Puumala orthohantavirus?",
+      "missed_pmid": "41070942",
+      "title": "Clinical course up to 20 years after hantavirus infection."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "missed_pmid": "9505963",
+      "title": "Urine-associated horizontal transmission of Seoul virus among rats."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
+      "missed_pmid": "39592268",
+      "title": "Rio Mamore Hantavirus Endemicity, Peruvian Amazon, 2020."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
