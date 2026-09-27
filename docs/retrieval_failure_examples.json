@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:16:05.624950+00:00",
-  "runs": 377,
+  "updated": "2026-09-27T20:18:49.186772+00:00",
+  "runs": 378,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24141,
+  "n_false_positives": 24151,
   "n_false_negatives": 4740,
   "new_this_run": {
-    "false_positives": 16,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -272156,6 +272156,114 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10376",
         "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "10325533",
+      "title": "Antiviral efficacy of disinfectant solution MRI-1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_90371",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 1?",
+      "cited_pmid": "42555674",
+      "title": "HHV-7 encephalitis following allogeneic hematopoietic stem cell transplantation: A case report and literature review.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "12549379",
+      "title": "[The experimental study on competitive PCR for quantitation of herpesviruses].",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42443199",
+      "title": "Antibody reveals conformational latch regulating dimerization in \u03b2- and \u03b3-herpesvirus proteases.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10359",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "10325533",
+      "title": "Antiviral efficacy of disinfectant solution MRI-1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_90371",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "How does Human alphaherpesvirus 3 evade or modulate the host immune response?",
+      "cited_pmid": "41474826",
+      "title": "Inhibition of type I interferon signaling is a conserved function of gamma-herpesvirus-encoded microRNAs.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_154334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45455"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "12549379",
+      "title": "[The experimental study on competitive PCR for quantitation of herpesviruses].",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "10892424",
+      "title": "Assessment trials of the therapeutic efficacy of the drug \"Zovirax\" in some recurrent ocular and genital herpetic infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "42469312",
+      "title": "Ecology driven patterns of herpesvirus spread in cervids in Poland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1273575",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2014517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "10325533",
+      "title": "Antiviral efficacy of disinfectant solution MRI-1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_90371",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
