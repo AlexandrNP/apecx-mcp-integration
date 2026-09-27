@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:15:46.374020+00:00",
-  "runs": 157,
+  "updated": "2026-09-27T07:17:49.497448+00:00",
+  "runs": 158,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19265,
-  "n_false_negatives": 3529,
+  "n_false_positives": 19338,
+  "n_false_negatives": 3534,
   "new_this_run": {
-    "false_positives": 23,
-    "false_negatives": 3
+    "false_positives": 73,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -217711,6 +217711,806 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044472"
       ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Watermelon mosaic virus?",
+      "cited_pmid": "39059502",
+      "title": "Improving grapevine virus diagnostics: Comparative analysis of three dsRNA enrichment methods for high-throughput sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
+      "cited_pmid": "39059502",
+      "title": "Improving grapevine virus diagnostics: Comparative analysis of three dsRNA enrichment methods for high-throughput sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What antiviral drugs or treatments are effective against Cotton leaf curl virus?",
+      "cited_pmid": "40872791",
+      "title": "Baculovirus-Based Biocontrol: Synergistic and Antagonistic Interactions of PxGV, PxNPV, SeMNPV, and SfMNPV in Integrative Pest Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976935",
+        "http://purl.obolibrary.org/obo/NCBITaxon_98383"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "cited_pmid": "41546436",
+      "title": "Geminiviral C2 proteins promote virus transmission by subverting plant defenses upon infestation of non-vector herbivores.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10832",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1298630"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "cited_pmid": "42652516",
+      "title": "CLCuMuV-Induced Autophagy Restricts Viral Accumulation in the MED Cryptic Species of Bemisia tabaci.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus pathogenesis and transmission?",
+      "cited_pmid": "40431686",
+      "title": "The Individual and Combined Entomopathogenic Activity of a Spodoptera frugiperda Multiple Nucleopolyhedrovirus and a Type I Spodoptera frugiperda Granulovirus on S. frugiperda Larvae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What diagnostic assays or laboratory tests detect Flock House virus?",
+      "cited_pmid": "40228716",
+      "title": "Establishment of triple-RPA-LFS detection method for three common shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "35337025",
+      "title": "A Renewed Appreciation of Helicoverpa armigera Nucleopolyhedrovirus BJ (Formerly Helicoverpa assulta Nucleopolyhedrovirus) with Whole Genome Sequencing.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2306063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558016"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "25502394",
+      "title": "Rapid evolution of virus sequences in intrinsically disordered protein regions.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What antiviral drugs or treatments are effective against Flock House virus?",
+      "cited_pmid": "35055934",
+      "title": "Efficacy of Helicoverpa Armigera Nucleopolyhedrovirus on Soybean for Control of Helicoverpa zea (Boddie) (Lepidoptera: Noctuidae) in Arkansas Agriculture.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the epidemiology and outbreak history of Flock House virus?",
+      "cited_pmid": "42488619",
+      "title": "Emergence of new resistances to Cydia pomonella Granulovirus: insights from 12 years of monitoring.",
+      "actual_organisms": [
+        "Cydia pomonella granulovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10463"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the epidemiology and outbreak history of Flock House virus?",
+      "cited_pmid": "37533749",
+      "title": "Species which may act as vectors or reservoirs of diseases covered by the Animal Health Law: Listed pathogens of crustaceans.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus",
+        "Yellow head virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the epidemiology and outbreak history of Flock House virus?",
+      "cited_pmid": "40020892",
+      "title": "Phylodynamics and phylogeography of watermelon mosaic virus: Multiple local invasion routes in southern France and recombination-driven limits to global analysis.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Flock House virus?",
+      "cited_pmid": "41587310",
+      "title": "Baculoviruses hijack host midgut-derived tachykinin to regulate phototactic climbing behavior and promote viral transmission.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Flock House virus?",
+      "cited_pmid": "35258140",
+      "title": "Baculoviruses hijack the visual perception of their caterpillar hosts to induce climbing behaviour thus promoting virus dispersal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Flock House virus?",
+      "cited_pmid": "41348923",
+      "title": "Proteomic Characterization of Spodoptera frugiperda granulovirus Occlusion Bodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558017"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "How does Flock House virus evade or modulate the host immune response?",
+      "cited_pmid": "42188169",
+      "title": "Silkworm SOCS2 Differentially Promotes Multiple Steps of BmNPV Proliferation and Modulates the mRNA Expression of SOCS-STAT Network Components.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734023"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "40228716",
+      "title": "Establishment of triple-RPA-LFS detection method for three common shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "cited_pmid": "40228716",
+      "title": "Establishment of triple-RPA-LFS detection method for three common shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "cited_pmid": "41823880",
+      "title": "Integration of histopathology and molecular tools in shrimp health surveillance: A case study from Colombia.",
+      "actual_organisms": [
+        "Yellow head virus"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What is the epidemiology and outbreak history of Nodamura virus?",
+      "cited_pmid": "42667507",
+      "title": "Shrimp Aquaculture Under Viral Threats: Insights into Pathogens and Control Strategies.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus",
+        "Yellow head virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_222557",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What are the clinical symptoms and disease presentation of Nodamura virus?",
+      "cited_pmid": "40726513",
+      "title": "Characterization of Lumpy Skin Disease in Northern Bangladesh: Clinical, Pathological, Biochemical, and Molecular Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35343600",
+      "title": "Mouse circulating extracellular vesicles contain virus-derived siRNAs active in antiviral immunity.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "25502394",
+      "title": "Rapid evolution of virus sequences in intrinsically disordered protein regions.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "42669400",
+      "title": "Bombyx mori lipase-1 reduces viral replication and proliferation by inhibiting the expression of the DNA-binding protein (dbp) gene.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "40403429",
+      "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "42034402",
+      "title": "ORF603 derived from AcMNPV plays entirely opposite roles in regulating BmNPV infection.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "30431412",
+      "title": "ICTV Virus Taxonomy Profile: Nodaviridae.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283",
+        "http://purl.obolibrary.org/obo/NCBITaxon_143920"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "cited_pmid": "42475393",
+      "title": "Quercetin, a flavonoid, suppresses viral proliferation by interfering with the ubiquitin transfer from E1 to E2 enzymes.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "cited_pmid": "40872791",
+      "title": "Baculovirus-Based Biocontrol: Synergistic and Antagonistic Interactions of PxGV, PxNPV, SeMNPV, and SfMNPV in Integrative Pest Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976935",
+        "http://purl.obolibrary.org/obo/NCBITaxon_98383"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "cited_pmid": "42179917",
+      "title": "Gene network modeling and pathway analysis of Bemisia tabaci midgut proteins and symbionts interact with Cotton leaf curl virus (CLCuV) transmission.",
+      "actual_organisms": [
+        "Cotton leaf curl virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91844"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "cited_pmid": "41587310",
+      "title": "Baculoviruses hijack host midgut-derived tachykinin to regulate phototactic climbing behavior and promote viral transmission.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "How does White spot syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "42188169",
+      "title": "Silkworm SOCS2 Differentially Promotes Multiple Steps of BmNPV Proliferation and Modulates the mRNA Expression of SOCS-STAT Network Components.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734023"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is known about Taura syndrome virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35618579",
+      "title": "Mammalian viral suppressors of RNA interference.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genome organization and replication cycle of Taura syndrome virus?",
+      "cited_pmid": "25502394",
+      "title": "Rapid evolution of virus sequences in intrinsically disordered protein regions.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genome organization and replication cycle of Taura syndrome virus?",
+      "cited_pmid": "42155853",
+      "title": "Robust profiling of plus-stranded RNA virus replication dynamics using RT-qPCR with viral genomic RNA as an internal control.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6237"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genome organization and replication cycle of Taura syndrome virus?",
+      "cited_pmid": "42034402",
+      "title": "ORF603 derived from AcMNPV plays entirely opposite roles in regulating BmNPV infection.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "cited_pmid": "42475393",
+      "title": "Quercetin, a flavonoid, suppresses viral proliferation by interfering with the ubiquitin transfer from E1 to E2 enzymes.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "cited_pmid": "40872791",
+      "title": "Baculovirus-Based Biocontrol: Synergistic and Antagonistic Interactions of PxGV, PxNPV, SeMNPV, and SfMNPV in Integrative Pest Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976935",
+        "http://purl.obolibrary.org/obo/NCBITaxon_98383"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Taura syndrome virus?",
+      "cited_pmid": "41587310",
+      "title": "Baculoviruses hijack host midgut-derived tachykinin to regulate phototactic climbing behavior and promote viral transmission.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "How does Taura syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "42188169",
+      "title": "Silkworm SOCS2 Differentially Promotes Multiple Steps of BmNPV Proliferation and Modulates the mRNA Expression of SOCS-STAT Network Components.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734023"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "How does Taura syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "25843799",
+      "title": "RIG-I-dependent antiviral immunity is effective against an RNA virus encoding a potent suppressor of RNAi.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "How does Taura syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "34860862",
+      "title": "Antiviral RNA interference in disease vector (Asian longhorned) ticks.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30431412",
+      "title": "ICTV Virus Taxonomy Profile: Nodaviridae.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283",
+        "http://purl.obolibrary.org/obo/NCBITaxon_143920"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35343600",
+      "title": "Mouse circulating extracellular vesicles contain virus-derived siRNAs active in antiviral immunity.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38630724",
+      "title": "Live-attenuated virus vaccine defective in RNAi suppression induces rapid protection in neonatal and adult mice lacking mature B and T cells.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "25502394",
+      "title": "Rapid evolution of virus sequences in intrinsically disordered protein regions.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "35337025",
+      "title": "A Renewed Appreciation of Helicoverpa armigera Nucleopolyhedrovirus BJ (Formerly Helicoverpa assulta Nucleopolyhedrovirus) with Whole Genome Sequencing.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2306063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558016"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "31597780",
+      "title": "Interviral Recombination between Plant, Insect, and Fungal RNA Viruses: Role of the Intracellular Ca2+/Mn2+ Pump.",
+      "actual_organisms": [
+        "Flock House virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42034402",
+      "title": "ORF603 derived from AcMNPV plays entirely opposite roles in regulating BmNPV infection.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "42475393",
+      "title": "Quercetin, a flavonoid, suppresses viral proliferation by interfering with the ubiquitin transfer from E1 to E2 enzymes.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "40872791",
+      "title": "Baculovirus-Based Biocontrol: Synergistic and Antagonistic Interactions of PxGV, PxNPV, SeMNPV, and SfMNPV in Integrative Pest Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976935",
+        "http://purl.obolibrary.org/obo/NCBITaxon_98383"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "40431686",
+      "title": "The Individual and Combined Entomopathogenic Activity of a Spodoptera frugiperda Multiple Nucleopolyhedrovirus and a Type I Spodoptera frugiperda Granulovirus on S. frugiperda Larvae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "41587310",
+      "title": "Baculoviruses hijack host midgut-derived tachykinin to regulate phototactic climbing behavior and promote viral transmission.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "35258140",
+      "title": "Baculoviruses hijack the visual perception of their caterpillar hosts to induce climbing behaviour thus promoting virus dispersal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "41348923",
+      "title": "Proteomic Characterization of Spodoptera frugiperda granulovirus Occlusion Bodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558017"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "42179917",
+      "title": "Gene network modeling and pathway analysis of Bemisia tabaci midgut proteins and symbionts interact with Cotton leaf curl virus (CLCuV) transmission.",
+      "actual_organisms": [
+        "Cotton leaf curl virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91844"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "42352356",
+      "title": "Bombyx mori C-Type Lectin 16 Inhibits BmNPV Proliferation by Degrading Viral Protein Bm9 via Ubiquitin-Proteasome System.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "42188169",
+      "title": "Silkworm SOCS2 Differentially Promotes Multiple Steps of BmNPV Proliferation and Modulates the mRNA Expression of SOCS-STAT Network Components.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734023"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "34860862",
+      "title": "Antiviral RNA interference in disease vector (Asian longhorned) ticks.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "39601580",
+      "title": "CDK12 antagonizes a viral suppressor of RNAi to modulate antiviral RNAi in Drosophila.",
+      "actual_organisms": [
+        "Flock House virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "40228716",
+      "title": "Establishment of triple-RPA-LFS detection method for three common shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "25502394",
+      "title": "Rapid evolution of virus sequences in intrinsically disordered protein regions.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "41587310",
+      "title": "Baculoviruses hijack host midgut-derived tachykinin to regulate phototactic climbing behavior and promote viral transmission.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "35258140",
+      "title": "Baculoviruses hijack the visual perception of their caterpillar hosts to induce climbing behaviour thus promoting virus dispersal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What diagnostic assays or laboratory tests detect Cydia pomonella granulovirus?",
+      "cited_pmid": "40228716",
+      "title": "Establishment of triple-RPA-LFS detection method for three common shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What diagnostic assays or laboratory tests detect Cydia pomonella granulovirus?",
+      "cited_pmid": "41823880",
+      "title": "Integration of histopathology and molecular tools in shrimp health surveillance: A case study from Colombia.",
+      "actual_organisms": [
+        "Yellow head virus"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What antiviral drugs or treatments are effective against Cydia pomonella granulovirus?",
+      "cited_pmid": "40431686",
+      "title": "The Individual and Combined Entomopathogenic Activity of a Spodoptera frugiperda Multiple Nucleopolyhedrovirus and a Type I Spodoptera frugiperda Granulovirus on S. frugiperda Larvae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What are the clinical symptoms and disease presentation of Cydia pomonella granulovirus?",
+      "cited_pmid": "40726513",
+      "title": "Characterization of Lumpy Skin Disease in Northern Bangladesh: Clinical, Pathological, Biochemical, and Molecular Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "How does Cydia pomonella granulovirus evade or modulate the host immune response?",
+      "cited_pmid": "41167357",
+      "title": "Transcriptomic analysis reveals the mechanism of viral modulation of host immunity facilitating calicivirus replication in Pelteobagrus fulvidraco.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "How does Cydia pomonella granulovirus evade or modulate the host immune response?",
+      "cited_pmid": "25843799",
+      "title": "RIG-I-dependent antiviral immunity is effective against an RNA virus encoding a potent suppressor of RNAi.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -238887,6 +239687,36 @@
       "question": "What diagnostic assays or laboratory tests detect Equine herpesvirus 4?",
       "missed_pmid": "38995916",
       "title": "Antibody reactions of horses against various domains of the EHV-1 receptor-binding protein gD1."
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "24725955",
+      "title": "Differential segregation of nodaviral coat protein and RNA into progeny virions during mixed infection with FHV and NoV."
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Flock House virus?",
+      "missed_pmid": "42394168",
+      "title": "Structure-based simulations of the full Flock House virus capsid reveal pathways and energetics of infection-critical peptide externalization."
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "How does Flock House virus evade or modulate the host immune response?",
+      "missed_pmid": "40852959",
+      "title": "Investigating the differential microRNAs expression in young and aged Drosophila melanogaster following Flock House Virus infection."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "42032854",
+      "title": "Bombyx mori BmLis1 inhibits BmNPV replication by promoting the cell cycle G2/M progression."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41894407",
+      "title": "Identification of BmSP25 gene in Bombyx mori with antiviral function against BmNPV."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
