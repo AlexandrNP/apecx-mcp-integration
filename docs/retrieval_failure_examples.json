@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:30:47.249868+00:00",
-  "runs": 443,
+  "updated": "2026-09-27T22:32:20.812208+00:00",
+  "runs": 444,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24810,
-  "n_false_negatives": 4853,
+  "n_false_positives": 24819,
+  "n_false_negatives": 4854,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 0
+    "false_positives": 9,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -279718,6 +279718,110 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_42785"
       ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "37833525",
+      "title": "Molecular evolutionary dynamics of enterovirus A71, coxsackievirus A16 and coxsackievirus A6 causing hand, foot and mouth disease in Thailand, 2000-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "37833525",
+      "title": "Molecular evolutionary dynamics of enterovirus A71, coxsackievirus A16 and coxsackievirus A6 causing hand, foot and mouth disease in Thailand, 2000-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "37909741",
+      "title": "Molecular characterization of a novel clade echovirus 3 isolated from patients with hand-foot-and-mouth disease in southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47516"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "41058151",
+      "title": "Simultaneous detection of canine astrovirus and canine kobuvirus by duplex qPCR: validation and evidence of extraintestinal viral RNA in naturally infected dogs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10788",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157338",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239569",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1836608",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3115137",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430625",
+        "http://purl.obolibrary.org/obo/NCBITaxon_72149"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "38149210",
+      "title": "Optimization of RT-PCR methods for enterovirus detection in groundwater.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "37977075",
+      "title": "Changes in enterovirus epidemiology after easing of lockdown measures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "42566319",
+      "title": "T-cell immunoglobulin and mucin domain 1 and transmembrane serine protease 2 synergistically enhance entry of a bat-derived merbecovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "37909741",
+      "title": "Molecular characterization of a novel clade echovirus 3 isolated from patients with hand-foot-and-mouth disease in southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47516"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "37833525",
+      "title": "Molecular evolutionary dynamics of enterovirus A71, coxsackievirus A16 and coxsackievirus A6 causing hand, foot and mouth disease in Thailand, 2000-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
     }
   ],
   "false_negatives": [
@@ -308838,6 +308942,12 @@
       "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
       "missed_pmid": "30814463",
       "title": "Longitudinal Epidemiology of Viral Infectious Diseases Combining Virus Isolation, Antigenic Analysis, and Phylogenetic Analysis as Well as Seroepidemiology in Yamagata, Japan, between 1999 and 2018."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "missed_pmid": "37756198",
+      "title": "Inactivation of coxsackievirus B5 by free chlorine under conditions relevant to drinking water treatment."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
