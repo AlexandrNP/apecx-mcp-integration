@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:14:14.406999+00:00",
-  "runs": 356,
+  "updated": "2026-09-27T19:15:56.188424+00:00",
+  "runs": 357,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23768,
-  "n_false_negatives": 4601,
+  "n_false_positives": 23788,
+  "n_false_negatives": 4617,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 7
+    "false_positives": 20,
+    "false_negatives": 16
   },
   "false_positives": [
     {
@@ -268122,6 +268122,240 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31931",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42313978",
+      "title": "An HIV vaccine blueprint.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "cited_pmid": "42517631",
+      "title": "The rebound-initiating viral reservoir (RIVR) in SIV/SHIV infection is dominated by plasma virus sequences present at the time of ART initiation.",
+      "actual_organisms": [
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_57667"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "How does Human immunodeficiency virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42190982",
+      "title": "Human Immunodeficiency Virus Type 2 Vpx-mediated Degradation of TASOR Activates Innate Immune Sensing of Nucleic Acids in Infected Cells.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "cited_pmid": "33507996",
+      "title": "Human T-cell lymphotropic virus type 1 transmission dynamics in rural villages in the Democratic Republic of the Congo with high nonhuman primate exposure.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33747",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42313978",
+      "title": "An HIV vaccine blueprint.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2018048",
+      "title": "Relative resistance of primary HIV-1 isolates to neutralization by soluble CD4.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "cited_pmid": "1672248",
+      "title": "NIH conference. Immunopathogenic mechanisms in human immunodeficiency virus (HIV) infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "cited_pmid": "2019740",
+      "title": "Rapid whole blood assay for HIV-1 seropositivity using an Fab-peptide conjugate.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "cited_pmid": "42517631",
+      "title": "The rebound-initiating viral reservoir (RIVR) in SIV/SHIV infection is dominated by plasma virus sequences present at the time of ART initiation.",
+      "actual_organisms": [
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_57667"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "cited_pmid": "2027749",
+      "title": "Identification and analysis of antisense RNA target regions of the human immunodeficiency virus type 1.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 2?",
+      "cited_pmid": "1676278",
+      "title": "The natural history of HIV-1 infection: staging classifications of disease.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human immunodeficiency virus 2?",
+      "cited_pmid": "1715507",
+      "title": "Characterization of monoclonal antibodies identifying type and strain-specific epitopes of human immunodeficiency virus type 1.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42313978",
+      "title": "An HIV vaccine blueprint.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "cited_pmid": "33507996",
+      "title": "Human T-cell lymphotropic virus type 1 transmission dynamics in rural villages in the Democratic Republic of the Congo with high nonhuman primate exposure.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33747",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "2019740",
+      "title": "Rapid whole blood assay for HIV-1 seropositivity using an Fab-peptide conjugate.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "32110713",
+      "title": "Seroprevalence of viral infections in captive rhesus and cynomolgus macaques.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10375",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_154334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "cited_pmid": "36943985",
+      "title": "HIV Safety in Clinical Laboratories: Biology, Occupational Risk, Prevention, and Florida Law",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Human immunodeficiency virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "cited_pmid": "1676278",
+      "title": "The natural history of HIV-1 infection: staging classifications of disease.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian immunodeficiency virus?",
+      "cited_pmid": "1673142",
+      "title": "Penetration of CD4 T cells by HIV-1. The CD4 receptor does not internalize with HIV, and CD4-related signal transduction events are not required for entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "How does Simian immunodeficiency virus evade or modulate the host immune response?",
+      "cited_pmid": "1672248",
+      "title": "NIH conference. Immunopathogenic mechanisms in human immunodeficiency virus (HIV) infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -295730,6 +295964,102 @@
       "question": "What diagnostic assays or laboratory tests detect Gibbon ape leukemia virus?",
       "missed_pmid": "27384662",
       "title": "Endogenous Gibbon Ape Leukemia Virus Identified in a Rodent (Melomys burtoni subsp.) from Wallacea (Indonesia)."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "1715507",
+      "title": "Characterization of monoclonal antibodies identifying type and strain-specific epitopes of human immunodeficiency virus type 1."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 pathogenesis and transmission?",
+      "missed_pmid": "1676278",
+      "title": "The natural history of HIV-1 infection: staging classifications of disease."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "missed_pmid": "42317333",
+      "title": "Research progress on HIV-1 structural proteins and antiviral therapies."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "missed_pmid": "36943985",
+      "title": "HIV Safety in Clinical Laboratories: Biology, Occupational Risk, Prevention, and Florida Law"
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36943985",
+      "title": "HIV Safety in Clinical Laboratories: Biology, Occupational Risk, Prevention, and Florida Law"
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42079651",
+      "title": "HIV-2 infection as a comparative lens for functional HIV-1 remission."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "missed_pmid": "42140499",
+      "title": "Lymph node remodelling underlies the attenuated form of HIV/AIDS in people with HIV-2."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "missed_pmid": "42190982",
+      "title": "Human Immunodeficiency Virus Type 2 Vpx-mediated Degradation of TASOR Activates Innate Immune Sensing of Nucleic Acids in Infected Cells."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "missed_pmid": "42243280",
+      "title": "Understanding indeterminate HIV serology through antigen-band pattern analysis of INNO-LIA and recomLine HIV confirmatory assays."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 2?",
+      "missed_pmid": "42306115",
+      "title": "HIV-2 infection in Europe - persistence by migrant flows from West Africa but low spillover into the native population."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human immunodeficiency virus 2?",
+      "missed_pmid": "2015912",
+      "title": "Comparison of the HIV-1 and HIV-2 proteinases using oligopeptide substrates representing cleavage sites in Gag and Gag-Pol polyproteins."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42295005",
+      "title": "CD8\u0251+ cells suppress SIV replication without the development of mutations within MHC class-I-restricted epitopes during post-treatment control."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "missed_pmid": "36417189",
+      "title": "Contemporary Distribution, Estimated Age, and Prehistoric Migrations of Old World Monkey Retroviruses."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "missed_pmid": "1715507",
+      "title": "Characterization of monoclonal antibodies identifying type and strain-specific epitopes of human immunodeficiency virus type 1."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Simian immunodeficiency virus?",
+      "missed_pmid": "42316366",
+      "title": "Mergers and migrations: drivers of population genetic structure in a captive rhesus macaque colony."
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is known about Simian foamy virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32616640",
+      "title": "Complete Genome Sequence of a Baboon Simian Foamy Virus Isolated from an Infected Human."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
