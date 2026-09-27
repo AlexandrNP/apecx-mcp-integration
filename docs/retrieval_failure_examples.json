@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:45:01.888763+00:00",
-  "runs": 476,
+  "updated": "2026-09-27T23:46:56.410885+00:00",
+  "runs": 477,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25085,
-  "n_false_negatives": 4957,
+  "n_false_positives": 25102,
+  "n_false_negatives": 4969,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 9
+    "false_positives": 17,
+    "false_negatives": 12
   },
   "false_positives": [
     {
@@ -282694,6 +282694,194 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
         "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
       ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42402032",
+      "title": "Magnolol inhibits porcine epidemic diarrhea virus infection by suppressing cathepsin L expression in vitro and in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2018513",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "How does Bovine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42138717",
+      "title": "Serological response to feline coronavirus in the UK domestic cat population.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41955925",
+      "title": "Efficacy of a novel antigen-decorated adenoviral vaccine platform against porcine respiratory coronavirus infection in a large natural host.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42005"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42125851",
+      "title": "Acute Respiratory Distress Syndrome in a Dog With Canine Respiratory Coronavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_215681"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "cited_pmid": "41585524",
+      "title": "Automated highly multiplex detection system for respiratory pathogens in canines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1336",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_517"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42312174",
+      "title": "Repurposing FDA-Approved Drugs as Potential Inhibitors of Feline Infectious Peritonitis Virus 3CLpro: An Integrated In Silico and In Vitro Study with Synergistic Combination Analysis.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Canine coronavirus?",
+      "cited_pmid": "42294011",
+      "title": "Detection of bovine coronavirus in myocardial tissue of a naturally infected calf.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Canine coronavirus?",
+      "cited_pmid": "42276662",
+      "title": "Coinfection with Hepatozoon felis and feline coronavirus in a domestic cat from Russia: A case report.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294745",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75741"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42519317",
+      "title": "Fc\u03b3R-ACE2 cooperative antibody-dependent enhancement in human and veterinary coronaviruses: mechanistic insights, comparative immunology, and implications for nano-engineered immunomodulatory platforms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42188806",
+      "title": "Immune Cell Signaling in Feline Infectious Peritonitis Virus Infection and Implications for Vaccine Design.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42735537",
+      "title": "Host C3 complement restricts bovine coronavirus infection in vitro via virus-induced IL-1\u03b2 signaling.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline coronavirus?",
+      "cited_pmid": "41779066",
+      "title": "Rapid and sensitive detection of feline herpesvirus-1 using fluorescent microspheres as labels for immunochromatographic test strips.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is the epidemiology and outbreak history of Feline coronavirus?",
+      "cited_pmid": "42198625",
+      "title": "Epidemiological and Clinical Insights from 68 Veterinarian-Reported Cases of Feline Infectious Peritonitis During the Documented FIP Epizootic in Cyprus.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Feline coronavirus?",
+      "cited_pmid": "42139320",
+      "title": "Descriptive assessment of cardiac changes in cats with feline infectious peritonitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_773"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine deltacoronavirus?",
+      "cited_pmid": "42294011",
+      "title": "Detection of bovine coronavirus in myocardial tissue of a naturally infected calf.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
+      "cited_pmid": "41834872",
+      "title": "Cross-species transmission alert: a novel canine-raccoon dog coronavirus infecting an Amur Tiger in China.",
+      "actual_organisms": [
+        "Canine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
     }
   ],
   "false_negatives": [
@@ -312438,6 +312626,78 @@
       "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
       "missed_pmid": "38731260",
       "title": "Serological Profile for Major Respiratory Viruses in Unvaccinated Cows from High-Yielding Dairy Herds."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "41982882",
+      "title": "Isolation, identification and pathogenicity analysis of BCoV epidemic strains in Xinjiang."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42153000",
+      "title": "Establishment of a Rapid Detection Method for Canine Coronavirus Using Recombinant Enzyme and Polymerase Mediated Isothermal Amplification Technology."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "missed_pmid": "41834872",
+      "title": "Cross-species transmission alert: a novel canine-raccoon dog coronavirus infecting an Amur Tiger in China."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "missed_pmid": "41568345",
+      "title": "Molecular detection of canine viral infectious diseases in China: an investigation from 2018 to 2024."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "missed_pmid": "41529644",
+      "title": "Identification and vaccine efficacy evaluation of a canine coronavirus isolated in central China."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is the epidemiology and outbreak history of Canine coronavirus?",
+      "missed_pmid": "41564895",
+      "title": "Emerging Respiratory Virus Threats from Influenza D and Canine Coronavirus HuPn-2018."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine coronavirus?",
+      "missed_pmid": "41519913",
+      "title": "Serological and molecular evidence of canine enteric coronavirus in southern Italy."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "missed_pmid": "42138204",
+      "title": "Cross-Species Transmission and Structural Adaptive Evolution: Implications of the FCoV-23 Pandemic for the Evolution of Coronaviruses."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline coronavirus?",
+      "missed_pmid": "42357624",
+      "title": "Successful Eradication of Feline Coronavirus in Breeding Catteries Paves the Way to Prevent Feline Infectious Peritonitis."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is the epidemiology and outbreak history of Feline coronavirus?",
+      "missed_pmid": "42357636",
+      "title": "Exposure to Feline Viruses in European Wildcats (Felis s. silvestris) in Germany: Spatial Patterns and Environmental Risk Factors."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "How does Feline coronavirus evade or modulate the host immune response?",
+      "missed_pmid": "42207749",
+      "title": "Correction: Serine protease-driven entry and S2 ' cleavage flexibility of feline coronavirus during feline enterocyte infections."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What antiviral drugs or treatments are effective against Porcine deltacoronavirus?",
+      "missed_pmid": "42054371",
+      "title": "Computational design of an ultrapotent deltacoronavirus miniprotein inhibitor."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
