@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:19:20.463836+00:00",
-  "runs": 331,
+  "updated": "2026-09-27T18:21:29.454754+00:00",
+  "runs": 332,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23499,
-  "n_false_negatives": 4385,
+  "n_false_positives": 23508,
+  "n_false_negatives": 4389,
   "new_this_run": {
-    "false_positives": 18,
+    "false_positives": 9,
     "false_negatives": 4
   },
   "false_positives": [
@@ -265240,6 +265240,94 @@
         "Human papillomavirus type 33",
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "9584080",
+      "title": "Human papillomavirus type 33 DNA and E6-E7 transcripts in late passages of the UT-DEC-1 vaginal keratinocyte cell line.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 16?",
+      "cited_pmid": "41474663",
+      "title": "Comparison of Cytological and/or Histopathological Results of Patients with Single and Multiple HPV Positivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "37103992",
+      "title": "The possible impact of novel mutations in human papillomavirus 52 on the infection characteristics.",
+      "actual_organisms": [
+        "Human papillomavirus type 52"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "36755053",
+      "title": "Characteristics of human papillomavirus infection among females and the genetic variations of HPV18 and HPV58 in Henan province, China.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 18?",
+      "cited_pmid": "41474663",
+      "title": "Comparison of Cytological and/or Histopathological Results of Patients with Single and Multiple HPV Positivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "10864677",
+      "title": "Human papillomavirus type 33 E7 peptides presented by HLA-DR*0402 to tumor-infiltrating T cells in cervical cancer.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "37103992",
+      "title": "The possible impact of novel mutations in human papillomavirus 52 on the infection characteristics.",
+      "actual_organisms": [
+        "Human papillomavirus type 52"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "11336560",
+      "title": "Induction of type-specific neutralizing antibodies by capsomeres of human papillomavirus type 33.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "10864677",
+      "title": "Human papillomavirus type 33 E7 peptides presented by HLA-DR*0402 to tumor-infiltrating T cells in cervical cancer.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
     }
   ],
   "false_negatives": [
@@ -291552,6 +291640,30 @@
       "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
       "missed_pmid": "41593213",
       "title": "Inverted Sinonasal Papilloma: Pheno-endotyping and Predictive Markers of Recurrence and Malignancy - A Systematic Review."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "10864677",
+      "title": "Human papillomavirus type 33 E7 peptides presented by HLA-DR*0402 to tumor-infiltrating T cells in cervical cancer."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 pathogenesis and transmission?",
+      "missed_pmid": "21533417",
+      "title": "Incidence of human papillomavirus type 33 in premalignant and malignant skin lesions from organ transplant recipients."
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 33?",
+      "missed_pmid": "9621134",
+      "title": "Detection of human papillomavirus type 33 DNA in extragenital Bowen's disease with the polymerase chain reaction."
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "missed_pmid": "37103992",
+      "title": "The possible impact of novel mutations in human papillomavirus 52 on the infection characteristics."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
