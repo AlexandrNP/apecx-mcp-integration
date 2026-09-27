@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:14:14.347023+00:00",
-  "runs": 205,
+  "updated": "2026-09-27T11:15:41.724059+00:00",
+  "runs": 206,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20773,
-  "n_false_negatives": 3585,
+  "n_false_positives": 20792,
+  "n_false_negatives": 3587,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 0
+    "false_positives": 19,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -234748,6 +234748,221 @@
       "actual_organisms": [
         "Kokobera virus"
       ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "32441627",
+      "title": "Sabi\u00e1 Virus-Like Mammarenavirus in Patient with Fatal Hemorrhagic Fever, Brazil, 2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "32441627",
+      "title": "Sabi\u00e1 Virus-Like Mammarenavirus in Patient with Fatal Hemorrhagic Fever, Brazil, 2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Machupo mammarenavirus?",
+      "cited_pmid": "34179329",
+      "title": "Genomic characterization of Wenzhou mammarenavirus detected in wild rodents in Guangzhou City, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is known about Tacaribe virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30668977",
+      "title": "Assessing cross-reactivity of Jun\u00edn virus-directed neutralizing antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is known about Tacaribe virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29879985",
+      "title": "Description and characterization of a novel live-attenuated tri-segmented Machupo virus in Guinea pigs.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What diagnostic assays or laboratory tests detect Tacaribe virus?",
+      "cited_pmid": "32441627",
+      "title": "Sabi\u00e1 Virus-Like Mammarenavirus in Patient with Fatal Hemorrhagic Fever, Brazil, 2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What diagnostic assays or laboratory tests detect Tacaribe virus?",
+      "cited_pmid": "35537676",
+      "title": "Understanding Sabi\u00e1 virus infections (Brazilian mammarenavirus).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052299",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the epidemiology and outbreak history of Tacaribe virus?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tacaribe virus?",
+      "cited_pmid": "28736175",
+      "title": "Structural Basis for Receptor Selectivity by the Whitewater Arroyo Mammarenavirus.",
+      "actual_organisms": [
+        "Whitewater Arroyo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tacaribe virus?",
+      "cited_pmid": "41418935",
+      "title": "Metatranscriptomics profiling reveals rodent- and shrew-borne viral diversity and evolutionary relationships in Guangzhou, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560155",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tacaribe virus?",
+      "cited_pmid": "30685659",
+      "title": "Virome profiling of rodents in Xinjiang Uygur Autonomous Region, China: Isolation and characterization of a new strain of Wenzhou virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tacaribe virus?",
+      "cited_pmid": "29167248",
+      "title": "Complete Genome Sequence of a Novel Variant of Wenzhou Mammarenavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tacaribe virus?",
+      "cited_pmid": "38031051",
+      "title": "Epidemiology and Genomic characteristics of arenavirus in rodents from the southeast coast of P.R. China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sabia mammarenavirus?",
+      "cited_pmid": "28736175",
+      "title": "Structural Basis for Receptor Selectivity by the Whitewater Arroyo Mammarenavirus.",
+      "actual_organisms": [
+        "Whitewater Arroyo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chapare mammarenavirus?",
+      "cited_pmid": "42327048",
+      "title": "Computationally hybridized pathogenic mammarenavirus receptor binding domains reveal cryptic variants that elicit cross-neutralizing immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chapare mammarenavirus?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "32441627",
+      "title": "Sabi\u00e1 Virus-Like Mammarenavirus in Patient with Fatal Hemorrhagic Fever, Brazil, 2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -256260,6 +256475,18 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 2?",
       "missed_pmid": "40552829",
       "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "29879985",
+      "title": "Description and characterization of a novel live-attenuated tri-segmented Machupo virus in Guinea pigs."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Machupo mammarenavirus?",
+      "missed_pmid": "34132574",
+      "title": "Antibody-Based Inhibition of Pathogenic New World Hemorrhagic Fever Mammarenaviruses by Steric Occlusion of the Human Transferrin Receptor 1 Apical Domain."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
