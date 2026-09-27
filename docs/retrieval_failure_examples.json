@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T08:54:37.594684+00:00",
-  "runs": 186,
+  "updated": "2026-09-27T08:56:20.298145+00:00",
+  "runs": 187,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20076,
+  "n_false_positives": 20092,
   "n_false_negatives": 3569,
   "new_this_run": {
-    "false_positives": 35,
+    "false_positives": 16,
     "false_negatives": 0
   },
   "false_positives": [
@@ -226777,6 +226777,178 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1851087",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052801",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine distemper virus?",
+      "cited_pmid": "32215955",
+      "title": "Phocine distemper virus uses phocine and other animal SLAMs as a receptor but not human SLAM.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "42100657",
+      "title": "Development of an indirect enzyme-linked immunosorbent assay based on the nucleocapsid protein of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rinderpest virus?",
+      "cited_pmid": "39046448",
+      "title": "Glycan-shielded homodimer structure and dynamical features of the canine distemper virus hemagglutinin relevant for viral entry and efficient vaccination.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rinderpest virus?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Phocine distemper virus?",
+      "cited_pmid": "42515586",
+      "title": "Molecular Detection of Canine Distemper Virus in Portugal: What Explains the Post-2020 Decline? A Retrospective RT-qPCR Study.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Phocine distemper virus?",
+      "cited_pmid": "42511110",
+      "title": "Immunohistochemical, Immunofluorescent, and Molecular Investigation of Canine Distemper Virus, Nectin 4, and CD150 Receptors in Naturally Infected Dogs with Canine Distemper Virus.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "How does Phocine distemper virus evade or modulate the host immune response?",
+      "cited_pmid": "40493685",
+      "title": "Evolutionary and structural basis of SLAMF1 utilization in morbilliviruses-Implications for host range and cross-species transmission.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Cetacean morbillivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Phocine distemper virus?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the epidemiology and outbreak history of Bovine parainfluenza virus 3?",
+      "cited_pmid": "38539942",
+      "title": "Viral Diseases in Water Buffalo (Bubalus bubalis): New Insights and Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "How does Human parainfluenza virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "41793875",
+      "title": "Comparative RNA-seq analysis of Bovine parainfluenza virus type 3 and its V gene-deleted variant reveals that deletion of the V gene affects autophagy signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parainfluenza virus 1?",
+      "cited_pmid": "42198700",
+      "title": "Whole-Genome Phylogenetic Characterization of Human Parainfluenza Virus Type 4 Circulating in St. Petersburg, Russia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "How does Human parainfluenza virus 2 evade or modulate the host immune response?",
+      "cited_pmid": "41793875",
+      "title": "Comparative RNA-seq analysis of Bovine parainfluenza virus type 3 and its V gene-deleted variant reveals that deletion of the V gene affects autophagy signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "How does Human parainfluenza virus 4 evade or modulate the host immune response?",
+      "cited_pmid": "41793875",
+      "title": "Comparative RNA-seq analysis of Bovine parainfluenza virus type 3 and its V gene-deleted variant reveals that deletion of the V gene affects autophagy signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
