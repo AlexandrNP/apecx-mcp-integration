@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:35:51.131832+00:00",
-  "runs": 415,
+  "updated": "2026-09-27T21:37:48.792720+00:00",
+  "runs": 416,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24551,
+  "n_false_positives": 24559,
   "n_false_negatives": 4842,
   "new_this_run": {
-    "false_positives": 2,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -276716,6 +276716,103 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12066",
         "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "38135265",
+      "title": "High prevalence of Enterovirus E, Bovine Kobuvirus, and Astrovirus revealed by viral metagenomics in fecal samples from cattle in Central Colombia.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1435485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "cited_pmid": "41288374",
+      "title": "Isolation and identification of a genotype F bovine enterovirus in western China.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "cited_pmid": "39956903",
+      "title": "BEV 2C protein inhibits the NF-\u03baB signalling pathway to promote viral replication by targeting IKBKB and p65.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "39122806",
+      "title": "The early communication stages between serine proteases and enterovirus capsids in the race for viral disintegration.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "41276054",
+      "title": "Preparation of monoclonal antibodies for the VP1 protein of bovine enterovirus and precise mapping of linear B-cell epitopes.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "38315051",
+      "title": "Genetic diversity and recombination of bovine enterovirus strains in China.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "41538891",
+      "title": "Molecular epidemiological investigation and genetic diversity of bovine enterovirus in China.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "40427334",
+      "title": "Emergence of a Recombinant Bovine Enterovirus in China: Insights from Phylogenetic and Temporal Analysis.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
       ]
     }
   ],
