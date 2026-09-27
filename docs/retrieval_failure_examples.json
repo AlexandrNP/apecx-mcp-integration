@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:57:46.832784+00:00",
-  "runs": 397,
+  "updated": "2026-09-27T20:59:48.835478+00:00",
+  "runs": 398,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24342,
+  "n_false_positives": 24352,
   "n_false_negatives": 4828,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 1
+    "false_positives": 10,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -274357,6 +274357,113 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11084",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
         "http://purl.obolibrary.org/obo/NCBITaxon_407836"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41782150",
+      "title": "Host-specificity assessment of feline alphaherpesvirus-1 derived immunocontraceptive candidates in non-feline models.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "35484378",
+      "title": "Phylogenetic analyses on Marek's disease virus circulating in Iranian backyard and commercial poultry indicate viruses of different origin.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Feline herpesvirus 1?",
+      "cited_pmid": "41893645",
+      "title": "Veterinary Herpesviruses: Experimental Tools for Transcriptomics and Neuroscience.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What antiviral drugs or treatments are effective against Chelonid herpesvirus 5?",
+      "cited_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "How does Chelonid herpesvirus 5 evade or modulate the host immune response?",
+      "cited_pmid": "34452285",
+      "title": "The Requirement of Glycoprotein C for Interindividual Spread Is Functionally Conserved within the Alphaherpesvirus Genus (Mardivirus), but Not the Host (Gallid).",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180252",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37108"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is known about Gallid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41782150",
+      "title": "Host-specificity assessment of feline alphaherpesvirus-1 derived immunocontraceptive candidates in non-feline models.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "cited_pmid": "41295745",
+      "title": "Development and Validation of a Droplet Digital PCR Assay for Detection of Feline Herpesvirus Type-1.",
+      "actual_organisms": [
+        "Feline herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83556"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "cited_pmid": "42360375",
+      "title": "Development of recombinant glycoprotein B based Indirect ELISA for detection of antibodies against Bovine alphaherpesvirus-1 in Bovines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 1?",
+      "cited_pmid": "42799934",
+      "title": "Evaluation of indolicidin for inactivation of bovine alphaherpesvirus 1 in semen.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Gallid alphaherpesvirus 1?",
+      "cited_pmid": "26244892",
+      "title": "A Genomic Approach to Unravel Host-Pathogen Interaction in Chelonians: The Example of Testudinid Herpesvirus 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560801",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
