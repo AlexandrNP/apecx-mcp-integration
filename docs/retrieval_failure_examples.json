@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:50:09.686332+00:00",
-  "runs": 453,
+  "updated": "2026-09-27T22:51:42.896356+00:00",
+  "runs": 454,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24878,
-  "n_false_negatives": 4868,
+  "n_false_positives": 24879,
+  "n_false_negatives": 4869,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 1,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -280483,6 +280483,15 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_47506"
       ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the epidemiology and outbreak history of Enterovirus D68?",
+      "cited_pmid": "37977075",
+      "title": "Changes in enterovirus epidemiology after easing of lockdown measures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
     }
   ],
   "false_negatives": [
@@ -309693,6 +309702,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
       "missed_pmid": "37833525",
       "title": "Molecular evolutionary dynamics of enterovirus A71, coxsackievirus A16 and coxsackievirus A6 causing hand, foot and mouth disease in Thailand, 2000-2022."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "missed_pmid": "42189918",
+      "title": "Decoding the complex receptor landscape of enterovirus D68."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
