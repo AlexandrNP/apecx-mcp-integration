@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:47:19.322857+00:00",
-  "runs": 218,
+  "updated": "2026-09-27T11:48:48.751477+00:00",
+  "runs": 219,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21406,
+  "n_false_positives": 21448,
   "n_false_negatives": 3594,
   "new_this_run": {
-    "false_positives": 58,
+    "false_positives": 42,
     "false_negatives": 0
   },
   "false_positives": [
@@ -242141,6 +242141,485 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11292",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42736308",
+      "title": "Redox cycling of viral RNA polymerase controls picornavirus replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42714963",
+      "title": "Genomic characterization of Lao Mobatvirus strains reveals host-associated clustering in Southeast Asian bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2501367",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the epidemiology and outbreak history of Human respirovirus 3?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human respirovirus 3?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "42137610",
+      "title": "Detection and Genomic Characterization of Novel Respiratory Viruses in US and Mexican Cattle Farms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1155188",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1511084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "42714963",
+      "title": "Genomic characterization of Lao Mobatvirus strains reveals host-associated clustering in Southeast Asian bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2501367",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42734801",
+      "title": "Analysis of Cell Populations from Arbovirus-Infected Tissues by Flow Cytometry.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42736308",
+      "title": "Redox cycling of viral RNA polymerase controls picornavirus replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42421318",
+      "title": "Transgene sequence codon optimization and composition determines replication competence of self-amplifying RNA.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "cited_pmid": "42708070",
+      "title": "Yellow Fever, an Arboviral Disease with Public Health Impacts: General Aspects and the Use of the One Health Approach in the Context of This Zoonosis.",
+      "actual_organisms": [
+        "Yellow fever virus"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "How does BK polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "How does BK polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42580411",
+      "title": "Enteroviruses antagonize the host restriction factor ABL2 via proteasomal degradation to facilitate viral replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42632300",
+      "title": "Of mice and men: Updates on hantavirus disease and diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42734801",
+      "title": "Analysis of Cell Populations from Arbovirus-Infected Tissues by Flow Cytometry.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42690165",
+      "title": "Andes Virus: From Transmission Dynamics to Pandemic Potential.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42773773",
+      "title": "Hantavirus preparedness at human-rodent interfaces: lessons from China's HFRS control and Andes virus transmission in mobile populations.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "42714963",
+      "title": "Genomic characterization of Lao Mobatvirus strains reveals host-associated clustering in Southeast Asian bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2501367",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
       ]
     }
   ],
