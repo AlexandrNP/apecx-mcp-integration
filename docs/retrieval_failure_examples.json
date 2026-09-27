@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:59:26.256769+00:00",
-  "runs": 287,
+  "updated": "2026-09-27T16:01:15.234718+00:00",
+  "runs": 288,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22914,
-  "n_false_negatives": 4118,
+  "n_false_positives": 22932,
+  "n_false_negatives": 4119,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 0
+    "false_positives": 18,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -258898,6 +258898,207 @@
         "Human papillomavirus type 31",
         "http://purl.obolibrary.org/obo/NCBITaxon_333760"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42037415",
+      "title": "A single residue in the VP3 capsid protein governs virulence and informs live-attenuated vaccine design for coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B3?",
+      "cited_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "42220743",
+      "title": "Onychomadesis: A Rare Manifestation of Coxsackievirus A6 Infection in an Adult Patient.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B3?",
+      "cited_pmid": "42131302",
+      "title": "Serial passaging in vitro generates a Vero cell-adapted coxsackievirus A6 strain with distinct phenotypic characteristics.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42037415",
+      "title": "A single residue in the VP3 capsid protein governs virulence and informs live-attenuated vaccine design for coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42131302",
+      "title": "Serial passaging in vitro generates a Vero cell-adapted coxsackievirus A6 strain with distinct phenotypic characteristics.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "39847294",
+      "title": "New N6-Substituted Adenine Derivatives with High Antiviral Activity against RNA-Containing Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A16?",
+      "cited_pmid": "42220743",
+      "title": "Onychomadesis: A Rare Manifestation of Coxsackievirus A6 Infection in an Adult Patient.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42024482",
+      "title": "A Rapid and Ultrasensitive Detection of Coxsackievirus A16 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with the CRISPR-Cas12a-Based Biosensing System.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2994055",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42382355",
+      "title": "Abietic acid targets RAN to restrict coxsackievirus B3 infection.",
+      "actual_organisms": [
+        "Coxsackievirus B3"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "42024482",
+      "title": "A Rapid and Ultrasensitive Detection of Coxsackievirus A16 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with the CRISPR-Cas12a-Based Biosensing System.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2994055",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "39056240",
+      "title": "Molecular epidemiology and characterization of enteroviruses detected in cerebrospinal fluid and respiratory samples in Slovenia, 2014-2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "cited_pmid": "40425923",
+      "title": "A 3-Year Environmental Surveillance Reveals Multiple Enteroviruses Including Types A76, A89, A90 and C113 in Eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185940",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
     }
   ],
   "false_negatives": [
@@ -283608,6 +283809,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Cyprinid herpesvirus 3?",
       "missed_pmid": "37678483",
       "title": "Autophagy induced by Cyprinid herpesvirus 3 (CyHV-3) facilitated intracellular viral replication and extracellular viral yields in common carp brain cells."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "missed_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
