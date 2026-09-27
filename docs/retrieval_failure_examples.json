@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:18:57.725884+00:00",
-  "runs": 273,
+  "updated": "2026-09-27T15:20:35.857439+00:00",
+  "runs": 274,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22595,
-  "n_false_negatives": 3934,
+  "n_false_positives": 22609,
+  "n_false_negatives": 3944,
   "new_this_run": {
-    "false_positives": 31,
-    "false_negatives": 14
+    "false_positives": 14,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -255398,6 +255398,179 @@
         "Human parainfluenza virus 2",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39772063",
+      "title": "Safety, Immunogenicity, and Efficacy of a Recombinant Vesicular Stomatitis Virus Vectored Vaccine Against Severe Fever with Thrombocytopenia Syndrome Virus and Heartland Bandavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "29699908",
+      "title": "Uukuniemi virus, Czech Republic.",
+      "actual_organisms": [
+        "Uukuniemi virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "19874853",
+      "title": "Efficacy of favipiravir (T-705) and T-1106 pyrazine derivatives in phlebovirus disease models.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "19393266",
+      "title": "A biotechnological product and its potential as a new immunomodulator for treatment of animal phlebovirus infection: Punta Toro virus.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2720874"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genome organization and replication cycle of Punta Toro virus?",
+      "cited_pmid": "27428993",
+      "title": "RNA Encapsidation and Packaging in the Phleboviruses.",
+      "actual_organisms": [
+        "Uukuniemi virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genome organization and replication cycle of Punta Toro virus?",
+      "cited_pmid": "30567991",
+      "title": "M Segment-Based Minigenomes and Virus-Like Particle Assays as an Approach To Assess the Potential of Tick-Borne Phlebovirus Genome Reassortment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1933191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What antiviral drugs or treatments are effective against Heartland virus?",
+      "cited_pmid": "19874853",
+      "title": "Efficacy of favipiravir (T-705) and T-1106 pyrazine derivatives in phlebovirus disease models.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is known about Nairobi sheep disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39204214",
+      "title": "Exposure to Arboviruses in Cattle: Seroprevalence of Rift Valley Fever, Bluetongue, and Epizootic Hemorrhagic Disease Viruses and Risk Factors in Baringo County, Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Nairobi sheep disease virus?",
+      "cited_pmid": "37918209",
+      "title": "Seroprevalence and risk factors of Peste des petits ruminants in different production systems in Uganda.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is the genome organization and replication cycle of Nairobi sheep disease virus?",
+      "cited_pmid": "39180076",
+      "title": "Genome characterization of Rift Valley fever virus isolated from cattle, goats and sheep during interepidemic periods in Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What antiviral drugs or treatments are effective against Nairobi sheep disease virus?",
+      "cited_pmid": "22615273",
+      "title": "Extended protection against phlebovirus infection conferred by recombinant adenovirus expressing consensus interferon (DEF201).",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What diagnostic assays or laboratory tests detect Uukuniemi virus?",
+      "cited_pmid": "37766282",
+      "title": "Generation and Characterisation of Monoclonal Antibodies against Nairobi Sheep Disease Virus Nucleoprotein.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052514",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "19874853",
+      "title": "Efficacy of favipiravir (T-705) and T-1106 pyrazine derivatives in phlebovirus disease models.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "How does Uukuniemi virus evade or modulate the host immune response?",
+      "cited_pmid": "39072499",
+      "title": "Current insights into human pathogenic phenuiviruses and the host immune system.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -279004,6 +279177,66 @@
       "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
       "missed_pmid": "35672928",
       "title": "Human parainfluenza 2 &amp; 4: Clinical and genetic epidemiology in the UK, 2013-2017, reveals distinct disease features and co-circulating genomic subtypes."
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genome organization and replication cycle of Punta Toro virus?",
+      "missed_pmid": "20055939",
+      "title": "Non-structural and nucleocapsid proteins of Punta Toro virus induce apoptosis of hepatocytes through both intrinsic and extrinsic pathways."
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What antiviral drugs or treatments are effective against Punta Toro virus?",
+      "missed_pmid": "18550012",
+      "title": "Immunoprophylaxis of Punta Toro virus (Phlebovirus, Bunyaviridae) infection in hamsters with recombinant Eimeria profilin-like antigen."
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What are the clinical symptoms and disease presentation of Punta Toro virus?",
+      "missed_pmid": "21320557",
+      "title": "Host genetic variation in susceptibility to Punta Toro virus."
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What diagnostic assays or laboratory tests detect Heartland virus?",
+      "missed_pmid": "38712703",
+      "title": "Pathogenesis and virulence of Heartland virus."
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Heartland virus?",
+      "missed_pmid": "38399689",
+      "title": "Heartland Virus Disease-An Underreported Emerging Infection."
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is known about Nairobi sheep disease virus pathogenesis and transmission?",
+      "missed_pmid": "37766282",
+      "title": "Generation and Characterisation of Monoclonal Antibodies against Nairobi Sheep Disease Virus Nucleoprotein."
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is the epidemiology and outbreak history of Nairobi sheep disease virus?",
+      "missed_pmid": "40303826",
+      "title": "The Geographical Coexist of the Migratory Birds, Ticks, and Nairobi Sheep Disease Virus May Potentially Contribute to the Passive Spreading of Nairobi Sheep Disease."
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What diagnostic assays or laboratory tests detect Uukuniemi virus?",
+      "missed_pmid": "24942574",
+      "title": "Uukuniemi Phlebovirus assembly and secretion leave a functional imprint on the virion glycome."
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "missed_pmid": "24850728",
+      "title": "Genome-wide small interfering RNA screens reveal VAMP3 as a novel host factor required for Uukuniemi virus late penetration."
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Uukuniemi virus?",
+      "missed_pmid": "25065140",
+      "title": "[Genetic characterization of the Zaliv Terpeniya virus (ZTV, Bunyaviridae, Phlebovirus, Uukuniemi serogroup) strains isolated from the ticks Ixodes (Ceratixodes) uriae White, 1852, obligate parasites of the Alcidae birds, in high latitudes of Northern Eurasia and the mosquitoes Culex modestus Ficalbi, 1889, in subtropics Transcaucasus]."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
