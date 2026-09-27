@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:04:44.082165+00:00",
-  "runs": 303,
+  "updated": "2026-09-27T17:07:48.452782+00:00",
+  "runs": 304,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23139,
-  "n_false_negatives": 4188,
+  "n_false_positives": 23148,
+  "n_false_negatives": 4191,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 8
+    "false_positives": 9,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -261300,6 +261300,96 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "41667127",
+      "title": "Rapid and Visual Detection of Coxsackievirus A6 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with Nanoparticle-Based Biosensor Platform.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "41667127",
+      "title": "Rapid and Visual Detection of Coxsackievirus A6 Using Reverse Transcription Multiple Cross Displacement Amplification Combined with Nanoparticle-Based Biosensor Platform.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A16?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42228746",
+      "title": "VP1-141 is a determinant of a Vero cell-adapted Coxsackievirus A10 for vaccine development.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "41573759",
+      "title": "School outbreak of coxsackievirus A16 in Antipolo City, Philippines, October 2022.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "41754535",
+      "title": "SHFL Post-Transcriptionally Restricts Coxsackievirus A16 In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
     }
   ],
   "false_negatives": [
@@ -286430,6 +286520,24 @@
       "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
       "missed_pmid": "42219006",
       "title": "Randomized field trial on the effects of on-arrival intranasal vaccination against bovine coronavirus on pneumonia and average daily gain in beef-on-dairy calves."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B3?",
+      "missed_pmid": "42144598",
+      "title": "Combining receptor engineering and intracellular gelation for cell-based antiviral therapy against coxsackievirus B3."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A16?",
+      "missed_pmid": "41573759",
+      "title": "School outbreak of coxsackievirus A16 in Antipolo City, Philippines, October 2022."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "missed_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
