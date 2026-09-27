@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:39:31.504894+00:00",
-  "runs": 474,
+  "updated": "2026-09-27T23:42:42.686882+00:00",
+  "runs": 475,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25063,
-  "n_false_negatives": 4944,
+  "n_false_positives": 25070,
+  "n_false_negatives": 4948,
   "new_this_run": {
-    "false_positives": 21,
-    "false_negatives": 10
+    "false_positives": 7,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -282462,6 +282462,73 @@
         "Human betaherpesvirus 7",
         "http://purl.obolibrary.org/obo/NCBITaxon_10368"
       ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "42734790",
+      "title": "Production of Viral Particles from a Chikungunya Virus Infectious Clone.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42734788",
+      "title": "Determination of Chikungunya Virus Infectious Titer Using Plaque Assays.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42734797",
+      "title": "Plaque Reduction Neutralization Test Against Chikungunya Virus Using Liver Homogenate.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "41575346",
+      "title": "Silymarin Attenuates Arthritis and Myositis in a Murine Model of Acute Infection by Chikungunya and Mayaro Viruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Mayaro virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "cited_pmid": "39881941",
+      "title": "Corrigendum to \"Current and future burden of ross river virus infection attributable to increasing temperature in Australia: a population-based study\" the Lancet Regional Health-Western Pacific 2024;48: 101124.",
+      "actual_organisms": [
+        "Ross River virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "41483970",
+      "title": "Epidemiology, diagnosis and treatment of Mayaro and Oropouche virus infections: implication for clinical practice and public health.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "41478940",
+      "title": "Murine Models of Alphavirus Infection to Study the Immunopathogenesis of Pain.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
     }
   ],
   "false_negatives": [
@@ -312128,6 +312195,30 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 3?",
       "missed_pmid": "42136640",
       "title": "gE mutations and VZV genotypes jointly predict pain relief outcomes in herpes zoster: an integrative immunologic and modeling study."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40010657",
+      "title": "Distinct cellular and molecular responses to infection in three target cell types from horses, a species naturally susceptible to Ross River virus."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41532622",
+      "title": "Modulating Chikungunya and Mayaro virus-induced disease severity in mice using low concentrations of anti-IFNAR1 antibodies."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mayaro virus?",
+      "missed_pmid": "41483970",
+      "title": "Epidemiology, diagnosis and treatment of Mayaro and Oropouche virus infections: implication for clinical practice and public health."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "missed_pmid": "41662733",
+      "title": "Mayaro Virus Infections in European Field Researchers in the Remote Amazon Rainforest, French Guiana, 2024."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
