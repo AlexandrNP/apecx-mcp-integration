@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:42:23.243075+00:00",
-  "runs": 315,
+  "updated": "2026-09-27T17:44:06.070260+00:00",
+  "runs": 316,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23289,
-  "n_false_negatives": 4281,
+  "n_false_positives": 23299,
+  "n_false_negatives": 4293,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 5
+    "false_positives": 10,
+    "false_negatives": 12
   },
   "false_positives": [
     {
@@ -262962,6 +262962,114 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33969",
         "http://purl.obolibrary.org/obo/NCBITaxon_89463"
       ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is known about Bohle iridovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39010235",
+      "title": "Fish Iridoviridae: infection, vaccination and immune response.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "38367823",
+      "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bohle iridovirus?",
+      "cited_pmid": "30066272",
+      "title": "Soft-shelled turtle iridovirus enters cells via cholesterol-dependent, clathrin-mediated endocytosis as well as macropinocytosis.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bohle iridovirus?",
+      "cited_pmid": "10752555",
+      "title": "Comparative studies of piscine and amphibian iridoviruses.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bohle iridovirus?",
+      "cited_pmid": "35862188",
+      "title": "Whole-genome analysis of red sea bream iridovirus spread in 2021 in Japan provided epidemiological and viral traits insight.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39010235",
+      "title": "Fish Iridoviridae: infection, vaccination and immune response.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37222626",
+      "title": "The Inactivated ISKNV-I Vaccine Confers Highly Effective Cross-Protection against Epidemic RSIV-I and RSIV-II from Cultured Spotted Sea Bass Lateolabrax maculatus.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1697349",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "How does Epizootic hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "35868476",
+      "title": "Red sea bream interleukin (IL)-1\u03b2 and IL-8 expression, subcellular localization, and antiviral activity against red sea bream iridovirus (RSIV).",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is known about Soft-shelled turtle iridovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37222626",
+      "title": "The Inactivated ISKNV-I Vaccine Confers Highly Effective Cross-Protection against Epidemic RSIV-I and RSIV-II from Cultured Spotted Sea Bass Lateolabrax maculatus.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1697349",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Soft-shelled turtle iridovirus?",
+      "cited_pmid": "38367823",
+      "title": "Evaluation of the diagnostic assays detecting red sea bream iridovirus infection at different severity levels.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -288650,6 +288758,78 @@
       "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
       "missed_pmid": "32205181",
       "title": "Development of a multiplex RT-PCR assay for the routine detection of seven RNA viruses in Apis mellifera."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What is known about Red sea bream iridovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42002852",
+      "title": "Divergent survival and viral shedding patterns of red sea bream iridovirus in black sea bream and Japanese sea bass."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "missed_pmid": "35643355",
+      "title": "Virulence difference between red sea bream iridovirus mixed subtype I/II and subtype II and the expression of viral and apoptosis-related genes in infected rock bream (Oplegnathus fasciatus)."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is known about Bohle iridovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15841340",
+      "title": "Promoter activity in the 5' flanking regions of the Bohle iridovirus ICP 18, ICP 46 and major capsid protein genes."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "missed_pmid": "17584440",
+      "title": "Development of real-time PCR assays for the detection and differentiation of Australian and European ranaviruses."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bohle iridovirus?",
+      "missed_pmid": "9653454",
+      "title": "Isolation and characterization of iridoviruses from the giant toad Bufo marinus in Venezuela."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "11911588",
+      "title": "The epizootic haematopoietic necrosis virus (Iridoviridae) induces apoptosis in vitro."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus pathogenesis and transmission?",
+      "missed_pmid": "10752555",
+      "title": "Comparative studies of piscine and amphibian iridoviruses."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus pathogenesis and transmission?",
+      "missed_pmid": "20042506",
+      "title": "Evidence for multiple recent host species shifts among the Ranaviruses (family Iridoviridae)."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "17584440",
+      "title": "Development of real-time PCR assays for the detection and differentiation of Australian and European ranaviruses."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "How does Epizootic hematopoietic necrosis virus evade or modulate the host immune response?",
+      "missed_pmid": "11778703",
+      "title": "Comparison of the eIF-2alpha homologous proteins of seven ranaviruses (Iridoviridae)."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "How does Epizootic hematopoietic necrosis virus evade or modulate the host immune response?",
+      "missed_pmid": "10509716",
+      "title": "Partial mapping and sequencing of a fish iridovirus genome reveals genes homologous to the frog virus 3 p31, p40 and human eIF2alpha."
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Soft-shelled turtle iridovirus?",
+      "missed_pmid": "17706827",
+      "title": "Characterization of a late gene encoding for MCP in soft-shelled turtle iridovirus (STIV)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
