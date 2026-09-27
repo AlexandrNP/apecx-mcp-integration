@@ -471,6 +471,7 @@ _QUESTION_TEMPLATES: list[str] = [
     "What antiviral drugs or treatments are effective against {name}?",
     "What is the epidemiology and outbreak history of {name}?",
     "What are the clinical symptoms and disease presentation of {name}?",
+    "What are the cell tropism, host receptors, and entry mechanism of {name}?",
 ]
 
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
