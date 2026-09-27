@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:11:08.960541+00:00",
-  "runs": 248,
+  "updated": "2026-09-27T14:12:51.529385+00:00",
+  "runs": 249,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22034,
-  "n_false_negatives": 3704,
+  "n_false_positives": 22044,
+  "n_false_negatives": 3712,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 9
+    "false_positives": 10,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -249196,6 +249196,114 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11082"
       ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "30484707",
+      "title": "Study of Karolinska Institutet and Washington University polyomaviruses in tonsil, adenoid, throat swab and middle ear fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42629671",
+      "title": "Research trends and hotspots in BK polyomavirus infection in kidney transplantation: A bibliometric analysis.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "30484707",
+      "title": "Study of Karolinska Institutet and Washington University polyomaviruses in tonsil, adenoid, throat swab and middle ear fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42335122",
+      "title": "Merkel cell polyomavirus exploits extracellular vesicles for skin infection and host immune evasion through activated Wnt signaling.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "cited_pmid": "42418167",
+      "title": "ctDNA or Merkel Virus Antibodies for Surveillance of Merkel Cell Carcinoma Recurrence.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2982619",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "30484707",
+      "title": "Study of Karolinska Institutet and Washington University polyomaviruses in tonsil, adenoid, throat swab and middle ear fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "30484707",
+      "title": "Study of Karolinska Institutet and Washington University polyomaviruses in tonsil, adenoid, throat swab and middle ear fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "How does WU polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42335122",
+      "title": "Merkel cell polyomavirus exploits extracellular vesicles for skin infection and host immune evasion through activated Wnt signaling.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is known about KI polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652202",
+      "title": "Divergent Cellular and Humoral Immunity to BK Polyomavirus in Healthy Adults and Renal Transplant Recipients Based on Blood and Urine Samples: Implications for Immune-Guided Monitoring.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect KI polyomavirus?",
+      "cited_pmid": "40064122",
+      "title": "High-sensitivity BK virus detection system using viewRNA in situ hybridization.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -271422,6 +271530,54 @@
       "question": "What antiviral drugs or treatments are effective against Usutu virus?",
       "missed_pmid": "42168123",
       "title": "The Human Threat From West Nile Virus and Usutu Virus in a Changing Climate."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "missed_pmid": "42629671",
+      "title": "Research trends and hotspots in BK polyomavirus infection in kidney transplantation: A bibliometric analysis."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "missed_pmid": "42624173",
+      "title": "Unlocking the impact of BK virus in renal transplant recipients in North India: viral load dynamics, genotypes, and clinical outcomes."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "missed_pmid": "32124265",
+      "title": "Investigation of simian virus 40 (SV40) and human JC, BK, MC, KI, and WU polyomaviruses in glioma."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "missed_pmid": "40064122",
+      "title": "High-sensitivity BK virus detection system using viewRNA in situ hybridization."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of JC polyomavirus?",
+      "missed_pmid": "42647081",
+      "title": "[Progressive multifocal leukoencephalopathy associated with rituximab treatment]."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "missed_pmid": "32421993",
+      "title": "The Role of Oncogenic DNA Viruses in Penile Cancer Development."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "missed_pmid": "42323496",
+      "title": "mRNA vaccine design targeting Merkel cell polyomavirus for immunotherapy of Merkel cell carcinoma."
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect KI polyomavirus?",
+      "missed_pmid": "33281758",
+      "title": "Broad Virus Detection and Variant Discovery in Fecal Samples of Hematopoietic Transplant Recipients Using Targeted Sequence Capture Metagenomics."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
