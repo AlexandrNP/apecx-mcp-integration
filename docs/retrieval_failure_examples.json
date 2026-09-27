@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:11:39.286579+00:00",
-  "runs": 155,
+  "updated": "2026-09-27T07:13:47.519095+00:00",
+  "runs": 156,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19160,
-  "n_false_negatives": 3524,
+  "n_false_positives": 19242,
+  "n_false_negatives": 3526,
   "new_this_run": {
-    "false_positives": 125,
-    "false_negatives": 1
+    "false_positives": 82,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -216506,6 +216506,954 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052307",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
       ]
+    },
+    {
+      "organism": "Human pegivirus",
+      "question": "What antiviral drugs or treatments are effective against Human pegivirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human pegivirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human pegivirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 1?",
+      "cited_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "35264187",
+      "title": "Clinical and molecular aspects of human pegiviruses in the interaction host and infectious agent.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 1?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 1?",
+      "cited_pmid": "39318127",
+      "title": "Analysis of neuraminidase activity of human parainfluenza viruses using enzyme-linked lectin assay and BTP3-Neu5Ac assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "How does Human parainfluenza virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "38900074",
+      "title": "Clinical Characteristics of Pediatric Parainfluenza Virus Infections: A Comparative Analysis of Parainfluenza Virus Serotypes 1-4 From April 2021 to October 2023 in Hokkaido, Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 2?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 2?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 2?",
+      "cited_pmid": "39318127",
+      "title": "Analysis of neuraminidase activity of human parainfluenza viruses using enzyme-linked lectin assay and BTP3-Neu5Ac assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
+      "cited_pmid": "38900074",
+      "title": "Clinical Characteristics of Pediatric Parainfluenza Virus Infections: A Comparative Analysis of Parainfluenza Virus Serotypes 1-4 From April 2021 to October 2023 in Hokkaido, Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 4?",
+      "cited_pmid": "39078148",
+      "title": "Comparison of mutations in human parainfluenza viruses during passage in primary human bronchial/tracheal epithelial air-liquid interface cultures and cell lines.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 4?",
+      "cited_pmid": "39318127",
+      "title": "Analysis of neuraminidase activity of human parainfluenza viruses using enzyme-linked lectin assay and BTP3-Neu5Ac assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "How does Human parainfluenza virus 4 evade or modulate the host immune response?",
+      "cited_pmid": "41810598",
+      "title": "Differential Induction and Signaling of Type I and III Interferons During Infection of Human Nasal Epithelial Cells With the Four Human Parainfluenza Virus Types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41077721",
+      "title": "Hantavirus GnH Nanoparticle Immunogen Elicits a Cross-Neutralizing Antibody Response in Mice.",
+      "actual_organisms": [
+        "Choclo orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C pathogenesis and transmission?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What diagnostic assays or laboratory tests detect GB virus C?",
+      "cited_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023.",
+      "actual_organisms": [
+        "Human pegivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the genome organization and replication cycle of GB virus C?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What antiviral drugs or treatments are effective against GB virus C?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What antiviral drugs or treatments are effective against GB virus C?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the epidemiology and outbreak history of GB virus C?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What are the clinical symptoms and disease presentation of GB virus C?",
+      "cited_pmid": "42257244",
+      "title": "Human Pegivirus Encephalitis With Brain Detection and Response to Sofosbuvir Ledipasvir.",
+      "actual_organisms": [
+        "Human pegivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of GB virus C?",
+      "cited_pmid": "42202225",
+      "title": "Structures of New World mammarenavirus glycoproteins as targets for antibody-mediated neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "How does GB virus C evade or modulate the host immune response?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "How does GB virus C evade or modulate the host immune response?",
+      "cited_pmid": "42039646",
+      "title": "SIRPA suppresses integrin-dependent virus endocytosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What diagnostic assays or laboratory tests detect Torque teno midi virus?",
+      "cited_pmid": "26220480",
+      "title": "Detection of different South American hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2050013",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46920",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the genome organization and replication cycle of Torque teno midi virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What antiviral drugs or treatments are effective against Torque teno midi virus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What antiviral drugs or treatments are effective against Torque teno midi virus?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the epidemiology and outbreak history of Torque teno midi virus?",
+      "cited_pmid": "37376694",
+      "title": "Hantavirus in Panama: Twenty Years of Epidemiological Surveillance Experience.",
+      "actual_organisms": [
+        "Choclo orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Torque teno midi virus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Torque teno midi virus?",
+      "cited_pmid": "28736175",
+      "title": "Structural Basis for Receptor Selectivity by the Whitewater Arroyo Mammarenavirus.",
+      "actual_organisms": [
+        "Whitewater Arroyo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "How does Torque teno midi virus evade or modulate the host immune response?",
+      "cited_pmid": "41902296",
+      "title": "A STAT1-Knockout Mouse Model for Chapare Virus Infection and Pathogenesis.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is known about Chapare mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42061821",
+      "title": "Efficacy of an Fc-silent antibody targeting the apical domain of human transferrin receptor 1 in transgenic mouse models of Jun\u00edn virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is known about Chapare mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is known about Chapare mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42161271",
+      "title": "Decoding the human CD4+ T cell epitope repertoire for Lassa fever virus reveals T cell-based pan-mammarenavirus vaccine candidates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208896",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is known about Chapare mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "28554857",
+      "title": "Effects of mammarenavirus infection (W\u0113nzh\u014du virus) on the morphology of Rattus exulans.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is known about Chapare mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "34179329",
+      "title": "Genomic characterization of Wenzhou mammarenavirus detected in wild rodents in Guangzhou City, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Chapare mammarenavirus?",
+      "cited_pmid": "42743296",
+      "title": "Metagenomic sequencing in encephalitis diagnostics: Challenges and opportunities in clinical settings.",
+      "actual_organisms": [
+        "Human pegivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Chapare mammarenavirus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Chapare mammarenavirus?",
+      "cited_pmid": "30768614",
+      "title": "Prevalence of W\u0113nzh\u014du virus in small mammals in Yunnan Province, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Chapare mammarenavirus?",
+      "cited_pmid": "34496846",
+      "title": "Molecular detection and genetic characterization of Wenzhou virus in rodents in Guangzhou, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Chapare mammarenavirus?",
+      "cited_pmid": "42202225",
+      "title": "Structures of New World mammarenavirus glycoproteins as targets for antibody-mediated neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Chapare mammarenavirus?",
+      "cited_pmid": "33789313",
+      "title": "Neonatal-Onset Familial Mediterranean Fever in an Infant with Human Parainfluenza Virus-4 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chapare mammarenavirus?",
+      "cited_pmid": "28736175",
+      "title": "Structural Basis for Receptor Selectivity by the Whitewater Arroyo Mammarenavirus.",
+      "actual_organisms": [
+        "Whitewater Arroyo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is known about Laguna Negra orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41077721",
+      "title": "Hantavirus GnH Nanoparticle Immunogen Elicits a Cross-Neutralizing Antibody Response in Mice.",
+      "actual_organisms": [
+        "Choclo orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Laguna Negra orthohantavirus?",
+      "cited_pmid": "20524006",
+      "title": "Convalescent pulmonary dysfunction following hantavirus pulmonary syndrome in Panama and the United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_169173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Laguna Negra orthohantavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Laguna Negra orthohantavirus?",
+      "cited_pmid": "28736175",
+      "title": "Structural Basis for Receptor Selectivity by the Whitewater Arroyo Mammarenavirus.",
+      "actual_organisms": [
+        "Whitewater Arroyo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "How does Laguna Negra orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Choclo orthohantavirus?",
+      "cited_pmid": "42579986",
+      "title": "Detection of new world hantaviruses by a broadly reactive rRT-PCR assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052470",
+        "http://purl.obolibrary.org/obo/NCBITaxon_69294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Choclo orthohantavirus?",
+      "cited_pmid": "31877142",
+      "title": "Development of RT-qPCR and semi-nested RT-PCR assays for molecular diagnosis of hantavirus pulmonary syndrome.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3003613",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Choclo orthohantavirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Choclo orthohantavirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Choclo orthohantavirus?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Choclo orthohantavirus?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Choclo orthohantavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Choclo orthohantavirus?",
+      "cited_pmid": "41902296",
+      "title": "A STAT1-Knockout Mouse Model for Chapare Virus Infection and Pathogenesis.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Choclo orthohantavirus?",
+      "cited_pmid": "41914886",
+      "title": "Role of Src family kinases Fyn and Lyn in arenavirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208896",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "How does Choclo orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42202225",
+      "title": "Structures of New World mammarenavirus glycoproteins as targets for antibody-mediated neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42161271",
+      "title": "Decoding the human CD4+ T cell epitope repertoire for Lassa fever virus reveals T cell-based pan-mammarenavirus vaccine candidates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208896",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "34496846",
+      "title": "Molecular detection and genetic characterization of Wenzhou virus in rodents in Guangzhou, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "31877142",
+      "title": "Development of RT-qPCR and semi-nested RT-PCR assays for molecular diagnosis of hantavirus pulmonary syndrome.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3003613",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42579986",
+      "title": "Detection of new world hantaviruses by a broadly reactive rRT-PCR assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052470",
+        "http://purl.obolibrary.org/obo/NCBITaxon_69294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42743296",
+      "title": "Metagenomic sequencing in encephalitis diagnostics: Challenges and opportunities in clinical settings.",
+      "actual_organisms": [
+        "Human pegivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "39400135",
+      "title": "Completed genome segments of Maciel, Lechiguanas, and Laguna Negra orthohantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42077170",
+      "title": "Computer-Aided Discovery of Small-Molecule Inhibitors of Pathogenic New World Arenavirus Entry and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "24508343",
+      "title": "Hantaviruses and cardiopulmonary syndrome in South America.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "37376694",
+      "title": "Hantavirus in Panama: Twenty Years of Epidemiological Surveillance Experience.",
+      "actual_organisms": [
+        "Choclo orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "23836565",
+      "title": "Hantavirus fever without pulmonary syndrome in Panama.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_169173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
     }
   ],
   "false_negatives": [
@@ -237652,6 +238600,18 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Inkoo virus?",
       "missed_pmid": "26928830",
       "title": "Seroprevalence and Risk Factors of Inkoo Virus in Northern Sweden."
+    },
+    {
+      "organism": "Human pegivirus",
+      "question": "How does Human pegivirus evade or modulate the host immune response?",
+      "missed_pmid": "34921747",
+      "title": "Human pegivirus type 1 infection in kidney transplant recipients: Replication kinetics and clinical correlates."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "missed_pmid": "31954277",
+      "title": "Human parainfluenza virus circulation, United States, 2011-2019."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
