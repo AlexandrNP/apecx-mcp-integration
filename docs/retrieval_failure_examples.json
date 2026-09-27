@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:54:01.490772+00:00",
-  "runs": 369,
+  "updated": "2026-09-27T19:55:50.142468+00:00",
+  "runs": 370,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24003,
-  "n_false_negatives": 4712,
+  "n_false_positives": 24007,
+  "n_false_negatives": 4723,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 2
+    "false_positives": 4,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -270658,6 +270658,48 @@
         "Ebola virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
       ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nipah henipavirus?",
+      "cited_pmid": "41612571",
+      "title": "Integrating Prevention and Response at the Crossroads of Henipavirus Preparedness, Hendra@30 Conference, 2024.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "cited_pmid": "41822329",
+      "title": "Strengthening preparedness and response to emerging henipavirus diversity.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human metapneumovirus?",
+      "cited_pmid": "41650235",
+      "title": "Functional and antigenic constraints on the Nipah virus fusion protein.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "cited_pmid": "41784493",
+      "title": "Verapamil HCl demonstrates antiviral activity against porcine reproductive and respiratory syndrome virus by regulating Ca2+ influx and promoting type I interferon production.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
     }
   ],
   "false_negatives": [
@@ -298932,6 +298974,72 @@
       "question": "How does Bundibugyo ebolavirus evade or modulate the host immune response?",
       "missed_pmid": "40173257",
       "title": "Ebola virus vaccination elicits Ebola virus-specific immune responses without substantial cross-reactivity to other filoviruses."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Nipah henipavirus?",
+      "missed_pmid": "41822329",
+      "title": "Strengthening preparedness and response to emerging henipavirus diversity."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Nipah henipavirus?",
+      "missed_pmid": "41570456",
+      "title": "Immune evasion and pathogenesis of\u00a0henipaviruses."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41902200",
+      "title": "Analysis of Recombinant Cedar Virus Infection and Cross-Protection Against Related Henipaviruses in African Green Monkeys."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41830685",
+      "title": "\"Nipah virus: An overlooked threat and the promise of monoclonal antibody therapy\"."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "missed_pmid": "41612571",
+      "title": "Integrating Prevention and Response at the Crossroads of Henipavirus Preparedness, Hendra@30 Conference, 2024."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "missed_pmid": "41537908",
+      "title": "New parajeilongviruses detected in bats but not in humans: assays for screening and diagnostic purposes."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "missed_pmid": "41570456",
+      "title": "Immune evasion and pathogenesis of\u00a0henipaviruses."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hendra henipavirus?",
+      "missed_pmid": "41649863",
+      "title": "Screening of FDA-approved drugs using a recombinant Cedar virus to improve treatment options for Nipah virus infection."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hendra henipavirus?",
+      "missed_pmid": "41946873",
+      "title": "Spatio-temporal dynamics of Hendra virus in Australia reveal stable maintenance of diverse viral clades among Pteropus bats."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "missed_pmid": "41769344",
+      "title": "Molecular investigation and viral load analysis of bovine respiratory syncytial virus in cattle with bovine respiratory disease complex in Inner Mongolia, China."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "missed_pmid": "41834879",
+      "title": "Establishment and field validation of a rapid on-site recombinase polymerase amplification-lateral flow assay for BRSV and BVDV."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
