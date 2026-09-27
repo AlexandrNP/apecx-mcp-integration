@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:48:48.828338+00:00",
-  "runs": 393,
+  "updated": "2026-09-27T20:50:42.505113+00:00",
+  "runs": 394,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24305,
-  "n_false_negatives": 4809,
+  "n_false_positives": 24313,
+  "n_false_negatives": 4814,
   "new_this_run": {
-    "false_positives": 1,
-    "false_negatives": 1
+    "false_positives": 8,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -273965,6 +273965,92 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2731342",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "33833367",
+      "title": "The requirement of glycoprotein C (gC) for interindividual spread is a conserved function of gC for avian herpesviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "26424485",
+      "title": "Improvement of an enzyme-linked immunosorbent assay for equine herpesvirus type 4 by using a synthetic-peptide 24-mer repeat sequence of glycoprotein G as an antigen.",
+      "actual_organisms": [
+        "Equine herpesvirus 4"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "cited_pmid": "41916128",
+      "title": "A comprehensive functional landscape of PRV replication and pathogenesis revealed by genome-wide transposon mutagenesis.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "42019319",
+      "title": "Narciclasine restricts pseudorabies virus replication in vitro and in vivo and has potential broad-spectrum antiviral activity.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "33833367",
+      "title": "The requirement of glycoprotein C (gC) for interindividual spread is a conserved function of gC for avian herpesviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is known about Gallid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33833367",
+      "title": "The requirement of glycoprotein C (gC) for interindividual spread is a conserved function of gC for avian herpesviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is known about Gallid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "34023833",
+      "title": "Gallid Alphaherpesvirus 2 in the Egyptian Turkeys: Molecular Characterization and Establishment of a Universal System for Phylogenetic Classification.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 1?",
+      "cited_pmid": "42019319",
+      "title": "Narciclasine restricts pseudorabies virus replication in vitro and in vivo and has potential broad-spectrum antiviral activity.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
     }
   ],
   "false_negatives": [
@@ -302821,6 +302907,36 @@
       "question": "What is the genome organization and replication cycle of Torque teno virus?",
       "missed_pmid": "41902265",
       "title": "Prior Infection with Torque Teno Virus Mitigates Influenza Pathology in Mice."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39470208",
+      "title": "Structures of Epstein-Barr virus and Kaposi's sarcoma-associated herpesvirus virions reveal species-specific tegument and envelope features."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "missed_pmid": "39471213",
+      "title": "BiP/GRP78 is a pro-viral factor for diverse dsDNA viruses that promotes the survival and proliferation of cells upon KSHV infection."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "41916128",
+      "title": "A comprehensive functional landscape of PRV replication and pathogenesis revealed by genome-wide transposon mutagenesis."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Gallid alphaherpesvirus 1?",
+      "missed_pmid": "33805117",
+      "title": "Pathogenic and Transmission Potential of Wildtype and Chicken Embryo Origin (CEO) Vaccine Revertant Infectious Laryngotracheitis Virus."
+    },
+    {
+      "organism": "Equine herpesvirus 4",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine herpesvirus 4?",
+      "missed_pmid": "26421307",
+      "title": "Molecular Detection of Equine Herpesvirus Types 1 and 4 Infection in Healthy Horses in Isfahan Central and Shahrekord Southwest Regions, Iran."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
