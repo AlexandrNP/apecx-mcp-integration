@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:58:20.357637+00:00",
-  "runs": 427,
+  "updated": "2026-09-27T22:00:06.501741+00:00",
+  "runs": 428,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24652,
-  "n_false_negatives": 4848,
+  "n_false_positives": 24653,
+  "n_false_negatives": 4849,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 0
+    "false_positives": 1,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -277923,6 +277923,18 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12118",
         "http://purl.obolibrary.org/obo/NCBITaxon_562"
       ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "cited_pmid": "40064995",
+      "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
     }
   ],
   "false_negatives": [
@@ -307013,6 +307025,12 @@
       "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
       "missed_pmid": "40064995",
       "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "41586838",
+      "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6]."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
