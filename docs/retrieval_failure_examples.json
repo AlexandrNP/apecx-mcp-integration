@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:59:41.814491+00:00",
-  "runs": 349,
+  "updated": "2026-09-27T19:01:15.373135+00:00",
+  "runs": 350,
   "model": "mistral-nemo:latest",
   "n_false_positives": 23695,
-  "n_false_negatives": 4551,
+  "n_false_negatives": 4555,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 11
+    "false_positives": 0,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -294653,6 +294653,30 @@
       "question": "How does Yellow head virus evade or modulate the host immune response?",
       "missed_pmid": "33108263",
       "title": "ICTV Virus Taxonomy Profile: Roniviridae."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is known about Bohle iridovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "17904650",
+      "title": "Bohle iridovirus as a vector for heterologous gene expression."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus pathogenesis and transmission?",
+      "missed_pmid": "8366169",
+      "title": "Epizootic haematopoietic necrosis virus (EHNV): improved ELISA for detection in fish tissues and cell cultures and an efficient method for release of antigen from tissues."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "1939507",
+      "title": "Purification of epizootic haematopoietic necrosis virus and its detection using ELISA."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "12083831",
+      "title": "Antigenic peptides of the epizootic hematopoietic necrosis virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
