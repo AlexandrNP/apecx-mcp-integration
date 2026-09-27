@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:47:37.759000+00:00",
-  "runs": 144,
+  "updated": "2026-09-27T06:49:40.197218+00:00",
+  "runs": 145,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18625,
-  "n_false_negatives": 3482,
+  "n_false_positives": 18665,
+  "n_false_negatives": 3483,
   "new_this_run": {
-    "false_positives": 152,
-    "false_negatives": 5
+    "false_positives": 40,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -210474,6 +210474,460 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_204711",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is known about Ectromelia virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is known about Ectromelia virus pathogenesis and transmission?",
+      "cited_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What diagnostic assays or laboratory tests detect Ectromelia virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the genome organization and replication cycle of Ectromelia virus?",
+      "cited_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What antiviral drugs or treatments are effective against Ectromelia virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the epidemiology and outbreak history of Ectromelia virus?",
+      "cited_pmid": "42347183",
+      "title": "Isolation and Identification of Emerging Equine Encephalosis Virus Serotype 6 in Israel, 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_201490"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the epidemiology and outbreak history of Ectromelia virus?",
+      "cited_pmid": "37578645",
+      "title": "Complete genome sequences of epizootic hemorrhagic disease virus serotypes 5 and 6 isolated in Japan.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the epidemiology and outbreak history of Ectromelia virus?",
+      "cited_pmid": "34248104",
+      "title": "Isolation of epizootic hemorrhagic disease virus serotype 7 from cattle showing fever in Japan in 2016 and improvement of a reverse transcription-polymerase chain reaction assay to detect epizootic hemorrhagic disease virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the epidemiology and outbreak history of Ectromelia virus?",
+      "cited_pmid": "42117216",
+      "title": "Seventy years of hemorrhagic disease research in North America.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What are the clinical symptoms and disease presentation of Ectromelia virus?",
+      "cited_pmid": "42387563",
+      "title": "Unveiling the clinical signs and pathology in red deer (Cervus elaphus) naturally infected with epizootic haemorrhagic disease virus serotype 8.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431252",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What are the clinical symptoms and disease presentation of Ectromelia virus?",
+      "cited_pmid": "19564496",
+      "title": "Characterization of Cervidpoxvirus isolates from Oregon, California, and eastern Canada.",
+      "actual_organisms": [
+        "Deerpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_573055"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ectromelia virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ectromelia virus?",
+      "cited_pmid": "42401561",
+      "title": "Cryo-EM structure of African horse sickness virus VP2 receptor-binding protein enables nanoparticle vaccine design.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ectromelia virus?",
+      "cited_pmid": "41958430",
+      "title": "SG33, a Vaccine Strain of Myxoma Virus with Oncolytic Potential, Exploits Macropinocytosis and Clathrin-Mediated Endocytosis for Entry into Pancreatic Cancer Cells.",
+      "actual_organisms": [
+        "Myxoma virus"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "cited_pmid": "42114492",
+      "title": "Ectromelia virus growth factor is not secreted from infected cells and plays no apparent role for virus replication in vitro.",
+      "actual_organisms": [
+        "Ectromelia virus"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What antiviral drugs or treatments are effective against Fowlpox virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Fowlpox virus?",
+      "cited_pmid": "26601440",
+      "title": "Zoonotic and emerging orbivirus infections.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "Palyam virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_356862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40064"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "How does Fowlpox virus evade or modulate the host immune response?",
+      "cited_pmid": "41678605",
+      "title": "Poxvirus attack of antiviral defense pathways unleashes an effector-triggered NF-\u03baB response.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "How does Fowlpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42248649",
+      "title": "Cancer immunotherapy with oncolytic myxoma virus.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "How does Fowlpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42725595",
+      "title": "Influence of Major Histocompatibility Complex (MHC) Diversity on Immune Modulation, Pathogenesis, and Control of Lumpy Skin Disease Virus.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24313924",
+      "title": "Evaluating the protective efficacy of a trivalent vaccine containing Akabane virus, Aino virus and Chuzan virus against Schmallenberg virus infection.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11582",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41987248",
+      "title": "Multivalent Disabled Infectious Single Animal (DISA)-DIVA vaccine for all nine serotypes of African horse sickness virus (AHSV) is broadly protective in IFNAR (-/-) mice.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What diagnostic assays or laboratory tests detect Sheeppox virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is the genome organization and replication cycle of Sheeppox virus?",
+      "cited_pmid": "28685222",
+      "title": "Characterization of Eptesipoxvirus, a novel poxvirus from a microchiropteran bat.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What antiviral drugs or treatments are effective against Sheeppox virus?",
+      "cited_pmid": "42137223",
+      "title": "Knowledge mapping of risk mitigation measures against vector-borne diseases.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sheeppox virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sheeppox virus?",
+      "cited_pmid": "35631028",
+      "title": "Parapoxvirus Interleukin-10 Homologues Vary in Their Receptor Binding, Anti-Inflammatory, and Stimulatory Activities.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734575",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "How does Sheeppox virus evade or modulate the host immune response?",
+      "cited_pmid": "41678605",
+      "title": "Poxvirus attack of antiviral defense pathways unleashes an effector-triggered NF-\u03baB response.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "How does Sheeppox virus evade or modulate the host immune response?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Lumpy skin disease virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What antiviral drugs or treatments are effective against Swinepox virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Swinepox virus?",
+      "cited_pmid": "42307247",
+      "title": "Divergence in poxvirus-encoded E3-like proteins can dictate poxvirus activation of cellular necroptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "cited_pmid": "41678605",
+      "title": "Poxvirus attack of antiviral defense pathways unleashes an effector-triggered NF-\u03baB response.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "How does Epizootic hemorrhagic disease virus evade or modulate the host immune response?",
+      "cited_pmid": "41959122",
+      "title": "Interferon-\u03b1 and -\u03b2 subtypes have temporally distinct roles in containing viral spread and protecting vital organs.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "How does Epizootic hemorrhagic disease virus evade or modulate the host immune response?",
+      "cited_pmid": "41994123",
+      "title": "Interferon-\u03b1 and -\u03b2 subtypes have temporally distinct roles in containing viral spread and protecting vital organs.",
+      "actual_organisms": [
+        "Ectromelia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What antiviral drugs or treatments are effective against Chuzan virus?",
+      "cited_pmid": "42575000",
+      "title": "Cidofovir inhibits lumpy skin disease virus replication by targeting viral DNA polymerase and modulating host apoptosis.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -231368,6 +231822,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Seneca Valley virus?",
       "missed_pmid": "42159395",
       "title": "Dysregulation of RIG-I activation by picornavirus 3A protein."
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Swinepox virus?",
+      "missed_pmid": "35062331",
+      "title": "Prolonged Viability of Senecavirus A in Exposed House Flies (Musca domestica)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
