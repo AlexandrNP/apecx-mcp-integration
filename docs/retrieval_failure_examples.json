@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:43:32.986996+00:00",
-  "runs": 419,
+  "updated": "2026-09-27T21:45:23.851884+00:00",
+  "runs": 420,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24581,
+  "n_false_positives": 24583,
   "n_false_negatives": 4845,
   "new_this_run": {
-    "false_positives": 14,
+    "false_positives": 2,
     "false_negatives": 0
   },
   "false_positives": [
@@ -277093,6 +277093,26 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_147711",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Foot-and-mouth disease virus?",
+      "cited_pmid": "42189918",
+      "title": "Decoding the complex receptor landscape of enterovirus D68.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42764925",
+      "title": "Preclinical evaluation of GW406108X, a broad-spectrum therapeutic blocking ULK1/2-mediated autophagy to inhibit enterovirus replication.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
     }
   ],
