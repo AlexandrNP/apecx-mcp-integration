@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:37:48.792720+00:00",
-  "runs": 416,
+  "updated": "2026-09-27T21:39:31.184900+00:00",
+  "runs": 417,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24559,
+  "n_false_positives": 24565,
   "n_false_negatives": 4842,
   "new_this_run": {
-    "false_positives": 8,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -276813,6 +276813,83 @@
         "Bovine enterovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "41612251",
+      "title": "Molecular epidemiology and genetic characteristics of enterovirus A identified in pediatric patients with hand, foot, and mouth disease and herpangina in Linyi, China, 2023-2024, following the relaxation of COVID-19 policies.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "38488515",
+      "title": "Influence of Amino Acid Substitutions in Capsid Proteins of Coxsackievirus B5 on Free Chlorine and Thermal Inactivation.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "How does Enterovirus C evade or modulate the host immune response?",
+      "cited_pmid": "41927810",
+      "title": "Enterovirus A71 3AB protein facilitates immune evasion by blocking cGAS recognition of mtDNA.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "42684933",
+      "title": "Quantitative and molecular adjudication of BioFire FilmArray and QIAstat-Dx discordance in meningitis/encephalitis diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
       ]
     }
   ],
