@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:49:40.429162+00:00",
-  "runs": 422,
+  "updated": "2026-09-27T21:51:18.190424+00:00",
+  "runs": 423,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24598,
-  "n_false_negatives": 4847,
+  "n_false_positives": 24601,
+  "n_false_negatives": 4848,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 3,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -277286,6 +277286,41 @@
         "Human parechovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B3?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42086005",
+      "title": "Propagation and immunological characterization of three enterovirus D68 strains using serum-free HEK293A suspension cell culture.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A6?",
+      "cited_pmid": "40064995",
+      "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
     }
   ],
   "false_negatives": [
@@ -306370,6 +306405,12 @@
       "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
       "missed_pmid": "28478414",
       "title": "Antiviral activity of the \"Virus Blocking Factor\" (VBF) derived i.a. from Pelargonium extract and Sambucus juice against different human-pathogenic cold viruses in vitro."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40064995",
+      "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
