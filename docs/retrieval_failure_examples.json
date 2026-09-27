@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:26:13.425781+00:00",
-  "runs": 310,
+  "updated": "2026-09-27T17:31:25.365493+00:00",
+  "runs": 311,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23227,
-  "n_false_negatives": 4245,
+  "n_false_positives": 23246,
+  "n_false_negatives": 4258,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 7
+    "false_positives": 19,
+    "false_negatives": 13
   },
   "false_positives": [
     {
@@ -262249,6 +262249,216 @@
       "actual_organisms": [
         "Chikungunya virus"
       ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "8259656",
+      "title": "Phylogenetic analyses of virus isolates in the genus Hantavirus, family Bunyaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "30465911",
+      "title": "A novel genetic lineage of Tula orthohantavirus in Altai voles (Microtus obscurus) from Turkey.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Andes orthohantavirus?",
+      "cited_pmid": "42519614",
+      "title": "Global threats and regional trends: Navigating the complex landscape of human orthohantavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "22944108",
+      "title": "Distinct innate immune responses in human macrophages and endothelial cells infected with shrew-borne hantaviruses.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is known about Thottapalayam orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "7594720",
+      "title": "Cross-neutralization of hantaviruses with immune sera from experimentally infected animals and from hemorrhagic fever with renal syndrome and hantavirus pulmonary syndrome patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Thottapalayam orthohantavirus?",
+      "cited_pmid": "42538015",
+      "title": "Hantavirus Infections in Children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Thottapalayam orthohantavirus?",
+      "cited_pmid": "8259656",
+      "title": "Phylogenetic analyses of virus isolates in the genus Hantavirus, family Bunyaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Thottapalayam orthohantavirus?",
+      "cited_pmid": "30465911",
+      "title": "A novel genetic lineage of Tula orthohantavirus in Altai voles (Microtus obscurus) from Turkey.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Thottapalayam orthohantavirus?",
+      "cited_pmid": "42519614",
+      "title": "Global threats and regional trends: Navigating the complex landscape of human orthohantavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "How does Thottapalayam orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "31540120",
+      "title": "Puumala and Tula Virus Differ in Replication Kinetics and Innate Immune Stimulation in Human Endothelial Cells and Macrophages.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is known about Laguna Negra orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "7594720",
+      "title": "Cross-neutralization of hantaviruses with immune sera from experimentally infected animals and from hemorrhagic fever with renal syndrome and hantavirus pulmonary syndrome patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Laguna Negra orthohantavirus?",
+      "cited_pmid": "42538015",
+      "title": "Hantavirus Infections in Children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "8259656",
+      "title": "Phylogenetic analyses of virus isolates in the genus Hantavirus, family Bunyaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "32605035",
+      "title": "The RNA Replication Site of Tula Orthohantavirus Resides within a Remodelled Golgi Network.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "24008094",
+      "title": "Evidence of recombination in Tula virus strains from Serbia.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "12962589",
+      "title": "Puumala virus pulmonary syndrome in a Romanian immigrant.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Laguna Negra orthohantavirus?",
+      "cited_pmid": "42519614",
+      "title": "Global threats and regional trends: Navigating the complex landscape of human orthohantavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Laguna Negra orthohantavirus?",
+      "cited_pmid": "42565267",
+      "title": "Transient Andes orthohantavirus RNA detection in an asymptomatic healthcare worker following indirect exposure during hospital care of an imported case, the Netherlands, 2026.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Laguna Negra orthohantavirus?",
+      "cited_pmid": "37632012",
+      "title": "Differences in the Susceptibility of Human Tubular Epithelial Cells for Infection with Orthohantaviruses.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -287721,6 +287931,84 @@
       "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
       "missed_pmid": "40014625",
       "title": "Low capacity for molecular detection of Alphaviruses other than Chikungunya virus in 23 European laboratories, March 2022."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42565267",
+      "title": "Transient Andes orthohantavirus RNA detection in an asymptomatic healthcare worker following indirect exposure during hospital care of an imported case, the Netherlands, 2026."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus pathogenesis and transmission?",
+      "missed_pmid": "11907216",
+      "title": "Analysis of hantavirus genetic diversity in Argentina: S segment-derived phylogeny."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "missed_pmid": "16428893",
+      "title": "Serological assays for the detection of human andes hantavirus infections based on its yeast-expressed nucleocapsid protein."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "missed_pmid": "42515551",
+      "title": "Person-to-Person Transmission of Andes Virus (ANDV): A Systematic Review of Transmission Dynamics, Viral Shedding, and Public Health Implications."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Andes orthohantavirus?",
+      "missed_pmid": "42556944",
+      "title": "Emerging infectious diseases (Mpox, Nipah, and Andes): A narrative review of transmission, environmental survival, and disinfection."
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Tula orthohantavirus?",
+      "missed_pmid": "24209605",
+      "title": "Tula hantavirus infection in immunocompromised host, Czech Republic."
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Tula orthohantavirus?",
+      "missed_pmid": "31540120",
+      "title": "Puumala and Tula Virus Differ in Replication Kinetics and Innate Immune Stimulation in Human Endothelial Cells and Macrophages."
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is known about Laguna Negra orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9375015",
+      "title": "Laguna Negra virus associated with HPS in western Paraguay and Bolivia."
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is known about Laguna Negra orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15569801",
+      "title": "Hantavirus pulmonary syndrome in northwestern Argentina: circulation of Laguna Negra virus associated with Calomys callosus."
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Laguna Negra orthohantavirus?",
+      "missed_pmid": "15728866",
+      "title": "Hantavirus pulmonary syndrome in Central Bolivia: relationships between reservoir hosts, habitats, and viral genotypes."
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "missed_pmid": "11907216",
+      "title": "Analysis of hantavirus genetic diversity in Argentina: S segment-derived phylogeny."
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "missed_pmid": "15663849",
+      "title": "Identifying rodent hantavirus reservoirs, Brazil."
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Laguna Negra orthohantavirus?",
+      "missed_pmid": "11791973",
+      "title": "Patterns of infection with Laguna Negra virus in wild populations of Calomys laucha in the central Paraguayan chaco."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
