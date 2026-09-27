@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:34:57.422413+00:00",
-  "runs": 472,
+  "updated": "2026-09-27T23:37:06.855889+00:00",
+  "runs": 473,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25007,
-  "n_false_negatives": 4928,
+  "n_false_positives": 25042,
+  "n_false_negatives": 4934,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 4
+    "false_positives": 35,
+    "false_negatives": 6
   },
   "false_positives": [
     {
@@ -281870,6 +281870,368 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11286"
       ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42439142",
+      "title": "[Good practices for the use of biological tools in infectious diseases during pregnancy].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "41901772",
+      "title": "Host Immune Response Mechanisms Against Herpes Simplex Virus Type 2 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41884845",
+      "title": "HSV-2 gE2/gI2 are immune evasion molecules that bind IgG Fc to inhibit antibody-dependent cellular cytotoxicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42199433",
+      "title": "Bispecific antibodies targeting herpes simplex virus glycoproteins B and D.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41901772",
+      "title": "Host Immune Response Mechanisms Against Herpes Simplex Virus Type 2 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42128229",
+      "title": "A stapled viral peptide blocks HSV-2 from infecting human cervical cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42001811",
+      "title": "Acute HSV-2 infection with a low-passage clinical strain: Analysis of viral tropism, immunity, and disease manifestations in a dual animal model system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42155854",
+      "title": "Assessment of the Alinity m HSV1&2/VZV assay for quantitative analysis across multiple off-label sample types.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42090241",
+      "title": "Beyond the Barrier: Epithelial Cells as Immune Sentinels in the Female Genital Tract.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "42439142",
+      "title": "[Good practices for the use of biological tools in infectious diseases during pregnancy].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "42196454",
+      "title": "Evaluation of a Novel Multiplex PCR Assay for Vesicular Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "42797819",
+      "title": "Parvovirus B19 and Cellular Transcriptome Dynamics in UT7/EpoS1 Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "cited_pmid": "42140445",
+      "title": "Halofuginone suppresses HSV-2 through direct viral inhibition and host ProRS inhibition.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 2?",
+      "cited_pmid": "30521206",
+      "title": "Mumps",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560602"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 2?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 2?",
+      "cited_pmid": "42306118",
+      "title": "Insights into parvovirus B19 clinical and virological dynamics among blood donors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 2?",
+      "cited_pmid": "42031293",
+      "title": "Recurrent herpes simplex virus type 2 Mollaret meningitis in a man living with HIV: A case report and patient-initiated episodic valacyclovir strategy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 2?",
+      "cited_pmid": "42130919",
+      "title": "Acute Parvovirus B19 Infection Associated with Multi-Organ Involvement in an Immunocompetent Adult.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 2?",
+      "cited_pmid": "42530339",
+      "title": "Identification of human transferrin receptor as an entry co-receptor for parvovirus B19 infection of human erythroid progenitor cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40121",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 2?",
+      "cited_pmid": "42277060",
+      "title": "Transferrin receptor 1 binds human parvovirus B19 VP1u to facilitate entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 2?",
+      "cited_pmid": "42780859",
+      "title": "Whole-genome analysis of mumps virus genotype F in Shandong, China (2006-2018).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1384673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560602"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 2?",
+      "cited_pmid": "42527941",
+      "title": "Ancient genomics study reveals low HLA diversity in eastern hunter-gatherers.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1648",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 2?",
+      "cited_pmid": "42198640",
+      "title": "Molecular Characterization of Measles and Rubella Virus Strains from the 2018-2019 Epidemic in Madagascar.",
+      "actual_organisms": [
+        "Rubella virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846071"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42297949",
+      "title": "Live viral measles-mumps-rubella revaccination and varicella vaccination in children and adolescents with juvenile idiopathic arthritis: a systematic review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42308538",
+      "title": "Distinct Humoral Response Development to Measles Virus across Vaccine Platforms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus pathogenesis and transmission?",
+      "cited_pmid": "42427901",
+      "title": "Measles and rubella seropositivity among suspected measles cases in northwestern region of Nigeria.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42439142",
+      "title": "[Good practices for the use of biological tools in infectious diseases during pregnancy].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42439143",
+      "title": "[Current methods of systematic serological\u00a0testing for infections in pregnant women in France].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the clinical symptoms and disease presentation of Rubella virus?",
+      "cited_pmid": "42170147",
+      "title": "Acute Periflexural Purpura as a Revealing Sign of Parvovirus B19 Infection in a Child.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "42277060",
+      "title": "Transferrin receptor 1 binds human parvovirus B19 VP1u to facilitate entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "42530339",
+      "title": "Identification of human transferrin receptor as an entry co-receptor for parvovirus B19 infection of human erythroid progenitor cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40121",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "How does Rubella virus evade or modulate the host immune response?",
+      "cited_pmid": "41901772",
+      "title": "Host Immune Response Mechanisms Against Herpes Simplex Virus Type 2 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "How does Rubella virus evade or modulate the host immune response?",
+      "cited_pmid": "42338490",
+      "title": "TORCH infections at the maternal-fetal placental transmission: an overview of multi-omics, pathogenesis and innate immune defense.",
+      "actual_organisms": [
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rubella virus?",
+      "cited_pmid": "42780859",
+      "title": "Whole-genome analysis of mumps virus genotype F in Shandong, China (2006-2018).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1384673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560602"
+      ]
     }
   ],
   "false_negatives": [
@@ -311440,6 +311802,42 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Rabies lyssavirus?",
       "missed_pmid": "41849539",
       "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "22389730",
+      "title": "Genetic characterization of Zika virus strains: geographic expansion of the Asian lineage."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "22953014",
+      "title": "Oral susceptibility of Singapore Aedes (Stegomyia) aegypti (Linnaeus) to Zika virus."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41902239",
+      "title": "Risk of HSV-2 Acquisition Among Women with Bacterial Vaginosis: Systematic Review and Meta-Analysis."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42293248",
+      "title": "A self-amplifying RNA vector based on rubella virus for mRNA therapeutics and vaccine applications."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42198640",
+      "title": "Molecular Characterization of Measles and Rubella Virus Strains from the 2018-2019 Epidemic in Madagascar."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "How does Rubella virus evade or modulate the host immune response?",
+      "missed_pmid": "42242620",
+      "title": "Hospital-based surveillance suggested a high frequency of congenital rubella syndrome and the presence of genetically diverse genotype 2B rubella virus strains in Ethiopia."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
