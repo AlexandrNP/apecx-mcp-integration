@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:24:19.172614+00:00",
-  "runs": 207,
+  "updated": "2026-09-27T11:26:10.007253+00:00",
+  "runs": 208,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20870,
-  "n_false_negatives": 3589,
+  "n_false_positives": 20898,
+  "n_false_negatives": 3590,
   "new_this_run": {
-    "false_positives": 78,
-    "false_negatives": 2
+    "false_positives": 28,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -235907,6 +235907,297 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42762379",
+      "title": "Tick-host-virus triad in Crimean-Congo hemorrhagic fever transmission: global patterns across vector and reservoir species.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genome organization and replication cycle of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42796659",
+      "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "How does Crimean-Congo hemorrhagic fever orthonairovirus evade or modulate the host immune response?",
+      "cited_pmid": "42053303",
+      "title": "Nairobi sheep disease virus: an emerging threat with unresolved pathogenesis and zoonotic potential.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "41910422",
+      "title": "Molecular and serological evidence of Nairobi sheep disease virus in Haemaphysalis longicornis and sheep in eastern Shandong Peninsula, China.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42426565",
+      "title": "Serologic Evidence of Hantavirus Exposure in Humans, Italy, 2004-2018.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42663377",
+      "title": "A Novel Quantitative ELISA Demonstrates Lack of Correlation Between Serum HDV-RNA and Anti-HDV Antibody Levels in Chronic HDV Infection.",
+      "actual_organisms": [
+        "Hepatitis delta virus"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "40706445",
+      "title": "Rapid, sensitive, and species-independent detection of Crimean Congo hemorrhagic fever virus nucleoprotein and GP38 antibodies.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hantaan orthohantavirus?",
+      "cited_pmid": "42053303",
+      "title": "Nairobi sheep disease virus: an emerging threat with unresolved pathogenesis and zoonotic potential.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "41910422",
+      "title": "Molecular and serological evidence of Nairobi sheep disease virus in Haemaphysalis longicornis and sheep in eastern Shandong Peninsula, China.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42734360",
+      "title": "Non-neutralizing antibody responses control acute Crimean-Congo hemorrhagic fever virus infection in na\u00efve mice.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42663377",
+      "title": "A Novel Quantitative ELISA Demonstrates Lack of Correlation Between Serum HDV-RNA and Anti-HDV Antibody Levels in Chronic HDV Infection.",
+      "actual_organisms": [
+        "Hepatitis delta virus"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42752578",
+      "title": "A systematic review of ultrasound to predict severe disease in patients with dengue and other viral infections associated with hemorrhagic fevers.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42796659",
+      "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42762379",
+      "title": "Tick-host-virus triad in Crimean-Congo hemorrhagic fever transmission: global patterns across vector and reservoir species.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is known about Hepatitis delta virus pathogenesis and transmission?",
+      "cited_pmid": "42237939",
+      "title": "Fatty acid synthase promotes Hantaan virus infection through lipogenic regulation in the tree shrew model.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis delta virus?",
+      "cited_pmid": "40706445",
+      "title": "Rapid, sensitive, and species-independent detection of Crimean Congo hemorrhagic fever virus nucleoprotein and GP38 antibodies.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis delta virus?",
+      "cited_pmid": "42796659",
+      "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis delta virus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "How does Hepatitis delta virus evade or modulate the host immune response?",
+      "cited_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis delta virus?",
+      "cited_pmid": "42347213",
+      "title": "Integrated Downstream Analysis and Epidemiological Modelling of Hantavirus Infection: From Host Transcriptomics to Transmission Dynamics.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is known about Nairobi sheep disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42607044",
+      "title": "Opportunities and challenges for countermeasures against Rift Valley fever virus: A quintessential One Health pathogen.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Nairobi sheep disease virus?",
+      "cited_pmid": "42687974",
+      "title": "Cross-border introduction risk of Rift Valley fever virus: surveillance evidence from intercepted livestock in southwestern Saudi Arabia.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Nairobi sheep disease virus?",
+      "cited_pmid": "42693705",
+      "title": "Survey of Rift Valley Fever Virus Antibodies and Risk Factors in Small Ruminants in Maiduguri, Borno State, Nigeria: A Cross-Sectional Serological Study.",
+      "actual_organisms": [
+        "Rift Valley fever virus"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is the genome organization and replication cycle of Nairobi sheep disease virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
     }
   ],
   "false_negatives": [
@@ -257443,6 +257734,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Prospect Hill virus?",
       "missed_pmid": "21367904",
       "title": "The C-terminal 42 residues of the Tula virus Gn protein regulate interferon induction."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "missed_pmid": "40420030",
+      "title": "Spatial and temporal analysis of Rift Valley fever outbreaks in livestock in Uganda: a retrospective study from 2013 to 2022."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
