@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T00:25:15.132817+00:00",
-  "runs": 126,
+  "updated": "2026-09-27T00:35:06.970241+00:00",
+  "runs": 127,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 17358,
+  "n_false_positives": 17396,
   "n_false_negatives": 3441,
   "new_this_run": {
-    "false_positives": 89,
-    "false_negatives": 2
+    "false_positives": 38,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -196126,6 +196126,453 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus pathogenesis and transmission?",
+      "cited_pmid": "42690165",
+      "title": "Andes Virus: From Transmission Dynamics to Pandemic Potential.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "42515614",
+      "title": "Validation of a Broad-Range Conventional RT-PCR Assay for Pestivirus Surveillance and Molecular Detection of BVDV-2a in Pigs in Costa Rica.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_381707"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "32588240",
+      "title": "Isolation and characterization of a novel cripavirus, the first Dicistroviridae family member infecting the cotton mealybug Phenacoccus solenopsis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "31795197",
+      "title": "Next-Generation Sequencing on Insectivorous Bat Guano: An Accurate Tool to Identify Arthropod Viruses of Potential Agricultural Concern.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_144051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "41556341",
+      "title": "A fold switch regulates conformation of an alphavirus RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What antiviral drugs or treatments are effective against Mayaro virus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "38297087",
+      "title": "Selective replication and vertical transmission of Ebola virus in experimentally infected Angolan free-tailed bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Cowpox virus?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "cited_pmid": "42773773",
+      "title": "Hantavirus preparedness at human-rodent interfaces: lessons from China's HFRS control and Andes virus transmission in mobile populations.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "31795197",
+      "title": "Next-Generation Sequencing on Insectivorous Bat Guano: An Accurate Tool to Identify Arthropod Viruses of Potential Agricultural Concern.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_144051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "38543644",
+      "title": "Identification of Viruses in Molossus Bats from the Brazilian Amazon: A Descriptive Metagenomic Analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_144051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "32588240",
+      "title": "Isolation and characterization of a novel cripavirus, the first Dicistroviridae family member infecting the cotton mealybug Phenacoccus solenopsis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "28082492",
+      "title": "Metagenomic Analysis of Cucumber RNA from East Timor Reveals an Aphid lethal paralysis virus Genome.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "29580079",
+      "title": "Metagenomic analysis of bat guano samples revealed the presence of viruses potentially carried by insects, among others by Apis mellifera in Hungary.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1041883",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "cited_pmid": "32588240",
+      "title": "Isolation and characterization of a novel cripavirus, the first Dicistroviridae family member infecting the cotton mealybug Phenacoccus solenopsis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "cited_pmid": "42461357",
+      "title": "CRESS domain-based molecular characterization of Begomovirus gossypimultanense.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426797"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "cited_pmid": "38543644",
+      "title": "Identification of Viruses in Molossus Bats from the Brazilian Amazon: A Descriptive Metagenomic Analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_144051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42198716",
+      "title": "Rapid Construction and Characterization of Infectious cDNA Clones and Reporter Viruses of Enteroviruses, Including Enterovirus A71 and Coxsackievirus B5, with Systematic Identification of Critical Determinants for Successful Reporter Virus Generation.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What antiviral drugs or treatments are effective against Cotton leaf curl virus?",
+      "cited_pmid": "42514955",
+      "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Aphid lethal paralysis virus?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "42515614",
+      "title": "Validation of a Broad-Range Conventional RT-PCR Assay for Pestivirus Surveillance and Molecular Detection of BVDV-2a in Pigs in Costa Rica.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_381707"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "35773319",
+      "title": "Preparation of recombinant glycoprotein B (gB) of Chelonid herpesvirus 5 (ChHV5) for antibody production and its application for infection detection in sea turtles.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What is the epidemiology and outbreak history of Grass carp reovirus?",
+      "cited_pmid": "42494117",
+      "title": "Detection of Phocoena Pestivirus and Neutralizing Antibodies in Harbor Porpoises Found Dead at the North Sea and Baltic Sea Coasts.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2014960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2653709",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What are the clinical symptoms and disease presentation of Grass carp reovirus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is known about Chelonid herpesvirus 5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41915177",
+      "title": "Integrative immunoinformatics and molecular modeling approaches for the rational design and in silico validation of a multi-epitope vaccine candidate against human herpesvirus 7.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is known about Chelonid herpesvirus 5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41905024",
+      "title": "Identification of a novel multi epitope vaccine against human herpes virus 7 (HHV-7) to combat CNS disorders in children and adolescents using subtractive proteomics and immunoinformatic approaches.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What diagnostic assays or laboratory tests detect Chelonid herpesvirus 5?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is the genome organization and replication cycle of Chelonid herpesvirus 5?",
+      "cited_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What is the genome organization and replication cycle of Chelonid herpesvirus 5?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chelonid herpesvirus 5",
+      "question": "What are the clinical symptoms and disease presentation of Chelonid herpesvirus 5?",
+      "cited_pmid": "42222536",
+      "title": "Clinical characteristics and prognostic analysis of patients with herpesvirus meningitis/encephalitis based on cerebrospinal fluid mNGS positivity.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
       ]
     }
   ],
