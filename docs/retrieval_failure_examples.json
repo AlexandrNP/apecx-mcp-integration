@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:04:57.693219+00:00",
-  "runs": 352,
+  "updated": "2026-09-27T19:08:07.212347+00:00",
+  "runs": 353,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23723,
-  "n_false_negatives": 4572,
+  "n_false_positives": 23735,
+  "n_false_negatives": 4585,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 8
+    "false_positives": 12,
+    "false_negatives": 13
   },
   "false_positives": [
     {
@@ -267637,6 +267637,139 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_342409"
       ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42172084",
+      "title": "Human Polyomaviruses of Clinical Relevance: Modes of Transmission and Associated Pathologies.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_862909",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "42515568",
+      "title": "Current Perspectives on JC Polyomavirus Transmission and Associated Diseases: Implications for Prevention in Risk Populations.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "36146885",
+      "title": "Pathogenicity of Avian Polyomaviruses and Prospect of Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_349564",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "38035109",
+      "title": "Corrigendum: Dynamic risk prediction of BK polyomavirus reactivation after renal transplantation.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "36146885",
+      "title": "Pathogenicity of Avian Polyomaviruses and Prospect of Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_349564",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is known about Merkel cell polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42172084",
+      "title": "Human Polyomaviruses of Clinical Relevance: Modes of Transmission and Associated Pathologies.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_862909",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the epidemiology and outbreak history of Merkel cell polyomavirus?",
+      "cited_pmid": "38035109",
+      "title": "Corrigendum: Dynamic risk prediction of BK polyomavirus reactivation after renal transplantation.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Merkel cell polyomavirus?",
+      "cited_pmid": "36146885",
+      "title": "Pathogenicity of Avian Polyomaviruses and Prospect of Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_349564",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42172084",
+      "title": "Human Polyomaviruses of Clinical Relevance: Modes of Transmission and Associated Pathologies.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_862909",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "36146885",
+      "title": "Pathogenicity of Avian Polyomaviruses and Prospect of Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_349564",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "42515568",
+      "title": "Current Perspectives on JC Polyomavirus Transmission and Associated Diseases: Implications for Prevention in Risk Populations.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of WU polyomavirus?",
+      "cited_pmid": "42527809",
+      "title": "Case report: rare progressive cavitary lesion in progressive multifocal leukoencephalopathy.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -295071,6 +295204,84 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
       "missed_pmid": "37047210",
       "title": "Discovery of SNP Molecular Markers and Candidate Genes Associated with Sacbrood Virus Resistance in Apis cerana cerana Larvae by Whole-Genome Resequencing."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "missed_pmid": "42607931",
+      "title": "BK polyomavirus reactivation in renal transplant recipients: A cross-sectional study using combined qualitative and quantitative PCR."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "missed_pmid": "37507072",
+      "title": "Dynamic viral integration patterns actively participate in the progression of BK polyomavirus-associated diseases after renal transplantation."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "missed_pmid": "36674845",
+      "title": "Single-Cell Transcriptome Identifies the Renal Cell Type Tropism of Human BK Polyomavirus."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "missed_pmid": "38065365",
+      "title": "Interferon-alpha and MxA inhibit BK polyomavirus replication by interaction with polyomavirus large T antigen."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "missed_pmid": "36494784",
+      "title": "JC virus-induced progressive multifocal leukoencephalopathy in a presumably healthy patient."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "missed_pmid": "42489251",
+      "title": "John Cunningham Virus and Colorectal Carcinogenesis: Current Evidence, Molecular Mechanisms, and Unresolved Controversies."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "missed_pmid": "42172084",
+      "title": "Human Polyomaviruses of Clinical Relevance: Modes of Transmission and Associated Pathologies."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "missed_pmid": "42515568",
+      "title": "Current Perspectives on JC Polyomavirus Transmission and Associated Diseases: Implications for Prevention in Risk Populations."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "missed_pmid": "41980878",
+      "title": "Clinicopathologic and Molecular Characteristics of Merkel Cell Polyomavirus Positive T-Cell Lymphoproliferative Disorders."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against Merkel cell polyomavirus?",
+      "missed_pmid": "42138695",
+      "title": "Spontaneous remission of Merkel cell carcinoma presenting with tertiary lymphoid structures in an immunocompetent patient."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against Merkel cell polyomavirus?",
+      "missed_pmid": "42074095",
+      "title": "Respiratory Models Reveal DNA Damage Response Modulation by Merkel Cell Polyomavirus."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of Merkel cell polyomavirus?",
+      "missed_pmid": "41818640",
+      "title": "Predominant Merkel Cell Polyomavirus DNA Detection in Essential Thrombocythemia within Myeloproliferative Neoplasms."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Merkel cell polyomavirus?",
+      "missed_pmid": "41891489",
+      "title": "Prevalence and Molecular Profiling of Merkel Cell Polyomavirus in Patients With Monkeypox Virus Infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
