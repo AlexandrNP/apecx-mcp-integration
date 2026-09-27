@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:44:06.070260+00:00",
-  "runs": 316,
+  "updated": "2026-09-27T17:48:07.226197+00:00",
+  "runs": 317,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23299,
-  "n_false_negatives": 4293,
+  "n_false_positives": 23305,
+  "n_false_negatives": 4304,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 12
+    "false_positives": 6,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -263070,6 +263070,70 @@
       "actual_organisms": [
         "Red sea bream iridovirus"
       ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "40143229",
+      "title": "Fecal Transmission of Spodoptera frugiperda Multiple Nucleopolyhedrovirus (SfMNPV; Baculoviridae).",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "40242758",
+      "title": "BmElmo is a factor for inhibiting Autographa Californica nucleopolyhedrovirus infection in silkworm, Bombyx mori.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Autographa californica nucleopolyhedrovirus?",
+      "cited_pmid": "32894214",
+      "title": "Determination of the virulence of single nucleopolyhedrovirus occlusion bodies using a novel laser capture microdissection method.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2982619"
+      ]
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Autographa californica nucleopolyhedrovirus?",
+      "cited_pmid": "32530959",
+      "title": "Genome sequence analysis of a Helicoverpa armigera single nucleopolyhedrovirus (HearNPV-TR) isolated from Heliothis peltigera\u00a0in Turkey.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_48861",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "cited_pmid": "40504314",
+      "title": "Construction of a shortened autographa californica multiple nucleopolyhedrovirus genome as protein expression vector.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "How does Spodoptera frugiperda nucleopolyhedrovirus evade or modulate the host immune response?",
+      "cited_pmid": "39441638",
+      "title": "A myeloid differentiation-like protein in partnership with Toll5 from the pest insect Spodoptera litura senses baculovirus infection.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456"
+      ]
     }
   ],
   "false_negatives": [
@@ -288830,6 +288894,72 @@
       "question": "What diagnostic assays or laboratory tests detect Soft-shelled turtle iridovirus?",
       "missed_pmid": "17706827",
       "title": "Characterization of a late gene encoding for MCP in soft-shelled turtle iridovirus (STIV)."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41326100",
+      "title": "Cidofovir induces antiviral immunity against Bombyx mori nucleopolyhedrovirus by modulating multiple immune pathways in silkworm."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What are the clinical symptoms and disease presentation of Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41724080",
+      "title": "Rapid detection of Bombyx mori Nucleopolyhedrovirus in silkworms using Fourier transform infrared spectroscopy and chemometric modelling."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41849704",
+      "title": "Functional Characterization of Spase12 as a Host Factor Contributing to Bombyx mori Nucleopolyhedrovirus Susceptibility in Silkworms."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "30121326",
+      "title": "Expression- and genomic-level changes during passage of four baculoviruses derived from bacmids in permissive insect cell lines."
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Autographa californica nucleopolyhedrovirus?",
+      "missed_pmid": "39369371",
+      "title": "The conserved cysteines at position 18, 36, and 49 of Autographa californica multiple nucleopolyhedrovirus VP39 are essential for virus replication."
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Autographa californica nucleopolyhedrovirus?",
+      "missed_pmid": "40504314",
+      "title": "Construction of a shortened autographa californica multiple nucleopolyhedrovirus genome as protein expression vector."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28466057",
+      "title": "Whole genome sequence and comparative genomic sequence analysis of Helicoverpa armigera nucleopolyhedrovirus (HearNPV-L1) isolated from India."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "How does Helicoverpa armigera nucleopolyhedrovirus evade or modulate the host immune response?",
+      "missed_pmid": "29549650",
+      "title": "HearNPV Pseudotyped with PIF1, 2, and 3 from MabrNPV: Infectivity and Complex Stability."
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "missed_pmid": "40431686",
+      "title": "The Individual and Combined Entomopathogenic Activity of a Spodoptera frugiperda Multiple Nucleopolyhedrovirus and a Type I Spodoptera frugiperda Granulovirus on S. frugiperda Larvae."
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "missed_pmid": "42198772",
+      "title": "Relationship Between the Size-Frequency Distribution of Nucleopolyhedrovirus Occlusion Bodies and Their Insecticidal Characteristics on Spodoptera frugiperda (Lepidoptera: Noctuidae)."
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "How does Spodoptera frugiperda nucleopolyhedrovirus evade or modulate the host immune response?",
+      "missed_pmid": "39396664",
+      "title": "Generation and characterization of a novel ovariole cell line derived from Spodoptera frugiperda in China with sensitivity to both SfMNPV and AcMNPV."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
