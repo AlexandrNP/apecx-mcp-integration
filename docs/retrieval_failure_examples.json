@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:54:19.016022+00:00",
-  "runs": 481,
+  "updated": "2026-09-27T23:56:20.763862+00:00",
+  "runs": 482,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25149,
-  "n_false_negatives": 4993,
+  "n_false_positives": 25161,
+  "n_false_negatives": 4998,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 15
+    "false_positives": 12,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -283365,6 +283365,128 @@
       "actual_organisms": [
         "Classical swine fever virus"
       ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "cited_pmid": "41497461",
+      "title": "The use of selected electrophoretic techniques to assess the health of domestic cats (Felis catus).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "cited_pmid": "41901790",
+      "title": "Clinical Features and Outcomes of Treatment for Effusive Feline Infectious Peritonitis with GS-441524 in Seventeen Retrovirus-Positive Cats.",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Feline herpesvirus 1?",
+      "cited_pmid": "41901790",
+      "title": "Clinical Features and Outcomes of Treatment for Effusive Feline Infectious Peritonitis with GS-441524 in Seventeen Retrovirus-Positive Cats.",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Feline herpesvirus 1?",
+      "cited_pmid": "41577199",
+      "title": "Lapachol, a dihydroorotate dehydrogenase inhibitor, demonstrates antiviral activity against feline calicivirus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline calicivirus"
+      ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Feline herpesvirus 1?",
+      "cited_pmid": "42288833",
+      "title": "Cross-species transmission of host adaptation of feline leukemia virus between domestic cats and the wild felid Leopardus guigna.",
+      "actual_organisms": [
+        "Feline leukemia virus"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genome organization and replication cycle of Feline leukemia virus?",
+      "cited_pmid": "41668033",
+      "title": "Sustained circulation of genotype I and the first whole-genome sequencing of feline calicivirus in Turkish cats.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "Feline herpesvirus 1",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1174530",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2736647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052101"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Feline leukemia virus?",
+      "cited_pmid": "42198765",
+      "title": "Genetic Diversity and Evolutionary Dynamics of Feline Panleukopenia Virus in China: Phylogenetic Analysis and Substitution Patterns in NS1 and VP2 Proteins.",
+      "actual_organisms": [
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline panleukopenia virus?",
+      "cited_pmid": "41497461",
+      "title": "The use of selected electrophoretic techniques to assess the health of domestic cats (Felis catus).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline panleukopenia virus?",
+      "cited_pmid": "41868399",
+      "title": "Feline leukemia virus point-of-care lateral flow tests have low positive predictive value in apparently healthy shelter cats.",
+      "actual_organisms": [
+        "Feline leukemia virus"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "cited_pmid": "41577199",
+      "title": "Lapachol, a dihydroorotate dehydrogenase inhibitor, demonstrates antiviral activity against feline calicivirus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline calicivirus"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "cited_pmid": "42129643",
+      "title": "Clinical and virological effects of the integrase inhibitor raltegravir in cats with naturally progressive feline leukaemia virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "cited_pmid": "41901790",
+      "title": "Clinical Features and Outcomes of Treatment for Effusive Feline Infectious Peritonitis with GS-441524 in Seventeen Retrovirus-Positive Cats.",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
     }
   ],
   "false_negatives": [
@@ -313325,6 +313447,36 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of African swine fever virus?",
       "missed_pmid": "42640359",
       "title": "Comparative genomic analysis of pigs differing in survival following African swine fever virus infection."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "missed_pmid": "42181094",
+      "title": "Feline calicivirus localization in central nervous system cells of cats with neurological lesions."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "missed_pmid": "40644818",
+      "title": "Molecular epidemiology of feline calicivirus (FCV) and felid alphaherpesvirus 1 (FeAHV-1) in cats with clinical signs and clinically healthy cats."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the epidemiology and outbreak history of Feline leukemia virus?",
+      "missed_pmid": "41240245",
+      "title": "The prevalence of highly-pathogenic viruses in European wildcat and Eurasian Lynx in Poland."
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline panleukopenia virus?",
+      "missed_pmid": "41976045",
+      "title": "Comparison of the Efficacy of Filgrastim and an Inactivated Parapoxvirus ovis Paraimmune Activator in Naturally Infected Cats with Feline Panleukopenia."
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "missed_pmid": "41976038",
+      "title": "Pathogenicity of a Canine-Derived Feline Panleukopenia Virus in Cats and NS1 Evolution Associated with Adaptation to Dogs."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
