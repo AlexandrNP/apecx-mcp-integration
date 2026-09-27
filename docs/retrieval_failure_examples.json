@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:24:34.881154+00:00",
-  "runs": 360,
+  "updated": "2026-09-27T19:27:08.750015+00:00",
+  "runs": 361,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23843,
-  "n_false_negatives": 4648,
+  "n_false_positives": 23879,
+  "n_false_negatives": 4664,
   "new_this_run": {
-    "false_positives": 33,
-    "false_negatives": 11
+    "false_positives": 36,
+    "false_negatives": 16
   },
   "false_positives": [
     {
@@ -268903,6 +268903,376 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40463609",
+      "title": "A review of vaccines and antivirals against human poxviruses with special emphasis on mpox virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40755018",
+      "title": "[Cowpox - an underdiagnosed disease in Sweden?].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "28874200",
+      "title": "First isolation and genetic characterization of pseudocowpox virus from cattle in Japan.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "30674740",
+      "title": "Sequential detection of pseudocowpox virus and bovine papular stomatitis virus in a same calf in Japan.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "31971341",
+      "title": "Poxviruses diagnosed in cattle from Distrito Federal, Brazil (2015-2018).",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "33159590",
+      "title": "qPCR assay for the detection of pseudocowpox virus.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "33036619",
+      "title": "First detection and molecular characterisation of pseudocowpox virus in a cattle herd in Zambia.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "34391449",
+      "title": "First molecular characterization of poxviruses in cattle, sheep, and goats in Botswana.",
+      "actual_organisms": [
+        "Orf virus",
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Cowpox virus?",
+      "cited_pmid": "40717583",
+      "title": "Recent Progress in the Discovery of Anti-Mpox Agents.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Cowpox virus?",
+      "cited_pmid": "40792286",
+      "title": "The Role of Public Health Interventions and Control Measures During Mpox Outbreaks: Enhancing Strategies for Disease Prevention and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "cited_pmid": "28516287",
+      "title": "Spread of poxviruses in livestock in Brazil associated with cases of double and triple infection.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Cowpox virus?",
+      "cited_pmid": "29364443",
+      "title": "Milker's nodules: classic histological findings.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "30017997",
+      "title": "Phylodynamics of parapoxvirus genus in Mexico (2007-2011).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "41850851",
+      "title": "Genetic analysis of bovine papular stomatitis and pseudocowpox viruses circulating in Hokkaido, Japan's largest cattle-producing region.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "33159590",
+      "title": "qPCR assay for the detection of pseudocowpox virus.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "42515653",
+      "title": "Toxic Relationships: Characterization of a Putative Virally Encoded Toxin in the Thermophilic Archaeal Fusellovirus SSV1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2100760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_244589"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "40717583",
+      "title": "Recent Progress in the Discovery of Anti-Mpox Agents.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "41446169",
+      "title": "Discovery and Characterization of a Hydroxypyridone-3-carboxamide Analog as an Antiviral Lead against Orthopoxviruses.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "40792286",
+      "title": "The Role of Public Health Interventions and Control Measures During Mpox Outbreaks: Enhancing Strategies for Disease Prevention and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What are the clinical symptoms and disease presentation of Orf virus?",
+      "cited_pmid": "40372132",
+      "title": "Neurological complications of Orthopoxvirus infections: neurotropism and neurovirulence.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Orf virus?",
+      "cited_pmid": "42405772",
+      "title": "Coronavirus membrane protein with a fluorescent protein tag enables particle tracking for the study of virus assembly and egress in live cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "41472220",
+      "title": "Molecular Aspects of the Emergence of Monkeypox Virus Clades.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Myxoma virus?",
+      "cited_pmid": "39522400",
+      "title": "Evaluation of dried blood spots for serological surveys of myxoma and rabbit hemorrhagic disease viruses in their wild reservoir.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11976"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "cited_pmid": "42489650",
+      "title": "Tymoviruses partition selection using overlapping genes to allow their replication genes and their movement protein gene to evolve independently.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What antiviral drugs or treatments are effective against Myxoma virus?",
+      "cited_pmid": "40717583",
+      "title": "Recent Progress in the Discovery of Anti-Mpox Agents.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What are the clinical symptoms and disease presentation of Myxoma virus?",
+      "cited_pmid": "40372132",
+      "title": "Neurological complications of Orthopoxvirus infections: neurotropism and neurovirulence.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41370398",
+      "title": "Antigen-agnostic identification of poxvirus broadly neutralizing antibodies targeting OPG153.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147672"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40311645",
+      "title": "The impact of orthopoxvirus vaccination and Mpox infection on cross-protective immunity: a multicohort observational study.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the genome organization and replication cycle of Pseudocowpox virus?",
+      "cited_pmid": "41472220",
+      "title": "Molecular Aspects of the Emergence of Monkeypox Virus Clades.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "cited_pmid": "40717583",
+      "title": "Recent Progress in the Discovery of Anti-Mpox Agents.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "cited_pmid": "40463609",
+      "title": "A review of vaccines and antivirals against human poxviruses with special emphasis on mpox virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the epidemiology and outbreak history of Pseudocowpox virus?",
+      "cited_pmid": "40792286",
+      "title": "The Role of Public Health Interventions and Control Measures During Mpox Outbreaks: Enhancing Strategies for Disease Prevention and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Pseudocowpox virus?",
+      "cited_pmid": "40755018",
+      "title": "[Cowpox - an underdiagnosed disease in Sweden?].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "How does Pseudocowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42536682",
+      "title": "Host-Orf virus interactions: A comprehensive review of pathogenesis and immune evasion mechanisms.",
+      "actual_organisms": [
+        "Orf virus"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "How does Pseudocowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "41678605",
+      "title": "Poxvirus attack of antiviral defense pathways unleashes an effector-triggered NF-\u03baB response.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -296793,6 +297163,102 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Chelonid herpesvirus 5?",
       "missed_pmid": "27016769",
       "title": "Chelonid herpesvirus 5 in secretions and tumor tissues from green turtles (Chelonia mydas) from Southeastern Brazil: A ten-year study."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40311645",
+      "title": "The impact of orthopoxvirus vaccination and Mpox infection on cross-protective immunity: a multicohort observational study."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40664127",
+      "title": "Computational design of a multi-epitope mRNA vaccine against orthopoxviruses: A path toward comprehensive poxvirus protection."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "missed_pmid": "28216667",
+      "title": "A novel HRM assay for the simultaneous detection and differentiation of eight poxviruses of medical and veterinary importance."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "missed_pmid": "40372132",
+      "title": "Neurological complications of Orthopoxvirus infections: neurotropism and neurovirulence."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "missed_pmid": "40761797",
+      "title": "Determination of the minimal level of neutralizing antibodies elicited following vaccination able to protect rabbits against virulent cowpox virus."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "missed_pmid": "28216667",
+      "title": "A novel HRM assay for the simultaneous detection and differentiation of eight poxviruses of medical and veterinary importance."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "missed_pmid": "31528027",
+      "title": "Molecular characterization of Orf virus isolates from Kodai hills, Tamil Nadu, India."
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is known about Myxoma virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40705385",
+      "title": "Recombinant Myxoma Virus in European Brown Hares, 2023-2024."
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Myxoma virus?",
+      "missed_pmid": "40020268",
+      "title": "Estimating the diagnostic performance of serological assays for emerging pathogens using a Bayesian approach: Myxoma virus in the Iberian hare (Lepus granatensis)."
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What are the clinical symptoms and disease presentation of Myxoma virus?",
+      "missed_pmid": "39621278",
+      "title": "Testing Oncolytic Myxoma Virus in Immunocompetent Mouse Model for Cancer Therapy."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28874200",
+      "title": "First isolation and genetic characterization of pseudocowpox virus from cattle in Japan."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29153035",
+      "title": "An unusual presentation of pseudocowpox associated with an outbreak of pustular ulcerative vulvovaginitis in a Swedish dairy herd."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32169495",
+      "title": "Late development of pustular, erosive lesions in the muzzle of calves inoculated with Pseudocowpox virus."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Pseudocowpox virus?",
+      "missed_pmid": "28216667",
+      "title": "A novel HRM assay for the simultaneous detection and differentiation of eight poxviruses of medical and veterinary importance."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the genome organization and replication cycle of Pseudocowpox virus?",
+      "missed_pmid": "33036619",
+      "title": "First detection and molecular characterisation of pseudocowpox virus in a cattle herd in Zambia."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "missed_pmid": "27865267",
+      "title": "Occurrence of Pseudocowpox virus associated to Bovine viral diarrhea virus-1, Brazilian Amazon."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
