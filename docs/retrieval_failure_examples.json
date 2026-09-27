@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:54:17.881276+00:00",
-  "runs": 284,
+  "updated": "2026-09-27T15:56:06.934065+00:00",
+  "runs": 285,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22848,
-  "n_false_negatives": 4110,
+  "n_false_positives": 22855,
+  "n_false_negatives": 4118,
   "new_this_run": {
-    "false_positives": 22,
-    "false_negatives": 17
+    "false_positives": 7,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -258200,6 +258200,82 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10814",
         "http://purl.obolibrary.org/obo/NCBITaxon_12183"
       ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious salmon anemia virus?",
+      "cited_pmid": "40726411",
+      "title": "Implementation of a Recombinase Polymerase Amplification-Driven Duplex Lateral Flow Diagnostic Kit for Concurrent Detecting Infectious Pancreatic Necrosis Virus and Viral Hemorrhagic Septicemia Virus: A Comparative Analysis of RPA and PCR Methods.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "Viral hemorrhagic septicemia virus"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "40726411",
+      "title": "Implementation of a Recombinase Polymerase Amplification-Driven Duplex Lateral Flow Diagnostic Kit for Concurrent Detecting Infectious Pancreatic Necrosis Virus and Viral Hemorrhagic Septicemia Virus: A Comparative Analysis of RPA and PCR Methods.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "Viral hemorrhagic septicemia virus"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "41373644",
+      "title": "Insights on Minimizing False Positives in IHHNV Detection: Experiences from Ecuador's Penaeus vannamei Aquaculture.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1513224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_662"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "41811454",
+      "title": "Conserved use of tetraspanin CD9 as an entry receptor by rhabdoviruses spanning multiple genera.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_373862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "41811454",
+      "title": "Conserved use of tetraspanin CD9 as an entry receptor by rhabdoviruses spanning multiple genera.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_373862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "38520841",
+      "title": "Modulation of infectious Salmon Anaemia virus infection by clathrin-mediated endocytosis and macropinocytosis inhibitors.",
+      "actual_organisms": [
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907958"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cyprinid herpesvirus 3?",
+      "cited_pmid": "41811454",
+      "title": "Conserved use of tetraspanin CD9 as an entry receptor by rhabdoviruses spanning multiple genera.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_373862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -282862,6 +282938,54 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
       "missed_pmid": "39412854",
       "title": "Introgression and Mapping of Cotton Leaf Curl Disease Resistance from Wild Gossypium armourianum Kearney into Upland Cotton (G. hirsutum)."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is known about Infectious salmon anemia virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38124493",
+      "title": "Description of spatiotemporal patterns of infectious salmon anemia virus (ISAV) detections in marine Atlantic Salmon farms in Newfoundland and Labrador."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genome organization and replication cycle of Infectious salmon anemia virus?",
+      "missed_pmid": "38212882",
+      "title": "Rapid differentiation of infectious salmon anemia virus avirulent (HPR0) from virulent (HPR\u0394) variants using multiplex RT-qPCR."
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What is the genome organization and replication cycle of Viral hemorrhagic septicemia virus?",
+      "missed_pmid": "41811454",
+      "title": "Conserved use of tetraspanin CD9 as an entry receptor by rhabdoviruses spanning multiple genera."
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What antiviral drugs or treatments are effective against Viral hemorrhagic septicemia virus?",
+      "missed_pmid": "41880819",
+      "title": "DNA vaccination against viral hemorrhagic septicemia virus (VHSV) affects the capacity of kidney leukocytes to respond to a posterior viral encounter."
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious pancreatic necrosis virus?",
+      "missed_pmid": "40820966",
+      "title": "Epidemiological Insights Into Infectious Pancreatic Necrosis Virus: Detection, Distribution and Persistence in Chilean Salmon Farms."
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is known about Cyprinid herpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36992477",
+      "title": "Susceptibility and Permissivity of Zebrafish (Danio rerio) Larvae to Cypriniviruses."
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is known about Cyprinid herpesvirus 3 pathogenesis and transmission?",
+      "missed_pmid": "37871756",
+      "title": "Common carp (Cyprinus carpio) CD81 promoting CyHV-3 virus replication via regulating autophagy and RLRs-interferon signaling pathway."
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cyprinid herpesvirus 3?",
+      "missed_pmid": "37678483",
+      "title": "Autophagy induced by Cyprinid herpesvirus 3 (CyHV-3) facilitated intracellular viral replication and extracellular viral yields in common carp brain cells."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
