@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:54:17.190031+00:00",
-  "runs": 297,
+  "updated": "2026-09-27T16:55:55.962608+00:00",
+  "runs": 298,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23052,
-  "n_false_negatives": 4149,
+  "n_false_positives": 23060,
+  "n_false_negatives": 4157,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 14
+    "false_positives": 8,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -260370,6 +260370,88 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12066",
         "http://purl.obolibrary.org/obo/NCBITaxon_86107"
       ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42537921",
+      "title": "Neutralizing dengue antibodies after 10 years of the chimeric yellow fever tetravalent dengue vaccine (CYD-TDV) and dengue antibody cross-reactivity with SARS-CoV-2 in Indonesia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42054312",
+      "title": "Differential properties of NS1 glycoproteins in West Nile and Usutu viruses.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42515600",
+      "title": "Cellular Responses to Flavivirus Infections: Stress Signaling at the Crossroads of Host Defense and Virus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42529624",
+      "title": "Phylodynamic analyses reveal persistence and extensive intermixing of Usutu virus in the Netherlands.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42593751",
+      "title": "Serological Evidence of Tick-Borne Encephalitis Virus (TBEV) Exposure Among Hospitalized Neurological Patients in Israel, 2010-2019.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Japanese encephalitis virus?",
+      "cited_pmid": "42618481",
+      "title": "[Surveillance for Japanese encephalitis in Henan Province, 2004-2025].",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "cited_pmid": "42514999",
+      "title": "Long-Term Outcomes in Adult Patients with Tick-Borne Encephalitis in Latvia.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42515600",
+      "title": "Cellular Responses to Flavivirus Infections: Stress Signaling at the Crossroads of Host Defense and Virus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
     }
   ],
   "false_negatives": [
@@ -285266,6 +285348,54 @@
       "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
       "missed_pmid": "41734482",
       "title": "Impact of COVID-19 on the transmission dynamics of HFMD associated enterovirus serotypes in Japan: A modelling study of surveillance data."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "42522003",
+      "title": "Study of the circulation of dengue, yellow fever, and West Nile viruses in Guinea: implications for achieving the health objectives of the Simandou 2040 program."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "missed_pmid": "42506928",
+      "title": "Alignment-free k-mer-guided design of a pan-Orthoflavivirus RT-qPCR assay."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "missed_pmid": "42611910",
+      "title": "Japanese encephalitis: Current status, recent progress, and persistent challenges."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Japanese encephalitis virus?",
+      "missed_pmid": "42655668",
+      "title": "Development of Cell Culture-Derived Hemagglutination Antigens for Japanese Encephalitis Virus Genotypes 1 and 3."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "How does Japanese encephalitis virus evade or modulate the host immune response?",
+      "missed_pmid": "42623887",
+      "title": "CYLD restricts Japanese encephalitis virus pathogenic progression via blocking viral replication and virus-triggered GSDMD-dependent pyroptosis in neural cells."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42054312",
+      "title": "Differential properties of NS1 glycoproteins in West Nile and Usutu viruses."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "missed_pmid": "41990089",
+      "title": "Susceptibility of wild and domestic songbirds to Usutu virus."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "missed_pmid": "42009039",
+      "title": "Usutu virus meningitis: another overlooked mosquito-borne disease in central Europe."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
