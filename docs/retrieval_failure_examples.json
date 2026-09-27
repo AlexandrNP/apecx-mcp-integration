@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:13:47.519095+00:00",
-  "runs": 156,
+  "updated": "2026-09-27T07:15:46.374020+00:00",
+  "runs": 157,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19242,
-  "n_false_negatives": 3526,
+  "n_false_positives": 19265,
+  "n_false_negatives": 3529,
   "new_this_run": {
-    "false_positives": 82,
-    "false_negatives": 2
+    "false_positives": 23,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -217454,6 +217454,263 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11276",
         "http://purl.obolibrary.org/obo/NCBITaxon_11618"
       ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is known about Tanapox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "28188458",
+      "title": "Tanapoxvirus lacking the 15L gene inhibits melanoma cell growth in vitro by inducing interferon-\u03bb1 release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genome organization and replication cycle of Tanapox virus?",
+      "cited_pmid": "41099065",
+      "title": "The replication protein of duck circovirus unwinds dsDNA in an ATP-driven and metal ion-dependent manner from 3' to 5'.",
+      "actual_organisms": [
+        "Duck circovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genome organization and replication cycle of Tanapox virus?",
+      "cited_pmid": "33177604",
+      "title": "Discovery and comparative genomic analysis of elk circovirus (ElkCV), a novel circovirus species and the first reported from a cervid host.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tanapox virus?",
+      "cited_pmid": "32412687",
+      "title": "Structural insight into tanapoxvirus-mediated inhibition of apoptosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tanapox virus?",
+      "cited_pmid": "38392343",
+      "title": "PoxiPred: An Artificial-Intelligence-Based Method for the Prediction of Potential Antigens and Epitopes to Accelerate Vaccine Development Efforts against Poxviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "How does Tanapox virus evade or modulate the host immune response?",
+      "cited_pmid": "28669340",
+      "title": "Oncolytic Tanapoxvirus Expressing Interleukin-2 is Capable of Inducing the Regression of Human Melanoma Tumors in the Absence of T Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "How does Tanapox virus evade or modulate the host immune response?",
+      "cited_pmid": "28466296",
+      "title": "T-independent response mediated by oncolytic tanapoxvirus recombinants expressing interleukin-2 and monocyte chemoattractant protein-1 suppresses human triple negative breast tumors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32502500",
+      "title": "Colonisation of mice and pigs by a chimeric porcine circovirus 1-2 prototype vaccine strain and a PCV2 isolate originating in China and their induction of cytokines.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29599761",
+      "title": "Evaluation of the Efficacy and Cross-Protective Immunity of Live-Attenuated Chimeric PCV1-2b Vaccine Against PCV2b and PCV2d Subtype Challenge in Pigs.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36560518",
+      "title": "Efficacy Studies against PCV-2 of a New Trivalent Vaccine including PCV-2a and PCV-2b Genotypes and Mycoplasma hyopneumoniae When Administered at 3 Weeks of Age.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Pseudocowpox virus?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the genome organization and replication cycle of Pseudocowpox virus?",
+      "cited_pmid": "41099065",
+      "title": "The replication protein of duck circovirus unwinds dsDNA in an ATP-driven and metal ion-dependent manner from 3' to 5'.",
+      "actual_organisms": [
+        "Duck circovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the genome organization and replication cycle of Pseudocowpox virus?",
+      "cited_pmid": "41251728",
+      "title": "Isolation and complete genome analysis of porcine circovirus-1 associated with reproductive failurein swine: foremost study in India.",
+      "actual_organisms": [
+        "Porcine circovirus 1",
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "cited_pmid": "32930107",
+      "title": "Tanapoxvirus: From discovery towards oncolytic immunovirotherapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the epidemiology and outbreak history of Pseudocowpox virus?",
+      "cited_pmid": "33745070",
+      "title": "Geographic distribution and genetic characterization of poxviruses from human infections in Georgia, 2009-2014.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "How does Pseudocowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42515592",
+      "title": "Retrovirus-Induced Immunosuppression: Role of the Transmembrane Envelope Protein.",
+      "actual_organisms": [
+        "Koala retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Bovine papular stomatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine papular stomatitis virus?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Bovine papular stomatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine papular stomatitis virus?",
+      "cited_pmid": "38793627",
+      "title": "A Screening Study Identified Decitabine as an Inhibitor of Equid Herpesvirus 4 That Enhances the Innate Antiviral Response.",
+      "actual_organisms": [
+        "Equine herpesvirus 4"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Gibbon ape leukemia virus?",
+      "cited_pmid": "38440982",
+      "title": "FeLIX is a restriction factor for mammalian retrovirus infection.",
+      "actual_organisms": [
+        "Koala retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "How does Gibbon ape leukemia virus evade or modulate the host immune response?",
+      "cited_pmid": "42515592",
+      "title": "Retrovirus-Induced Immunosuppression: Role of the Transmembrane Envelope Protein.",
+      "actual_organisms": [
+        "Koala retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "cited_pmid": "41173927",
+      "title": "A multiplex real-time PCR assay for detection of equid herpesvirus 1 and 4.",
+      "actual_organisms": [
+        "Equine herpesvirus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Equine herpesvirus 4",
+      "question": "What diagnostic assays or laboratory tests detect Equine herpesvirus 4?",
+      "cited_pmid": "36087793",
+      "title": "Multiplex real-time PCR for the detection and differentiation of equid gammaherpesvirus 2 and 5.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10371",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12657",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Equine herpesvirus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Equine herpesvirus 4?",
+      "cited_pmid": "37931881",
+      "title": "Studying longitudinal neutralising antibody levels against Equid herpesvirus 1 in experimentally infected horses using a novel pseudotype based assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472"
+      ]
     }
   ],
   "false_negatives": [
@@ -238612,6 +238869,24 @@
       "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
       "missed_pmid": "31954277",
       "title": "Human parainfluenza virus circulation, United States, 2011-2019."
+    },
+    {
+      "organism": "Porcine circovirus 2",
+      "question": "What is the epidemiology and outbreak history of Porcine circovirus 2?",
+      "missed_pmid": "31488066",
+      "title": "Development of a multiplex PCR to detect and discriminate porcine circoviruses in clinical specimens."
+    },
+    {
+      "organism": "Bovine papular stomatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine papular stomatitis virus?",
+      "missed_pmid": "34334509",
+      "title": "Molecular phylogenetic analysis of bovine papular stomatitis viruses detected in Saga, Japan."
+    },
+    {
+      "organism": "Equine herpesvirus 4",
+      "question": "What diagnostic assays or laboratory tests detect Equine herpesvirus 4?",
+      "missed_pmid": "38995916",
+      "title": "Antibody reactions of horses against various domains of the EHV-1 receptor-binding protein gD1."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
