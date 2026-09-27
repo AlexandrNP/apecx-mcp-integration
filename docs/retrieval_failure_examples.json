@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:39:24.609371+00:00",
-  "runs": 448,
+  "updated": "2026-09-27T22:41:27.995066+00:00",
+  "runs": 449,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24854,
+  "n_false_positives": 24860,
   "n_false_negatives": 4865,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 2
+    "false_positives": 6,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -280205,6 +280205,74 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42086005",
+      "title": "Propagation and immunological characterization of three enterovirus D68 strains using serum-free HEK293A suspension cell culture.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42198730",
+      "title": "Enterovirus Testing in Hand, Foot, and Mouth Disease and Herpangina: A Highly Sensitive Single-Round VP4-VP2 Reverse-Transcription Polymerase Chain Reaction Assay with a Redesigned Reverse Primer.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41583791",
+      "title": "Coxsackievirus A6 was the predominant pathogen of hand, foot, and mouth disease with frequent recombination and mutations in Shandong Province, 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "41413343",
+      "title": "Molecular mechanisms of receptor recognition and antibody neutralization of coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42108465",
+      "title": "Complete genome sequencing and molecular characterization of indigenous enterovirus A71 genogroups D and G of India.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "26905662",
+      "title": "Test and validation of methods to sample and detect human virus from environmental surfaces using norovirus as a model virus.",
+      "actual_organisms": [
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_490042",
+        "http://purl.obolibrary.org/obo/NCBITaxon_647514",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
