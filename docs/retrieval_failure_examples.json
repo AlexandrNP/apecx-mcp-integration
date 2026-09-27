@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:14:26.489097+00:00",
-  "runs": 294,
+  "updated": "2026-09-27T16:15:56.656981+00:00",
+  "runs": 295,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23013,
+  "n_false_positives": 23017,
   "n_false_negatives": 4129,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 4
+    "false_positives": 4,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -259954,6 +259954,47 @@
       "title": "Household Transmission of Enterovirus D68, Washington and Oregon, United States, 2022-2024.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 33?",
+      "cited_pmid": "32986347",
+      "title": "Phylogeny and In Silico Structure Analysis of Major Capsid Protein (L1) Human Papillomavirus 45 from Indonesian Isolates.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "29981762",
+      "title": "Genetic variability and lineage phylogeny of human papillomavirus type 45 based on E6 and E7 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "cited_pmid": "39540396",
+      "title": "Long-Term Infection With a Particular Human Papillomavirus (HPV) Genotype, HPV Subtype, or HPV Genomic Variant Does not Significantly Influence the Clinical Course of Recurrent Respiratory Papillomatosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 59?",
+      "cited_pmid": "32986347",
+      "title": "Phylogeny and In Silico Structure Analysis of Major Capsid Protein (L1) Human Papillomavirus 45 from Indonesian Isolates.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
     }
   ],
