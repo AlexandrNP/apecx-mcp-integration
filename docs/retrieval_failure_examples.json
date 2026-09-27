@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:02:54.935236+00:00",
-  "runs": 458,
+  "updated": "2026-09-27T23:04:33.256700+00:00",
+  "runs": 459,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24893,
-  "n_false_negatives": 4871,
+  "n_false_positives": 24905,
+  "n_false_negatives": 4872,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 2
+    "false_positives": 12,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -280641,6 +280641,149 @@
       "actual_organisms": [
         "Human parechovirus"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "32574649",
+      "title": "Evaluation of a commercial exogenous internal process control for diagnostic RNA virus metagenomics from different animal clinical samples.",
+      "actual_organisms": [
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "26905662",
+      "title": "Test and validation of methods to sample and detect human virus from environmental surfaces using norovirus as a model virus.",
+      "actual_organisms": [
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_490042",
+        "http://purl.obolibrary.org/obo/NCBITaxon_647514",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42515055",
+      "title": "Wastewater Surveillance of Aichi Virus in Baltimore.",
+      "actual_organisms": [
+        "Aichi virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "42037414",
+      "title": "Enterovirus D68 B3 clade strains are efficiently recovered from cDNA infectious clones in 293T cells and infect human spinal cord organoids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1914203",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42004596",
+      "title": "Study on the inhibitory effect of geniposide on coxsackievirus and its mechanism.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42080794",
+      "title": "Suppression of Calcium Influx Reduces Coxsackievirus B3 Lethality With Elevated Interferon Beta Responses in Mice.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "41987026",
+      "title": "Cardiomyopathy Caused by Coxsackievirus Strain A9 in Previously Healthy Child, Northeastern France, 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42043250",
+      "title": "Oncolytic Virotherapy and Immunogenic Cell Death: Mechanisms, Platforms, and Clinical Translation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12069",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42770"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42004596",
+      "title": "Study on the inhibitory effect of geniposide on coxsackievirus and its mechanism.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "41987026",
+      "title": "Cardiomyopathy Caused by Coxsackievirus Strain A9 in Previously Healthy Child, Northeastern France, 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42262130",
+      "title": "Research progress on the association between viruses and cardiac diseases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "42152487",
+      "title": "USF2 restricts enterovirus replication and transmission by inhibiting autophagy and vesicle-mediated viral spread.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -309869,6 +310012,12 @@
       "question": "What is known about Enterovirus C pathogenesis and transmission?",
       "missed_pmid": "40916768",
       "title": "Poliovirus surveillance in Mayotte, Indian Ocean, reveals encephalomyocarditis virus type 1 and a wide diversity of non-polio enteroviruses."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "missed_pmid": "30944213",
+      "title": "Bacterial Stabilization of a Panel of Picornaviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
