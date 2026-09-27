@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:35:41.681292+00:00",
-  "runs": 210,
+  "updated": "2026-09-27T11:37:07.066507+00:00",
+  "runs": 211,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20999,
+  "n_false_positives": 21057,
   "n_false_negatives": 3590,
   "new_this_run": {
-    "false_positives": 65,
+    "false_positives": 58,
     "false_negatives": 0
   },
   "false_positives": [
@@ -237393,6 +237393,648 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
         "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
         "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36851747",
+      "title": "Characterization of a Panel of Cross-Reactive Hantavirus Nucleocapsid Protein-Specific Monoclonal Antibodies.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052789"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus pathogenesis and transmission?",
+      "cited_pmid": "36223391",
+      "title": "Diverse susceptibilities and responses of human and rodent cells to orthohantavirus infection reveal different levels of cellular restriction.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "38856680",
+      "title": "Use of a diagnostic Puumala virus real-time RT-PCR in an orthohantavirus endemic region in the Netherlands.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
+      "cited_pmid": "42376602",
+      "title": "Surveillance of enterovirus infection and genotypes/subgenotypes of enteroviruses in Dak Lak, Vietnam in 2022-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "42520069",
+      "title": "Host hybridization enabled the emergence of a reassorted hantavirus lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "38361825",
+      "title": "Genome-wide support for incipient Tula hantavirus species within a single rodent host lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "34614264",
+      "title": "Host genetic factors associated with the range limit of a European hantavirus.",
+      "actual_organisms": [
+        "Tula orthohantavirus"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42638709",
+      "title": "A conserved VP1-286 epitope governs neutralization and immune escape in Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "41241852",
+      "title": "Cytopathic Effect and Morphogenesis of WUPyV in Human Airway Epithelial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42616815",
+      "title": "O'nyong-nyong virus adaptive mutations in non-structural protein 1 and 3 enhance RNA replication and overcome FHL1 requirement.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "41556341",
+      "title": "A fold switch regulates conformation of an alphavirus RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "35678587",
+      "title": "Ten Nearly Complete Genome Sequences of Human Orthorubulavirus 4 Isolated from Pediatric Inpatients in Fukushima, Japan.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42520069",
+      "title": "Host hybridization enabled the emergence of a reassorted hantavirus lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42514955",
+      "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "cited_pmid": "31954277",
+      "title": "Human parainfluenza virus circulation, United States, 2011-2019.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "33789313",
+      "title": "Neonatal-Onset Familial Mediterranean Fever in an Infant with Human Parainfluenza Virus-4 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Usutu virus?",
+      "cited_pmid": "42126229",
+      "title": "TIM-1 promotes infection with mosquito cell-derived alphaviruses through virion-associated phospholipids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42278338",
+      "title": "Shigella flexneri-Encoded E3 Ubiquitin Ligase IpaH2 Reveals Plakophilin-2 as a Host Restriction Factor for Sindbis Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_620"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "How does Usutu virus evade or modulate the host immune response?",
+      "cited_pmid": "42352370",
+      "title": "Molecular Determinants of O'Nyong-Nyong Virus Infection in Mammalian Hosts and Anopheles Mosquitoes.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "38361825",
+      "title": "Genome-wide support for incipient Tula hantavirus species within a single rodent host lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "34614264",
+      "title": "Host genetic factors associated with the range limit of a European hantavirus.",
+      "actual_organisms": [
+        "Tula orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Tula orthohantavirus?",
+      "cited_pmid": "42514955",
+      "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42638709",
+      "title": "A conserved VP1-286 epitope governs neutralization and immune escape in Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "42616815",
+      "title": "O'nyong-nyong virus adaptive mutations in non-structural protein 1 and 3 enhance RNA replication and overcome FHL1 requirement.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "42514955",
+      "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of WU polyomavirus?",
+      "cited_pmid": "42126229",
+      "title": "TIM-1 promotes infection with mosquito cell-derived alphaviruses through virion-associated phospholipids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "How does WU polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "41304224",
+      "title": "ISG20 Restricts BK Polyomavirus Infection and Engages in Reciprocal Regulation with Viral Large T Antigen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "How does WU polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42278338",
+      "title": "Shigella flexneri-Encoded E3 Ubiquitin Ligase IpaH2 Reveals Plakophilin-2 as a Host Restriction Factor for Sindbis Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_620"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "How does WU polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "35458553",
+      "title": "Expression Profile of Human Renal Mesangial Cells Is Altered by Infection with Pathogenic Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of WU polyomavirus?",
+      "cited_pmid": "38361825",
+      "title": "Genome-wide support for incipient Tula hantavirus species within a single rodent host lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of WU polyomavirus?",
+      "cited_pmid": "42520069",
+      "title": "Host hybridization enabled the emergence of a reassorted hantavirus lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of WU polyomavirus?",
+      "cited_pmid": "35746729",
+      "title": "Molecular Characterisation and Phylogeny of Tula Virus in Kazakhstan.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36851747",
+      "title": "Characterization of a Panel of Cross-Reactive Hantavirus Nucleocapsid Protein-Specific Monoclonal Antibodies.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42453923",
+      "title": "Rational design of a multi-epitope vaccine for hand, foot, and mouth disease: an in silico perspective.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "38856680",
+      "title": "Use of a diagnostic Puumala virus real-time RT-PCR in an orthohantavirus endemic region in the Netherlands.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42604688",
+      "title": "A lateral flow microarray immunoassay to detect USUV NS1-specific antibodies in tissues of deceased blackbirds in the Netherlands.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42565978",
+      "title": "Molecular and Serological Screening of West Nile and Usutu Virus in Birds and Humans: A Sentinel Study in Finland.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "41556341",
+      "title": "A fold switch regulates conformation of an alphavirus RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "42616815",
+      "title": "O'nyong-nyong virus adaptive mutations in non-structural protein 1 and 3 enhance RNA replication and overcome FHL1 requirement.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42514955",
+      "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42657802",
+      "title": "Carboxypeptidase A6 contributes to bovine enterovirus F production through apoptosis-associated PI3K/AKT/FOXO1 signaling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3413229"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A6?",
+      "cited_pmid": "33754997",
+      "title": "Tula Virus as Causative Agent of Hantavirus Disease in Immunocompetent Person, Germany.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A6?",
+      "cited_pmid": "36223391",
+      "title": "Diverse susceptibilities and responses of human and rodent cells to orthohantavirus infection reveal different levels of cellular restriction.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A6?",
+      "cited_pmid": "41241852",
+      "title": "Cytopathic Effect and Morphogenesis of WUPyV in Human Airway Epithelial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A6?",
+      "cited_pmid": "42535854",
+      "title": "KREMEN1 residue W94 is essential for receptor binding and infection by a major group of enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
+      "cited_pmid": "34614264",
+      "title": "Host genetic factors associated with the range limit of a European hantavirus.",
+      "actual_organisms": [
+        "Tula orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
+      "cited_pmid": "38361825",
+      "title": "Genome-wide support for incipient Tula hantavirus species within a single rodent host lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
+      "cited_pmid": "42520069",
+      "title": "Host hybridization enabled the emergence of a reassorted hantavirus lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 4?",
+      "cited_pmid": "39264196",
+      "title": "Genetic characteristics of human parainfluenza viruses 1-4 associated with acute lower respiratory tract infection in Chinese children, during 2015-2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 4?",
+      "cited_pmid": "36223391",
+      "title": "Diverse susceptibilities and responses of human and rodent cells to orthohantavirus infection reveal different levels of cellular restriction.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052492",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
