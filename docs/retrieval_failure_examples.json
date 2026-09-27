@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:44:21.684010+00:00",
-  "runs": 235,
+  "updated": "2026-09-27T13:46:01.107946+00:00",
+  "runs": 236,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21815,
-  "n_false_negatives": 3627,
+  "n_false_positives": 21827,
+  "n_false_negatives": 3630,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 10
+    "false_positives": 12,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -246799,6 +246799,154 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_32207"
       ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "cited_pmid": "41497652",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
+      "cited_pmid": "41497652",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "How does Mumps orthorubulavirus evade or modulate the host immune response?",
+      "cited_pmid": "42737877",
+      "title": "The Silent War of hMPV: Viral Interference with Host Immunity.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42739216",
+      "title": "Clinician-Reported Respiratory Viral Testing and Intended Management of Community-Acquired Respiratory Viral Infections in Haematology and Haematopoietic Cell Transplantation: An International Exploratory Survey.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42745508",
+      "title": "Impact of Transport Media on IL-33 Levels in Samples From Patients With Viral Respiratory Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the epidemiology and outbreak history of Human respirovirus 3?",
+      "cited_pmid": "42741467",
+      "title": "Epidemiology of Human Metapneumovirus Infection-A Systematic Review and Meta-Analysis.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human respirovirus 3?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "How does Human respirovirus 3 evade or modulate the host immune response?",
+      "cited_pmid": "42737877",
+      "title": "The Silent War of hMPV: Viral Interference with Host Immunity.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "34668744",
+      "title": "Eptesicus fuscus Orthorubulavirus, a Close Relative of Human Parainfluenza Virus 4, Discovered in a Bat in South Dakota.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1300978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2884705",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "42796677",
+      "title": "Epidemiological and Molecular Characterization of Human Metapneumovirus (HMPV) in Children Under 14 Years of Age in Shijiazhuang City, China.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "41497652",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -268563,6 +268711,24 @@
       "question": "What antiviral drugs or treatments are effective against Myxoma virus?",
       "missed_pmid": "41141366",
       "title": "Myeloid-derived suppressor cells inhibit the replication of oncolytic virus by reducing intratumoral arginine levels."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is known about Nipah henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42198690",
+      "title": "Heterologous Sequential mRNA Vaccination of Indian Rhesus Macaques Elicits Broad Binding and Neutralizing Antibody Responses Against Diverse Henipaviruses."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "missed_pmid": "42012879",
+      "title": "Hendra virus genotypes 1 and 2 differ in V protein-mediated immune evasion."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "missed_pmid": "41544545",
+      "title": "Human parainfluenza virus type 3 viruses with the furin-susceptible motif at the cleavage site of the fusion protein arose from original wild strains during their propagation in vitro."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
