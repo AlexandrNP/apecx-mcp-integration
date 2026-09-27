@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T11:42:56.334820+00:00",
-  "runs": 215,
+  "updated": "2026-09-27T11:44:26.166590+00:00",
+  "runs": 216,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21238,
-  "n_false_negatives": 3591,
+  "n_false_positives": 21271,
+  "n_false_negatives": 3594,
   "new_this_run": {
-    "false_positives": 39,
-    "false_negatives": 0
+    "false_positives": 33,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -240128,6 +240128,377 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11036",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "7520190",
+      "title": "Identification of mosquito-borne flavivirus sequences using universal primers and reverse transcription/polymerase chain reaction.",
+      "actual_organisms": [
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chikungunya virus?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "cited_pmid": "42796761",
+      "title": "Chikungunya Virus E2 N218K Enhances Heparan Sulfate-Dependent Attachment and Viral Internalization While Conferring Partial Attenuation in A129 Mice.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42797576",
+      "title": "Advancing Chikungunya Prevention and Vaccination in Mexico: A Position Paper by the Immunization Committee of the Mexican Association of Pediatric Infectious Diseases.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "42778059",
+      "title": "Clinical and Genomic Characterization of Chikungunya Virus Variant reveals a Novel nsP3 H377P Substitution during the 2015 Outbreak in Central Valley of Chiapas, Mexico.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human metapneumovirus?",
+      "cited_pmid": "42637770",
+      "title": "A dual-receptor checkpoint primes enterovirus D68 for respiratory cell entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human metapneumovirus?",
+      "cited_pmid": "42735468",
+      "title": "Long-term clinical and genomic surveillance of rare respiratory enterovirus C types in France, 2013-2025.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2650411",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749421",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760819",
+        "http://purl.obolibrary.org/obo/NCBITaxon_861519"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42777006",
+      "title": "A multiplex serological assay for quantification of arbovirus antibody kinetics and neutralizing antibodies.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42794425",
+      "title": "Generation and Characterization of the Human Anti-HTNV Antibody KJJ4.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42347213",
+      "title": "Integrated Downstream Analysis and Epidemiological Modelling of Hantavirus Infection: From Host Transcriptomics to Transmission Dynamics.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42775853",
+      "title": "Avian metapneumovirus infections in poultry flocks in Poland - molecular evidence for emerging divergence from vaccine strains.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "42764925",
+      "title": "Preclinical evaluation of GW406108X, a broad-spectrum therapeutic blocking ULK1/2-mediated autophagy to inhibit enterovirus replication.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "cited_pmid": "5313066",
+      "title": "A multipurpose serological survey in Kenya. 2. Results of arbovirus serological tests.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "cited_pmid": "42797801",
+      "title": "Pediatric Arboviral Infections in Europe: Epidemiology, Clinical Features, Diagnosis and Prevention.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "42637770",
+      "title": "A dual-receptor checkpoint primes enterovirus D68 for respiratory cell entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "42796761",
+      "title": "Chikungunya Virus E2 N218K Enhances Heparan Sulfate-Dependent Attachment and Viral Internalization While Conferring Partial Attenuation in A129 Mice.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "How does BK polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "How does BK polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42800031",
+      "title": "Chikungunya virus uses the tetraspanins CD63, CD9, and CD151 to replicate in human synovial fibroblasts.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus D68?",
+      "cited_pmid": "42797839",
+      "title": "Detection of Respiratory Viruses in Wastewater Samples Using Commercial Multiplex PCR Assays.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162387",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
     }
   ],
   "false_negatives": [
@@ -261676,6 +262047,24 @@
       "question": "How does Venezuelan equine encephalitis virus evade or modulate the host immune response?",
       "missed_pmid": "42585262",
       "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "missed_pmid": "42800031",
+      "title": "Chikungunya virus uses the tetraspanins CD63, CD9, and CD151 to replicate in human synovial fibroblasts."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chikungunya virus?",
+      "missed_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "missed_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
