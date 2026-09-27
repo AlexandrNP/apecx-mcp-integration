@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:46:41.728259+00:00",
-  "runs": 392,
+  "updated": "2026-09-27T20:48:48.828338+00:00",
+  "runs": 393,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24304,
-  "n_false_negatives": 4808,
+  "n_false_positives": 24305,
+  "n_false_negatives": 4809,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 5
+    "false_positives": 1,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -273953,6 +273953,18 @@
         "Feline leukemia virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_31931"
       ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "36541758",
+      "title": "Watson-Crick Base-Pairing Requirements for ssDNA Recognition and Processing in Replication-Initiating HUH Endonucleases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_257468",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -302803,6 +302815,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
       "missed_pmid": "34074674",
       "title": "A History of Cancer Research: Tumor Viruses."
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "missed_pmid": "41902265",
+      "title": "Prior Infection with Torque Teno Virus Mitigates Influenza Pathology in Mice."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
