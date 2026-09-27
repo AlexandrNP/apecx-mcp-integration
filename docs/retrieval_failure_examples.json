@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:11:31.051624+00:00",
-  "runs": 404,
+  "updated": "2026-09-27T21:13:40.766152+00:00",
+  "runs": 405,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24408,
-  "n_false_negatives": 4832,
+  "n_false_positives": 24427,
+  "n_false_negatives": 4835,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 19,
     "false_negatives": 3
   },
   "false_positives": [
@@ -275076,6 +275076,220 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_282700"
       ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "40191085",
+      "title": "Evaluating the potential of anti-dsRNA antibodies as an alternative viral sensing tool in encephalitides of different species.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42228746",
+      "title": "VP1-141 is a determinant of a Vero cell-adapted Coxsackievirus A10 for vaccine development.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "42020176",
+      "title": "[Genetic characteristics analysis of the VP1 region of coxsackievirus A2 in Guangdong Province, 2008-2024].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42240384",
+      "title": "Moracin M inhibits EV71 infection primarily by blocking viral attachment to host cells.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42589228",
+      "title": "Efficacy and Mechanisms of Alkaloids Against Enterovirus A71: A Systematic Review and Meta-Analysis of Preclinical Evidence Integrated with Network Pharmacology and Molecular Docking.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41902671",
+      "title": "Epidemiological shifts in coxsackievirus A-induced hand, foot, and mouth disease in China, 2008-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42220743",
+      "title": "Onychomadesis: A Rare Manifestation of Coxsackievirus A6 Infection in an Adult Patient.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "41709303",
+      "title": "Detection rate, clinical characteristics, and molecular characterization of enterovirus and parechovirus infections in Thai infants during the first three months of life.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47516",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42391430",
+      "title": "Preventive Strategies of Hand, Foot, and Mouth Disease in Children: A Review.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_44741"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "31164575",
+      "title": "Two-Step Concentration of Complex Water Samples for the Detection of Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "28018329",
+      "title": "Propidium Monoazide Integrated with qPCR Enables the Detection and Enumeration of Infectious Enteric RNA and DNA Viruses in Clam and Fermented Sausages.",
+      "actual_organisms": [
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10515",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -304070,6 +304284,24 @@
       "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
       "missed_pmid": "41060741",
       "title": "Acute viral gastroenteritis following rotavirus vaccine implementation in Venezuela: Is rotavirus still a cause for concern?"
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "40536098",
+      "title": "Dissection of Neurotropic Theiler's Murine Encephalomyelitis Virus Induced Brain Atrophy in Single MHC Class I Mice of C57BL/6 Background."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "40191085",
+      "title": "Evaluating the potential of anti-dsRNA antibodies as an alternative viral sensing tool in encephalitides of different species."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "How does Enterovirus A71 evade or modulate the host immune response?",
+      "missed_pmid": "42247493",
+      "title": "Structural and functional mapping of protective human monoclonal antibodies against enterovirus A71."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
