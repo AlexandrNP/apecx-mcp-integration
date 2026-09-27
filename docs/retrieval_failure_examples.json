@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:02:16.193555+00:00",
-  "runs": 302,
+  "updated": "2026-09-27T17:04:44.082165+00:00",
+  "runs": 303,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23132,
-  "n_false_negatives": 4180,
+  "n_false_positives": 23139,
+  "n_false_negatives": 4188,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 4
+    "false_positives": 7,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -261225,6 +261225,81 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_138",
         "http://purl.obolibrary.org/obo/NCBITaxon_35511"
       ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41295541",
+      "title": "Current Status and Challenges of Vaccine Development for Seasonal Human Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genome organization and replication cycle of Human coronavirus OC43?",
+      "cited_pmid": "41128639",
+      "title": "Implementation of a Multiplex PCR Amplification System Combined With Next-Generation Genome Sequencing to Decipher the Circulation of Human Coronavirus 229E Lineages in Southern France.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41295541",
+      "title": "Current Status and Challenges of Vaccine Development for Seasonal Human Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "cited_pmid": "41128639",
+      "title": "Implementation of a Multiplex PCR Amplification System Combined With Next-Generation Genome Sequencing to Decipher the Circulation of Human Coronavirus 229E Lineages in Southern France.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus NL63?",
+      "cited_pmid": "42124731",
+      "title": "Mutations to the HCoV-229E spike have counterbalancing effects on serum antibody neutralization and receptor binding.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41295541",
+      "title": "Current Status and Challenges of Vaccine Development for Seasonal Human Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41347502",
+      "title": "Serological evaluation of coronavirus IgA and IgG antibodies in a repeated cross-sectional cohort of unvaccinated and vaccinated pregnant individuals over three months following SARS-CoV-2 infection.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -286307,6 +286382,54 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Oropouche virus?",
       "missed_pmid": "42447154",
       "title": "Phylogeographic dynamics of oropouche virus in the Colombian Amazon: Evolutionary insights in a climatic context."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42253925",
+      "title": "Human Coronavirus 229E Uses ORF4/4a to Antagonize the Host Restriction Factor SERINC5."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "missed_pmid": "42143332",
+      "title": "Molecular detection of endemic coronaviruses and enterovirus D68 in respiratory samples from 2016 in Panama: a retrospective study."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41347502",
+      "title": "Serological evaluation of coronavirus IgA and IgG antibodies in a repeated cross-sectional cohort of unvaccinated and vaccinated pregnant individuals over three months following SARS-CoV-2 infection."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus NL63?",
+      "missed_pmid": "41147596",
+      "title": "Coronaviruses remodel the mature human tRNAome to modulate infection."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genome organization and replication cycle of Human coronavirus 229E?",
+      "missed_pmid": "41147596",
+      "title": "Coronaviruses remodel the mature human tRNAome to modulate infection."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus 229E?",
+      "missed_pmid": "41128639",
+      "title": "Implementation of a Multiplex PCR Amplification System Combined With Next-Generation Genome Sequencing to Decipher the Circulation of Human Coronavirus 229E Lineages in Southern France."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "How does Human coronavirus 229E evade or modulate the host immune response?",
+      "missed_pmid": "42124731",
+      "title": "Mutations to the HCoV-229E spike have counterbalancing effects on serum antibody neutralization and receptor binding."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42219006",
+      "title": "Randomized field trial on the effects of on-arrival intranasal vaccination against bovine coronavirus on pneumonia and average daily gain in beef-on-dairy calves."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
