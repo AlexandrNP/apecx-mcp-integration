@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:12:51.529385+00:00",
-  "runs": 249,
+  "updated": "2026-09-27T14:14:19.825763+00:00",
+  "runs": 250,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22044,
+  "n_false_positives": 22054,
   "n_false_negatives": 3712,
   "new_this_run": {
     "false_positives": 10,
-    "false_negatives": 8
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -249303,6 +249303,101 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1891767",
         "http://purl.obolibrary.org/obo/NCBITaxon_226901",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "39481538",
+      "title": "Genomic diversity of HPV6 and HPV11 in recurrent respiratory papillomatosis: Association with malignant transformation in the lungs and clinical outcomes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_333754",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "39540396",
+      "title": "Long-Term Infection With a Particular Human Papillomavirus (HPV) Genotype, HPV Subtype, or HPV Genomic Variant Does not Significantly Influence the Clinical Course of Recurrent Respiratory Papillomatosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 11?",
+      "cited_pmid": "39886739",
+      "title": "Clinicopathologic Features and Viral Status of Low-risk HPV6 and HPV11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "How does Human papillomavirus 11 evade or modulate the host immune response?",
+      "cited_pmid": "39258910",
+      "title": "Characterization of HPV6/11-reactive T-cell subsets in papillomas of patients with juvenile-onset recurrent respiratory papillomatosis and identification of HPV11 E7-specific candidate TCR clonotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "How does Human papillomavirus type 58 evade or modulate the host immune response?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "How does Human papillomavirus type 59 evade or modulate the host immune response?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 68?",
+      "cited_pmid": "39886739",
+      "title": "Clinicopathologic Features and Viral Status of Low-risk HPV6 and HPV11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "How does Human papillomavirus type 68 evade or modulate the host immune response?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
     }
   ],
