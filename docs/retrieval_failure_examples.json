@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:10:29.872346+00:00",
-  "runs": 354,
+  "updated": "2026-09-27T19:12:09.988119+00:00",
+  "runs": 355,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23741,
-  "n_false_negatives": 4591,
+  "n_false_positives": 23756,
+  "n_false_negatives": 4594,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 6
+    "false_positives": 15,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -267830,6 +267830,167 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
       ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "6275577",
+      "title": "Zika virus, a cause of fever in Central Java, Indonesia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "cited_pmid": "42202655",
+      "title": "Systematic transcriptomic analysis enables targeted drug repurposing for neurotropic flavivirus infections.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the epidemiology and outbreak history of Zika virus?",
+      "cited_pmid": "407675",
+      "title": "A yellow fever epizootic in Zika forest, Uganda, during 1972: Part 1: Virus isolation and sentinel monkeys.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "cited_pmid": "42405369",
+      "title": "Fulminant Powassan Virus Encephalitis Presenting as Acute Ischemic Stroke: A Case Report.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "cited_pmid": "42397903",
+      "title": "Structures of asymmetric particles of tick-borne encephalitis virus provide insight into flavivirus assembly and maturation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_407836",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42515600",
+      "title": "Cellular Responses to Flavivirus Infections: Stress Signaling at the Crossroads of Host Defense and Virus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42523276",
+      "title": "Powassan virus infects mouse testes and reveals a protective role for phagocytic cells.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42405369",
+      "title": "Fulminant Powassan Virus Encephalitis Presenting as Acute Ischemic Stroke: A Case Report.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "3031959",
+      "title": "Antibody-mediated enhancement of Wesselsbron virus in P388D1 cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_164416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64314"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "3028713",
+      "title": "Cross-infection enhancement among African flaviviruses by immune mouse ascitic fluids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64314"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "5308700",
+      "title": "Arbovirus infections in Ceylon.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "6206738",
+      "title": "Yellow fever monoclonal antibodies: type-specific and cross-reactive determinants identified by immunofluorescence.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733347"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42446551",
+      "title": "SAR exploration for 4-aminotetrahydroquinazolines with adamantyl moiety against orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "cited_pmid": "42409079",
+      "title": "Landscape and ecological correlates of tick-associated viruses in Inner Mongolia, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2269360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "cited_pmid": "42529624",
+      "title": "Phylodynamic analyses reveal persistence and extensive intermixing of Usutu virus in the Netherlands.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -295378,6 +295539,24 @@
       "question": "What antiviral drugs or treatments are effective against Seoul orthohantavirus?",
       "missed_pmid": "40266127",
       "title": "A Multi-Valent Hantavirus Vaccine Based on Recombinant Modified Vaccinia Ankara Reduces Viral Load in a Mouse Infection Model."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus pathogenesis and transmission?",
+      "missed_pmid": "6304948",
+      "title": "Yellow fever and Zika virus epizootics and enzootics in Uganda."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "missed_pmid": "42405369",
+      "title": "Fulminant Powassan Virus Encephalitis Presenting as Acute Ischemic Stroke: A Case Report."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "missed_pmid": "42410041",
+      "title": "Restraint of Powassan virus replication by TRIM5\u03b1 facilitates viral avoidance of antiviral immunity."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
