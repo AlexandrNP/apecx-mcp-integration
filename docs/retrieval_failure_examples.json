@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:34:42.861506+00:00",
-  "runs": 253,
+  "updated": "2026-09-27T14:36:19.116248+00:00",
+  "runs": 254,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22092,
-  "n_false_negatives": 3745,
+  "n_false_positives": 22103,
+  "n_false_negatives": 3752,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 14
+    "false_positives": 11,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -249841,6 +249841,127 @@
       "actual_organisms": [
         "unknown"
       ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sapovirus?",
+      "cited_pmid": "31375572",
+      "title": "Rotavirus Species B Encodes a Functional Fusion-Associated Small Transmembrane Protein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1906931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sapovirus?",
+      "cited_pmid": "37302675",
+      "title": "Evolutionary analysis of all eleven genes of species C rotaviruses circulating in humans and domestic animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C pathogenesis and transmission?",
+      "cited_pmid": "37302675",
+      "title": "Evolutionary analysis of all eleven genes of species C rotaviruses circulating in humans and domestic animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is the genome organization and replication cycle of Rotavirus C?",
+      "cited_pmid": "31915278",
+      "title": "Conserved Rotavirus NSP5 and VP2 Domains Interact and Affect Viroplasm.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What are the clinical symptoms and disease presentation of Rotavirus C?",
+      "cited_pmid": "31276221",
+      "title": "Investigation of a large waterborne acute gastroenteritis outbreak caused by group B rotavirus in Maharashtra state, India.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus C?",
+      "cited_pmid": "31375572",
+      "title": "Rotavirus Species B Encodes a Functional Fusion-Associated Small Transmembrane Protein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1906931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is the genome organization and replication cycle of Rotavirus B?",
+      "cited_pmid": "31915278",
+      "title": "Conserved Rotavirus NSP5 and VP2 Domains Interact and Affect Viroplasm.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is the epidemiology and outbreak history of Rotavirus B?",
+      "cited_pmid": "37302675",
+      "title": "Evolutionary analysis of all eleven genes of species C rotaviruses circulating in humans and domestic animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus B?",
+      "cited_pmid": "31375572",
+      "title": "Rotavirus Species B Encodes a Functional Fusion-Associated Small Transmembrane Protein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1906931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus B?",
+      "cited_pmid": "37848925",
+      "title": "Differential transcriptome response following infection of porcine ileal enteroids with species A and C rotaviruses.",
+      "actual_organisms": [
+        "Rotavirus C"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42072002",
+      "title": "Evaluating Neutralizing Antibody Titers by Recombinant Feline Calicivirus with Heterologous Capsid Protein VP1.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
     }
   ],
   "false_negatives": [
@@ -272313,6 +272434,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Feline coronavirus?",
       "missed_pmid": "42349632",
       "title": "Feline bocaparvovirus in domestic cats with gastrointestinal disease."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "missed_pmid": "31805938",
+      "title": "High levels of unreported intraspecific diversity among RNA viruses in faeces of neonatal piglets with diarrhoea."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "missed_pmid": "37513781",
+      "title": "Molecular Characterization of Rotavirus C from Rescued Sloth Bears, India: Evidence of Zooanthroponotic Transmission."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus C?",
+      "missed_pmid": "37848925",
+      "title": "Differential transcriptome response following infection of porcine ileal enteroids with species A and C rotaviruses."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31276221",
+      "title": "Investigation of a large waterborne acute gastroenteritis outbreak caused by group B rotavirus in Maharashtra state, India."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33101242",
+      "title": "Epidemiology and Genetic Characterization of Classical Human Astrovirus Infection in Shanghai, 2015-2016."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus pathogenesis and transmission?",
+      "missed_pmid": "41870802",
+      "title": "Designing a novel and effective multi-epitope subunit vaccine against human astrovirus using reverse vaccinology approach."
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human astrovirus?",
+      "missed_pmid": "41961185",
+      "title": "Prevalence of astrovirus-associated gastroenteritis among hospitalized pediatric patients in Asia: A systematic review and meta-analysis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
