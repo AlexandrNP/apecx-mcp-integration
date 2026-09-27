@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:21:55.063322+00:00",
-  "runs": 409,
+  "updated": "2026-09-27T21:23:55.295138+00:00",
+  "runs": 410,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24480,
-  "n_false_negatives": 4836,
+  "n_false_positives": 24490,
+  "n_false_negatives": 4838,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 0
+    "false_positives": 10,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -275914,6 +275914,116 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_39054"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42247493",
+      "title": "Structural and functional mapping of protective human monoclonal antibodies against enterovirus A71.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42228746",
+      "title": "VP1-141 is a determinant of a Vero cell-adapted Coxsackievirus A10 for vaccine development.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "39767680",
+      "title": "Overview of the Trending Enteric Viruses and Their Pathogenesis in Intestinal Epithelial Cell Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "42200672",
+      "title": "An IRES-like cis-acting element located within the EV-A71 coding region drives translation independent of the 5'-IRES and modulates viral fitness through regulated binding of viral RNA to 3D polymerase.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "39790073",
+      "title": "Neonatal acute liver failure cases with echovirus 11 infections, Japan, August to November 2024.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "40064995",
+      "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "cited_pmid": "39767680",
+      "title": "Overview of the Trending Enteric Viruses and Their Pathogenesis in Intestinal Epithelial Cell Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "cited_pmid": "25574400",
+      "title": "Type I diabetes mellitus: genetic factors and presumptive enteroviral etiology or protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_463676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
     }
   ],
   "false_negatives": [
@@ -304932,6 +305042,18 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Encephalomyocarditis virus?",
       "missed_pmid": "40928249",
       "title": "The leader proteins of Theiler's virus and Boone cardiovirus use a combination of short linear motifs (SLiMs) to target RSK kinases to the nuclear pore complex."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 11?",
+      "missed_pmid": "40129758",
+      "title": "Hemophagocytic lymphohistiocytosis in a neonate with enterovirus infection: Case report and literature review."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus A71?",
+      "missed_pmid": "40466758",
+      "title": "Voxtalisib inhibits enterovirus 71 replication by downregulating host RAN and restoring IFN-STAT signaling."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
