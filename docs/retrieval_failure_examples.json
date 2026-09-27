@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:33:59.354262+00:00",
-  "runs": 414,
+  "updated": "2026-09-27T21:35:51.131832+00:00",
+  "runs": 415,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24549,
+  "n_false_positives": 24551,
   "n_false_negatives": 4842,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 1
+    "false_positives": 2,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -276690,6 +276690,32 @@
       "actual_organisms": [
         "Human parechovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1711684"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "40318791",
+      "title": "Peptides designed based on 3C substrates exhibit antiviral efficacy in vivo.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "40064995",
+      "title": "Unraveling the molecular basis of membrane-associated release of coxsackievirus B3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
       ]
     }
   ],
