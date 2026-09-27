@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:42:49.232664+00:00",
-  "runs": 390,
+  "updated": "2026-09-27T20:44:27.871606+00:00",
+  "runs": 391,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24295,
-  "n_false_negatives": 4802,
+  "n_false_positives": 24300,
+  "n_false_negatives": 4803,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 10
+    "false_positives": 5,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -273855,6 +273855,66 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10271"
       ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Thottapalayam orthohantavirus?",
+      "cited_pmid": "21068243",
+      "title": "Structural studies of Hantaan virus.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Thottapalayam orthohantavirus?",
+      "cited_pmid": "19956987",
+      "title": "Tula hantavirus NSs protein accumulates in the perinuclear area in infected and transfected cells.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "21068243",
+      "title": "Structural studies of Hantaan virus.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Laguna Negra orthohantavirus?",
+      "cited_pmid": "42462281",
+      "title": "Ribavirin post-exposure prophylaxis for Andes virus exposure: a viewpoint.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Laguna Negra orthohantavirus?",
+      "cited_pmid": "19956987",
+      "title": "Tula hantavirus NSs protein accumulates in the perinuclear area in infected and transfected cells.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -302669,6 +302729,12 @@
       "question": "What is the epidemiology and outbreak history of Simian foamy virus?",
       "missed_pmid": "32268512",
       "title": "Genome Analysis and Replication Studies of the African Green Monkey Simian Foamy Virus Serotype 3 Strain FV2014."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
+      "missed_pmid": "42499279",
+      "title": "Hantavirus: A Comprehensive Narrative Review of Virology, Epidemiology, Pathogenesis, Clinical Manifestations, Diagnostics, and Emerging Therapeutic Strategies."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
