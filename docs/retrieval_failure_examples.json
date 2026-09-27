@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:35:11.909041+00:00",
-  "runs": 337,
+  "updated": "2026-09-27T18:37:17.753274+00:00",
+  "runs": 338,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23561,
-  "n_false_negatives": 4434,
+  "n_false_positives": 23574,
+  "n_false_negatives": 4443,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 11
+    "false_positives": 13,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -265921,6 +265921,144 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
         "http://purl.obolibrary.org/obo/NCBITaxon_64320"
       ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "cited_pmid": "42060538",
+      "title": "Evaluation of candidate reference materials for the harmonization of Lassa fever serology.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "38543706",
+      "title": "Novel Oliveros-like Clade C Mammarenaviruses from Rodents in Argentina, 1990-2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lassa mammarenavirus?",
+      "cited_pmid": "38650890",
+      "title": "Entry inhibitors as arenavirus antivirals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lassa mammarenavirus?",
+      "cited_pmid": "39339839",
+      "title": "Cellular N-Myristoyl Transferases Are Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "How does Lassa mammarenavirus evade or modulate the host immune response?",
+      "cited_pmid": "42071009",
+      "title": "Searching for immune correlates in Lassa vaccine development - workshop report.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Junin mammarenavirus?",
+      "cited_pmid": "38543706",
+      "title": "Novel Oliveros-like Clade C Mammarenaviruses from Rodents in Argentina, 1990-2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Junin mammarenavirus?",
+      "cited_pmid": "38650890",
+      "title": "Entry inhibitors as arenavirus antivirals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "cited_pmid": "38543706",
+      "title": "Novel Oliveros-like Clade C Mammarenaviruses from Rodents in Argentina, 1990-2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Machupo mammarenavirus?",
+      "cited_pmid": "38650890",
+      "title": "Entry inhibitors as arenavirus antivirals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Machupo mammarenavirus?",
+      "cited_pmid": "39666415",
+      "title": "[Acute undifferentiated febrile illness among outpatients: differential diagnosis between dengue, zika, Argentine hemorrhagic fever and COVID-19].",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Machupo mammarenavirus?",
+      "cited_pmid": "39339839",
+      "title": "Cellular N-Myristoyl Transferases Are Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "39666415",
+      "title": "[Acute undifferentiated febrile illness among outpatients: differential diagnosis between dengue, zika, Argentine hemorrhagic fever and COVID-19].",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "38543706",
+      "title": "Novel Oliveros-like Clade C Mammarenaviruses from Rodents in Argentina, 1990-2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -292527,6 +292665,60 @@
       "question": "What are the clinical symptoms and disease presentation of Murray Valley encephalitis virus?",
       "missed_pmid": "29891797",
       "title": "The First Isolation and Whole Genome Sequencing of Murray Valley Encephalitis Virus from Cerebrospinal Fluid of a Patient with Encephalitis."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "missed_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "missed_pmid": "39264155",
+      "title": "Characterization of bi-segmented and tri-segmented recombinant Pichinde virus particles."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lassa mammarenavirus?",
+      "missed_pmid": "42116668",
+      "title": "Genomic Surveillance of Lassa Virus through In-Country Sequencing, Guinea."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lassa mammarenavirus?",
+      "missed_pmid": "39688895",
+      "title": "U-73122, a phospholipase C inhibitor, impairs lymphocytic choriomeningitis virus virion infectivity."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lassa mammarenavirus?",
+      "missed_pmid": "42106453",
+      "title": "Non-Mastomys rodents harbour ancient Lassa virus lineages within Benin and Nigeria's Guinea savanna belt."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38932403",
+      "title": "Glycoprotein-Specific Polyclonal Antibodies Targeting Machupo Virus Protect Guinea Pigs against Lethal Infection."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "39688895",
+      "title": "U-73122, a phospholipase C inhibitor, impairs lymphocytic choriomeningitis virus virion infectivity."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "39339839",
+      "title": "Cellular N-Myristoyl Transferases Are Required for Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "41863505",
+      "title": "Lymphocytic Choriomeningitis Virus Seroprevalence among Urban Pregnant Women and Newborns, Philadelphia, Pennsylvania, USA, 2021."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
