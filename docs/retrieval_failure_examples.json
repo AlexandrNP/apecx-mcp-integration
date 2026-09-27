@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:20:50.459259+00:00",
-  "runs": 379,
+  "updated": "2026-09-27T20:22:45.288561+00:00",
+  "runs": 380,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24180,
-  "n_false_negatives": 4741,
+  "n_false_positives": 24191,
+  "n_false_negatives": 4748,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -272573,6 +272573,136 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What diagnostic assays or laboratory tests detect Cache Valley virus?",
+      "cited_pmid": "41547537",
+      "title": "Development and preliminary validation of a rapid on-site detection method for Schmallenberg virus using RT-RAA-LFD.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What is known about Bwamba orthobunyavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies.",
+      "actual_organisms": [
+        "Akabane virus",
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bwamba orthobunyavirus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What is the genome organization and replication cycle of Bwamba orthobunyavirus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What antiviral drugs or treatments are effective against Bwamba orthobunyavirus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What are the clinical symptoms and disease presentation of Bwamba orthobunyavirus?",
+      "cited_pmid": "39503743",
+      "title": "Preliminary evidence that Bunyamwera virus causes severe disease characterized by systemic vascular and multiorgan necrosis in an immunocompromised mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bwamba orthobunyavirus?",
+      "cited_pmid": "40872652",
+      "title": "Research Progress on the Gc Proteins of Akabane Virus.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "How does Bwamba orthobunyavirus evade or modulate the host immune response?",
+      "cited_pmid": "39772143",
+      "title": "Innate Immune Response Against Batai Virus, Bunyamwera Virus, and Their Reassortants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -301021,6 +301151,48 @@
       "question": "What is known about Wesselsbron virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "10099030",
       "title": "Preliminary studies on the use of solid-phase immunosorbent techniques for the rapid detection of Wesselsbron virus (WSLV) IgM by haemagglutination-inhibition."
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genome organization and replication cycle of Cache Valley virus?",
+      "missed_pmid": "38926834",
+      "title": "Ecology and geography of Cache Valley virus assessed using ecological niche modeling."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "missed_pmid": "39897479",
+      "title": "Akabane virus isolated from biting midges and its infection in local domestic animal, Yunnan, China: a field and laboratory investigation."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "missed_pmid": "40391141",
+      "title": "Investigating serological evidence of Schmallenberg virus in cattle in eastern Algeria."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "missed_pmid": "40338083",
+      "title": "Schmallenberg virus non-structural proteins NSs and NSm are not essential for experimental infection of Culicoides sonorensis biting midges."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "missed_pmid": "41012735",
+      "title": "Construction and Characterization of a Vesicular Stomatitis Virus Chimera Expressing Schmallenberg Virus Glycoproteins."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "missed_pmid": "40727706",
+      "title": "Schmallenberg virus epidemiology and regional control strategies: diagnostics, vaccines, and vector management."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "missed_pmid": "40718474",
+      "title": "Screening and Identification of Multiple Peptides Homologous to the Fusion Glycoprotein Gc of Schmallenberg Virus Able to Inhibit Viral Infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
