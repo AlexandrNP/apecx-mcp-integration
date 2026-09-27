@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:44:27.871606+00:00",
-  "runs": 391,
+  "updated": "2026-09-27T20:46:41.728259+00:00",
+  "runs": 392,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24300,
-  "n_false_negatives": 4803,
+  "n_false_positives": 24304,
+  "n_false_negatives": 4808,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 1
+    "false_positives": 4,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -273915,6 +273915,44 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus pathogenesis and transmission?",
+      "cited_pmid": "41768374",
+      "title": "Chronic Atypical Myelomonocytic Leukemia of Eosinophilic Lineage in a Cat With Feline Leukemia Virus: A First Case Report.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline leukemia virus?",
+      "cited_pmid": "41497461",
+      "title": "The use of selected electrophoretic techniques to assess the health of domestic cats (Felis catus).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Feline leukemia virus?",
+      "cited_pmid": "41654122",
+      "title": "Engineered soluble truncated envelope proteins block bovine leukemia virus infection.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Gibbon ape leukemia virus?",
+      "cited_pmid": "41465225",
+      "title": "Innovative Colorimetric Neutral Red-Based Loop-Mediated Isothermal Amplification (NR-LAMP) Assay: Transforming Rapid and Affordable Feline Leukemia Virus Detection.",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
     }
   ],
   "false_negatives": [
@@ -302735,6 +302773,36 @@
       "question": "How does Andes orthohantavirus evade or modulate the host immune response?",
       "missed_pmid": "42499279",
       "title": "Hantavirus: A Comprehensive Narrative Review of Virology, Epidemiology, Pathogenesis, Clinical Manifestations, Diagnostics, and Emerging Therapeutic Strategies."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline leukemia virus?",
+      "missed_pmid": "41505408",
+      "title": "Prevalence of feline leukemia virus infection and associated diseases in a Portuguese domestic cat population: A 4.5-year cross-sectional study."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Rous sarcoma virus?",
+      "missed_pmid": "32301629",
+      "title": "Neuropathogenicity of newly isolated avian leukosis viruses from chickens with osteopetrosis and mesenchymal neoplasms."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What antiviral drugs or treatments are effective against Rous sarcoma virus?",
+      "missed_pmid": "32765869",
+      "title": "Historical retrospective of the SRC oncogene and new perspectives (Review)."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "How does Rous sarcoma virus evade or modulate the host immune response?",
+      "missed_pmid": "32455905",
+      "title": "Rous Sarcoma Virus Genomic RNA Dimerization Capability In Vitro Is Not a Prerequisite for Viral Infectivity."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "missed_pmid": "34074674",
+      "title": "A History of Cancer Research: Tumor Viruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
