@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T12:16:04.771497+00:00",
-  "runs": 227,
+  "updated": "2026-09-27T13:14:36.109210+00:00",
+  "runs": 228,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21682,
-  "n_false_negatives": 3595,
+  "n_false_positives": 21703,
+  "n_false_negatives": 3597,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 0
+    "false_positives": 21,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -245290,6 +245290,227 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_28344",
         "http://purl.obolibrary.org/obo/NCBITaxon_46221"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "How does Human papillomavirus 16 evade or modulate the host immune response?",
+      "cited_pmid": "35858339",
+      "title": "Apoptotic caspases suppress an MDA5-driven IFN response during productive replication of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 18?",
+      "cited_pmid": "37064671",
+      "title": "High-risk HPV prevalence and genotype distribution among women in Liaocheng, Shandong Province, China from 2016 to 2022.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 18?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "42589622",
+      "title": "Experimental Analysis of HPV16 L1/L2 Chimeric VLP Internalization by Human Peripheral Blood Leukocytes.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "35194094",
+      "title": "An enhanced triple fluorescence flow-cytometry-based assay shows differential activation of the Notch signaling pathway by human papillomavirus E6 proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "35858339",
+      "title": "Apoptotic caspases suppress an MDA5-driven IFN response during productive replication of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "37468974",
+      "title": "Cervical carcinogenesis risk association of HPV33 E6 and E7 genetic variations in Taizhou, Southeast China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 31?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 31?",
+      "cited_pmid": "36854989",
+      "title": "Prevalence of higher-grade dysplasia in persistently high-risk human papillomavirus positive, cytology negative women after introduction of the new cervical cancer screening in Germany.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "How does Human papillomavirus type 31 evade or modulate the host immune response?",
+      "cited_pmid": "35858339",
+      "title": "Apoptotic caspases suppress an MDA5-driven IFN response during productive replication of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 33?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 33?",
+      "cited_pmid": "42589622",
+      "title": "Experimental Analysis of HPV16 L1/L2 Chimeric VLP Internalization by Human Peripheral Blood Leukocytes.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "How does Human papillomavirus type 33 evade or modulate the host immune response?",
+      "cited_pmid": "35858339",
+      "title": "Apoptotic caspases suppress an MDA5-driven IFN response during productive replication of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 45?",
+      "cited_pmid": "37064671",
+      "title": "High-risk HPV prevalence and genotype distribution among women in Liaocheng, Shandong Province, China from 2016 to 2022.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 45?",
+      "cited_pmid": "42589622",
+      "title": "Experimental Analysis of HPV16 L1/L2 Chimeric VLP Internalization by Human Peripheral Blood Leukocytes.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "How does Human papillomavirus type 45 evade or modulate the host immune response?",
+      "cited_pmid": "35858339",
+      "title": "Apoptotic caspases suppress an MDA5-driven IFN response during productive replication of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "How does Human papillomavirus type 45 evade or modulate the host immune response?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -266862,6 +267083,18 @@
       "question": "What are the clinical symptoms and disease presentation of Andes orthohantavirus?",
       "missed_pmid": "29077702",
       "title": "A lethal disease model for New World hantaviruses using immunosuppressed Syrian hamsters."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641."
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is known about Human papillomavirus type 31 pathogenesis and transmission?",
+      "missed_pmid": "34696378",
+      "title": "Phylogenomic Analysis of Human Papillomavirus Type 31 and Cervical Carcinogenesis: A Study of 2093 Viral Genomes."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
