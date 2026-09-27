@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:33:07.265370+00:00",
-  "runs": 336,
+  "updated": "2026-09-27T18:35:11.909041+00:00",
+  "runs": 337,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23552,
-  "n_false_negatives": 4423,
+  "n_false_positives": 23561,
+  "n_false_negatives": 4434,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 7
+    "false_positives": 9,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -265818,6 +265818,109 @@
       "actual_organisms": [
         "Venezuelan equine encephalitis virus"
       ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "42489647",
+      "title": "Trifluoperazine exhibits broad-spectrum antiviral activity against arboviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42347199",
+      "title": "Underrecognized Tick-Borne Encephalitis in Serbia: Evidence from Patients with Suspected West Nile Virus Neuroinvasive Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tick-borne encephalitis virus?",
+      "cited_pmid": "42380441",
+      "title": "In silico design and evaluation of a multi-epitope vaccine targeting eyach virus for the prevention of tick-borne encephalitis in humans.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_62352"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42473682",
+      "title": "Associations of viral infections and antiviral vaccinations with anti-NMDAR and other forms of autoimmune encephalitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "cited_pmid": "42520892",
+      "title": "Cerebrospinal fluid IgM cross-reactivity among arboviruses in Japanese encephalitis patients from southern India.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murray Valley encephalitis virus?",
+      "cited_pmid": "42355501",
+      "title": "The Forgotten Gate: Choroid Plexus and Blood-CSF Barrier in Arboviral Encephalitis.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murray Valley encephalitis virus?",
+      "cited_pmid": "42415087",
+      "title": "Cellular receptors and host factors mediating orthoflavivirus entry.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
     }
   ],
   "false_negatives": [
@@ -292358,6 +292461,72 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
       "missed_pmid": "41534429",
       "title": "Development of a multi-epitope vaccine candidate against Sindbis virus through integrated immunoinformatics approaches and molecular dynamics simulations."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "missed_pmid": "42369460",
+      "title": "Multiple, but not isolated, yellow fever virus-associated orthoflavivirus immune histories drive antibody-dependent enhancement of Zika and dengue viruses."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "42411915",
+      "title": "A Systematic Review on Yellow Fever Vaccine and Adverse Events."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the epidemiology and outbreak history of Yellow fever virus?",
+      "missed_pmid": "42480577",
+      "title": "Drivers of sylvatic yellow fever transmission in southeast Brazil: a joint epidemiological and phylodynamic inference."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42520892",
+      "title": "Cerebrospinal fluid IgM cross-reactivity among arboviruses in Japanese encephalitis patients from southern India."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42345572",
+      "title": "Tissue tropism and mRNA expression profiles of selected innate immunity-related genes following experimental tick-borne encephalitis virus and louping ill virus infection of sheep."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "missed_pmid": "42328165",
+      "title": "Development and evaluation of single-plex TaqMan real-time quantitative PCR assays for the detection of six tick-borne pathogenic viruses in northeastern China."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Tick-borne encephalitis virus?",
+      "missed_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tick-borne encephalitis virus?",
+      "missed_pmid": "42358254",
+      "title": "Research progress on emerging and important Tick-Borne pathogens."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34835166",
+      "title": "An Advax-Adjuvanted Inactivated Cell-Culture Derived Japanese Encephalitis Vaccine Induces Broadly Neutralising Anti-Flavivirus Antibodies, Robust Cellular Immunity and Provides Single Dose Protection."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "30274445",
+      "title": "Murray Valley Encephalitis Virus: An Ongoing Cause of Encephalitis in Australia's North."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murray Valley encephalitis virus?",
+      "missed_pmid": "29891797",
+      "title": "The First Isolation and Whole Genome Sequencing of Murray Valley Encephalitis Virus from Cerebrospinal Fluid of a Patient with Encephalitis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
