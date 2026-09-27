@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:17:07.973487+00:00",
-  "runs": 407,
+  "updated": "2026-09-27T21:20:10.066077+00:00",
+  "runs": 408,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24467,
+  "n_false_positives": 24477,
   "n_false_negatives": 4836,
   "new_this_run": {
-    "false_positives": 12,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -275759,6 +275759,127 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_42769",
         "http://purl.obolibrary.org/obo/NCBITaxon_86107",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "41058151",
+      "title": "Simultaneous detection of canine astrovirus and canine kobuvirus by duplex qPCR: validation and evidence of extraintestinal viral RNA in naturally infected dogs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10788",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157338",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239569",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1836608",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3115137",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430625",
+        "http://purl.obolibrary.org/obo/NCBITaxon_72149"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "40966750",
+      "title": "Neonatal Enterovirus and Parechovirus Infections: National Enterovirus Surveillance System, United States, 2004-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "41156586",
+      "title": "Surveillance of Acute Flaccid Paralysis (AFP) in Greece: 2008-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "40881810",
+      "title": "A potential surrogate for poliovirus in testing the efficacy of hand antiseptics according to the Global Poliovirus Containment Action Plan.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40881810",
+      "title": "A potential surrogate for poliovirus in testing the efficacy of hand antiseptics according to the Global Poliovirus Containment Action Plan.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "40608831",
+      "title": "Identification of picornavirus proteins that inhibit de novo nucleotide synthesis during infection.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "40631914",
+      "title": "ICAM-1-mediated Src signaling pathway plays a pivotal role in encephalomyocarditis virus entry.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "40789037",
+      "title": "ITAF45 is a pervasive trans-acting factor for picornavirus Type II IRES elements.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47000",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "40828666",
+      "title": "Screening and Validation of Negative Regulators of the Type I Interferon Pathway.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the epidemiology and outbreak history of Encephalomyocarditis virus?",
+      "cited_pmid": "41987026",
+      "title": "Cardiomyopathy Caused by Coxsackievirus Strain A9 in Previously Healthy Child, Northeastern France, 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067"
       ]
     }
   ],
