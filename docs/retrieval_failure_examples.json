@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:15:06.114675+00:00",
-  "runs": 463,
+  "updated": "2026-09-27T23:17:12.796340+00:00",
+  "runs": 464,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24926,
-  "n_false_negatives": 4877,
+  "n_false_positives": 24927,
+  "n_false_negatives": 4880,
   "new_this_run": {
-    "false_positives": 8,
+    "false_positives": 1,
     "false_negatives": 3
   },
   "false_positives": [
@@ -280999,6 +280999,17 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_33758"
       ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "cited_pmid": "42200672",
+      "title": "An IRES-like cis-acting element located within the EV-A71 coding region drives translation independent of the 5'-IRES and modulates viral fitness through regulated binding of viral RNA to 3D polymerase.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -310263,6 +310274,24 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
       "missed_pmid": "38189249",
       "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is known about Enterovirus D68 pathogenesis and transmission?",
+      "missed_pmid": "42172979",
+      "title": "Towards the development of a mucosal vectored vaccine against enterovirus D68."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "missed_pmid": "41485562",
+      "title": "An orally available peptidomimetic with broad-spectrum antiviral activity targeting the enterovirus 2C helicase."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
