@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:22:12.436069+00:00",
-  "runs": 466,
+  "updated": "2026-09-27T23:23:51.523670+00:00",
+  "runs": 467,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24931,
-  "n_false_negatives": 4882,
+  "n_false_positives": 24932,
+  "n_false_negatives": 4886,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 2
+    "false_positives": 1,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -281052,6 +281052,16 @@
       "actual_organisms": [
         "BK polyomavirus"
       ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus B?",
+      "cited_pmid": "25194889",
+      "title": "Rapid detection and high occurrence of porcine rotavirus A, B, and C by RT-qPCR in diagnostic samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
     }
   ],
   "false_negatives": [
@@ -310346,6 +310356,30 @@
       "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
       "missed_pmid": "42527809",
       "title": "Case report: rare progressive cavitary lesion in progressive multifocal leukoencephalopathy."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus C?",
+      "missed_pmid": "23237956",
+      "title": "Analysis of rotavirus species diversity and evolution including the newly determined full-length genome sequences of rotavirus F and G."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rotavirus C?",
+      "missed_pmid": "36016447",
+      "title": "Rotavirus C Replication in Porcine Intestinal Enteroids Reveals Roles for Cellular Cholesterol and Sialic Acids."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B pathogenesis and transmission?",
+      "missed_pmid": "24970362",
+      "title": "VP6 genetic diversity, reassortment, intragenic recombination and classification of rotavirus B in American and Japanese pigs."
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus B?",
+      "missed_pmid": "27408331",
+      "title": "Reinfection of adult cattle with rotavirus B during repeated outbreaks of epidemic diarrhea."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
