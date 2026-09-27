@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:48:20.185595+00:00",
-  "runs": 282,
+  "updated": "2026-09-27T15:50:04.280365+00:00",
+  "runs": 283,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22805,
-  "n_false_negatives": 4082,
+  "n_false_positives": 22826,
+  "n_false_negatives": 4093,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 21
+    "false_positives": 21,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -257755,6 +257755,223 @@
       "actual_organisms": [
         "Drosophila C virus"
       ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What diagnostic assays or laboratory tests detect Maize streak virus?",
+      "cited_pmid": "34308035",
+      "title": "Recombinase Polymerase Amplification Assay for Simultaneous Detection of Maize Chlorotic Mottle Virus and Sugarcane Mosaic Virus in Maize.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12224"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What diagnostic assays or laboratory tests detect Maize streak virus?",
+      "cited_pmid": "33969158",
+      "title": "Development of an RT-PCR assay to detect genetically divergent wheat streak mosaic virus isolates for plant quarantine inspections in South Korea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_156207",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is the epidemiology and outbreak history of Maize streak virus?",
+      "cited_pmid": "33291635",
+      "title": "Disease Pandemics and Major Epidemics Arising from New Encounters between Indigenous Viruses and Introduced Crops.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is the epidemiology and outbreak history of Maize streak virus?",
+      "cited_pmid": "33504044",
+      "title": "Global Plant Virus Disease Pandemics and Epidemics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36048",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "32731617",
+      "title": "Millet Could Be both a Weed and Serve as a Virus Reservoir in Crop Fields.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is known about Barley yellow dwarf virus pathogenesis and transmission?",
+      "cited_pmid": "40455281",
+      "title": "The complete nucleotide sequence and genome organization of a novel wheat-infecting luteovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3402744"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What diagnostic assays or laboratory tests detect Barley yellow dwarf virus?",
+      "cited_pmid": "32731617",
+      "title": "Millet Could Be both a Weed and Serve as a Virus Reservoir in Crop Fields.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What diagnostic assays or laboratory tests detect Barley yellow dwarf virus?",
+      "cited_pmid": "41600784",
+      "title": "Rapid LAMP-Based Detection of Mixed Begomovirus Infections in Field-Grown Tomato Plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_223358"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the epidemiology and outbreak history of Barley yellow dwarf virus?",
+      "cited_pmid": "33504044",
+      "title": "Global Plant Virus Disease Pandemics and Epidemics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36048",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Barley yellow dwarf virus?",
+      "cited_pmid": "40062396",
+      "title": "Interaction Between Barley Yellow Dwarf Virus-GAV Movement Protein and VOZ Proteins Delays Flowering of Plant.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_224578"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What diagnostic assays or laboratory tests detect Citrus tristeza virus?",
+      "cited_pmid": "41600784",
+      "title": "Rapid LAMP-Based Detection of Mixed Begomovirus Infections in Field-Grown Tomato Plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_223358"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the epidemiology and outbreak history of Citrus tristeza virus?",
+      "cited_pmid": "33504044",
+      "title": "Global Plant Virus Disease Pandemics and Epidemics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36048",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the epidemiology and outbreak history of Citrus tristeza virus?",
+      "cited_pmid": "33291635",
+      "title": "Disease Pandemics and Major Epidemics Arising from New Encounters between Indigenous Viruses and Introduced Crops.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is known about Beet curly top virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37656262",
+      "title": "Assessment of co-infection with BNYVV and BSCTV on resistance against Rhizomania disease in transgenic sugar beet plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31721"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "41600784",
+      "title": "Rapid LAMP-Based Detection of Mixed Begomovirus Infections in Field-Grown Tomato Plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_223358"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "33184360",
+      "title": "A quick and sensitive diagnostic tool for detection of Maize streak virus.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "33969158",
+      "title": "Development of an RT-PCR assay to detect genetically divergent wheat streak mosaic virus isolates for plant quarantine inspections in South Korea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_156207",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the epidemiology and outbreak history of Beet curly top virus?",
+      "cited_pmid": "33504044",
+      "title": "Global Plant Virus Disease Pandemics and Epidemics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36048",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the epidemiology and outbreak history of Beet curly top virus?",
+      "cited_pmid": "33291635",
+      "title": "Disease Pandemics and Major Epidemics Arising from New Encounters between Indigenous Viruses and Introduced Crops.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the epidemiology and outbreak history of Beet curly top virus?",
+      "cited_pmid": "34696481",
+      "title": "Virus Diseases of Cereal and Oilseed Crops in Australia: Current Position and Future Challenges.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1166555",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_131083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31742"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Beet curly top virus?",
+      "cited_pmid": "42208597",
+      "title": "Evolutionary Changes in Tomato Yellow Leaf Curl Virus Associated with Widespread Ty-1 Use in Japan.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -282249,6 +282466,72 @@
       "question": "What is the genome organization and replication cycle of Cydia pomonella granulovirus?",
       "missed_pmid": "39458300",
       "title": "Biocontrol Potential of the New Codling Moth Granulovirus (CpGV) Strains."
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What diagnostic assays or laboratory tests detect Maize streak virus?",
+      "missed_pmid": "35874461",
+      "title": "Maize lethal necrosis viruses and other maize viruses in Rwanda."
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "missed_pmid": "34309683",
+      "title": "Maize streak virus research in Africa: an end or a crossroad."
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is known about Barley yellow dwarf virus pathogenesis and transmission?",
+      "missed_pmid": "39970339",
+      "title": "Yellow Dwarf Viruses: Aphid Transmission Efficiency and Cereal Host Range."
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "How does Barley yellow dwarf virus evade or modulate the host immune response?",
+      "missed_pmid": "40500045",
+      "title": "RNAi-mediated silencing of CYP4G15 correlates with altered transmission of barley yellow dwarf virus in Sitobion avenae (Fabricius)."
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What diagnostic assays or laboratory tests detect Citrus tristeza virus?",
+      "missed_pmid": "40143323",
+      "title": "Aphid Species in Citrus Orchards in Crete: Key Vectors of Citrus Tristeza Virus and Automated Monitoring Innovations for Alate Aphids."
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the epidemiology and outbreak history of Citrus tristeza virus?",
+      "missed_pmid": "40587189",
+      "title": "Citrus Tristeza Virus Strain Interactions Impact Stem Pitting in Grapefruit."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "missed_pmid": "39459905",
+      "title": "Immunolocalization of Beet Curly Top Virus (BCTV) and GroEL Chaperon Protein of Endosymbionts in Beet Leafhopper (Circulifer tenellus) Vector Tissue."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "missed_pmid": "38211381",
+      "title": "Unusual outbreaks of curly top disease in processing tomato fields in northern California in 2021 and 2022 were caused by a rare strain of beet curly top virus and facilitated by extreme weather events."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "missed_pmid": "39311862",
+      "title": "Insights into the molecular basis of beet curly top resistance in sugar beet through a transcriptomic approach at the early stage of symptom development."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What antiviral drugs or treatments are effective against Beet curly top virus?",
+      "missed_pmid": "39716086",
+      "title": "Transcriptomic profiling reveals distinct responses to beet curly top virus (BCTV) infection in resistant and susceptible sugar beet genotypes."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the epidemiology and outbreak history of Beet curly top virus?",
+      "missed_pmid": "37521933",
+      "title": "A robust SNP-haplotype assay for Bct gene region conferring resistance to beet curly top virus in common bean (Phaseolus vulgaris L.)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
