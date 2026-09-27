@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:19:00.945798+00:00",
-  "runs": 437,
+  "updated": "2026-09-27T22:20:34.388988+00:00",
+  "runs": 438,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24747,
+  "n_false_positives": 24765,
   "n_false_negatives": 4853,
   "new_this_run": {
-    "false_positives": 11,
+    "false_positives": 18,
     "false_negatives": 0
   },
   "false_positives": [
@@ -278993,6 +278993,202 @@
       "actual_organisms": [
         "Coxsackievirus A6",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42240384",
+      "title": "Moracin M inhibits EV71 infection primarily by blocking viral attachment to host cells.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "41573759",
+      "title": "School outbreak of coxsackievirus A16 in Antipolo City, Philippines, October 2022.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "41586838",
+      "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6].",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "41927810",
+      "title": "Enterovirus A71 3AB protein facilitates immune evasion by blocking cGAS recognition of mtDNA.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "41754535",
+      "title": "SHFL Post-Transcriptionally Restricts Coxsackievirus A16 In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "41754535",
+      "title": "SHFL Post-Transcriptionally Restricts Coxsackievirus A16 In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41734482",
+      "title": "Impact of COVID-19 on the transmission dynamics of HFMD associated enterovirus serotypes in Japan: A modelling study of surveillance data.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41573759",
+      "title": "School outbreak of coxsackievirus A16 in Antipolo City, Philippines, October 2022.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "41586838",
+      "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6].",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "41927810",
+      "title": "Enterovirus A71 3AB protein facilitates immune evasion by blocking cGAS recognition of mtDNA.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
       ]
     }
   ],
