@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:47:07.229274+00:00",
-  "runs": 343,
+  "updated": "2026-09-27T18:49:33.503137+00:00",
+  "runs": 344,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23636,
-  "n_false_negatives": 4503,
+  "n_false_positives": 23638,
+  "n_false_negatives": 4504,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 17
+    "false_positives": 2,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -266694,6 +266694,28 @@
       "actual_organisms": [
         "Western equine encephalitis virus"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42265096",
+      "title": "Structural and functional characterisation of the Crimean-Congo haemorrhagic fever virus RNA dependent RNA polymerase.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What is the genome organization and replication cycle of Heartland virus?",
+      "cited_pmid": "42265096",
+      "title": "Structural and functional characterisation of the Crimean-Congo haemorrhagic fever virus RNA dependent RNA polymerase.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -293714,6 +293736,12 @@
       "question": "What is the genome organization and replication cycle of Sindbis virus?",
       "missed_pmid": "41081507",
       "title": "The role of chikungunya virus capsid-viral RNA interactions in programmed ribosomal frameshifting."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42347546",
+      "title": "Crimean-Congo Hemorrhagic Fever Virus in Africa: Epidemiological Trends, Transmission Ecology, Hotspot Heterogeneity, and Preparedness Challenges-A Narrative Review."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
