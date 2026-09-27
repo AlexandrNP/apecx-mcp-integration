@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T08:25:01.782663+00:00",
-  "runs": 176,
+  "updated": "2026-09-27T08:26:52.954658+00:00",
+  "runs": 177,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19613,
-  "n_false_negatives": 3550,
+  "n_false_positives": 19681,
+  "n_false_negatives": 3552,
   "new_this_run": {
-    "false_positives": 44,
-    "false_negatives": 7
+    "false_positives": 68,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -221554,6 +221554,804 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_551523",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42797870",
+      "title": "Mitigation of the Risk of Importing Akabane and Exotic Bluetongue Virus in Ruminant-Sourced Sera.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "42146327",
+      "title": "Molnupiravir Treatment Associated With Clearance of Cache Valley Virus From Cerebrospinal Fluid in an Immunocompromised Child With Meningoencephalitis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of La Crosse virus?",
+      "cited_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "How does La Crosse virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "25695188",
+      "title": "Spatiotemporal analysis of Guaroa virus diversity, evolution, and spread in South America.",
+      "actual_organisms": [
+        "Guaroa virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33258753",
+      "title": "Comparative characterization of the reassortant Orthobunyavirus Ngari with putative parental viruses, Bunyamwera and Batai: in vitro characterization and ex vivo stability.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the epidemiology and outbreak history of Bunyamwera virus?",
+      "cited_pmid": "12789111",
+      "title": "Isolations of Bwamba virus from south central Uganda and north eastern Tanzania.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169701"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "25188437",
+      "title": "Molecular characterization of human pathogenic bunyaviruses of the Nyando and Bwamba/Pongola virus groups leads to the genetic identification of Moju\u00ed dos Campos and Kaeng Khoi virus.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2848037",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35316",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is known about Cache Valley virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is known about Cache Valley virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cache Valley virus?",
+      "cited_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cache Valley virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Snowshoe hare virus?",
+      "cited_pmid": "42412878",
+      "title": "The Bunyamwera orthobunyavirus Gc glycoprotein head and stalk drives an infectious virion assembly pathway specific for the insect host.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052381",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Snowshoe hare virus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33258753",
+      "title": "Comparative characterization of the reassortant Orthobunyavirus Ngari with putative parental viruses, Bunyamwera and Batai: in vitro characterization and ex vivo stability.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "41958990",
+      "title": "Energy Flux Regulates Cell Death Induced by California Serogroup Orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "42146327",
+      "title": "Molnupiravir Treatment Associated With Clearance of Cache Valley Virus From Cerebrospinal Fluid in an Immunocompromised Child With Meningoencephalitis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Batai virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Batai virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Batai virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is known about Guaroa virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "cited_pmid": "42797870",
+      "title": "Mitigation of the Risk of Importing Akabane and Exotic Bluetongue Virus in Ruminant-Sourced Sera.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What are the clinical symptoms and disease presentation of Guaroa virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Guaroa virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Guaroa virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "36851764",
+      "title": "Whole Genome Sequencing Analysis of African Orthobunyavirus Isolates Reveals Naturally Interspecies Segments Recombinations between Bunyamwera and Ngari Viruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "How does Akabane virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Akabane virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Akabane virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Akabane virus?",
+      "cited_pmid": "25188437",
+      "title": "Molecular characterization of human pathogenic bunyaviruses of the Nyando and Bwamba/Pongola virus groups leads to the genetic identification of Moju\u00ed dos Campos and Kaeng Khoi virus.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2848037",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35316",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "42368258",
+      "title": "Mechanistic mathematical model of the in vitro infection dynamics of Bunyamwera and Batai viruses including MOI-dependent shortening of the eclipse phase.",
+      "actual_organisms": [
+        "Batai virus",
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "40439544",
+      "title": "A One Health Approach to Investigating Cache Valley Virus, Arkansas, USA, July 20231.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Schmallenberg virus?",
+      "cited_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Schmallenberg virus?",
+      "cited_pmid": "42520941",
+      "title": "Identification of specific host cell potassium ion channels that mediate escape of bunyamwera virus from late endosome compartments.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "How does Schmallenberg virus evade or modulate the host immune response?",
+      "cited_pmid": "42489446",
+      "title": "Repression of productive viral replication by KSHV LANA correlates with reduced adaptive immune activation: potential implications for KSHV immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3436869",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "How does Schmallenberg virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "How does Schmallenberg virus evade or modulate the host immune response?",
+      "cited_pmid": "5498601",
+      "title": "Enhancement of Friend leukemia virus infection in mice by Guaroa virus: quantitation and action of various oncogenic and nononcogenic viruses.",
+      "actual_organisms": [
+        "Guaroa virus"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "25188437",
+      "title": "Molecular characterization of human pathogenic bunyaviruses of the Nyando and Bwamba/Pongola virus groups leads to the genetic identification of Moju\u00ed dos Campos and Kaeng Khoi virus.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2848037",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35316",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bwamba orthobunyavirus?",
+      "cited_pmid": "6274526",
+      "title": "[Serological survey for the prevalence of certain arboviruses in the human population of the south-east area of Central African Republic (author's transl)].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What is the genome organization and replication cycle of Bwamba orthobunyavirus?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Batai virus",
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What are the clinical symptoms and disease presentation of Bwamba orthobunyavirus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus pathogenesis and transmission?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What diagnostic assays or laboratory tests detect Ngari virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What diagnostic assays or laboratory tests detect Ngari virus?",
+      "cited_pmid": "33096994",
+      "title": "Seroprevalence of Jamestown Canyon virus in the Japanese general population.",
+      "actual_organisms": [
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What antiviral drugs or treatments are effective against Ngari virus?",
+      "cited_pmid": "42146327",
+      "title": "Molnupiravir Treatment Associated With Clearance of Cache Valley Virus From Cerebrospinal Fluid in an Immunocompromised Child With Meningoencephalitis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What antiviral drugs or treatments are effective against Ngari virus?",
+      "cited_pmid": "41958990",
+      "title": "Energy Flux Regulates Cell Death Induced by California Serogroup Orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ngari virus?",
+      "cited_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ngari virus?",
+      "cited_pmid": "39890788",
+      "title": "NSm is a critical determinant for bunyavirus transmission between vertebrate and mosquito hosts.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ngari virus?",
+      "cited_pmid": "42520941",
+      "title": "Identification of specific host cell potassium ion channels that mediate escape of bunyamwera virus from late endosome compartments.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "How does Ngari virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ngari virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ngari virus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ngari virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ngari virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -242856,6 +243654,18 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
       "missed_pmid": "30696898",
       "title": "Orthohantaviruses belonging to three phylogroups all inhibit apoptosis in infected target cells."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the epidemiology and outbreak history of Akabane virus?",
+      "missed_pmid": "41902271",
+      "title": "Serological Evidence of Akabane, Bluetongue, and Bovine Ephemeral Fever Virus Exposure in Feral Water Buffaloes from Northern Australia."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "missed_pmid": "41917271",
+      "title": "Molecular detection and genetic characterization of pestiviruses associated with abortion in domestic small ruminants in T\u00fcrkiye."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
