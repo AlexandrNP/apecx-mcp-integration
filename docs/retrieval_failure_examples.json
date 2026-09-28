@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:28:17.279530+00:00",
-  "runs": 527,
+  "updated": "2026-09-28T01:34:40.527190+00:00",
+  "runs": 528,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25736,
+  "n_false_positives": 25746,
   "n_false_negatives": 5108,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -289947,6 +289947,113 @@
       "title": "Longitudinal Molecular Epidemiology and Genomic Evolution of Porcine Reproductive and Respiratory Syndrome Virus in a Large-Scale Swine Production System in Northern China, 2023-2026.",
       "actual_organisms": [
         "Porcine reproductive and respiratory syndrome virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is known about Epizootic hemorrhagic disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "41653013",
+      "title": "Enhancing African horse sickness virus detection: comparing and adapting PCR assays.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42401561",
+      "title": "Cryo-EM structure of African horse sickness virus VP2 receptor-binding protein enables nanoparticle vaccine design.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "42412878",
+      "title": "The Bunyamwera orthobunyavirus Gc glycoprotein head and stalk drives an infectious virion assembly pathway specific for the insect host.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052381",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "41613592",
+      "title": "Development of a HiBiT-tagged reporter Akabane virus and its application in antiviral drug screening.",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
+      "cited_pmid": "42117216",
+      "title": "Seventy years of hemorrhagic disease research in North America.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "How does Schmallenberg virus evade or modulate the host immune response?",
+      "cited_pmid": "42469834",
+      "title": "Role of vimentin in inhibiting akabane virus replication and its preliminary exploration of mechanisms involving autophagy and apoptosis.",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "42277345",
+      "title": "The complete nucleoprotein gene molecular characterization of Akabane Virus in T\u00fcrkiye.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "42031765",
+      "title": "Molecular evolution and antigenic stability of ibaraki virus: evidence for regional circulation from a South Korean whole-genome analysis.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_225976"
       ]
     }
   ],
