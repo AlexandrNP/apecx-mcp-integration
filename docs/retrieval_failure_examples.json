@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:25:25.505171+00:00",
-  "runs": 597,
+  "updated": "2026-09-28T03:26:57.196132+00:00",
+  "runs": 598,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26656,
-  "n_false_negatives": 5118,
+  "n_false_positives": 26672,
+  "n_false_negatives": 5120,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 16,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -300304,6 +300304,171 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "37562006",
+      "title": "Human Papillomavirus Concordance Between Parents and Their Newborn Offspring: Results From the Finnish Family Human Papillomavirus Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "36890572",
+      "title": "TaME-seq2: tagmentation-assisted multiplex PCR enrichment sequencing for viral genomic profiling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42670618",
+      "title": "Evidence for type replacement as a consequence of vaccination and implications for cervical screening.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 31?",
+      "cited_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 31?",
+      "cited_pmid": "36636851",
+      "title": "[Determination of Human Papilloma Virus (HPV) Genotype Prevalance and Distrubution in Adana: A Hospital-Based Study Between 2014-2021].",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 31?",
+      "cited_pmid": "37254637",
+      "title": "25-hydroxycholesterol inhibits human papillomavirus infection in cervical epithelial cells by perturbing cytoskeletal remodeling.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 31?",
+      "cited_pmid": "39948614",
+      "title": "Genetic variations and carcinogenicity analysis of E6/E7 oncogenes in HPV31 and HPV35 in Taizhou, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "36636851",
+      "title": "[Determination of Human Papilloma Virus (HPV) Genotype Prevalance and Distrubution in Adana: A Hospital-Based Study Between 2014-2021].",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "40892869",
+      "title": "Human papillomavirus genomes associate with active host chromatin during persistent viral infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 59?",
+      "cited_pmid": "42399367",
+      "title": "Human papillomavirus 68 subtypes among people with human immunodeficiency virus and implications for anal screening.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38314927",
+      "title": "Effectiveness of prophylactic HPV vaccines against cervical abnormalities and HPV infection in Japan: The J-HERS 2021 multicenter study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42774225",
+      "title": "Assessing high-throughput surrogate assays for real-world HPV16- and HPV18-specific vaccine immune monitoring: a comparison of PBNA, cCLIA, and IgG.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42663706",
+      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "38178597",
+      "title": "Human papillomavirus prevalence and genotype distribution in Liaocheng men between 2016 and 2022.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "40892869",
+      "title": "Human papillomavirus genomes associate with active host chromatin during persistent viral infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -331014,6 +331179,18 @@
       "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
       "missed_pmid": "42583443",
       "title": "Molecular Characterization of Human Papilloma Virus in Carcinoma Cervix along with Screening of Risk Factors and their Regional Comparison."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37263686",
+      "title": "Age-specific and genotype-specific carcinogenic human papillomavirus prevalence in a country with a high cervical cancer burden: results of a cross-sectional study in Estonia."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "missed_pmid": "41759606",
+      "title": "Genotype and age shape the risk of persistent high-risk human papillomavirus infections."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
