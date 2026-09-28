@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:40:17.008593+00:00",
-  "runs": 501,
+  "updated": "2026-09-28T00:41:55.662314+00:00",
+  "runs": 502,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25328,
-  "n_false_negatives": 5065,
+  "n_false_positives": 25336,
+  "n_false_negatives": 5068,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 1
+    "false_positives": 8,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -285365,6 +285365,89 @@
       "actual_organisms": [
         "Akabane virus"
       ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "39504832",
+      "title": "Development and evaluation of three multienzyme isothermal rapid amplification assays for fowl adenovirus serotype 4.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354736"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "41156591",
+      "title": "Rapid Detection of Duck Enteritis Virus with MIRA, MIRA-qPCR, and MIRA-LFD Assays.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_104388",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354736"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "How does Fowlpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42513996",
+      "title": "MEK/ERK-Mediated Transcriptional Repression of Metabolic Genes Confers Host Defense Against Gallid alphaherpesvirus 1 Infection via Modulating Fos Nuclear Translocation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "cited_pmid": "39504832",
+      "title": "Development and evaluation of three multienzyme isothermal rapid amplification assays for fowl adenovirus serotype 4.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354736"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "cited_pmid": "39697169",
+      "title": "The complexity of the interpretation of ELISA and RT-PCR results in the diagnosis of a reticuloendotheliosis virus infection: an extended case study.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153135"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "cited_pmid": "40438408",
+      "title": "Rapid detection of avipoxvirus using a fluorescent probe-based multienzyme isothermal amplification assay.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10260",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 1?",
+      "cited_pmid": "38801589",
+      "title": "Natural Immunomodulatory Agents as a Complementary Therapy for Poxviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Gallid alphaherpesvirus 1?",
+      "cited_pmid": "36315934",
+      "title": "Genetic characterization of Marek's disease virus in chickens in Thailand reveals a high genetic diversity of circulating strains.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
     }
   ],
   "false_negatives": [
@@ -315757,6 +315840,24 @@
       "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
       "missed_pmid": "40333126",
       "title": "Assessing Schmallenberg Virus Disease in Sardinia (Italy) After the First Epidemic Episode in 2012."
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is known about Fowlpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38006048",
+      "title": "Efficacy of Fowlpox Virus Vector Vaccine Expressing VP2 and Chicken Interleukin-18 in the Protection against Infectious Bursal Disease Virus."
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Fowlpox virus?",
+      "missed_pmid": "36073826",
+      "title": "Genetic Diversity of Fowlpox Virus and Putative Genes Involved in Its Pathogenicity."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
+      "missed_pmid": "39770626",
+      "title": "One-Step Multiplex Real-Time Fluorescent Quantitative Reverse Transcription PCR for Simultaneous Detection of Four Waterfowl Viruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
