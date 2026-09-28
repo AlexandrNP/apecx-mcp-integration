@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T14:36:16.546692+00:00",
-  "runs": 669,
+  "updated": "2026-09-28T14:44:33.196258+00:00",
+  "runs": 670,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27288,
+  "n_false_positives": 27296,
   "n_false_negatives": 5157,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -307330,6 +307330,98 @@
       "title": "Systemic inflammatory and metabolic disease progression persists despite prevention of myocarditis in Isg15-deficient Coxsackievirus B3 infection.",
       "actual_organisms": [
         "Coxsackievirus B3"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "42655648",
+      "title": "Oropouche Virus: Comparative Study of Two Strains Reveals Distinct Innate Immunity Modulation.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chikungunya virus?",
+      "cited_pmid": "42627027",
+      "title": "Origin, evolution and transmission dynamics of Orthobunyavirus Oropoucheense.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chikungunya virus?",
+      "cited_pmid": "42761567",
+      "title": "Oropouche virus infection: an emerging arboviral threat in Asia.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42627027",
+      "title": "Origin, evolution and transmission dynamics of Orthobunyavirus Oropoucheense.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "cited_pmid": "42766635",
+      "title": "Comparative analysis of host responses to Oropouche viruses in placental cell infection models.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42655648",
+      "title": "Oropouche Virus: Comparative Study of Two Strains Reveals Distinct Innate Immunity Modulation.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "42627027",
+      "title": "Origin, evolution and transmission dynamics of Orthobunyavirus Oropoucheense.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
       ]
     }
   ],
