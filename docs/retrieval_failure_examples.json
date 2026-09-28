@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:34:05.114162+00:00",
-  "runs": 600,
+  "updated": "2026-09-28T03:35:40.748838+00:00",
+  "runs": 601,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26686,
+  "n_false_positives": 26697,
   "n_false_negatives": 5120,
   "new_this_run": {
-    "false_positives": 5,
+    "false_positives": 11,
     "false_negatives": 0
   },
   "false_positives": [
@@ -300617,6 +300617,146 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42332748",
+      "title": "Gasdermin D-dependent neutrophil pyroptosis exacerbates Coxsackievirus A6-induced neuroinflammation through NET formation.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "42589228",
+      "title": "Efficacy and Mechanisms of Alkaloids Against Enterovirus A71: A Systematic Review and Meta-Analysis of Preclinical Evidence Integrated with Network Pharmacology and Molecular Docking.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "cited_pmid": "42482485",
+      "title": "Intestinal Organoids as Models to Study Viruses: Current Application and Future Perspective.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus A16?",
+      "cited_pmid": "42535854",
+      "title": "KREMEN1 residue W94 is essential for receptor binding and infection by a major group of enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 30?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "How does Coxsackievirus A6 evade or modulate the host immune response?",
+      "cited_pmid": "42391313",
+      "title": "RNF31 restricts EV-A71 replication through innate immune activation and VP4 degradation, and is antagonized by viral 3C proteases.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42112287",
+      "title": "Detection of echovirus 7 in effluent sewage treatment plant Ahvaz city, Iran.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46018"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138"
       ]
     }
   ],
