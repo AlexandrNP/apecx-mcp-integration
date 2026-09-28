@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T16:16:27.819047+00:00",
-  "runs": 678,
+  "updated": "2026-09-28T16:24:07.812605+00:00",
+  "runs": 679,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27404,
+  "n_false_positives": 27434,
   "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 8,
+    "false_positives": 30,
     "false_negatives": 0
   },
   "false_positives": [
@@ -308690,6 +308690,351 @@
       "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
       "actual_organisms": [
         "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42730619",
+      "title": "Imprinting-Like Serological Signatures in Human Adenovirus Infections Revealed by Cross-Adsorption Neutralization Profiling of HAdV-3, HAdV-5, and HAdV-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "41775079",
+      "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42029738",
+      "title": "HAdV55 reprograms host 3D genome architecture and mitochondrial metabolism to drive pathogenesis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_714978"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "41707713",
+      "title": "The potential of leritrelvir repositioning for the treatment of coxsackievirus B4 and common enterovirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "42385558",
+      "title": "Discordant trends in enteroviral infections and meningitis in the post-COVID-19 era: Contributions of type distribution and type-specific risk.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "42514993",
+      "title": "Fulminant Hepatitis Due to Enterovirus E25 Systemic Infection in a Pediatric Patient.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "How does Influenza A virus evade or modulate the host immune response?",
+      "cited_pmid": "41762478",
+      "title": "Adenovirus induces pediatric pneumonia via triggering macrophage polarization and IL-6 production via NF-\u03baB activation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42269389",
+      "title": "An extraction-free multiplex RT-PCR assay for simultaneous detection of six respiratory pathogens using polychromatic melting curve analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus B?",
+      "cited_pmid": "41707713",
+      "title": "The potential of leritrelvir repositioning for the treatment of coxsackievirus B4 and common enterovirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus B?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "42514993",
+      "title": "Fulminant Hepatitis Due to Enterovirus E25 Systemic Infection in a Pediatric Patient.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus B?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus B?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42730619",
+      "title": "Imprinting-Like Serological Signatures in Human Adenovirus Infections Revealed by Cross-Adsorption Neutralization Profiling of HAdV-3, HAdV-5, and HAdV-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "42269389",
+      "title": "An extraction-free multiplex RT-PCR assay for simultaneous detection of six respiratory pathogens using polychromatic melting curve analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42029738",
+      "title": "HAdV55 reprograms host 3D genome architecture and mitochondrial metabolism to drive pathogenesis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_714978"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "42375050",
+      "title": "Clinico-etiological Profiles and Immediate Outcome of Hand-Foot-and-Mouth Disease attending in a Tertiary Care Hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "41989164",
+      "title": "CD46 and DSG2 synergistically mediate human adenovirus type 7 infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10519",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "41780169",
+      "title": "A novel chimpanzee-derived adenovirus, a recombinant of Mastadenovirus exoticum and Mastadenovirus blackbeardi members, reveals lineage-specific recombination hotspots in simian adenoviruses.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2980954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
