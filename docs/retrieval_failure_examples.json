@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T06:14:35.742567+00:00",
-  "runs": 628,
+  "updated": "2026-09-28T06:24:02.809957+00:00",
+  "runs": 629,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26944,
+  "n_false_positives": 26956,
   "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 12,
     "false_negatives": 0
   },
   "false_positives": [
@@ -303478,6 +303478,133 @@
       "title": "Persistence of deformed wing virus (DWV) in Apis mellifera L. colonies after Varroa destructor treatment with oxalic acid and amitraz.",
       "actual_organisms": [
         "Deformed wing virus"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is known about Maize streak virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41546436",
+      "title": "Geminiviral C2 proteins promote virus transmission by subverting plant defenses upon infestation of non-vector herbivores.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10832",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1298630"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is known about Maize streak virus pathogenesis and transmission?",
+      "cited_pmid": "41012650",
+      "title": "Insights into Novel Viral Threats in Sweetpotato from Burkina Faso: Characterisation of Unexplored Pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1993641"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What antiviral drugs or treatments are effective against Maize streak virus?",
+      "cited_pmid": "41670864",
+      "title": "amiR414e-mediated silencing confers resistance to Cotton leaf curl Multan virus in cotton.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "42536030",
+      "title": "The Virome of Rhubarb Consists of Diverse Viruses Belonging to at Least Four Families.",
+      "actual_organisms": [
+        "Beet curly top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12280",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12615",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1987403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Maize streak virus?",
+      "cited_pmid": "42179917",
+      "title": "Gene network modeling and pathway analysis of Bemisia tabaci midgut proteins and symbionts interact with Cotton leaf curl virus (CLCuV) transmission.",
+      "actual_organisms": [
+        "Cotton leaf curl virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91844"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "How does Maize streak virus evade or modulate the host immune response?",
+      "cited_pmid": "42796733",
+      "title": "Host-Dependent Cytopathological Responses to Beet Curly Top Virus Infection in Four Plant Species.",
+      "actual_organisms": [
+        "Beet curly top virus"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "42092612",
+      "title": "Improved detection of rice yellow mottle virus with a polyclonal antibody xMAP assay: A high-throughput alternative to ELISA.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31744"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Beet curly top virus?",
+      "cited_pmid": "41546436",
+      "title": "Geminiviral C2 proteins promote virus transmission by subverting plant defenses upon infestation of non-vector herbivores.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10832",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1298630"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Beet curly top virus?",
+      "cited_pmid": "42179917",
+      "title": "Gene network modeling and pathway analysis of Bemisia tabaci midgut proteins and symbionts interact with Cotton leaf curl virus (CLCuV) transmission.",
+      "actual_organisms": [
+        "Cotton leaf curl virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91844"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the epidemiology and outbreak history of Cotton leaf curl virus?",
+      "cited_pmid": "41156646",
+      "title": "Characterization of the Pepper Virome in Oklahoma Reveals Emerging RNA and DNA Viruses.",
+      "actual_organisms": [
+        "Beet curly top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "cited_pmid": "42796733",
+      "title": "Host-Dependent Cytopathological Responses to Beet Curly Top Virus Infection in Four Plant Species.",
+      "actual_organisms": [
+        "Beet curly top virus"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cotton leaf curl virus?",
+      "cited_pmid": "41012650",
+      "title": "Insights into Novel Viral Threats in Sweetpotato from Burkina Faso: Characterisation of Unexplored Pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1993641"
       ]
     }
   ],
