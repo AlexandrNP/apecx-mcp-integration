@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T19:34:11.413980+00:00",
-  "runs": 694,
+  "updated": "2026-09-28T20:14:05.223192+00:00",
+  "runs": 695,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27627,
-  "n_false_negatives": 5167,
+  "n_false_positives": 27648,
+  "n_false_negatives": 5168,
   "new_this_run": {
-    "false_positives": 3,
+    "false_positives": 21,
     "false_negatives": 1
   },
   "false_positives": [
@@ -311187,6 +311187,242 @@
         "Human respirovirus 3",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42294738",
+      "title": "Toscana Virus Diagnosis via a Point-of-Care Tool Based on Disposable Optical Fiber Biosensors.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "42386798",
+      "title": "High quality Chromosome-scale Genome Assembly of Phlebotomus perniciosus, a Vector of Zoonotic Leishmaniasis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38568",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "How does Nipah henipavirus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus pathogenesis and transmission?",
+      "cited_pmid": "42516877",
+      "title": "Clinical review of Toscana virus: a Mediterranean Neuroinvasive Phlebovirus.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42294738",
+      "title": "Toscana Virus Diagnosis via a Point-of-Care Tool Based on Disposable Optical Fiber Biosensors.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "42625297",
+      "title": "Natural Infection by Toscana Virus and Other Phleboviruses in Wild Sand Flies From Spain: Prevalence, Genetic Characterization and Tripartite Interactions With Leishmania infantum and Wolbachia.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1869227",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38568",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5671",
+        "http://purl.obolibrary.org/obo/NCBITaxon_953"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "cited_pmid": "42190645",
+      "title": "Elevated Antibody Levels against Aedes triseriatus Salivary Gland Antigen in Household Members of La Crosse Virus Neuroinvasive Disease Cases.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "42294683",
+      "title": "La Crosse virus, but not Jamestown Canyon virus, is dependent on the host translation termination factor eRF1 due to changes in the nonstructural protein NSm.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "42665761",
+      "title": "Machine learning-driven drug repurposing and computational validation for Nipah virus.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "42674244",
+      "title": "Nipah virus: an exceptionally virulent emerging zoonotic pathogen.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "42797807",
+      "title": "The Battle Between Japanese Encephalitis Virus and Host Innate Immune System: Evasion and Response.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -342191,6 +342427,12 @@
       "question": "What are the clinical symptoms and disease presentation of Human respirovirus 3?",
       "missed_pmid": "31954277",
       "title": "Human parainfluenza virus circulation, United States, 2011-2019."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "missed_pmid": "42803205",
+      "title": "Evidence of Japanese Encephalitis Virus Exposure in Feral Pig Populations in North Queensland, Australia."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
