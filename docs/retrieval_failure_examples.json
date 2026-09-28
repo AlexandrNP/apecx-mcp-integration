@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:34:40.527190+00:00",
-  "runs": 528,
+  "updated": "2026-09-28T01:36:28.740958+00:00",
+  "runs": 529,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25746,
+  "n_false_positives": 25755,
   "n_false_negatives": 5108,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 9,
     "false_negatives": 0
   },
   "false_positives": [
@@ -290054,6 +290054,98 @@
         "Epizootic hemorrhagic disease virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
         "http://purl.obolibrary.org/obo/NCBITaxon_225976"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "42777920",
+      "title": "Comparative evaluation of recombinant A4L, A27L, and A36R proteins for ELISA-based serodiagnosis of lumpy skin disease virus.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843684",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What antiviral drugs or treatments are effective against Fowlpox virus?",
+      "cited_pmid": "42575000",
+      "title": "Cidofovir inhibits lumpy skin disease virus replication by targeting viral DNA polymerase and modulating host apoptosis.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Fowlpox virus?",
+      "cited_pmid": "39338432",
+      "title": "Congenital Suipoxvirus Infection in Newborn Piglets in an Austrian Piglet-Producing Farm.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10275"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus pathogenesis and transmission?",
+      "cited_pmid": "40884292",
+      "title": "Diagnostic approach to swinepox virus infection in a German 2-site swine production unit.",
+      "actual_organisms": [
+        "Swinepox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10275"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What antiviral drugs or treatments are effective against Sheeppox virus?",
+      "cited_pmid": "41472010",
+      "title": "Construction and Immunogenicity Evaluation of a Recombinant Fowlpox Virus Expressing VP2 Gene of African Horse Sickness Virus Serotype 1.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33714",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40050"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the clinical symptoms and disease presentation of Sheeppox virus?",
+      "cited_pmid": "39054554",
+      "title": "Swinepox virus: an unusual outbreak in free-range pig farms in Sicily (Italy).",
+      "actual_organisms": [
+        "Swinepox virus"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sheeppox virus?",
+      "cited_pmid": "40460206",
+      "title": "Structural, Functional and Inhibitory Annotations of Lumpy Skin Disease Virus Hypothetical Protein LSDV004: An In-Silico Study.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "Swinepox virus"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sheeppox virus?",
+      "cited_pmid": "42076765",
+      "title": "First Complete Genome Sequencing of a Pigeonpox Virus Strain from Mainland China and Preliminary Evaluation of Its Attenuated Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10264",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_648998"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What diagnostic assays or laboratory tests detect Swinepox virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
       ]
     }
   ],
