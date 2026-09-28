@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:44:07.587821+00:00",
-  "runs": 570,
+  "updated": "2026-09-28T02:45:47.166658+00:00",
+  "runs": 571,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26370,
+  "n_false_positives": 26378,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 2,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297135,6 +297135,96 @@
       "actual_organisms": [
         "Enterovirus D68",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "41662723",
+      "title": "Development of a Recombinase Polymerase Amplification-CRISPR/Cas12a Detection System for Cacao Mild Mosaic Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1940252"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tobacco mosaic virus?",
+      "cited_pmid": "42295471",
+      "title": "Identification and characterization of an endogenous pararetrovirus in Gentiana triflora plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cauliflower mosaic virus?",
+      "cited_pmid": "42462794",
+      "title": "Preparation and application of a polyclonal antibody against the N structural protein of chilli yellow ringspot orthotospovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2563490",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_511693"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genome organization and replication cycle of Cauliflower mosaic virus?",
+      "cited_pmid": "42493612",
+      "title": "Satellite RNAs of Cucumber Mosaic Virus: Molecular Features, Pathogenic Roles, and Ecological Dynamics.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Cauliflower mosaic virus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Cauliflower mosaic virus?",
+      "cited_pmid": "42231872",
+      "title": "Southward Spread of Pepper Necrotic Spot Orthotospovirus into Chile: Identification and Characterization.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1078947",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cauliflower mosaic virus?",
+      "cited_pmid": "42283464",
+      "title": "Orthotospovirus tomatomaculae (Tomato spotted wilt virus [TSWV]) infects ovules and pollen to achieve vertical transmission in Capsicum annuum.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cauliflower mosaic virus?",
+      "cited_pmid": "42739317",
+      "title": "Prevalence, Species Diversity, and Molecular Characterization of Viruses Infecting Phlox (Phlox paniculata) from Botanical Gardens in Russia.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12321",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290031",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
