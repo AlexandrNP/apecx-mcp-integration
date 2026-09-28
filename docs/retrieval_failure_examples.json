@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:51:55.185452+00:00",
-  "runs": 575,
+  "updated": "2026-09-28T02:53:27.885142+00:00",
+  "runs": 576,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26409,
+  "n_false_positives": 26417,
   "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297595,6 +297595,94 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3240595",
         "http://purl.obolibrary.org/obo/NCBITaxon_43240",
         "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Tomato spotted wilt virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tomato spotted wilt virus?",
+      "cited_pmid": "42397701",
+      "title": "Variability and population structure of watermelon mosaic virus in zucchini crops in Poland.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "39639665",
+      "title": "Construction and Characterization of a Full-Length Infectious cDNA Clone of a Strain of Watermelon Mosaic Virus Isolated from Melon.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "42598573",
+      "title": "Molecular detection of watermelon virus disease in Liaoning Province, China, and resistance evaluation of nine rootstocks to cucumber green mottle mosaic virus.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12235"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "38254661",
+      "title": "Predictive Modeling of Proteins Encoded by a Plant Virus Sheds a New Light on Their Structure and Inherent Multifunctionality.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "38360528",
+      "title": "Metatranscriptome analysis of symptomatic bitter apple plants revealed mixed viral infections with a putative novel polerovirus.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2754374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_397544"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Turnip mosaic virus?",
+      "cited_pmid": "38775482",
+      "title": "P3N-PIPO but not P3 is the avirulence determinant in melon carrying the Wmr resistance against watermelon mosaic virus, although they contain a common genetic determinant.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Turnip mosaic virus?",
+      "cited_pmid": "42739466",
+      "title": "Virome of the Russian Grapevine Germplasm: A Final Study and Summary.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3402117",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3402118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35288",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47985",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51617"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Watermelon mosaic virus?",
+      "cited_pmid": "42347223",
+      "title": "Contrasting Effects of Tagging Turnip Mosaic Virus Proteins.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240607"
       ]
     }
   ],
