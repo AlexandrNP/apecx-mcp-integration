@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T14:44:33.196258+00:00",
-  "runs": 670,
+  "updated": "2026-09-28T14:54:22.936418+00:00",
+  "runs": 671,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27296,
-  "n_false_negatives": 5157,
+  "n_false_positives": 27325,
+  "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 0
+    "false_positives": 29,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -307423,6 +307423,360 @@
         "Oropouche virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11572"
       ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is known about Venezuelan equine encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "39802065",
+      "title": "Orthoflavivirus circulation in South-East Queensland, Australia, before and during the 2021-2022 incursion of Japanese encephalitis virus assessed through sero-epidemiological survey of a sentinel equine population.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42743201",
+      "title": "Correction: Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "cited_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murray Valley encephalitis virus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "How does Murray Valley encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "42412878",
+      "title": "The Bunyamwera orthobunyavirus Gc glycoprotein head and stalk drives an infectious virion assembly pathway specific for the insect host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052381",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "39890788",
+      "title": "NSm is a critical determinant for bunyavirus transmission between vertebrate and mosquito hosts.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Toscana virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "42294738",
+      "title": "Toscana Virus Diagnosis via a Point-of-Care Tool Based on Disposable Optical Fiber Biosensors.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "40097290",
+      "title": "Rapid and efficient CRISPR-based detection of dengue virus in a single-tube.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What antiviral drugs or treatments are effective against Bunyamwera virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the epidemiology and outbreak history of Bunyamwera virus?",
+      "cited_pmid": "40439544",
+      "title": "A One Health Approach to Investigating Cache Valley Virus, Arkansas, USA, July 20231.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80935"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the epidemiology and outbreak history of Bunyamwera virus?",
+      "cited_pmid": "39802065",
+      "title": "Orthoflavivirus circulation in South-East Queensland, Australia, before and during the 2021-2022 incursion of Japanese encephalitis virus assessed through sero-epidemiological survey of a sentinel equine population.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the epidemiology and outbreak history of Bunyamwera virus?",
+      "cited_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What are the clinical symptoms and disease presentation of Bunyamwera virus?",
+      "cited_pmid": "42516877",
+      "title": "Clinical review of Toscana virus: a Mediterranean Neuroinvasive Phlebovirus.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
     }
   ],
   "false_negatives": [
@@ -338367,6 +338721,12 @@
       "question": "What is the epidemiology and outbreak history of Human papillomavirus 16?",
       "missed_pmid": "38590815",
       "title": "Epidemiology of human papillomavirus infection in women from Xiamen, China, 2013 to 2023."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Venezuelan equine encephalitis virus?",
+      "missed_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
