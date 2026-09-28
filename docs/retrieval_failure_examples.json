@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:10:10.584691+00:00",
-  "runs": 488,
+  "updated": "2026-09-28T00:11:55.192804+00:00",
+  "runs": 489,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25196,
+  "n_false_positives": 25204,
   "n_false_negatives": 5019,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 5
+    "false_positives": 8,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -283872,6 +283872,99 @@
       "title": "Development of a Bead-Based Multiplex Fluorescent Immunoassay to Detect Antibodies against Maedi-Visna Virus in Sheep.",
       "actual_organisms": [
         "Visna-maedi virus"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Thottapalayam orthohantavirus?",
+      "cited_pmid": "24209605",
+      "title": "Tula hantavirus infection in immunocompromised host, Czech Republic.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Thottapalayam orthohantavirus?",
+      "cited_pmid": "19208975",
+      "title": "Hantaviruses: an emerging public health threat in India? A review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is known about Choclo orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "18385367",
+      "title": "Choclo virus infection in the Syrian golden hamster.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_169173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Choclo orthohantavirus?",
+      "cited_pmid": "32605035",
+      "title": "The RNA Replication Site of Tula Orthohantavirus Resides within a Remodelled Golgi Network.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Choclo orthohantavirus?",
+      "cited_pmid": "8259656",
+      "title": "Phylogenetic analyses of virus isolates in the genus Hantavirus, family Bunyaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052501"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Choclo orthohantavirus?",
+      "cited_pmid": "27117403",
+      "title": "A Molecular-Level Account of the Antigenic Hantaviral Surface.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "How does Choclo orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "22944108",
+      "title": "Distinct innate immune responses in human macrophages and endothelial cells infected with shrew-borne hantaviruses.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Choclo orthohantavirus",
+      "question": "How does Choclo orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "31540120",
+      "title": "Puumala and Tula Virus Differ in Replication Kinetics and Innate Immune Stimulation in Human Endothelial Cells and Macrophages.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
