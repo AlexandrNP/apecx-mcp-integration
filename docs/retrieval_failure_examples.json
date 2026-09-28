@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:37:08.229179+00:00",
-  "runs": 602,
+  "updated": "2026-09-28T03:38:32.675192+00:00",
+  "runs": 603,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26709,
+  "n_false_positives": 26711,
   "n_false_negatives": 5121,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 1
+    "false_positives": 2,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -300913,6 +300913,31 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "42535290",
+      "title": "Emergence of an echovirus 17 subtype causing a viral meningitis outbreak, Israel, 2025 to 2026.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47505"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 30?",
+      "cited_pmid": "41410465",
+      "title": "Environmental surveillance reveals enterovirus diversity in Jinan, China: detection of types D68, A71, A76, B88, A90, and C99.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1295563",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
