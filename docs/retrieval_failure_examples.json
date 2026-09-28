@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T09:04:21.871294+00:00",
-  "runs": 643,
+  "updated": "2026-09-28T09:14:19.426528+00:00",
+  "runs": 644,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27067,
-  "n_false_negatives": 5140,
+  "n_false_positives": 27069,
+  "n_false_negatives": 5141,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 2,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -304836,6 +304836,26 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2497408",
         "http://purl.obolibrary.org/obo/NCBITaxon_548682"
       ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "cited_pmid": "41621718",
+      "title": "Rapid colorimetric detection of Citrus tristeza virus combining portable sample preparation and reverse transcription-loop mediated isothermal amplification.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Cucumber mosaic virus?",
+      "cited_pmid": "42231872",
+      "title": "Southward Spread of Pepper Necrotic Spot Orthotospovirus into Chile: Identification and Characterization.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1078947",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
     }
   ],
   "false_negatives": [
@@ -335678,6 +335698,12 @@
       "question": "How does Watermelon mosaic virus evade or modulate the host immune response?",
       "missed_pmid": "42278294",
       "title": "Genome-Wide Analysis of AGPase Identifies CsAGP4 as a Regulator of Watermelon Mosaic Virus Resistance in Cucumber."
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cucumber mosaic virus?",
+      "missed_pmid": "42761200",
+      "title": "Metatranscriptomic profiling uncovers a distinctive pepper virome in tropical Indonesia."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
