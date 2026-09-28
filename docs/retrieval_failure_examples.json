@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:23:21.354939+00:00",
-  "runs": 557,
+  "updated": "2026-09-28T02:24:53.102435+00:00",
+  "runs": 558,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26214,
+  "n_false_positives": 26229,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 24,
+    "false_positives": 15,
     "false_negatives": 0
   },
   "false_positives": [
@@ -295325,6 +295325,191 @@
       "title": "Varicella zoster virus infection.",
       "actual_organisms": [
         "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "cited_pmid": "42496142",
+      "title": "Human rotavirus C strain detected in wastewater in Leuven, Belgium.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10943"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108098",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40568591",
+      "title": "Human saliva exerts strong type-dependent effects on adenovirus infectivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "cited_pmid": "41076143",
+      "title": "Multienzyme isothermal rapid amplification (MIRA)-LFD assay for rapid detection of PEDV and PoRVA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42699683",
+      "title": "Genomic characteristics and tracing analysis of an acute gastroenteritis outbreak associated with rotavirus C in a boarding high school.",
+      "actual_organisms": [
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10943",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "41250301",
+      "title": "Virucidal Effects of Contact Lens Disinfectants Against Enveloped and Nonenveloped Pathogenic Viruses Causing Conjunctivitis.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_880565"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "cited_pmid": "40400688",
+      "title": "Identification and characterization of a novel human adenovirus type HAdV-D116.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "cited_pmid": "41539551",
+      "title": "Diagnostic and pathological characterization of senecavirus A-associated epidemic transient neonatal losses in swine.",
+      "actual_organisms": [
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119602",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_713"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Norovirus?",
+      "cited_pmid": "42048387",
+      "title": "Identification of a novel fiber shaft structural motif and overexpression of key transcripts elucidated in human adenovirus D 10.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28275"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "How does Norovirus evade or modulate the host immune response?",
+      "cited_pmid": "40367285",
+      "title": "Virus and cell specific HMGB1 secretion and subepithelial infiltrate formation in adenovirus keratitis.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "How does Norovirus evade or modulate the host immune response?",
+      "cited_pmid": "42478837",
+      "title": "Mucosal boosting of chimpanzee adenovirus-vectored vaccine encoding SARS-CoV-2 RBD-heterodimer provides robust protection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310542",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus D?",
+      "cited_pmid": "42709036",
+      "title": "Expanded detection of canine enteric viruses in UK dogs with diarrhoea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus D?",
+      "cited_pmid": "41163033",
+      "title": "Prevalence and genetic characterization of diarrhea viruses among cattle in Guangdong, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46473",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus C?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
