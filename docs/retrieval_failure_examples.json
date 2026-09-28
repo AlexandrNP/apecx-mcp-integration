@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T13:44:13.066656+00:00",
-  "runs": 667,
+  "updated": "2026-09-28T14:04:07.570253+00:00",
+  "runs": 668,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27275,
+  "n_false_positives": 27287,
   "n_false_negatives": 5157,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 1
+    "false_positives": 12,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -307172,6 +307172,155 @@
         "Human papillomavirus 16",
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "42623246",
+      "title": "Peripheral Biomarkers in Chronic Hepatitis D Infection: A Review.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the clinical symptoms and disease presentation of Hepatitis A virus?",
+      "cited_pmid": "42608674",
+      "title": "Seroprevalence of hepatitis D among hepatitis B-infected patients attending the viral hepatitis treatment unit in Alexandria, Egypt: a prospective cross-sectional observational study.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is known about Hepatitis delta virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42800522",
+      "title": "A neutralizing epitope within the VP1 protein of duck hepatitis A virus type 3: From single-cell BCR discovery to in vivo protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1006063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_691956"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is known about Hepatitis delta virus pathogenesis and transmission?",
+      "cited_pmid": "35132924",
+      "title": "Review of human pegivirus: Prevalence, transmission, pathogenesis, and clinical implication.",
+      "actual_organisms": [
+        "GB virus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1307799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis delta virus?",
+      "cited_pmid": "42779859",
+      "title": "Impact of hepatitis E virus host- and virus-derived insertions on the antiviral response in primary human hepatocytes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis delta virus?",
+      "cited_pmid": "42713301",
+      "title": "Reduction of immunosuppressants fails to clear hepatitis E virus infection in a heart transplant recipient.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "How does Hepatitis delta virus evade or modulate the host immune response?",
+      "cited_pmid": "35707535",
+      "title": "Human Pegivirus Type 1: A Common Human Virus That Is Beneficial in Immune-Mediated Disease?",
+      "actual_organisms": [
+        "GB virus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3344850",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis delta virus?",
+      "cited_pmid": "42764916",
+      "title": "Molecular and serological evidence of hepatitis E virus genotype 3 circulation in pigs in Senegal.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What diagnostic assays or laboratory tests detect GB virus C?",
+      "cited_pmid": "37721473",
+      "title": "Monitoring of plasma Torque teno virus, total Anelloviridae and Human Pegivirus 1 viral load for the prediction of infectious events and acute graft versus host disease in the allogeneic hematopoietic stem cell transplantation setting.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4753",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_68887"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the genome organization and replication cycle of GB virus C?",
+      "cited_pmid": "35458526",
+      "title": "Target Enrichment Metagenomics Reveals Human Pegivirus-1 in Pediatric Hematopoietic Stem Cell Transplantation Recipients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What antiviral drugs or treatments are effective against GB virus C?",
+      "cited_pmid": "42795568",
+      "title": "Targeting the 3C Protease of Hepatitis A Virus Subgenotype IB: Virtual Screening and Identification of Potent Lead Candidates.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of GB virus C?",
+      "cited_pmid": "42678147",
+      "title": "Natural immune escape mutations in the envelope proteins of hepatitis B virus (HBV) regulate the assembly and infectivity of human hepatitis delta virus (HDV).",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
