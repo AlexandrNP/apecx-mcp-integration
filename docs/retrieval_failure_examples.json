@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:24:53.102435+00:00",
-  "runs": 558,
+  "updated": "2026-09-28T02:26:18.208621+00:00",
+  "runs": 559,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26229,
+  "n_false_positives": 26239,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -295511,6 +295511,122 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10508",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42448046",
+      "title": "Rapid neutralization test based on ELISPOT for detecting antibodies against rhinovirus 1B.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "cited_pmid": "38004704",
+      "title": "Development of a Melting-Curve-Based Multiplex Real-Time PCR Assay for the Simultaneous Detection of Viruses Causing Respiratory Infection.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the epidemiology and outbreak history of Human coronavirus 229E?",
+      "cited_pmid": "42796686",
+      "title": "Epidemiology of SARS-CoV-2, Influenza, RSV, and Human Metapneumovirus Across the COVID-19 Era: An Eight-Year Tertiary-Center Study in Saudi Arabia.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus 229E?",
+      "cited_pmid": "37515294",
+      "title": "Rhinovirus Genotypes Circulating in Bulgaria, 2018-2021.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_463676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73171"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42607444",
+      "title": "Rabeprazole exhibits broad-spectrum fusion inhibition against Nipah pseudovirus and authentic HCoV-OC43 and RSV.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human metapneumovirus?",
+      "cited_pmid": "39772231",
+      "title": "Genetic Diversity and Epidemiology of Enteroviruses and Rhinoviruses in Children Hospitalized with Acute Respiratory Infections in Novosibirsk, Russia (2023-2024).",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749421",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "42587342",
+      "title": "Synthesis of 1,3,5-Triazine-Indole Conjugates as Broad-Spectrum Coronavirus Entry Inhibitors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rhinovirus B?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
       ]
     }
   ],
