@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:26:29.016530+00:00",
-  "runs": 526,
+  "updated": "2026-09-28T01:28:17.279530+00:00",
+  "runs": 527,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25721,
+  "n_false_positives": 25736,
   "n_false_negatives": 5108,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 2
+    "false_positives": 15,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -289783,6 +289783,170 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11216",
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11272",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42690728",
+      "title": "Evaluation of the contribution of the minor envelope complex glycoprotein 3 ectodomain to the porcine reproductive and respiratory syndrome virus 1 neutralizing antibody response.",
+      "actual_organisms": [
+        "Porcine reproductive and respiratory syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42652006",
+      "title": "Development of JEV NS1 Specific Capture-ELISA Based on a Single Monoclonal Antibody.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42645051",
+      "title": "Development of a Visual Rapid Assay for Novel Goose Astrovirus Detection Based on RT-MIRA -PfAgo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1349999",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354736",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2261",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42586264",
+      "title": "Y-box-binding protein 1 stabilizes the capsid protein of porcine circovirus type 2 to promote viral replication.",
+      "actual_organisms": [
+        "Porcine circovirus 2"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42794663",
+      "title": "A Soy-Derived Isoflavone Genistein Inhibits the Life Cycle of PRRSV In Vitro.",
+      "actual_organisms": [
+        "Porcine reproductive and respiratory syndrome virus"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42646492",
+      "title": "Marine-Derived Natural Products Against Flaviviruses: Mechanisms, Evidence, and Future Directions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42671895",
+      "title": "Prevalence and viral load dynamics of PCV-2 and PCV-3 on large Hungarian swine farms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1868221"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42768131",
+      "title": "Molecular detection of feline viruses in free-ranging European wildcats (Felis s. silvestris) of the Harz Mountains, Germany.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1170234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39725"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42655844",
+      "title": "Suspected Type III Hypersensitivity Post-Inactivated Vaccination Leukocytoclastic Vasculitis in Two Sows.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42795543",
+      "title": "Genetic Diversity, Phylogenetic Lineages, and Antigenic Features of the PRRSV-1 GP5 Gene in China.",
+      "actual_organisms": [
+        "Porcine reproductive and respiratory syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965067"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42797785",
+      "title": "Molecular Epidemiology, Phylogeography, and Recombination Dynamics of PRRSV-2 Sublineage L1C in Mainland China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965067"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42768913",
+      "title": "Longitudinal Molecular Epidemiology and Genomic Evolution of Porcine Reproductive and Respiratory Syndrome Virus in a Large-Scale Swine Production System in Northern China, 2023-2026.",
+      "actual_organisms": [
+        "Porcine reproductive and respiratory syndrome virus"
       ]
     }
   ],
