@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:56:35.848089+00:00",
-  "runs": 578,
+  "updated": "2026-09-28T02:58:04.552335+00:00",
+  "runs": 579,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26444,
+  "n_false_positives": 26450,
   "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 12,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297988,6 +297988,69 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12195",
         "http://purl.obolibrary.org/obo/NCBITaxon_12317",
         "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
+      ]
+    },
+    {
+      "organism": "Tomato spotted wilt virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tomato spotted wilt virus?",
+      "cited_pmid": "42655669",
+      "title": "Genetic Diversity and Phylogeny of Chilli Veinal Mottle Virus in Yunnan Tobacco-Planting Regions Based on the CP Gene.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42728462",
+      "title": "The complete genomic sequence of a novel member of the genus Caulimovirus isolated from Dregea volubilis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47903"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "40724645",
+      "title": "Profiling Plant circRNAs Provides Insights into the Expression of Plant Genes Involved in Viral Infection.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12470",
+        "http://purl.obolibrary.org/obo/NCBITaxon_218923",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "cited_pmid": "36229931",
+      "title": "Rapid evolution of an RNA virus to escape recognition by a rice nucleotide-binding and leucine-rich repeat domain immune receptor.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is known about Cauliflower mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42799996",
+      "title": "Engineering a Non-Aphid-Transmissible Mild Mutant of Zucchini Yellow Mosaic Virus for Cross Protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Cauliflower mosaic virus?",
+      "cited_pmid": "42793185",
+      "title": "Synthetic Potato Systemin Enhances Solanum tuberosum Resistance to Potato Virus Y.",
+      "actual_organisms": [
+        "Potato virus Y"
       ]
     }
   ],
