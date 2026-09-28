@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:44:19.424042+00:00",
-  "runs": 607,
+  "updated": "2026-09-28T03:45:53.133865+00:00",
+  "runs": 608,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26760,
-  "n_false_negatives": 5123,
+  "n_false_positives": 26773,
+  "n_false_negatives": 5124,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 0
+    "false_positives": 13,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -301453,6 +301453,144 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "38037452",
+      "title": "Genetic variability analysis of human\u00a0papillomavirus 58: Novel sublineage identification and persistent infection association.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "34942562",
+      "title": "Human papillomavirus 68 prevalence and genetic variability based on E6/E7 genes in Sichuan.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "39363161",
+      "title": "Lineage and sublineage analysis of human papillomavirus type 58 in iranian women.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "32114254",
+      "title": "Bioinformatics analysis of HPV-68 E6 and E7 oncoproteins for designing a therapeutic epitope vaccine against HPV infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "40677200",
+      "title": "Detection Rate, Genetic Polymorphism, Viral Load, Persistent Infection Capacity, and Pathogenicity of Human Papillomavirus Type 58.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "36511371",
+      "title": "Prevalence of Human Papillomavirus Genotypes in Tehran, Iran.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 45?",
+      "cited_pmid": "36541747",
+      "title": "Impact of high-risk Human Papillomavirus genotyping in cervical disease in the Northern region of Portugal: Real-world data from regional cervical cancer screening program.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 45?",
+      "cited_pmid": "32114254",
+      "title": "Bioinformatics analysis of HPV-68 E6 and E7 oncoproteins for designing a therapeutic epitope vaccine against HPV infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is known about Human papillomavirus type 58 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41722563",
+      "title": "Structural and biochemical characterization of neutralizing antibodies targeting human papillomavirus type 45.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 58?",
+      "cited_pmid": "42399367",
+      "title": "Human papillomavirus 68 subtypes among people with human immunodeficiency virus and implications for anal screening.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "How does Human papillomavirus type 58 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "How does Human papillomavirus type 68 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -332193,6 +332331,12 @@
       "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
       "missed_pmid": "37924712",
       "title": "Characteristics of human papillomavirus infection among oropharyngeal cancer patients: A systematic review and meta-analysis."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "missed_pmid": "38102627",
+      "title": "Prevalence and genotype distribution of human papillomavirus infection among women in Jingzhou, China: a population-based study of 51,720 women."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
