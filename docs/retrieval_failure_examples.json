@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:48:35.528451+00:00",
-  "runs": 506,
+  "updated": "2026-09-28T00:50:16.571376+00:00",
+  "runs": 507,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25406,
-  "n_false_negatives": 5075,
+  "n_false_positives": 25423,
+  "n_false_negatives": 5082,
   "new_this_run": {
-    "false_positives": 40,
-    "false_negatives": 0
+    "false_positives": 17,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -286235,6 +286235,188 @@
         "Lymphocytic choriomeningitis mammarenavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
       ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "42625468",
+      "title": "Performance of Two Molecular Point-of-Care Influenza A/B Tests Compared to the Cepheid Xpert Xpress Flu/RSV Assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "42655149",
+      "title": "Evaluation of Universal Biomolecular Medium for Molecular Detection of Respiratory Viruses: A Paired, Multi-Platform Comparison.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "42635165",
+      "title": "Epidemiological, Clinical and Viral Genomic Features of Influenza Virus Infections Among Pilgrims During the Grand Magal of Touba Over 7 Years (2018-2024).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11120",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza B virus?",
+      "cited_pmid": "42620512",
+      "title": "A tNGS-based comparative study on clinical features and co-detection profiles of hospitalized children with influenza A and B viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11120",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42397555",
+      "title": "Development and clinical validation of a PCR assay for human parvovirus B19 detection with applications in challenging diagnostic scenarios.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42233650",
+      "title": "Evaluating myxovirus resistance protein A-based rapid testing combined with pathogen sequencing for arboviral and incidental viral infection surveillance in Senegal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_68887"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42625468",
+      "title": "Performance of Two Molecular Point-of-Care Influenza A/B Tests Compared to the Cepheid Xpert Xpress Flu/RSV Assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42655149",
+      "title": "Evaluation of Universal Biomolecular Medium for Molecular Detection of Respiratory Viruses: A Paired, Multi-Platform Comparison.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42306118",
+      "title": "Insights into parvovirus B19 clinical and virological dynamics among blood donors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42583853",
+      "title": "[Six-Years Human Parvovirus B19 Data from a University Hospital: Analysis of the Recent Increase in Case Numbers].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42618752",
+      "title": "Mapping Sub-National Respiratory Virus Circulation in Cambodia Using Metatranscriptomic Sequencing: A Multi-Center Hospital-Based Surveillance Study.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694003"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "42515626",
+      "title": "Distinctive Inflammatory Traits of Parvovirus B19 Infection Associated with Persisting Autoimmunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "42402055",
+      "title": "Parvovirus B19 infection presenting as polyarthritis: a nationwide clinical and epidemiological study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B3?",
+      "cited_pmid": "42277060",
+      "title": "Transferrin receptor 1 binds human parvovirus B19 VP1u to facilitate entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
     }
   ],
   "false_negatives": [
@@ -316687,6 +316869,48 @@
       "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
       "missed_pmid": "2018048",
       "title": "Relative resistance of primary HIV-1 isolates to neutralization by soluble CD4."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42636844",
+      "title": "Profiling the dynamics of maternally acquired and infection-induced antibodies against influenza B in early childhood: a longitudinal paired mother-infant cohort study from southern China."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42539112",
+      "title": "Identifying the viral and epidemiological factors behind the apparent global extinction of influenza B/Yamagata."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "missed_pmid": "42660413",
+      "title": "Changes in respiratory virus seasonality across the COVID-19 pandemic: a multicenter comparative study in Leicester, Rotterdam, Hong Kong, and Christchurch."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "missed_pmid": "42668110",
+      "title": "Hybridoma-based generation of a functional IgM antibody targeting the 160-loop of influenza B virus haemagglutinin."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "missed_pmid": "42618752",
+      "title": "Mapping Sub-National Respiratory Virus Circulation in Cambodia Using Metatranscriptomic Sequencing: A Multi-Center Hospital-Based Surveillance Study."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza B virus?",
+      "missed_pmid": "42614555",
+      "title": "Development of a rapid, sensitive and visual reverse transcription recombinase-aided amplification coupled with lateral flow dipstick assay for influenza B virus detection."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Influenza B virus?",
+      "missed_pmid": "42574486",
+      "title": "Nucleocapsid-like cryo-EM structure of influenza B virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
