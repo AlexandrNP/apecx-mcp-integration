@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:48:53.595288+00:00",
-  "runs": 573,
+  "updated": "2026-09-28T02:50:24.923895+00:00",
+  "runs": 574,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26387,
+  "n_false_positives": 26396,
   "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 1
+    "false_positives": 9,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -297325,6 +297325,115 @@
       "title": "Evolutionary Changes in Tomato Yellow Leaf Curl Virus Associated with Widespread Ty-1 Use in Japan.",
       "actual_organisms": [
         "Tomato yellow leaf curl virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42799996",
+      "title": "Engineering a Non-Aphid-Transmissible Mild Mutant of Zucchini Yellow Mosaic Virus for Cross Protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y pathogenesis and transmission?",
+      "cited_pmid": "38399980",
+      "title": "Application of High-Throughput Sequencing for Comprehensive Virome Profiling in Grapevines Shows Yellows in Iran.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1343493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1381007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47985"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "38254661",
+      "title": "Predictive Modeling of Proteins Encoded by a Plant Virus Sheds a New Light on Their Structure and Inherent Multifunctionality.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "41011473",
+      "title": "Phylogenetic Analysis of Grapevine Fanleaf Virus, Grapevine Virus A, and Grapevine Leafroll-Associated Virus 3 in Kazakhstan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35288",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38404",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55951",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6231"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the clinical symptoms and disease presentation of Potato virus Y?",
+      "cited_pmid": "38509862",
+      "title": "Acquisition and transmission of Grapevine fanleaf virus (GFLV) by Xiphinema index and Xiphinema italiae (Longidoridae).",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_191822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46003",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6231"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Potato virus Y?",
+      "cited_pmid": "41284747",
+      "title": "The citrus tristeza virus p33 protein functions as a viroporin.",
+      "actual_organisms": [
+        "Citrus tristeza virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197911"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "cited_pmid": "42740702",
+      "title": "An atypical EF-hand domain containing resistance protein SRC4 boosts plant immunity in a calcium-enhanced manner.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12558"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Potato virus Y?",
+      "cited_pmid": "42739466",
+      "title": "Virome of the Russian Grapevine Germplasm: A Final Study and Summary.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3402117",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3402118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35288",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47985",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51617"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the genome organization and replication cycle of Citrus tristeza virus?",
+      "cited_pmid": "38254661",
+      "title": "Predictive Modeling of Proteins Encoded by a Plant Virus Sheds a New Light on Their Structure and Inherent Multifunctionality.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
