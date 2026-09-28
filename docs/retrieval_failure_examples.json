@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:54:06.173267+00:00",
-  "runs": 509,
+  "updated": "2026-09-28T00:55:58.130404+00:00",
+  "runs": 510,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25450,
+  "n_false_positives": 25471,
   "n_false_negatives": 5093,
   "new_this_run": {
-    "false_positives": 2,
+    "false_positives": 21,
     "false_negatives": 0
   },
   "false_positives": [
@@ -286730,6 +286730,255 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10912",
         "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Junin mammarenavirus?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Junin mammarenavirus?",
+      "cited_pmid": "42763584",
+      "title": "Comparative Sequence Analysis of the Envelope Gene of Kyasanur Forest Disease Virus Vaccine Strain With Currently Circulating Field Strains.",
+      "actual_organisms": [
+        "Kyasanur Forest disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42353151",
+      "title": "Omsk Hemorrhagic Fever Virus and Powassan Virus Infections at Different Times After Immunization with the TBE Vaccine in In Vivo Experiments.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "41600866",
+      "title": "Screening of the Pandemic Response Box Library Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "41394564",
+      "title": "Pandemic Response Box Screening Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "40572246",
+      "title": "Animal Models of Pathogenic New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42515600",
+      "title": "Cellular Responses to Flavivirus Infections: Stress Signaling at the Crossroads of Host Defense and Virus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40572246",
+      "title": "Animal Models of Pathogenic New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208897",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus pathogenesis and transmission?",
+      "cited_pmid": "37632047",
+      "title": "Zoonotic Hantaviridae with Global Public Health Significance.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Kyasanur Forest disease virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Kyasanur Forest disease virus?",
+      "cited_pmid": "42579986",
+      "title": "Detection of new world hantaviruses by a broadly reactive rRT-PCR assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052470",
+        "http://purl.obolibrary.org/obo/NCBITaxon_69294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Kyasanur Forest disease virus?",
+      "cited_pmid": "42515627",
+      "title": "Bundibugyo Virus Disease: Diagnostics and Medical Countermeasures for a Neglected Ebolavirus.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "42430523",
+      "title": "Clock-like behavior across Orthoebolavirus species suggests alternative evolution of the 2026 Bundibugyo virus outbreak.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052458",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "37549153",
+      "title": "Structural and functional characterization of the Sin Nombre virus L protein.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What antiviral drugs or treatments are effective against Kyasanur Forest disease virus?",
+      "cited_pmid": "40956084",
+      "title": "An orally available 4'-fluorouridine prodrug inhibits SFTSV and LCMV infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the epidemiology and outbreak history of Kyasanur Forest disease virus?",
+      "cited_pmid": "41115422",
+      "title": "Epidemiologic and Environmental Investigations of Reported Hantavirus Cases Inform Exposure Risk in California, 1993-2020.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Kyasanur Forest disease virus?",
+      "cited_pmid": "30020615",
+      "title": "Hantavirus Pulmonary Syndrome",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Kyasanur Forest disease virus?",
+      "cited_pmid": "40297185",
+      "title": "Atypical complication of western equine encephalitis: central hypoventilation syndrome.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Kyasanur Forest disease virus?",
+      "cited_pmid": "36851747",
+      "title": "Characterization of a Panel of Cross-Reactive Hantavirus Nucleocapsid Protein-Specific Monoclonal Antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052789"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Kyasanur Forest disease virus?",
+      "cited_pmid": "40284976",
+      "title": "Phylodynamic of Tomato Brown Rugose Fruit Virus and Tomato Chlorosis Virus, Two Emergent Viruses in Mixed Infections in Argentina.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428120",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3432872",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3710468",
+        "http://purl.obolibrary.org/obo/NCBITaxon_67754"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Kyasanur Forest disease virus?",
+      "cited_pmid": "39026800",
+      "title": "A Systematic Review of the Distribution and Prevalence of Viruses Detected in the Peromyscus maniculatus Species Complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
       ]
     }
   ],
