@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T06:34:12.804141+00:00",
-  "runs": 630,
+  "updated": "2026-09-28T06:44:35.292970+00:00",
+  "runs": 631,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26964,
+  "n_false_positives": 26968,
   "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 8,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -303697,6 +303697,45 @@
       "title": "Isolation and phylogenetic analysis of swinepox virus from pigs in China.",
       "actual_organisms": [
         "Swinepox virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42421318",
+      "title": "Transgene sequence codon optimization and composition determines replication competence of self-amplifying RNA.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
+      "cited_pmid": "42795526",
+      "title": "Differentiated LUHMES Cells as a Model to Investigate Neurotropic Arboviruses and Evaluate Host-Directed Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
