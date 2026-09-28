@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T09:24:25.516381+00:00",
-  "runs": 645,
+  "updated": "2026-09-28T09:34:12.329975+00:00",
+  "runs": 646,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27079,
-  "n_false_negatives": 5141,
+  "n_false_positives": 27081,
+  "n_false_negatives": 5143,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 0
+    "false_positives": 2,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -304973,6 +304973,28 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_198112",
         "http://purl.obolibrary.org/obo/NCBITaxon_92395"
       ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2014246",
+      "title": "Production of site-selected neutralizing human monoclonal antibodies against the third variable domain of the human immunodeficiency virus type 1 envelope glycoprotein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "42505242",
+      "title": "Equine infectious anemia virus Mat protein serves as a Tat cofactor to facilitate viral transcription.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -335821,6 +335843,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Cucumber mosaic virus?",
       "missed_pmid": "42761200",
       "title": "Metatranscriptomic profiling uncovers a distinctive pepper virome in tropical Indonesia."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human immunodeficiency virus 1?",
+      "missed_pmid": "40996032",
+      "title": "Influence of CCL2-mediated modulation of ALIX in the budding and replication of viruses from multiple families."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "missed_pmid": "40996032",
+      "title": "Influence of CCL2-mediated modulation of ALIX in the budding and replication of viruses from multiple families."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
