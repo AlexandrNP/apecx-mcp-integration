@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T07:34:10.639825+00:00",
-  "runs": 636,
+  "updated": "2026-09-28T07:44:21.765396+00:00",
+  "runs": 637,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27001,
-  "n_false_negatives": 5131,
+  "n_false_positives": 27007,
+  "n_false_negatives": 5133,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 0
+    "false_positives": 6,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -304091,6 +304091,82 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
         "http://purl.obolibrary.org/obo/NCBITaxon_945"
       ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "42354967",
+      "title": "Metagenomic Analysis Reveals Viral Diversity in Phlebotomine Sand Flies from Caribbean Region in Colombia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38568"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "42264207",
+      "title": "Surveillance of gastrointestinal viruses of free-ranging and rehabilitated Sea turtles in the United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "39690328",
+      "title": "Complete genome sequence of a novel iflavirus from wheat sawfly (Dolerus tritici).",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3350209"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "33523856",
+      "title": "Capsid opening enables genome release of iflaviruses.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "34407148",
+      "title": "Transovarial transmission of a core virome in the Chagas disease vector Rhodnius prolixus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1283210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1885571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5690"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "31834965",
+      "title": "Contrasting impacts of a novel specialist vector on multihost viral pathogen epidemiology in wild and managed bees.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
     }
   ],
   "false_negatives": [
@@ -334879,6 +334955,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
       "missed_pmid": "42593124",
       "title": "Monoclonal antibodies target conserved S1B epitopes across deltacoronaviruses to inhibit porcine deltacoronavirus infection."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "missed_pmid": "31834965",
+      "title": "Contrasting impacts of a novel specialist vector on multihost viral pathogen epidemiology in wild and managed bees."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
+      "missed_pmid": "33808848",
+      "title": "Detection of Lotmaria passim, Crithidia mellificae and Replicative Forms of Deformed Wing Virus and Kashmir Bee Virus in the Small Hive Beetle (Aethina tumida)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
