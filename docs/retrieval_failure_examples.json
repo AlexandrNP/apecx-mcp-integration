@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:26:02.859508+00:00",
-  "runs": 495,
+  "updated": "2026-09-28T00:27:47.521627+00:00",
+  "runs": 496,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25265,
-  "n_false_negatives": 5046,
+  "n_false_positives": 25277,
+  "n_false_negatives": 5053,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 3
+    "false_positives": 12,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -284668,6 +284668,144 @@
       "actual_organisms": [
         "Chelonid herpesvirus 5"
       ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is known about Bundibugyo ebolavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42490486",
+      "title": "Ebola's rapid spread spurs new drug and vaccine trials.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Bundibugyo ebolavirus?",
+      "cited_pmid": "34464933",
+      "title": "Therapeutics development for Ebola virus disease: A recent scenario.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What are the clinical symptoms and disease presentation of Bundibugyo ebolavirus?",
+      "cited_pmid": "31806422",
+      "title": "Ebola virus disease: An emerging and re-emerging viral threat.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bundibugyo ebolavirus?",
+      "cited_pmid": "33734027",
+      "title": "Pathogenicity and Virulence of Ebolaviruses with Species- and Variant-specificity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30107445",
+      "title": "Pan-Filovirus Serum Neutralizing Antibodies in a Subset of Congolese Ebolavirus Infection Survivors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus pathogenesis and transmission?",
+      "cited_pmid": "33734027",
+      "title": "Pathogenicity and Virulence of Ebolaviruses with Species- and Variant-specificity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "cited_pmid": "42515627",
+      "title": "Bundibugyo Virus Disease: Diagnostics and Medical Countermeasures for a Neglected Ebolavirus.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "cited_pmid": "30904708",
+      "title": "Development, validation and clinical evaluation of a broad-range pan-filovirus RT-qPCR.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the genome organization and replication cycle of Tai Forest ebolavirus?",
+      "cited_pmid": "42430523",
+      "title": "Clock-like behavior across Orthoebolavirus species suggests alternative evolution of the 2026 Bundibugyo virus outbreak.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052458",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the genome organization and replication cycle of Tai Forest ebolavirus?",
+      "cited_pmid": "31398316",
+      "title": "Magnus representation of genome sequences.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Tai Forest ebolavirus?",
+      "cited_pmid": "34464933",
+      "title": "Therapeutics development for Ebola virus disease: A recent scenario.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Tai Forest ebolavirus?",
+      "cited_pmid": "42490486",
+      "title": "Ebola's rapid spread spurs new drug and vaccine trials.",
+      "actual_organisms": [
+        "unknown"
+      ]
     }
   ],
   "false_negatives": [
@@ -314946,6 +315084,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Soft-shelled turtle iridovirus?",
       "missed_pmid": "20399233",
       "title": "A double antibody sandwich enzyme-linked immunosorbent assay for detection of soft-shelled turtle iridovirus antigens."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Bundibugyo ebolavirus?",
+      "missed_pmid": "42383297",
+      "title": "Editorial: The WHO Identifies Ebola Disease Due to Bundibugyo Virus as a Public Health Emergency of International Concern (PHEIC) as Vaccine Development Accelerates."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Bundibugyo ebolavirus?",
+      "missed_pmid": "42434018",
+      "title": "The 2026 Bundibugyo virus disease outbreak in the Democratic Republic of the Congo: Virology, epidemiology, continental response, and research priorities."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bundibugyo ebolavirus?",
+      "missed_pmid": "30717492",
+      "title": "Filovirus Virulence in Interferon \u03b1/\u03b2 and \u03b3 Double Knockout Mice, and Treatment with Favipiravir."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "How does Bundibugyo ebolavirus evade or modulate the host immune response?",
+      "missed_pmid": "42779995",
+      "title": "Mapping First In Vivo Ebolavirus Infection Events."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34529963",
+      "title": "Safety and long-term immunogenicity of the two-dose heterologous Ad26.ZEBOV and MVA-BN-Filo Ebola vaccine regimen in adults in Sierra Leone: a combined open-label, non-randomised stage 1, and a randomised, double-blind, controlled stage 2 trial."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "missed_pmid": "34372594",
+      "title": "STAT-1 Knockout Mice as a Model for Wild-Type Sudan Virus (SUDV)."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Tai Forest ebolavirus?",
+      "missed_pmid": "33494199",
+      "title": "Ta\u00ef Forest Virus Does Not Cause Lethal Disease in Ferrets."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
