@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:13:56.060272+00:00",
-  "runs": 551,
+  "updated": "2026-09-28T02:15:28.296891+00:00",
+  "runs": 552,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26090,
+  "n_false_positives": 26094,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 20,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -293888,6 +293888,52 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_291484",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
         "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "42622352",
+      "title": "EXPRESS: Agreement between point-of-care and external reference laboratory RT-qPCR testing for feline coronavirus in cats with suspected feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus OC43?",
+      "cited_pmid": "42167496",
+      "title": "Symptomatology of SARS-CoV-2 versus seasonal coronavirus infection in healthy young children.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42607444",
+      "title": "Rabeprazole exhibits broad-spectrum fusion inhibition against Nipah pseudovirus and authentic HCoV-OC43 and RSV.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11137",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
       ]
     }
   ],
