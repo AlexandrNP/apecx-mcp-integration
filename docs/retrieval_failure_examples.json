@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:42:37.189822+00:00",
-  "runs": 569,
+  "updated": "2026-09-28T02:44:07.587821+00:00",
+  "runs": 570,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26368,
+  "n_false_positives": 26370,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 2,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297115,6 +297115,26 @@
       "actual_organisms": [
         "Lymphocytic choriomeningitis mammarenavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "42507627",
+      "title": "Recurrent Ischemic Strokes Caused by HSV-2-Associated Cerebral Vasculitis in Antisynthetase Syndrome.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mumps orthorubulavirus?",
+      "cited_pmid": "42637770",
+      "title": "A dual-receptor checkpoint primes enterovirus D68 for respiratory cell entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
     }
   ],
