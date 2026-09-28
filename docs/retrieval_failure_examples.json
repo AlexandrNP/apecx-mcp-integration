@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T21:04:12.538995+00:00",
-  "runs": 697,
+  "updated": "2026-09-28T21:34:04.847673+00:00",
+  "runs": 698,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27667,
+  "n_false_positives": 27678,
   "n_false_negatives": 5169,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 11,
     "false_negatives": 0
   },
   "false_positives": [
@@ -311628,6 +311628,129 @@
         "Venezuelan equine encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11019",
         "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "Chapare mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ebola virus?",
+      "cited_pmid": "40751015",
+      "title": "Metal-induced conformational changes in the Sabi\u00e1 virus spike complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ebola virus?",
+      "cited_pmid": "21798050",
+      "title": "Molecular evolution of Azagny virus, a newfound hantavirus harbored by the West African pygmy shrew (Crocidura obscurior) in C\u00f4te d'Ivoire.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1001081",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_425088",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ebola virus?",
+      "cited_pmid": "41719382",
+      "title": "Genomic characterization of Sabi\u00e1 virus in Brazil, 2019-2020: Implications for diagnostics, virus evolution, and receptor binding.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is known about Thottapalayam orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29879985",
+      "title": "Description and characterization of a novel live-attenuated tri-segmented Machupo virus in Guinea pigs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Thottapalayam orthohantavirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Thottapalayam orthohantavirus?",
+      "cited_pmid": "38575867",
+      "title": "A review of emerging health threats from zoonotic New World mammarenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Thottapalayam orthohantavirus?",
+      "cited_pmid": "40751015",
+      "title": "Metal-induced conformational changes in the Sabi\u00e1 virus spike complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Thottapalayam orthohantavirus?",
+      "cited_pmid": "42079147",
+      "title": "CD164 is an endolysomal host factor for entry of Clade A New World Arenaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chapare mammarenavirus?",
+      "cited_pmid": "24874196",
+      "title": "Biodiversity and evolution of Imjin virus and Thottapalayam virus in Crocidurinae shrews in Zhejiang Province, China.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chapare mammarenavirus?",
+      "cited_pmid": "21896819",
+      "title": "Short report: Genetic diversity of Thottapalayam virus, a Hantavirus harbored by the Asian house shrew (Suncus murinus) in Nepal.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
