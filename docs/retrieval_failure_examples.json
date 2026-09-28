@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T16:04:07.395508+00:00",
-  "runs": 677,
+  "updated": "2026-09-28T16:16:27.819047+00:00",
+  "runs": 678,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27396,
+  "n_false_positives": 27404,
   "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 29,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -308610,6 +308610,87 @@
       "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
       "actual_organisms": [
         "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42742532",
+      "title": "Use of Dried Blood Spots for Identifying Hepatitis E Infections in an Outbreak Setting.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42687974",
+      "title": "Cross-border introduction risk of Rift Valley fever virus: surveillance evidence from intercepted livestock in southwestern Saudi Arabia.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42782151",
+      "title": "Rift Valley fever virus virulence factor NSs targets ATF4- and XBP1-driven unfolded protein response.",
+      "actual_organisms": [
+        "Rift Valley fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052225"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the epidemiology and outbreak history of Yellow fever virus?",
+      "cited_pmid": "42797909",
+      "title": "Rift Valley Fever at Europe's Risk Frontier: Climate, Vectors, and One Health Preparedness.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2911439"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42714273",
+      "title": "BTX-A51 treatment modulates host innate immune responses via NF-\u03baB and \u03b2-catenin signaling during Rift Valley fever virus infection in vitro.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis E virus?",
+      "cited_pmid": "42796659",
+      "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
