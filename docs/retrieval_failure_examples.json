@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:19:24.922393+00:00",
-  "runs": 522,
+  "updated": "2026-09-28T01:21:05.347566+00:00",
+  "runs": 523,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25658,
-  "n_false_negatives": 5104,
+  "n_false_positives": 25689,
+  "n_false_negatives": 5106,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 0
+    "false_positives": 31,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -289065,6 +289065,396 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "cited_pmid": "41537597",
+      "title": "Impact of mutations affecting 4'-fluorouridine susceptibility on fitness and treatment outcomes for Venezuelan equine encephalitis virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40890032",
+      "title": "Development of in vitro and in vivo neutralization assays for New World alphaviruses based on the VSV pseudovirus system.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41032627",
+      "title": "An inactivated trivalent virion-based vaccine protects against aerosol challenge with encephalitic alphaviruses in mice and macaques.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39671029",
+      "title": "Ultracentrifugation Purification of Cache Valley Virus Using Iodixanol.",
+      "actual_organisms": [
+        "Cache Valley virus"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "40439544",
+      "title": "A One Health Approach to Investigating Cache Valley Virus, Arkansas, USA, July 20231.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "42368258",
+      "title": "Mechanistic mathematical model of the in vitro infection dynamics of Bunyamwera and Batai viruses including MOI-dependent shortening of the eclipse phase.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "41537597",
+      "title": "Impact of mutations affecting 4'-fluorouridine susceptibility on fitness and treatment outcomes for Venezuelan equine encephalitis virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "42146327",
+      "title": "Molnupiravir Treatment Associated With Clearance of Cache Valley Virus From Cerebrospinal Fluid in an Immunocompromised Child With Meningoencephalitis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "41480662",
+      "title": "Epidemiological indicators of accidental laboratory-origin outbreaks.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the clinical symptoms and disease presentation of Rocio virus?",
+      "cited_pmid": "39503743",
+      "title": "Preliminary evidence that Bunyamwera virus causes severe disease characterized by systemic vascular and multiorgan necrosis in an immunocompromised mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "42520941",
+      "title": "Identification of specific host cell potassium ion channels that mediate escape of bunyamwera virus from late endosome compartments.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "41950307",
+      "title": "Design of a neutralizing and protective pan-encephalitic alphavirus receptor decoy protein.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "42585262",
+      "title": "Spatial dynamics of viral replication drive biphasic lymphoid activation and systemic alphavirus immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "39772143",
+      "title": "Innate Immune Response Against Batai Virus, Bunyamwera Virus, and Their Reassortants.",
+      "actual_organisms": [
+        "Batai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052384"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "41849539",
+      "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "41305528",
+      "title": "Seroprevalence of Arboviruses and Genetic Characterization of Orbiviruses in Sloths from Western Panama.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40052"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40890032",
+      "title": "Development of in vitro and in vivo neutralization assays for New World alphaviruses based on the VSV pseudovirus system.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41032627",
+      "title": "An inactivated trivalent virion-based vaccine protects against aerosol challenge with encephalitic alphaviruses in mice and macaques.",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genome organization and replication cycle of Batai virus?",
+      "cited_pmid": "39303014",
+      "title": "Promotion of order Bunyavirales to class Bunyaviricetes to accommodate a rapidly increasing number of related polyploviricotine viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151839"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "39348391",
+      "title": "N4-Hydroxycytidine/molnupiravir inhibits RNA virus-induced encephalitis by producing less fit mutated viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "39503743",
+      "title": "Preliminary evidence that Bunyamwera virus causes severe disease characterized by systemic vascular and multiorgan necrosis in an immunocompromised mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Batai virus?",
+      "cited_pmid": "39890788",
+      "title": "NSm is a critical determinant for bunyavirus transmission between vertebrate and mosquito hosts.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Batai virus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052384"
+      ]
     }
   ],
   "false_negatives": [
@@ -319691,6 +320081,18 @@
       "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
       "missed_pmid": "42435459",
       "title": "Significance of Epstein-Barr Virus and Human Papillomavirus type 16 in the development of pleomorphic adenomas of the salivary glands."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "missed_pmid": "38750581",
+      "title": "Evaluation of the vector competence for Batai virus of native Culex and exotic Aedes species in Central Europe."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "missed_pmid": "39144073",
+      "title": "Molecular and serological investigations of Batai virus in cattle and goats in the border area of Yunnan, China (2021-2022)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
