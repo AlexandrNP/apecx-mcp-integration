@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T07:07:50.043633+00:00",
-  "runs": 633,
+  "updated": "2026-09-28T07:14:13.982688+00:00",
+  "runs": 634,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26989,
-  "n_false_negatives": 5130,
+  "n_false_positives": 26990,
+  "n_false_negatives": 5131,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 0
+    "false_positives": 1,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -303966,6 +303966,16 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_246878",
         "http://purl.obolibrary.org/obo/NCBITaxon_764599"
       ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
+      "cited_pmid": "42693188",
+      "title": "Global transmission pathways and adaptive molecular evolution of avian infectious bronchitis GI-23 (Variant 2).",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -334748,6 +334758,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Feline herpesvirus 1?",
       "missed_pmid": "42253332",
       "title": "Epidemiology, Phylogenetic Divergence, and Differential Pathogenicity of Feline Respiratory Mycoplasma in China."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
+      "missed_pmid": "42593124",
+      "title": "Monoclonal antibodies target conserved S1B epitopes across deltacoronaviruses to inhibit porcine deltacoronavirus infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
