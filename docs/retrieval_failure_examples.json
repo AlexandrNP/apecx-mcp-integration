@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T14:54:22.936418+00:00",
-  "runs": 671,
+  "updated": "2026-09-28T15:14:06.078147+00:00",
+  "runs": 672,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27325,
+  "n_false_positives": 27336,
   "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 29,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -307776,6 +307776,141 @@
       "actual_organisms": [
         "Murray Valley encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42204262",
+      "title": "Screening of a potential coxsackievirus B4 vaccine strain through analysis of biological features.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "42302993",
+      "title": "Prolonged cholestasis following severe neonatal echovirus 11 (genotype D5, new lineage 1) infection diagnosed by serum detection.",
+      "actual_organisms": [
+        "Echovirus 11"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42204262",
+      "title": "Screening of a potential coxsackievirus B4 vaccine strain through analysis of biological features.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42302993",
+      "title": "Prolonged cholestasis following severe neonatal echovirus 11 (genotype D5, new lineage 1) infection diagnosed by serum detection.",
+      "actual_organisms": [
+        "Echovirus 11"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41471867",
+      "title": "Unraveling the Potential Antiviral Activity of Isoxazoline-Carbocyclic Monophosphate Nucleotides Against Echovirus 11.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12074"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "41410465",
+      "title": "Environmental surveillance reveals enterovirus diversity in Jinan, China: detection of types D68, A71, A76, B88, A90, and C99.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1295563",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "34668744",
+      "title": "Eptesicus fuscus Orthorubulavirus, a Close Relative of Human Parainfluenza Virus 4, Discovered in a Bat in South Dakota.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1300978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2884705",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 11?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
       ]
     }
   ],
