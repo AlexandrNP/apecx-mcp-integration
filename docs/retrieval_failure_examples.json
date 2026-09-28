@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:32:03.054659+00:00",
-  "runs": 562,
+  "updated": "2026-09-28T02:33:34.780010+00:00",
+  "runs": 563,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26268,
+  "n_false_positives": 26283,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 16,
+    "false_positives": 15,
     "false_negatives": 0
   },
   "false_positives": [
@@ -295935,6 +295935,188 @@
       "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
       "actual_organisms": [
         "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "41811867",
+      "title": "A clinical SARS-CoV-2 Mpro inhibitor blocks replication of multiple enteroviruses and confers oral in vivo protection in animal models.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "41705593",
+      "title": "The Common Immune Responses Differences from Transcriptomic Profiling in Cardiomyocytes upon Coxsackievirus B5 and Echovirus 6 Infection.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 1?",
+      "cited_pmid": "42375050",
+      "title": "Clinico-etiological Profiles and Immediate Outcome of Hand-Foot-and-Mouth Disease attending in a Tertiary Care Hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757784",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42528137",
+      "title": "Capless self-amplifying mRNA vaccine induces dose-sparing protective immunity against HPAI clade 2.3.4.4 H5 virus in mice.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_102793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "40966750",
+      "title": "Neonatal Enterovirus and Parechovirus Infections: National Enterovirus Surveillance System, United States, 2004-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "How does Coxsackievirus B5 evade or modulate the host immune response?",
+      "cited_pmid": "42391313",
+      "title": "RNF31 restricts EV-A71 replication through innate immune activation and VP4 degradation, and is antagonized by viral 3C proteases.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
       ]
     }
   ],
