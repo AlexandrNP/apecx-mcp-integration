@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T20:14:05.223192+00:00",
-  "runs": 695,
+  "updated": "2026-09-28T20:15:42.731392+00:00",
+  "runs": 696,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27648,
-  "n_false_negatives": 5168,
+  "n_false_positives": 27658,
+  "n_false_negatives": 5169,
   "new_this_run": {
-    "false_positives": 21,
+    "false_positives": 10,
     "false_negatives": 1
   },
   "false_positives": [
@@ -311423,6 +311423,112 @@
         "Japanese encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41613215",
+      "title": "Evaluating the effect of liver copper concentration on vaccine response in lightweight dairy-beef steers.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42663377",
+      "title": "A Novel Quantitative ELISA Demonstrates Lack of Correlation Between Serum HDV-RNA and Anti-HDV Antibody Levels in Chronic HDV Infection.",
+      "actual_organisms": [
+        "Hepatitis delta virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "42784526",
+      "title": "Hepatitis A Outbreak Associated with Cuba - Florida, June 2024-February 2026.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "42721393",
+      "title": "Hospitalized Hepatitis A Cases in Jordan: A 10-Year Retrospective Comparison Between Pediatric and Adult Populations.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepacivirus hominis?",
+      "cited_pmid": "42678147",
+      "title": "Natural immune escape mutations in the envelope proteins of hepatitis B virus (HBV) regulate the assembly and infectivity of human hepatitis delta virus (HDV).",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "41952167",
+      "title": "Cross-protective immunity elicited by heterologous DNA prime/subunit or adenovirus boost regimens against bovine viral diarrhea virus.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "15617334",
+      "title": "[Variation in hepatitis C virus NS 5b nucleotide sequence and its relationship with interferon treatment].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis delta virus?",
+      "cited_pmid": "15617253",
+      "title": "[The establishment of antigen sandwiched ELISA for detection of total antibodies to hepatitis C virus].",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis delta virus?",
+      "cited_pmid": "15617329",
+      "title": "[Core protein of hepatitis C virus expressed in transgenic mice is associated with the expression of Fas molecule].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis delta virus?",
+      "cited_pmid": "42357609",
+      "title": "Genetic Evolutionary Analysis and Characterization of Bovine Viral Diarrhea Virus in Gansu Province, China.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
     }
   ],
   "false_negatives": [
@@ -342433,6 +342539,12 @@
       "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
       "missed_pmid": "42803205",
       "title": "Evidence of Japanese Encephalitis Virus Exposure in Feral Pig Populations in North Queensland, Australia."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "missed_pmid": "42770071",
+      "title": "Insights from strengthening perinatal hepatitis b prevention in healthcare facilities in Delta State, Nigeria: A prospective, pilot implementation intervention."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
