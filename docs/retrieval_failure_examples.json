@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:27:47.521627+00:00",
-  "runs": 496,
+  "updated": "2026-09-28T00:29:48.535648+00:00",
+  "runs": 497,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25277,
+  "n_false_positives": 25296,
   "n_false_negatives": 5053,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 7
+    "false_positives": 19,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -284805,6 +284805,217 @@
       "title": "Ebola's rapid spread spurs new drug and vaccine trials.",
       "actual_organisms": [
         "unknown"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "41945968",
+      "title": "Bioinformatics Analysis Reveals Distinct Oncogenic Profiles of HPV-16 and HPT-18 to Other Subtypes in Cervical Cancer.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "42057021",
+      "title": "Absence of high-risk human papillomavirus in breast cancer tissues from young BRCA1/BRCA2-negative women.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "42055520",
+      "title": "\"HPV 16/18 E6 DNA and mRNA expression in gross cervical lesions: A hospital based cross-sectional study from Sikkim, India\".",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "42603391",
+      "title": "Conserved host-exclusive oligonucleotide motifs enriched in pathogenic genes of human oncogenic viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 18?",
+      "cited_pmid": "42140079",
+      "title": "Risk of HSIL/CIN2+ Lesions in Women with Negative Cytology and High-Risk HPV Referred to Colposcopy: Experience in a Population-Based Screening Program.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "42417944",
+      "title": "Virus infections and cancers: from mechanisms to therapeutics.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "42315907",
+      "title": "Beyond oncogenesis: the unexplored benefits of viruses in cancer immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3436869",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "40733622",
+      "title": "Non-Coding RNAs and Immune Evasion in Human Gamma-Herpesviruses.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "41964415",
+      "title": "Beyond HPV-16 and 18: Clinical Significance of HPV-58 and 59 in Cervical Abnormalities in Northeast India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42163577",
+      "title": "Memory Cell and Antibody Responses Following a Single Versus Two Doses of Escherichia coli-Produced Vaccine Against Human Papillomavirus Types 16 and 18: A Real-World Study in Chinese Girls.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "42655700",
+      "title": "Experiences from Two Decades of HTLV-1/2 Testing in a Low-Prevalence Area in Southern Germany, 2004 to 2024.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11909",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "cited_pmid": "42603391",
+      "title": "Conserved host-exclusive oligonucleotide motifs enriched in pathogenic genes of human oncogenic viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What are the clinical symptoms and disease presentation of Human gammaherpesvirus 8?",
+      "cited_pmid": "42348426",
+      "title": "Asymptomatic is not silent: proposal of HTLV-1-associated multiple inflammatory disorder as an early neuroinflammatory state.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What are the clinical symptoms and disease presentation of Human gammaherpesvirus 8?",
+      "cited_pmid": "42365921",
+      "title": "Dolutegravir improves physical health-related quality of life in adults with HTLV-1 infection: A randomized controlled trial.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "42548947",
+      "title": "Phylogenetic and Mutational Analysis of the Tax Gene in the Human T-Lymphotropic Virus 1 (HTLV-1) in Three Provinces of Iran.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "42713834",
+      "title": "Molecular Epidemiology and Phylogenetic Analysis of HTLV-1 in HIV-1-infected Patients in Tehran, Iran.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "40698955",
+      "title": "A new era in gammaherpesvirus transcriptomics: high-resolution profiling and model development.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "39772181",
+      "title": "Rewriting Viral Fate: Epigenetic and Transcriptional Dynamics in KSHV Infection.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against Merkel cell polyomavirus?",
+      "cited_pmid": "40767544",
+      "title": "Novel Cereblon-Binding Immunomodulators Have Increased Potency Against Gammaherpesvirus- Associated Lymphomas In Vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
       ]
     }
   ],
