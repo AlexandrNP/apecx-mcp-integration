@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T07:14:13.982688+00:00",
-  "runs": 634,
+  "updated": "2026-09-28T07:24:10.433619+00:00",
+  "runs": 635,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26990,
+  "n_false_positives": 26996,
   "n_false_negatives": 5131,
   "new_this_run": {
-    "false_positives": 1,
-    "false_negatives": 1
+    "false_positives": 6,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -303975,6 +303975,71 @@
       "actual_organisms": [
         "Avian infectious bronchitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What diagnostic assays or laboratory tests detect Channel catfish virus?",
+      "cited_pmid": "42655647",
+      "title": "Single-Tube Reverse Transcription-Loop-Mediated Isothermal Amplification Assay for Rapid Detection of Red-Spotted Grouper Nervous Necrosis Virus in Fish Species.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1549864",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Channel catfish virus?",
+      "cited_pmid": "42191407",
+      "title": "The first detection of infectious hematopoietic necrosis virus (IHNV) genogroup U in western Europe in the first IHNV outbreak in Finland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "42530281",
+      "title": "Development of an RPA-CRISPR/Cas12a-Based Assay for Sensitive and Visual Detection of Channel Catfish Calicivirus (ChCV).",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3462320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_635",
+        "http://purl.obolibrary.org/obo/NCBITaxon_642",
+        "http://purl.obolibrary.org/obo/NCBITaxon_644"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42112768",
+      "title": "A Robust Defense Against IPNV and VHSV by Designing Revolutionary Multi-Epitope Vaccine Utilizing Immunoinformatics Approaches.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83333"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Nervous necrosis virus?",
+      "cited_pmid": "42191407",
+      "title": "The first detection of infectious hematopoietic necrosis virus (IHNV) genogroup U in western Europe in the first IHNV outbreak in Finland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Nervous necrosis virus?",
+      "cited_pmid": "42668364",
+      "title": "Placentitis and abortion caused by canine distemper virus in a Linnaeus's two-toed sloth.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
       ]
     }
   ],
