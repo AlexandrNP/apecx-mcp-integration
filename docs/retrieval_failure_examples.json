@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T04:28:57.473469+00:00",
-  "runs": 618,
+  "updated": "2026-09-28T04:34:34.878820+00:00",
+  "runs": 619,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26836,
+  "n_false_positives": 26840,
   "n_false_negatives": 5125,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -302294,6 +302294,49 @@
       "actual_organisms": [
         "Canine distemper virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11234"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What is the genome organization and replication cycle of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "40279155",
+      "title": "A high frequency of detection of koala retrovirus fragments in Victorian koalas suggests historic integration of KoRV.",
+      "actual_organisms": [
+        "Koala retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What is the epidemiology and outbreak history of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "42437983",
+      "title": "Epidemiological survey of bovine leukemia virus in beef cattle in the Tohoku region of Japan.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "38440982",
+      "title": "FeLIX is a restriction factor for mammalian retrovirus infection.",
+      "actual_organisms": [
+        "Koala retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "39764129",
+      "title": "The Trajectory of KoRV-A Evolution Indicates Initial Integration into the Koala Germline Genome Near Coffs Harbour.",
+      "actual_organisms": [
+        "unknown"
       ]
     }
   ],
