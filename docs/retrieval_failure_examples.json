@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T08:14:12.829986+00:00",
-  "runs": 639,
+  "updated": "2026-09-28T08:24:21.864875+00:00",
+  "runs": 640,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27027,
-  "n_false_negatives": 5135,
+  "n_false_positives": 27029,
+  "n_false_negatives": 5137,
   "new_this_run": {
-    "false_positives": 5,
+    "false_positives": 2,
     "false_negatives": 2
   },
   "false_positives": [
@@ -304388,6 +304388,27 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_294365"
       ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Feline leukemia virus?",
+      "cited_pmid": "39175839",
+      "title": "GALV-KoRV-related retroviruses in diverse Australian and African rodent species.",
+      "actual_organisms": [
+        "Gibbon ape leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_394239"
+      ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mouse mammary tumor virus?",
+      "cited_pmid": "42800592",
+      "title": "Comparison of integration sites of bovine leukemia virus-induced lymphoma between blood and lymphoma tissues using a high-density BLV-proviral capture sequencing method.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -335200,6 +335221,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Acute bee paralysis virus?",
       "missed_pmid": "37531005",
       "title": "Exploring viral infections in honey bee colonies: insights from a metagenomic study in southern Brazil."
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Gibbon ape leukemia virus?",
+      "missed_pmid": "36343471",
+      "title": "Ecotropic HIV-1 vectors pseudotyped with R-peptide-deleted envelope protein variants reveal improved gene transfer efficiencies."
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "How does Gibbon ape leukemia virus evade or modulate the host immune response?",
+      "missed_pmid": "41281711",
+      "title": "SLC20A1 knockout to stably express a fusogenic gibbon ape leukemia virus envelope glycoprotein for lentiviral vector production."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
