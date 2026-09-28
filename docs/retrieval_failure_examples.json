@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T13:14:14.678667+00:00",
-  "runs": 664,
+  "updated": "2026-09-28T13:24:13.978732+00:00",
+  "runs": 665,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27254,
+  "n_false_positives": 27257,
   "n_false_negatives": 5155,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 3,
     "false_negatives": 0
   },
   "false_positives": [
@@ -306944,6 +306944,40 @@
       "title": "Reconstructing the molecular epidemiology of rabies in Switzerland from outbreak to elimination (1967-97).",
       "actual_organisms": [
         "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42488409",
+      "title": "t-PA/PAI-1 complex expression correlates with the severity in hantaan virus-induced hemorrhagic fever with renal syndrome.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
