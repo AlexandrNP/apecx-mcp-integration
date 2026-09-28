@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:05:43.418308+00:00",
-  "runs": 546,
+  "updated": "2026-09-28T02:07:26.846544+00:00",
+  "runs": 547,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26021,
+  "n_false_positives": 26026,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 5,
     "false_negatives": 0
   },
   "false_positives": [
@@ -293124,6 +293124,61 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31704",
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41987248",
+      "title": "Multivalent Disabled Infectious Single Animal (DISA)-DIVA vaccine for all nine serotypes of African horse sickness virus (AHSV) is broadly protective in IFNAR (-/-) mice.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "41653013",
+      "title": "Enhancing African horse sickness virus detection: comparing and adapting PCR assays.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mammalian orthoreovirus?",
+      "cited_pmid": "42387563",
+      "title": "Unveiling the clinical signs and pathology in red deer (Cervus elaphus) naturally infected with epizootic haemorrhagic disease virus serotype 8.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431252",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mammalian orthoreovirus?",
+      "cited_pmid": "42401561",
+      "title": "Cryo-EM structure of African horse sickness virus VP2 receptor-binding protein enables nanoparticle vaccine design.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mammalian orthoreovirus?",
+      "cited_pmid": "42064442",
+      "title": "Surveillance of Zoonotic Pathogens and Taxonomic Identification of Non-volant Small Mammals in Peninsular Malaysia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11052",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_538123"
       ]
     }
   ],
