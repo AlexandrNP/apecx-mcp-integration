@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:52:39.708541+00:00",
-  "runs": 611,
+  "updated": "2026-09-28T03:54:39.314389+00:00",
+  "runs": 612,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26800,
+  "n_false_positives": 26801,
   "n_false_negatives": 5124,
   "new_this_run": {
-    "false_positives": 6,
+    "false_positives": 1,
     "false_negatives": 0
   },
   "false_positives": [
@@ -301893,6 +301893,15 @@
         "Coxsackievirus A16",
         "http://purl.obolibrary.org/obo/NCBITaxon_10090",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "42662932",
+      "title": "Fatal Echovirus 11 Hepatitis in an Immunocompromised Adult Associated With Lineage 1.",
+      "actual_organisms": [
+        "Echovirus 11"
       ]
     }
   ],
