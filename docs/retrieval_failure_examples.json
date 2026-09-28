@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T04:15:55.871265+00:00",
-  "runs": 616,
+  "updated": "2026-09-28T04:25:52.210916+00:00",
+  "runs": 617,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26833,
+  "n_false_positives": 26835,
   "n_false_negatives": 5125,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 2,
     "false_negatives": 0
   },
   "false_positives": [
@@ -302262,6 +302262,28 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10912",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Watermelon mosaic virus?",
+      "cited_pmid": "41538379",
+      "title": "Improved Diagnostic Tools to Reliably Detect Modern Wheat Mosaic Virus Isolates.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Watermelon mosaic virus?",
+      "cited_pmid": "39162474",
+      "title": "Geminivirus C4/AC4 proteins hijack cellular COAT PROTEIN COMPLEX I for chloroplast targeting and viral infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10840"
       ]
     }
   ],
