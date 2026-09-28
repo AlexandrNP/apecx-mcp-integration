@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T06:24:02.809957+00:00",
-  "runs": 629,
+  "updated": "2026-09-28T06:34:12.804141+00:00",
+  "runs": 630,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26956,
+  "n_false_positives": 26964,
   "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 12,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -303605,6 +303605,98 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_190729",
         "http://purl.obolibrary.org/obo/NCBITaxon_1993641"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "cited_pmid": "35573979",
+      "title": "Pseudocowpox virus, a novel vector to enhance the therapeutic efficacy of antitumor vaccination.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_237639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What diagnostic assays or laboratory tests detect Tanapox virus?",
+      "cited_pmid": "27958202",
+      "title": "Genomic identification of human vaccinia virus keratoconjunctivitis and its importance as a laboratory-acquired infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the epidemiology and outbreak history of Tanapox virus?",
+      "cited_pmid": "35896345",
+      "title": "Possibility of mechanical transmission of parapoxvirus by houseflies (Musca domestica) on cattle and sheep farms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the clinical symptoms and disease presentation of Tanapox virus?",
+      "cited_pmid": "34239737",
+      "title": "Erythema Multiforme Induced by a \"Milker's Nodule\" Pseudocowpox Infection: A Case Report and Review of Literature.",
+      "actual_organisms": [
+        "Pseudocowpox virus"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tanapox virus?",
+      "cited_pmid": "34079832",
+      "title": "A Comparison of Parapoxviruses in North American Pinnipeds.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187984",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_299565"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tanapox virus?",
+      "cited_pmid": "41850851",
+      "title": "Genetic analysis of bovine papular stomatitis and pseudocowpox viruses circulating in Hokkaido, Japan's largest cattle-producing region.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Pseudocowpox virus?",
+      "cited_pmid": "38392343",
+      "title": "PoxiPred: An Artificial-Intelligence-Based Method for the Prediction of Potential Antigens and Epitopes to Accelerate Vaccine Development Efforts against Poxviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Pseudocowpox virus?",
+      "cited_pmid": "40653202",
+      "title": "Isolation and phylogenetic analysis of swinepox virus from pigs in China.",
+      "actual_organisms": [
+        "Swinepox virus"
       ]
     }
   ],
