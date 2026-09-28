@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T10:15:42.182321+00:00",
-  "runs": 650,
+  "updated": "2026-09-28T10:24:30.014861+00:00",
+  "runs": 651,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27134,
+  "n_false_positives": 27148,
   "n_false_negatives": 5149,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 3
+    "false_positives": 14,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -305601,6 +305601,150 @@
         "Epizootic hemorrhagic disease virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10469",
         "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "39547415",
+      "title": "Molecular epidemiology and pathogenicity of Wesselsbron virus circulating in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "32414152",
+      "title": "Early Pathogenesis of Wesselsbron Disease in Pregnant Ewes.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "34748816",
+      "title": "Rapid reverse transcriptase recombinase polymerase amplification assay for flaviviruses using non-infectious in vitro transcribed RNA as positive controls.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "36410326",
+      "title": "Phylogenetic Analysis of Wesselsbron Virus Isolated from Field-Captured Mosquitoes during a Rift Valley Fever Outbreak in Kabale District, Uganda-2016.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the epidemiology and outbreak history of Yellow fever virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42757803",
+      "title": "Preparation and evaluation of antisera for immunohistochemical detection of Zika virus in aldehyde-fixed tissues.",
+      "actual_organisms": [
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42752578",
+      "title": "A systematic review of ultrasound to predict severe disease in patients with dengue and other viral infections associated with hemorrhagic fevers.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Usutu virus?",
+      "cited_pmid": "42734801",
+      "title": "Analysis of Cell Populations from Arbovirus-Infected Tissues by Flow Cytometry.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "39547415",
+      "title": "Molecular epidemiology and pathogenicity of Wesselsbron virus circulating in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "36410326",
+      "title": "Phylogenetic Analysis of Wesselsbron Virus Isolated from Field-Captured Mosquitoes during a Rift Valley Fever Outbreak in Kabale District, Uganda-2016.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Usutu virus?",
+      "cited_pmid": "39530699",
+      "title": "Genotypic and phylogeographic insights into a pre-epidemic variant of Wesselsbron virus detected in sylvatic Aedes mcintoshi from Semuliki Forest, Uganda.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What diagnostic assays or laboratory tests detect Wesselsbron virus?",
+      "cited_pmid": "42604688",
+      "title": "A lateral flow microarray immunoassay to detect USUV NS1-specific antibodies in tissues of deceased blackbirds in the Netherlands.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What are the clinical symptoms and disease presentation of Wesselsbron virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
       ]
     }
   ],
