@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:19:12.201580+00:00",
-  "runs": 593,
+  "updated": "2026-09-28T03:20:38.930932+00:00",
+  "runs": 594,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26613,
-  "n_false_negatives": 5117,
+  "n_false_positives": 26633,
+  "n_false_negatives": 5118,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 0
+    "false_positives": 20,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -299841,6 +299841,219 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "cited_pmid": "37652482",
+      "title": "Detection of 14 High-risk Human Papillomavirus (HPV) Genotypes Within the Italian Cervical Cancer Screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
+      "cited_pmid": "41838940",
+      "title": "FABP5 Inhibitor Attenuates HPV11 Pseudovirion Infection by Reducing Lipid Droplet Formation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "37772799",
+      "title": "A rapid HPV typing assay to support global cervical cancer screening and risk-based management: A cross-sectional study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "42766580",
+      "title": "Phosphorylated HPV\u201116 E7 disrupts planar cell polarity in cervical cancer cells through vangl1 dysregulation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "41454963",
+      "title": "Codon usage bias of low-risk human papillomavirus types 6 and 11.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 11?",
+      "cited_pmid": "37064671",
+      "title": "High-risk HPV prevalence and genotype distribution among women in Liaocheng, Shandong Province, China from 2016 to 2022.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 11?",
+      "cited_pmid": "42766580",
+      "title": "Phosphorylated HPV\u201116 E7 disrupts planar cell polarity in cervical cancer cells through vangl1 dysregulation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "How does Human papillomavirus 11 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42670618",
+      "title": "Evidence for type replacement as a consequence of vaccination and implications for cervical screening.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "42474801",
+      "title": "Type-specific sensitivity versus detection breadth in HPV diagnostics: improved analytical detection of HPV16/18 by nested PCR.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "42233768",
+      "title": "Sublineage-Specific A45S Polymorphism Alters the Biological Function of the Human Papillomavirus 11 E7 Protein.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "41077352",
+      "title": "Comparative Analysis Reveals Recurrent Molecular Alterations in Low-Risk Human Papillomavirus 6 and Human Papillomavirus 11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333754"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 39?",
+      "cited_pmid": "38229145",
+      "title": "Epidemiology and genotypes analysis of human papillomavirus infection in Beijing, China.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 39?",
+      "cited_pmid": "42547256",
+      "title": "Giant anogenital condyloma acuminata with extragenital involvement in an immunocompetent host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 39?",
+      "cited_pmid": "42766580",
+      "title": "Phosphorylated HPV\u201116 E7 disrupts planar cell polarity in cervical cancer cells through vangl1 dysregulation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "How does Human papillomavirus type 39 evade or modulate the host immune response?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 39?",
+      "cited_pmid": "41454963",
+      "title": "Codon usage bias of low-risk human papillomavirus types 6 and 11.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -330545,6 +330758,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Canine herpesvirus 1?",
       "missed_pmid": "37979697",
       "title": "Novel high-coverage primers for detection of canine morbillivirus by end-point and real-time RT-PCR assays."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "42583443",
+      "title": "Molecular Characterization of Human Papilloma Virus in Carcinoma Cervix along with Screening of Risk Factors and their Regional Comparison."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
