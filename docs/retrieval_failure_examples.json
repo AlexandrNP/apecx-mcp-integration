@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T12:34:14.584446+00:00",
-  "runs": 660,
+  "updated": "2026-09-28T12:44:11.470320+00:00",
+  "runs": 661,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27208,
-  "n_false_negatives": 5152,
+  "n_false_positives": 27226,
+  "n_false_negatives": 5153,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 18,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -306439,6 +306439,195 @@
       "actual_organisms": [
         "Ross River virus"
       ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37221518",
+      "title": "Evaluation of immunogenicity of gene-deleted and subunit vaccines constructed against the emerging pseudorabies virus variants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "35132924",
+      "title": "Review of human pegivirus: Prevalence, transmission, pathogenesis, and clinical implication.",
+      "actual_organisms": [
+        "GB virus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1307799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "40857268",
+      "title": "Whole-Genome sequencing of Chikungunya Virus (CHIKV) from Pakistan: Detection of the East/Central/South African (ECSA) genotype during the 2024 outbreak in Mansehra.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42713301",
+      "title": "Reduction of immunosuppressants fails to clear hepatitis E virus infection in a heart transplant recipient.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42795685",
+      "title": "Hepatitis E Virus Infection in Pregnant Women.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42766967",
+      "title": "A decade of chronic hepatitis E treatment: Ribavirin effectiveness, safety, and the association of Torque Teno Virus load with treatment outcomes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_68887"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "42774552",
+      "title": "Seroprevalence of hepatitis E in blood donors in Santiago, Chile: a monocentric cross-sectional study.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "cited_pmid": "42770520",
+      "title": "Seroprevalence and Associated Factors of Hepatitis A Virus and Hepatitis E Virus Infection Among Blood Donors in Argentina: A Multicentre Study.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "35707535",
+      "title": "Human Pegivirus Type 1: A Common Human Virus That Is Beneficial in Immune-Mediated Disease?",
+      "actual_organisms": [
+        "GB virus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1758225",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3344850",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepacivirus hominis?",
+      "cited_pmid": "35229315",
+      "title": "Occurrence and molecular characterization of human pegivirus-1 (HPgV-1) viremia in healthy volunteer blood donors from Northern Portugal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1307799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C pathogenesis and transmission?",
+      "cited_pmid": "15617329",
+      "title": "[Core protein of hepatitis C virus expressed in transgenic mice is associated with the expression of Fas molecule].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the genome organization and replication cycle of GB virus C?",
+      "cited_pmid": "15617335",
+      "title": "[Cloning and sequencing of cDNA of E2/NS1 gene of hepatitis C virus].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the genome organization and replication cycle of GB virus C?",
+      "cited_pmid": "15617334",
+      "title": "[Variation in hepatitis C virus NS 5b nucleotide sequence and its relationship with interferon treatment].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What antiviral drugs or treatments are effective against GB virus C?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What antiviral drugs or treatments are effective against GB virus C?",
+      "cited_pmid": "15560064",
+      "title": "Treatment of HCV: approach to difficult cases.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the epidemiology and outbreak history of GB virus C?",
+      "cited_pmid": "15560060",
+      "title": "The natural history of chronic hepatitis C virus infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What are the clinical symptoms and disease presentation of GB virus C?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of GB virus C?",
+      "cited_pmid": "40857268",
+      "title": "Whole-Genome sequencing of Chikungunya Virus (CHIKV) from Pakistan: Detection of the East/Central/South African (ECSA) genotype during the 2024 outbreak in Mansehra.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
     }
   ],
   "false_negatives": [
@@ -337353,6 +337542,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Lassa mammarenavirus?",
       "missed_pmid": "41914886",
       "title": "Role of Src family kinases Fyn and Lyn in arenavirus infection."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35264187",
+      "title": "Clinical and molecular aspects of human pegiviruses in the interaction host and infectious agent."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
