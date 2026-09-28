@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:22:41.329484+00:00",
-  "runs": 493,
+  "updated": "2026-09-28T00:24:24.556129+00:00",
+  "runs": 494,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25245,
-  "n_false_negatives": 5039,
+  "n_false_positives": 25262,
+  "n_false_negatives": 5043,
   "new_this_run": {
-    "false_positives": 25,
+    "false_positives": 17,
     "false_negatives": 4
   },
   "false_positives": [
@@ -284442,6 +284442,202 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10271",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "40741558",
+      "title": "Prevalence of Mouse Mammary Tumor Virus-Like Virus in Breast Milk and Associated Factors of Exposure Among Healthy Nursing Women in Morocco.",
+      "actual_organisms": [
+        "Mouse mammary tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "40079583",
+      "title": "Intact, recombinant, and spliced forms of endogenous mouse mammary tumor viruses in inbred and wild mice.",
+      "actual_organisms": [
+        "Mouse mammary tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59303"
+      ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What diagnostic assays or laboratory tests detect Mouse mammary tumor virus?",
+      "cited_pmid": "41993518",
+      "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42379809",
+      "title": "Detection of lymphocytic choriomeningitis virus (LCMV) in the common house mice (Mus musculus) in Italy: an underrecognized threat to human health.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42108556",
+      "title": "Advances and perspectives in animal models of human hepatitis A virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671555",
+      "title": "H2-O deficiency in B cells or dendritic cells drives retrovirus-neutralizing antibody responses.",
+      "actual_organisms": [
+        "Mouse mammary tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1279"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42094426",
+      "title": "STAT1 expression in myeloid cells restrains murine norovirus-induced hepatitis and fibrosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42012961",
+      "title": "Hepatitis B virus covalently closed circular DNA formation in murine hepatic cells uncovers a late entry block.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "41993518",
+      "title": "Development and validation of two economical and flexible immunoassays for detecting antibodies against LCMV in mouse serum.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "40191085",
+      "title": "Evaluating the potential of anti-dsRNA antibodies as an alternative viral sensing tool in encephalitides of different species.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12455",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "41973312",
+      "title": "Ibudilast and dipyridamole ameliorate murine \u03b3-herpesvirus 68-induced acute hepatitis following airway infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42426565",
+      "title": "Serologic Evidence of Hantavirus Exposure in Humans, Italy, 2004-2018.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "How does Murine hepatitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42325094",
+      "title": "Crosstalk between CD8+ T cells and systemic bile acid metabolism shapes antiviral immunity and immunopathology.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42379809",
+      "title": "Detection of lymphocytic choriomeningitis virus (LCMV) in the common house mice (Mus musculus) in Italy: an underrecognized threat to human health.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "40079583",
+      "title": "Intact, recombinant, and spliced forms of endogenous mouse mammary tumor viruses in inbred and wild mice.",
+      "actual_organisms": [
+        "Mouse mammary tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59303"
+      ]
     }
   ],
   "false_negatives": [
@@ -314678,6 +314874,30 @@
       "question": "What is the epidemiology and outbreak history of Simian virus 40?",
       "missed_pmid": "191078",
       "title": "Inhibition of simian virus 40 DNA synthesis in Yaba virus-preinfected cells."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "42066794",
+      "title": "Placental Vascular Pathology Associated with Congenital Lymphocytic Choriomeningitis Virus Infection, Philadelphia, Pennsylvania, USA."
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What diagnostic assays or laboratory tests detect Mouse mammary tumor virus?",
+      "missed_pmid": "40079583",
+      "title": "Intact, recombinant, and spliced forms of endogenous mouse mammary tumor viruses in inbred and wild mice."
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "How does Mouse mammary tumor virus evade or modulate the host immune response?",
+      "missed_pmid": "40214413",
+      "title": "Human sporadic breast carcinoma histotypes driven by the Human Betaretrovirus homologous to Mouse Mammary Tumor Virus."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "missed_pmid": "42089609",
+      "title": "Loss of nsp14-exonuclease activity impairs the replication, proofreading, fitness, and pathogenesis of SARS-CoV-2."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
