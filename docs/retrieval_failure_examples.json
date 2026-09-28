@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T09:44:15.908196+00:00",
-  "runs": 647,
+  "updated": "2026-09-28T09:54:29.853091+00:00",
+  "runs": 648,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27096,
+  "n_false_positives": 27103,
   "n_false_negatives": 5144,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 1
+    "false_positives": 7,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -305173,6 +305173,94 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_192196",
         "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
         "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "29197549",
+      "title": "Isolation and characterization of Kabuto Mountain virus, a new tick-borne phlebovirus from Haemaphysalis flava ticks in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1851087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052801",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "30567991",
+      "title": "M Segment-Based Minigenomes and Virus-Like Particle Assays as an Approach To Assess the Potential of Tick-Borne Phlebovirus Genome Reassortment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1933191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "31210134",
+      "title": "[Cell biology of phlebovirus entry].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genome organization and replication cycle of Punta Toro virus?",
+      "cited_pmid": "42294683",
+      "title": "La Crosse virus, but not Jamestown Canyon virus, is dependent on the host translation termination factor eRF1 due to changes in the nonstructural protein NSm.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "How does Punta Toro virus evade or modulate the host immune response?",
+      "cited_pmid": "28680969",
+      "title": "Differential Antagonism of Human Innate Immune Responses by Tick-Borne Phlebovirus Nonstructural Proteins.",
+      "actual_organisms": [
+        "Uukuniemi virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "42796659",
+      "title": "From Hepatitis to Encephalitis: Neuroinvasion and Antiviral Development in Rift Valley Fever Virus Infection.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What is the epidemiology and outbreak history of Uukuniemi virus?",
+      "cited_pmid": "42607044",
+      "title": "Opportunities and challenges for countermeasures against Rift Valley fever virus: A quintessential One Health pathogen.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
