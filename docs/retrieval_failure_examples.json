@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T17:44:14.514525+00:00",
-  "runs": 685,
+  "updated": "2026-09-28T17:54:27.281137+00:00",
+  "runs": 686,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27529,
+  "n_false_positives": 27539,
   "n_false_negatives": 5162,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -310093,6 +310093,126 @@
       "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42535290",
+      "title": "Emergence of an echovirus 17 subtype causing a viral meningitis outbreak, Israel, 2025 to 2026.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47505"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "40966750",
+      "title": "Neonatal Enterovirus and Parechovirus Infections: National Enterovirus Surveillance System, United States, 2004-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 30?",
+      "cited_pmid": "34668744",
+      "title": "Eptesicus fuscus Orthorubulavirus, a Close Relative of Human Parainfluenza Virus 4, Discovered in a Bat in South Dakota.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1300978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2884705",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "How does Coxsackievirus B5 evade or modulate the host immune response?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
