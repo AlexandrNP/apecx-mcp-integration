@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:47:59.889326+00:00",
-  "runs": 535,
+  "updated": "2026-09-28T01:49:37.109069+00:00",
+  "runs": 536,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25863,
+  "n_false_positives": 25885,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 1
+    "false_positives": 22,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -291344,6 +291344,250 @@
       "title": "Spontaneous lymphoproliferation differentiates two groups of HTLV-1 asymptomatic carriers: with and without high cell proliferation and death.",
       "actual_organisms": [
         "Human T-cell leukemia virus type 1"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42638908",
+      "title": "Decoding neurodevelopment risks of exposures to intoxication, infection, and trauma during pregnancy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "42780859",
+      "title": "Whole-genome analysis of mumps virus genotype F in Shandong, China (2006-2018).",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1384673"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "cited_pmid": "42729421",
+      "title": "Dropped head syndrome as the sole presenting manifestation of probable post-cytomegalovirus immune-mediated brainstem encephalitis in an immunocompetent woman: a case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "cited_pmid": "32100137",
+      "title": "Common and unique mechanisms of filamentous actin formation by viruses of the genus Orthorubulavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42433041",
+      "title": "CD22 is upregulated and displays suppressive properties on CD4+ T cells upon a persistent virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42764965",
+      "title": "Seroprevalence of Toxoplasma gondii, Rubella Virus, Cytomegalovirus, and Herpes Simplex Virus Among Children and Women in Bhutan's National Referral Hospital: A Cross-Sectional Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42801468",
+      "title": "[Ultrasound diagnosis of fetal infections: current possibilities and limitations].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42729421",
+      "title": "Dropped head syndrome as the sole presenting manifestation of probable post-cytomegalovirus immune-mediated brainstem encephalitis in an immunocompetent woman: a case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42764965",
+      "title": "Seroprevalence of Toxoplasma gondii, Rubella Virus, Cytomegalovirus, and Herpes Simplex Virus Among Children and Women in Bhutan's National Referral Hospital: A Cross-Sectional Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "39088577",
+      "title": "Novel sialidase inhibitors suppress mumps virus replication and infection.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052560",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42780859",
+      "title": "Whole-genome analysis of mumps virus genotype F in Shandong, China (2006-2018).",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1384673"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "36961236",
+      "title": "[Mumps virus (Paramyxoviridae: Orthorubulavirus: Mumps orthorubulavirus) genotyping as a component of laboratory confirmation of infection].",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42801468",
+      "title": "[Ultrasound diagnosis of fetal infections: current possibilities and limitations].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "36961236",
+      "title": "[Mumps virus (Paramyxoviridae: Orthorubulavirus: Mumps orthorubulavirus) genotyping as a component of laboratory confirmation of infection].",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "41593743",
+      "title": "Molecular characterization of mumps viruses from the 2022-2023 outbreak reveals circulation of multiple genotypes in Uganda.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "42797832",
+      "title": "Mutations at Positions 181 and 185 Within the LCMV GP Protein Increase Tumor Cell Infectivity, Limit Induction of Type I Interferon, and Accelerate T Cell Activation.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "42539047",
+      "title": "Sirtuin 1 Is Required for Optimal Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "How does Rubella virus evade or modulate the host immune response?",
+      "cited_pmid": "42777316",
+      "title": "Extended IL-4 priming of macrophages induces an antiviral state that restricts lymphocytic choriomeningitis virus replication.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310"
       ]
     }
   ],
