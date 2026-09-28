@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T21:54:16.716855+00:00",
-  "runs": 699,
+  "updated": "2026-09-28T22:04:13.124932+00:00",
+  "runs": 700,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27690,
-  "n_false_negatives": 5169,
+  "n_false_positives": 27701,
+  "n_false_negatives": 5171,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 0
+    "false_positives": 11,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -311882,6 +311882,141 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12063",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "21917954",
+      "title": "Comparative analysis of poxvirus orthologues of the vaccinia virus E3 protein: modulation of protein kinase R activity, cytokine responses, and virus pathogenicity.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10273",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42798412",
+      "title": "A retrospective comparative diagnostic evaluation of three commercial qPCR kits for the diagnosis of mpox virus on an enriched sample set.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "11277691",
+      "title": "The genome sequence of Yaba-like disease virus, a yatapoxvirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "32056708",
+      "title": "Poxvirus encoded eIF2\u03b1 homolog, K3 family proteins, is a key determinant of poxvirus host species specificity.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "14645589",
+      "title": "Complete genomic sequence and comparative analysis of the tumorigenic poxvirus Yaba monkey tumor virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "17574698",
+      "title": "Comparative genetic analysis of genomic DNA sequences of two human isolates of Tanapox virus.",
+      "actual_organisms": [
+        "Tanapox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_304399",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cowpox virus?",
+      "cited_pmid": "15105545",
+      "title": "Yaba-like disease virus protein Y144R, a member of the complement control protein family, is present on enveloped virions that are associated with virus-induced actin tails.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653087"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "How does Yaba monkey tumor virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genome organization and replication cycle of Tanapox virus?",
+      "cited_pmid": "11277691",
+      "title": "The genome sequence of Yaba-like disease virus, a yatapoxvirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What is the genome organization and replication cycle of Tanapox virus?",
+      "cited_pmid": "14645589",
+      "title": "Complete genomic sequence and comparative analysis of the tumorigenic poxvirus Yaba monkey tumor virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tanapox virus?",
+      "cited_pmid": "15105545",
+      "title": "Yaba-like disease virus protein Y144R, a member of the complement control protein family, is present on enveloped virions that are associated with virus-induced actin tails.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653087"
+      ]
     }
   ],
   "false_negatives": [
@@ -342898,6 +343033,18 @@
       "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
       "missed_pmid": "42770071",
       "title": "Insights from strengthening perinatal hepatitis b prevention in healthcare facilities in Delta State, Nigeria: A prospective, pilot implementation intervention."
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Monkeypox virus?",
+      "missed_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication."
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What diagnostic assays or laboratory tests detect Tanapox virus?",
+      "missed_pmid": "12676996",
+      "title": "A secreted high-affinity inhibitor of human TNF from Tanapox virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
