@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:41:27.065650+00:00",
-  "runs": 532,
+  "updated": "2026-09-28T01:44:41.831095+00:00",
+  "runs": 533,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25810,
+  "n_false_positives": 25835,
   "n_false_negatives": 5108,
   "new_this_run": {
-    "false_positives": 5,
+    "false_positives": 25,
     "false_negatives": 0
   },
   "false_positives": [
@@ -290733,6 +290733,302 @@
       "actual_organisms": [
         "Bovine viral diarrhea virus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42610905",
+      "title": "Multiplexed RT-LAMP Assays in Handheld Devices for In-Situ Detection of Chikungunya, Dengue, Mayaro, and Zika Viruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "cited_pmid": "42729421",
+      "title": "Dropped head syndrome as the sole presenting manifestation of probable post-cytomegalovirus immune-mediated brainstem encephalitis in an immunocompetent woman: a case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "cited_pmid": "42559165",
+      "title": "Concurrent Papular-Purpuric Gloves-and-Socks Syndrome and Petechial Bathing-Trunk Eruption Associated With Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Ross River virus?",
+      "cited_pmid": "42530339",
+      "title": "Identification of human transferrin receptor as an entry co-receptor for parvovirus B19 infection of human erythroid progenitor cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40121",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42333966",
+      "title": "Antigenic Multi-Epitope Vaccine Against Ross River Virus Using Capsid and Envelope Proteins via Immunoinformatics and Reverse Vaccinology Approaches.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "42153739",
+      "title": "Identification and characterization of novel chikungunya virus polymerase inhibitors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the epidemiology and outbreak history of Mayaro virus?",
+      "cited_pmid": "42240370",
+      "title": "Ross River virus transmission, infection, and disease: two and a half decades of research progress-an updated cross-disciplinary review.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "cited_pmid": "42729421",
+      "title": "Dropped head syndrome as the sole presenting manifestation of probable post-cytomegalovirus immune-mediated brainstem encephalitis in an immunocompetent woman: a case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mayaro virus?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42800817",
+      "title": "High-dimensional profiling following third MMR vaccination or mumps virus infection reveals individuals with suboptimal immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560602"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42610905",
+      "title": "Multiplexed RT-LAMP Assays in Handheld Devices for In-Situ Detection of Chikungunya, Dengue, Mayaro, and Zika Viruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "42584711",
+      "title": "Pyridin-3-carbohydrazide strongly impairs Mayaro and Chikungunya virus replication in vitro.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "42631866",
+      "title": "Identification of 4-Amino-7-chloroquinoline Derivative with In Vitro Activity Against Chikungunya Virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "42153739",
+      "title": "Identification and characterization of novel chikungunya virus polymerase inhibitors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "41700904",
+      "title": "AGPAT1 is a novel Chikungunya virus receptor on human cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_499235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "42619960",
+      "title": "Lachesin is a mosquito receptor for multiple arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "How does Rubella virus evade or modulate the host immune response?",
+      "cited_pmid": "42494843",
+      "title": "Decoupling musculoskeletal damage from antiviral control: the NLRP3 inflammasome in arthritogenic alphavirus infection.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rubella virus?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
