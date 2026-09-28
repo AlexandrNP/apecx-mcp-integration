@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T22:14:21.898752+00:00",
-  "runs": 702,
+  "updated": "2026-09-28T22:24:15.446772+00:00",
+  "runs": 703,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27718,
+  "n_false_positives": 27738,
   "n_false_negatives": 5171,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 20,
     "false_negatives": 0
   },
   "false_positives": [
@@ -312182,6 +312182,212 @@
       "title": "Nucleic acid detection and molecular traceability of equine herpesvirus 1 in imported horses.",
       "actual_organisms": [
         "Equine herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42555161",
+      "title": "GTPase domain of porcine Mx1 protein interacts with the N protein of porcine deltacoronavirus to inhibit viral replication.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42515629",
+      "title": "Susceptibility of Cell Lines from Different Species to Porcine Deltacoronavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1766554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "How does Classical swine fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Classical swine fever virus?",
+      "cited_pmid": "42551610",
+      "title": "A strain of high cell-adapted porcine deltacoronavirus: Isolation, genetic evolution, and pathogenicity analysis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42673712",
+      "title": "A recombinant attenuated PRRSV vaccine expressing the PCV2 capsid protein confers protective immunity in pigs.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42556298",
+      "title": "Enhancing secretory expression of CSFV E2 glycoprotein via signal peptide engineering in a recombinant PRRSV vector platform.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42555161",
+      "title": "GTPase domain of porcine Mx1 protein interacts with the N protein of porcine deltacoronavirus to inhibit viral replication.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42593124",
+      "title": "Monoclonal antibodies target conserved S1B epitopes across deltacoronaviruses to inhibit porcine deltacoronavirus infection.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1159901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42738461",
+      "title": "Repeated Cross-Sectional Surveillance and ORF5-Based Molecular Epidemiology of Porcine Reproductive and Respiratory Syndrome Virus in Anhui Province, China, 2019-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42678995",
+      "title": "Rab10 coordinates SADS-CoV non-lytic egress through the ERGIC-TGN-lysosome trafficking pathway.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "How does Suid alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42777477",
+      "title": "Genetic evolution and identification of an unclassified cluster of porcine circovirus type 2 in southern China.",
+      "actual_organisms": [
+        "Porcine circovirus 2"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42551610",
+      "title": "A strain of high cell-adapted porcine deltacoronavirus: Isolation, genetic evolution, and pathogenicity analysis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Porcine circovirus 2",
+      "question": "What is the genome organization and replication cycle of Porcine circovirus 2?",
+      "cited_pmid": "42555161",
+      "title": "GTPase domain of porcine Mx1 protein interacts with the N protein of porcine deltacoronavirus to inhibit viral replication.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What antiviral drugs or treatments are effective against Porcine deltacoronavirus?",
+      "cited_pmid": "42599182",
+      "title": "Development and application of a novel TaqMan qPCR assay targeting the gN gene for genotyping pseudorabies virus.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the epidemiology and outbreak history of Porcine deltacoronavirus?",
+      "cited_pmid": "42727400",
+      "title": "Herd immunity without evidence of viral circulation during seven years of vaccination with Porvac\u00ae, a subunit vaccine against classical swine fever.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine deltacoronavirus?",
+      "cited_pmid": "42655844",
+      "title": "Suspected Type III Hypersensitivity Post-Inactivated Vaccination Leukocytoclastic Vasculitis in Two Sows.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
+      "cited_pmid": "42777477",
+      "title": "Genetic evolution and identification of an unclassified cluster of porcine circovirus type 2 in southern China.",
+      "actual_organisms": [
+        "Porcine circovirus 2"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
+      "cited_pmid": "42738461",
+      "title": "Repeated Cross-Sectional Surveillance and ORF5-Based Molecular Epidemiology of Porcine Reproductive and Respiratory Syndrome Virus in Anhui Province, China, 2019-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
       ]
     }
   ],
