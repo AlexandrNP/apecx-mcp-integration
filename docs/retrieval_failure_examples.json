@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T16:24:07.812605+00:00",
-  "runs": 679,
+  "updated": "2026-09-28T16:34:19.516553+00:00",
+  "runs": 680,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27434,
+  "n_false_positives": 27456,
   "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 30,
+    "false_positives": 22,
     "false_negatives": 0
   },
   "false_positives": [
@@ -309036,6 +309036,255 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
         "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "31954277",
+      "title": "Human parainfluenza virus circulation, United States, 2011-2019.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42767550",
+      "title": "Post-pandemic re-establishment of respiratory virus seasonality and molecular epidemiology of Rhinovirus/Enterovirus in Northern Italy: a three-year surveillance study (2023-2026).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "35678587",
+      "title": "Ten Nearly Complete Genome Sequences of Human Orthorubulavirus 4 Isolated from Pediatric Inpatients in Fukushima, Japan.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42772325",
+      "title": "Antiviral activity of Cirsium japonicum var. spinossimum extract and its flavonoid cirsimaritin against human coronavirus OC43.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "33190740",
+      "title": "Prevalence of viral respiratory infections amongst asthmatics: Results of a meta-regression analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162387",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "39264196",
+      "title": "Genetic characteristics of human parainfluenza viruses 1-4 associated with acute lower respiratory tract infection in Chinese children, during 2015-2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "42796677",
+      "title": "Epidemiological and Molecular Characterization of Human Metapneumovirus (HMPV) in Children Under 14 Years of Age in Shijiazhuang City, China.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "32957928",
+      "title": "Epidemiological surveillance of common respiratory viruses in patients with suspected COVID-19 in Southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus OC43?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus OC43?",
+      "cited_pmid": "42198700",
+      "title": "Whole-Genome Phylogenetic Characterization of Human Parainfluenza Virus Type 4 Circulating in St. Petersburg, Russia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus OC43?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "42198700",
+      "title": "Whole-Genome Phylogenetic Characterization of Human Parainfluenza Virus Type 4 Circulating in St. Petersburg, Russia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human metapneumovirus?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
       ]
     }
   ],
