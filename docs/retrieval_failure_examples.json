@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T08:34:39.258933+00:00",
-  "runs": 641,
+  "updated": "2026-09-28T08:54:17.411459+00:00",
+  "runs": 642,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27056,
-  "n_false_negatives": 5139,
+  "n_false_positives": 27060,
+  "n_false_negatives": 5140,
   "new_this_run": {
-    "false_positives": 27,
-    "false_negatives": 2
+    "false_positives": 4,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -304707,6 +304707,60 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11095",
         "http://purl.obolibrary.org/obo/NCBITaxon_54315"
       ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "39597726",
+      "title": "One-Step Multiplex RT-PCR Method for Detection of Melon Viruses.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12205",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12263",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Plum pox virus",
+      "question": "What diagnostic assays or laboratory tests detect Plum pox virus?",
+      "cited_pmid": "39597726",
+      "title": "One-Step Multiplex RT-PCR Method for Detection of Melon Viruses.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12205",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12263",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Watermelon mosaic virus?",
+      "cited_pmid": "40290764",
+      "title": "Development of rapid and simple detection of bean common mosaic virus (BCMV) in mung beans (Vigna radiata) using reverse transcription-loop mediated isothermal amplification (RT-LAMP).",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "Potato virus Y",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12198",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "How does Watermelon mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42799996",
+      "title": "Engineering a Non-Aphid-Transmissible Mild Mutant of Zucchini Yellow Mosaic Virus for Cross Protection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -335543,6 +335597,12 @@
       "question": "How does Human pegivirus evade or modulate the host immune response?",
       "missed_pmid": "42794615",
       "title": "Interpreting Viral Associations in Neurodegenerative Diseases."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "How does Watermelon mosaic virus evade or modulate the host immune response?",
+      "missed_pmid": "42278294",
+      "title": "Genome-Wide Analysis of AGPase Identifies CsAGP4 as a Regulator of Watermelon Mosaic Virus Resistance in Cucumber."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
