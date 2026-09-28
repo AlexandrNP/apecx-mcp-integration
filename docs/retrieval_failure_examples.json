@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T12:24:26.793013+00:00",
-  "runs": 659,
+  "updated": "2026-09-28T12:34:14.584446+00:00",
+  "runs": 660,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27201,
+  "n_false_positives": 27208,
   "n_false_negatives": 5152,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -306354,6 +306354,90 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11618",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
         "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "42523457",
+      "title": "Bravo! A Mosquito Antiviral Protein that Restricts Arboviruses through an RRM3-Dependent Nuclear Mechanism.",
+      "actual_organisms": [
+        "Sindbis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64286"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus pathogenesis and transmission?",
+      "cited_pmid": "42240370",
+      "title": "Ross River virus transmission, infection, and disease: two and a half decades of research progress-an updated cross-disciplinary review.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
+      "cited_pmid": "41700904",
+      "title": "AGPAT1 is a novel Chikungunya virus receptor on human cells.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_499235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sindbis virus?",
+      "cited_pmid": "42619960",
+      "title": "Lachesin is a mosquito receptor for multiple arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "42456440",
+      "title": "Alphavirus madariaga-associated encephalomyelitis in equines from the Brazilian Pantanal reveals arbovirus circulation in a peri-urban environment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sindbis virus?",
+      "cited_pmid": "42375937",
+      "title": "An investigation of connectivity patterns among populations of the Australian mosquito (Aedes vigilax) using mitochondrial cytochrome oxidase I.",
+      "actual_organisms": [
+        "Ross River virus"
       ]
     }
   ],
