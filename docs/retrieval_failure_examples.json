@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T05:44:07.584150+00:00",
-  "runs": 625,
+  "updated": "2026-09-28T05:54:05.589805+00:00",
+  "runs": 626,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26904,
+  "n_false_positives": 26925,
   "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 21,
     "false_negatives": 0
   },
   "false_positives": [
@@ -303021,6 +303021,234 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_176656",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What diagnostic assays or laboratory tests detect White spot syndrome virus?",
+      "cited_pmid": "42655647",
+      "title": "Single-Tube Reverse Transcription-Loop-Mediated Isothermal Amplification Assay for Rapid Detection of Red-Spotted Grouper Nervous Necrosis Virus in Fish Species.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1549864",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "42637166",
+      "title": "Role of giant grouper (Epinephelus lanceolatus) protein kinase R in antiviral responses and the regulation of eIF2\u03b1 phosphorylation during nervous necrosis virus infection.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "How does White spot syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "42799954",
+      "title": "West Nile Virus Exploits miR-155-5p-Mediated Regulation of TRIM32-I\u03baB\u03b1 Axis to Evade NF-\u03baB-Mediated Innate Immune Responses in Human Microglial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "How does White spot syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "42759731",
+      "title": "NNV mediates the activation of the NLRP3 inflammasome through mtDNA release and oxidative DNA damage.",
+      "actual_organisms": [
+        "Nervous necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42668734",
+      "title": "Potential of inclusion bodies for disease control in aquaculture and livestock.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_678"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42546999",
+      "title": "Development of an oral Lactobacillus casei-based recombinant vaccine expressing GCRV-II multi-epitope fusion protein and its protective efficacy against grass carp hemorrhagic disease.",
+      "actual_organisms": [
+        "Grass carp reovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1578",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1582"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus pathogenesis and transmission?",
+      "cited_pmid": "42663688",
+      "title": "Identification and characterization of a Nervous Necrosis Virus (NNV) isolated from tilapia (Oreochromis niloticus) in China.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "cited_pmid": "42655647",
+      "title": "Single-Tube Reverse Transcription-Loop-Mediated Isothermal Amplification Assay for Rapid Detection of Red-Spotted Grouper Nervous Necrosis Virus in Fish Species.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1549864",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42800478",
+      "title": "Simultaneous detection of positive-sense RNA1 and RNA2 of nervous necrosis virus in viral factories of infected brain cells using RNA-fluorescence in situ hybridization.",
+      "actual_organisms": [
+        "Nervous necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42624183",
+      "title": "Identification and analysis of lncRNA50877, which is involved in KRT8-mediated mitochondrial homeostasis and GCRV replication in grass carp (Ctenopharyngodon idella).",
+      "actual_organisms": [
+        "Grass carp reovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42641828",
+      "title": "GCRV S5 and host EGR1 RNAs form chimeric RNA S5-AGUGA-EGR1: A novel mechanism regulating viral gene expression and host antiviral response.",
+      "actual_organisms": [
+        "Grass carp reovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42637166",
+      "title": "Role of giant grouper (Epinephelus lanceolatus) protein kinase R in antiviral responses and the regulation of eIF2\u03b1 phosphorylation during nervous necrosis virus infection.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "42657458",
+      "title": "Stage-dependent efficacy of long double-stranded RNA administered after white spot syndrome virus infection in shrimp.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "42617765",
+      "title": "Characteristics and functions of a cell adhesion molecule PvCadN in Penaeus vannamei during WSSV infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "42790721",
+      "title": "Red blood cells as antiviral responders in RGNNV-infected European sea bass: a transcriptomic study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "42722174",
+      "title": "WSSV exploits host glycolytic reprogramming to promote hemocyanin lactylation and enhance cell-associated WSSV levels in shrimp.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "40244096",
+      "title": "Characterization and Immune Functions of Lc\u03b2Lectin from Large Yellow Croaker (Larimichthys crocea): A Potential Antiviral Defense Molecule.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_216928"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "42790584",
+      "title": "Highly sensitive detection and identification of six viruses in shrimps by universal primer based multiplex PCR.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "Yellow head virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142102",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1513224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2917999",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3163622",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What is the epidemiology and outbreak history of Grass carp reovirus?",
+      "cited_pmid": "42667507",
+      "title": "Shrimp Aquaculture Under Viral Threats: Insights into Pathogens and Control Strategies.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "Yellow head virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142102",
+        "http://purl.obolibrary.org/obo/NCBITaxon_222557",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What are the clinical symptoms and disease presentation of Grass carp reovirus?",
+      "cited_pmid": "42663688",
+      "title": "Identification and characterization of a Nervous Necrosis Virus (NNV) isolated from tilapia (Oreochromis niloticus) in China.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Nervous necrosis virus?",
+      "cited_pmid": "41823880",
+      "title": "Integration of histopathology and molecular tools in shrimp health surveillance: A case study from Colombia.",
+      "actual_organisms": [
+        "Yellow head virus"
       ]
     }
   ],
