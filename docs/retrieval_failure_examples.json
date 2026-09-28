@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T18:54:17.925981+00:00",
-  "runs": 692,
+  "updated": "2026-09-28T19:14:20.461222+00:00",
+  "runs": 693,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27617,
+  "n_false_positives": 27624,
   "n_false_negatives": 5166,
   "new_this_run": {
-    "false_positives": 16,
-    "false_negatives": 2
+    "false_positives": 7,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -311084,6 +311084,79 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
         "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42746578",
+      "title": "Reverse vaccinology and immunoinformatics identify multi-epitope vaccine candidates against molluscum contagiosum virus.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42385547",
+      "title": "Divergent poxvirus identified in a non-native black rat from Madagascar.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3687202"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42272618",
+      "title": "First identification of Molluscum contagiosum poxvirus from human in Senegal.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844094",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42797789",
+      "title": "Serological Screening for HIV, Hepatitis B, Hepatitis C, and Syphilis in Patients with Genital Molluscum Contagiosum: A Retrospective Cross-Sectional Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42784687",
+      "title": "Escape of the BC200 gene to a human poxvirus reveals its persistent transposition in primates.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "41523458",
+      "title": "Unmasking Hidden Clues in Cutaneous Viral Infections: Histopathological Insights Into Keratinocytic Features of Herpes Simplex Virus, Varicella Zoster Virus, and Molluscum Contagiosum.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
+      "cited_pmid": "42474801",
+      "title": "Type-specific sensitivity versus detection breadth in HPV diagnostics: improved analytical detection of HPV16/18 by nested PCR.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
       ]
     }
   ],
