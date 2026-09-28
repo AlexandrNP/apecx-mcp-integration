@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T12:44:11.470320+00:00",
-  "runs": 661,
+  "updated": "2026-09-28T12:54:07.004199+00:00",
+  "runs": 662,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27226,
+  "n_false_positives": 27233,
   "n_false_negatives": 5153,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 1
+    "false_positives": 7,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -306627,6 +306627,103 @@
       "title": "Whole-Genome sequencing of Chikungunya Virus (CHIKV) from Pakistan: Detection of the East/Central/South African (ECSA) genotype during the 2024 outbreak in Mansehra.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42514064",
+      "title": "Diagnostic and Microbiological Impact of Multiplex Syndromic Testing for Acute Infectious Gastroenteritis in a Regional Laboratory Network: A Real-World Before-After Study.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_620",
+        "http://purl.obolibrary.org/obo/NCBITaxon_629",
+        "http://purl.obolibrary.org/obo/NCBITaxon_642"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sapovirus?",
+      "cited_pmid": "41386619",
+      "title": "Interaction of the VP8* protein of a bovine rotavirus C with the H type-2 antigen and its precursor N-acetyl-lactosamine.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sapovirus?",
+      "cited_pmid": "41163033",
+      "title": "Prevalence and genetic characterization of diarrhea viruses among cattle in Guangdong, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46473",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42479772",
+      "title": "Human Sapovirus in the Post-Rotavirus Vaccine Era: From an Overlooked Gastroenteritis Pathogen to a Target for Precision Surveillance.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42217080",
+      "title": "Detection of Viruses of Public Health Importance in Wastewater Samples Using Conventional PCR Techniques and a Targeted Enrichment Whole Genome Sequencing Panel.",
+      "actual_organisms": [
+        "Norovirus",
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42500393",
+      "title": "Exploratory metatranscriptomic survey of bat-associated RNA viruses in Quzhou city, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human astrovirus?",
+      "cited_pmid": "42779981",
+      "title": "Plscr1 inhibits murine norovirus entry.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231"
       ]
     }
   ],
