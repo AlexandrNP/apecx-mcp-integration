@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T09:34:12.329975+00:00",
-  "runs": 646,
+  "updated": "2026-09-28T09:44:15.908196+00:00",
+  "runs": 647,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27081,
-  "n_false_negatives": 5143,
+  "n_false_positives": 27096,
+  "n_false_negatives": 5144,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 2
+    "false_positives": 15,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -304995,6 +304995,185 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11646",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "25188437",
+      "title": "Molecular characterization of human pathogenic bunyaviruses of the Nyando and Bwamba/Pongola virus groups leads to the genetic identification of Moju\u00ed dos Campos and Kaeng Khoi virus.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2848037",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35316",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "25188437",
+      "title": "Molecular characterization of human pathogenic bunyaviruses of the Nyando and Bwamba/Pongola virus groups leads to the genetic identification of Moju\u00ed dos Campos and Kaeng Khoi virus.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2848037",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35316",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "6274526",
+      "title": "[Serological survey for the prevalence of certain arboviruses in the human population of the south-east area of Central African Republic (author's transl)].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "1124969",
+      "title": "Arthropod-borne viral infections of man in Nigeria, 1964-1970.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genome organization and replication cycle of Bunyamwera virus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "How does Bunyamwera virus evade or modulate the host immune response?",
+      "cited_pmid": "42655648",
+      "title": "Oropouche Virus: Comparative Study of Two Strains Reveals Distinct Innate Immunity Modulation.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bwamba orthobunyavirus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bwamba orthobunyavirus?",
+      "cited_pmid": "42412878",
+      "title": "The Bunyamwera orthobunyavirus Gc glycoprotein head and stalk drives an infectious virion assembly pathway specific for the insect host.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052381",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "How does Bwamba orthobunyavirus evade or modulate the host immune response?",
+      "cited_pmid": "42655648",
+      "title": "Oropouche Virus: Comparative Study of Two Strains Reveals Distinct Innate Immunity Modulation.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "How does Bwamba orthobunyavirus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bwamba orthobunyavirus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
     }
   ],
   "false_negatives": [
@@ -335855,6 +336034,12 @@
       "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
       "missed_pmid": "40996032",
       "title": "Influence of CCL2-mediated modulation of ALIX in the budding and replication of viruses from multiple families."
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bunyamwera virus?",
+      "missed_pmid": "42520941",
+      "title": "Identification of specific host cell potassium ion channels that mediate escape of bunyamwera virus from late endosome compartments."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
