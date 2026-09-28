@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:07:00.822310+00:00",
-  "runs": 515,
+  "updated": "2026-09-28T01:08:37.973544+00:00",
+  "runs": 516,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25573,
+  "n_false_positives": 25583,
   "n_false_negatives": 5096,
   "new_this_run": {
-    "false_positives": 16,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -288142,6 +288142,109 @@
       "title": "PRGN-2012 gene therapy in adults with recurrent respiratory papillomatosis: a pivotal phase 1/2 clinical trial.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "38178597",
+      "title": "Human papillomavirus prevalence and genotype distribution in Liaocheng men between 2016 and 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "32986347",
+      "title": "Phylogeny and In Silico Structure Analysis of Major Capsid Protein (L1) Human Papillomavirus 45 from Indonesian Isolates.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is known about Human papillomavirus type 45 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42089801",
+      "title": "Decreases in Human Papillomavirus Vaccine Types 16 and 18 in Cervical Precancers: HPV-IMPACT, 2008 to 2019.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "How does Human papillomavirus type 45 evade or modulate the host immune response?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42089801",
+      "title": "Decreases in Human Papillomavirus Vaccine Types 16 and 18 in Cervical Precancers: HPV-IMPACT, 2008 to 2019.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42163577",
+      "title": "Memory Cell and Antibody Responses Following a Single Versus Two Doses of Escherichia coli-Produced Vaccine Against Human Papillomavirus Types 16 and 18: A Real-World Study in Chinese Girls.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "32986347",
+      "title": "Phylogeny and In Silico Structure Analysis of Major Capsid Protein (L1) Human Papillomavirus 45 from Indonesian Isolates.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 68?",
+      "cited_pmid": "29981762",
+      "title": "Genetic variability and lineage phylogeny of human papillomavirus type 45 based on E6 and E7 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
     }
   ],
