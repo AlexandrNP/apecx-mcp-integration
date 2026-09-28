@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T05:24:00.832603+00:00",
-  "runs": 624,
+  "updated": "2026-09-28T05:44:07.584150+00:00",
+  "runs": 625,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26894,
+  "n_false_positives": 26904,
   "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 1
+    "false_positives": 10,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -302915,6 +302915,112 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12429",
         "http://purl.obolibrary.org/obo/NCBITaxon_35323",
         "http://purl.obolibrary.org/obo/NCBITaxon_35324"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What is the genome organization and replication cycle of Red sea bream iridovirus?",
+      "cited_pmid": "27540051",
+      "title": "Complete Genome Sequence of a Bohle iridovirus Isolate from Ornate Burrowing Frogs (Limnodynastes ornatus) in Australia.",
+      "actual_organisms": [
+        "Bohle iridovirus"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "cited_pmid": "42480674",
+      "title": "PlCXCL12a differentially modulates SGIV and RGNNV replication during single and co-infection and regulates chemotaxis-associated immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_262968",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is known about Bohle iridovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41596326",
+      "title": "Development of a High-Hydrostatic-Pressure-Treated Recombinant Vaccine Targeting the Major Capsid Protein of Red Sea Bream Iridovirus.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "41537285",
+      "title": "Development and Validation of a Multienzyme Isothermal Rapid Amplification-Based Fluorescence Assay for Detection of Megalocytivirus pagrus 1.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "40564252",
+      "title": "Red Sea Bream Iridovirus Stability in Freeze-Thaw Cycles: Quantitative Assays of Infectious Particles.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "41403127",
+      "title": "Genomic Characterisation of Red Sea Bream Iridovirus (RSIV) Samples Collected in Japan in 2024 Revealed Genotype II and the First Detection of the Intermediate Type in Japan.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430774"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is known about Santee-Cooper ranavirus pathogenesis and transmission?",
+      "cited_pmid": "25266901",
+      "title": "Isolation of a Bohle-like iridovirus from boreal toads housed within a cosmopolitan aquarium collection.",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1419340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the genome organization and replication cycle of Santee-Cooper ranavirus?",
+      "cited_pmid": "30993463",
+      "title": "Genomic sequence of a Bohle iridovirus strain isolated from a diseased boreal toad (Anaxyrus boreas boreas) in a North American aquarium.",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1419340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1620702"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the genome organization and replication cycle of Santee-Cooper ranavirus?",
+      "cited_pmid": "27540051",
+      "title": "Complete Genome Sequence of a Bohle iridovirus Isolate from Ornate Burrowing Frogs (Limnodynastes ornatus) in Australia.",
+      "actual_organisms": [
+        "Bohle iridovirus"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Santee-Cooper ranavirus?",
+      "cited_pmid": "42580571",
+      "title": "Major capsid protein interacts with protein disulfide isomerase A3 to promote largemouth bass ranavirus adhesion and enhance viral infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
