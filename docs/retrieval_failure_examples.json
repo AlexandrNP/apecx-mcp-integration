@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:47:18.603254+00:00",
-  "runs": 572,
+  "updated": "2026-09-28T02:48:53.595288+00:00",
+  "runs": 573,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26382,
-  "n_false_negatives": 5110,
+  "n_false_positives": 26387,
+  "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 5,
     "false_negatives": 1
   },
   "false_positives": [
@@ -297277,6 +297277,55 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_431317"
       ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
+      "cited_pmid": "40064779",
+      "title": "Detection of Cassava Mosaic Geminiviruses Using Loop-Mediated Isothermal Amplification (LAMP).",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the epidemiology and outbreak history of Cotton leaf curl virus?",
+      "cited_pmid": "42040301",
+      "title": "Unveiling the landscape of plant virology in Saudi Arabia: seven decades of progress and future directions toward Vision 2030.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "cited_pmid": "39162474",
+      "title": "Geminivirus C4/AC4 proteins hijack cellular COAT PROTEIN COMPLEX I for chloroplast targeting and viral infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10840"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "How does Cotton leaf curl virus evade or modulate the host immune response?",
+      "cited_pmid": "42675654",
+      "title": "Tomato Yellow Leaf Curl Virus C4 Suppresses Antiviral Immunity by Targeting the 14-3-3 Protein SlTFT2.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cotton leaf curl virus?",
+      "cited_pmid": "42208597",
+      "title": "Evolutionary Changes in Tomato Yellow Leaf Curl Virus Associated with Widespread Ty-1 Use in Japan.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -327939,6 +327988,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Wheat streak mosaic virus?",
       "missed_pmid": "41623648",
       "title": "Comprehensive phenotyping and genotyping of a large diverse panel of the wheat wild relative, Aegilops tauschii for wheat streak mosaic virus tolerance."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of African cassava mosaic virus?",
+      "missed_pmid": "38071206",
+      "title": "Haplotype-resolved genome of heterozygous African cassava cultivar TMEB117 (Manihot esculenta)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
