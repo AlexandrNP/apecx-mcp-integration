@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:07:26.846544+00:00",
-  "runs": 547,
+  "updated": "2026-09-28T02:09:15.114429+00:00",
+  "runs": 548,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26026,
+  "n_false_positives": 26037,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 5,
+    "false_positives": 11,
     "false_negatives": 0
   },
   "false_positives": [
@@ -293179,6 +293179,130 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11060",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_538123"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42292462",
+      "title": "Behind the mask of relapsing bimodal encephalitis: herpesvirus 7 and Epstein-Barr virus associated with Hashimoto's encephalopathy: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42677877",
+      "title": "Comprehensive Viral Detection and Profiling of Plasma Cell-Free RNA in Patients With Suspected Hemophagocytic Lymphohistiocytosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2585267",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41884829",
+      "title": "Viral encephalitis related to adalimumab in a 16-year-old Crohn's disease patient: case report and literature review.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42677877",
+      "title": "Comprehensive Viral Detection and Profiling of Plasma Cell-Free RNA in Patients With Suspected Hemophagocytic Lymphohistiocytosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2585267",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the epidemiology and outbreak history of Human betaherpesvirus 7?",
+      "cited_pmid": "42426565",
+      "title": "Serologic Evidence of Hantavirus Exposure in Humans, Italy, 2004-2018.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human betaherpesvirus 7?",
+      "cited_pmid": "42797832",
+      "title": "Mutations at Positions 181 and 185 Within the LCMV GP Protein Increase Tumor Cell Infectivity, Limit Induction of Type I Interferon, and Accelerate T Cell Activation.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human betaherpesvirus 7?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "42780859",
+      "title": "Whole-genome analysis of mumps virus genotype F in Shandong, China (2006-2018).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1384673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560602"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rubella virus?",
+      "cited_pmid": "41905024",
+      "title": "Identification of a novel multi epitope vaccine against human herpes virus 7 (HHV-7) to combat CNS disorders in children and adolescents using subtractive proteomics and immunoinformatic approaches.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
