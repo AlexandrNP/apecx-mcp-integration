@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T12:15:34.696696+00:00",
-  "runs": 658,
+  "updated": "2026-09-28T12:24:26.793013+00:00",
+  "runs": 659,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27200,
+  "n_false_positives": 27201,
   "n_false_negatives": 5152,
   "new_this_run": {
-    "false_positives": 3,
+    "false_positives": 1,
     "false_negatives": 0
   },
   "false_positives": [
@@ -306342,6 +306342,18 @@
         "Japanese encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10090",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
       ]
     }
   ],
