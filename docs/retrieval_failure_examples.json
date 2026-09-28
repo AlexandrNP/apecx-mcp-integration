@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:16:58.194031+00:00",
-  "runs": 491,
+  "updated": "2026-09-28T00:20:56.065623+00:00",
+  "runs": 492,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25211,
-  "n_false_negatives": 5024,
+  "n_false_positives": 25220,
+  "n_false_negatives": 5035,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 1
+    "false_positives": 9,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -284042,6 +284042,109 @@
       "actual_organisms": [
         "unknown"
       ]
+    },
+    {
+      "organism": "Equine herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Equine herpesvirus 1?",
+      "cited_pmid": "39613191",
+      "title": "Efficacy assessment of antiretroviral drugs against equine infectious anemia virus in vitro.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What are the clinical symptoms and disease presentation of Equine infectious anemia virus?",
+      "cited_pmid": "39837220",
+      "title": "Respiratory viruses affecting health and performance in equine athletes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46916"
+      ]
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine infectious anemia virus?",
+      "cited_pmid": "41334982",
+      "title": "Genetic characterization of equine arteritis virus associated with outbreaks in the UK, 2019.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846044"
+      ]
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine infectious anemia virus?",
+      "cited_pmid": "42609401",
+      "title": "Nucleic acid detection and molecular traceability of equine herpesvirus 1 in imported horses.",
+      "actual_organisms": [
+        "Equine herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is known about Equine arteritis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38150796",
+      "title": "Short communication: Retrospective analysis of obligatory testing results for Equine virus arteritis reveals a decrease of its seroprevalence in stallions used for artificial insemination.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Equine arteritis virus?",
+      "cited_pmid": "39613191",
+      "title": "Efficacy assessment of antiretroviral drugs against equine infectious anemia virus in vitro.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is the epidemiology and outbreak history of Equine arteritis virus?",
+      "cited_pmid": "39837220",
+      "title": "Respiratory viruses affecting health and performance in equine athletes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46916"
+      ]
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine arteritis virus?",
+      "cited_pmid": "29423949",
+      "title": "Genetic diversity of equine herpesvirus 1 isolated from neurological, abortigenic and respiratory disease outbreaks.",
+      "actual_organisms": [
+        "Equine herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Equine herpesvirus 4",
+      "question": "What antiviral drugs or treatments are effective against Equine herpesvirus 4?",
+      "cited_pmid": "39613191",
+      "title": "Efficacy assessment of antiretroviral drugs against equine infectious anemia virus in vitro.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -314188,6 +314291,72 @@
       "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "41902195",
       "title": "Antiviral Activity of Microbial Metabolites Monensin and Brefeldin A Against Toscana Virus: In Vitro Evaluation and Mechanistic Insights."
+    },
+    {
+      "organism": "Equine herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Equine herpesvirus 1?",
+      "missed_pmid": "40602617",
+      "title": "Serum and mucosal antibody testing to detect viral exposure in contact horses during an equine herpesvirus myeloencephalopathy outbreak."
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What is the epidemiology and outbreak history of Equine infectious anemia virus?",
+      "missed_pmid": "37443854",
+      "title": "Serological Examinations of Significant Viral Infections in Domestic Donkeys at the Special Nature Reserve \"Zasavica\", Serbia."
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine infectious anemia virus?",
+      "missed_pmid": "37811976",
+      "title": "Development and evaluation of a real-time quantitative PCR for the detection of equine infectious anemia virus."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is known about Equine arteritis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37443854",
+      "title": "Serological Examinations of Significant Viral Infections in Domestic Donkeys at the Special Nature Reserve \"Zasavica\", Serbia."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Equine arteritis virus?",
+      "missed_pmid": "36146687",
+      "title": "Identification of Equine Arteritis Virus Immunodominant Epitopes Using a Peptide Microarray."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Equine arteritis virus?",
+      "missed_pmid": "39863680",
+      "title": "Imaging flow cytometry reveals the mechanism of equine arteritis virus entry and internalization."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is the epidemiology and outbreak history of Equine arteritis virus?",
+      "missed_pmid": "38143823",
+      "title": "Retrospective study on equine viral abortions in Poland between 1999 and 2022."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What are the clinical symptoms and disease presentation of Equine arteritis virus?",
+      "missed_pmid": "36680295",
+      "title": "Equine Arteritis Virus in Monocytic Cells Suppresses Differentiation and Function of Dendritic Cells."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Equine arteritis virus?",
+      "missed_pmid": "38850896",
+      "title": "Dual topology of equine arteritis virus GP3 protein and the role of arginine motif RXR in GP3 ER retention."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine arteritis virus?",
+      "missed_pmid": "42163787",
+      "title": "An epizootic of equine viral arteritis at a Thoroughbred racetrack in Illinois: 223 cases."
+    },
+    {
+      "organism": "Equine arteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Equine arteritis virus?",
+      "missed_pmid": "35495124",
+      "title": "Development of a TaqMan\u00ae Allelic Discrimination qPCR Assay for Rapid Detection of Equine CXCL16 Allelic Variants Associated With the Establishment of Long-Term Equine Arteritis Virus Carrier State in Stallions."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
