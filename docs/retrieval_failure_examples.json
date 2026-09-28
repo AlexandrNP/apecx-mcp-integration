@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:23:33.501333+00:00",
-  "runs": 596,
+  "updated": "2026-09-28T03:25:25.505171+00:00",
+  "runs": 597,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26649,
+  "n_false_positives": 26656,
   "n_false_negatives": 5118,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -300227,6 +300227,82 @@
         "Human papillomavirus 11",
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "35746729",
+      "title": "Molecular Characterisation and Phylogeny of Tula Virus in Kazakhstan.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "34614264",
+      "title": "Host genetic factors associated with the range limit of a European hantavirus.",
+      "actual_organisms": [
+        "Tula orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "38361825",
+      "title": "Genome-wide support for incipient Tula hantavirus species within a single rodent host lineage.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Seoul orthohantavirus?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seoul orthohantavirus?",
+      "cited_pmid": "37954511",
+      "title": "Phylogeographic analysis of Tula hantavirus highlights a single introduction to central Europe.",
+      "actual_organisms": [
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Tula orthohantavirus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "How does Tula orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
       ]
     }
   ],
