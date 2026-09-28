@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T21:34:04.847673+00:00",
-  "runs": 698,
+  "updated": "2026-09-28T21:54:16.716855+00:00",
+  "runs": 699,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27678,
+  "n_false_positives": 27690,
   "n_false_negatives": 5169,
   "new_this_run": {
-    "false_positives": 11,
+    "false_positives": 12,
     "false_negatives": 0
   },
   "false_positives": [
@@ -311750,6 +311750,136 @@
       "actual_organisms": [
         "Thottapalayam orthohantavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "42383739",
+      "title": "ATG9A is an essential host factor for parechovirus RNA replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42493504",
+      "title": "Absent pleocytosis in infant viral central nervous system infections reflects lymphocyte depletion and cytokine activation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42375660",
+      "title": "Healthcare-associated parechovirus-A infection in hospitals with neonatal units in Japan: a nationwide survey.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42669541",
+      "title": "Emergence of Human Parechovirus Type 5 Meningitis in Japan, 2025.",
+      "actual_organisms": [
+        "Human parechovirus"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "How does Human parechovirus evade or modulate the host immune response?",
+      "cited_pmid": "42797832",
+      "title": "Mutations at Positions 181 and 185 Within the LCMV GP Protein Increase Tumor Cell Infectivity, Limit Induction of Type I Interferon, and Accelerate T Cell Activation.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "42338686",
+      "title": "Molecular characterization of enteroviruses in patients with acute respiratory infection and influenza-like illness in the Central African Republic revealed mainly polioviruses and other enteric enterovirus types.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760819",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "42375660",
+      "title": "Healthcare-associated parechovirus-A infection in hospitals with neonatal units in Japan: a nationwide survey.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "42648245",
+      "title": "Molecular epidemiology and genetic evolutionary patterns of parechovirus A1 circulating in Chiang Mai, Thailand: A decade-long analysis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
