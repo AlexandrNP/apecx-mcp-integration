@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T18:44:14.040681+00:00",
-  "runs": 691,
+  "updated": "2026-09-28T18:54:17.925981+00:00",
+  "runs": 692,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27601,
-  "n_false_negatives": 5164,
+  "n_false_positives": 27617,
+  "n_false_negatives": 5166,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 1
+    "false_positives": 16,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -310905,6 +310905,186 @@
       "actual_organisms": [
         "unknown"
       ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42488850",
+      "title": "Phylogenetic analysis of enteroviruses from non-human primates suggests two new species within the genus Enterovirus and inter-species recombination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "cited_pmid": "42437597",
+      "title": "Epidemiological trends in viral CNS infections in a French university hospital from 2019 to 2024, as revealed by multiplex PCR testing of cerebrospinal fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "42648245",
+      "title": "Molecular epidemiology and genetic evolutionary patterns of parechovirus A1 circulating in Chiang Mai, Thailand: A decade-long analysis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108098",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40400688",
+      "title": "Identification and characterization of a novel human adenovirus type HAdV-D116.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human parechovirus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42048387",
+      "title": "Identification of a novel fiber shaft structural motif and overexpression of key transcripts elucidated in human adenovirus D 10.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28275"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42779981",
+      "title": "Plscr1 inhibits murine norovirus entry.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42441716",
+      "title": "Structural requirements of blood factors binding to soluble hexon trimers with implications for adenovirus cell targeting and immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10534",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus D?",
+      "cited_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "42383739",
+      "title": "ATG9A is an essential host factor for parechovirus RNA replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "42669541",
+      "title": "Emergence of Human Parechovirus Type 5 Meningitis in Japan, 2025.",
+      "actual_organisms": [
+        "Human parechovirus"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus D?",
+      "cited_pmid": "42488850",
+      "title": "Phylogenetic analysis of enteroviruses from non-human primates suggests two new species within the genus Enterovirus and inter-species recombination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -341891,6 +342071,18 @@
       "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
       "missed_pmid": "42798775",
       "title": "Spatio-Temporal Dynamics of Crimean Congo Hemorrhagic Fever Virus Infection Using Animal Sentinel Herds in Senegal: March 2021-June 2024."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42803583",
+      "title": "Development of rhesus macaque enteroids and enteroid-derived cell lines for enteric calicivirus infections."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
