@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T23:24:12.334629+00:00",
-  "runs": 708,
+  "updated": "2026-09-28T23:34:02.331651+00:00",
+  "runs": 709,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27783,
+  "n_false_positives": 27784,
   "n_false_negatives": 5173,
   "new_this_run": {
-    "false_positives": 11,
+    "false_positives": 1,
     "false_negatives": 0
   },
   "false_positives": [
@@ -312886,6 +312886,15 @@
       "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
       "actual_organisms": [
         "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Ebola virus?",
+      "cited_pmid": "42699591",
+      "title": "Assessing the pandemic potential of Nipah virus: From molecular pathogenesis to ecological spillover risks.",
+      "actual_organisms": [
+        "Nipah henipavirus"
       ]
     }
   ],
