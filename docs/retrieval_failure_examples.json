@@ -1,10 +1,10 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:00:59.959599+00:00",
-  "runs": 581,
+  "updated": "2026-09-28T03:02:34.073294+00:00",
+  "runs": 582,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26462,
-  "n_false_negatives": 5112,
+  "n_false_positives": 26466,
+  "n_false_negatives": 5113,
   "new_this_run": {
     "false_positives": 4,
     "false_negatives": 1
@@ -298184,6 +298184,44 @@
         "Avian infectious bronchitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Canine distemper virus?",
+      "cited_pmid": "42717346",
+      "title": "Isolation of feline-derived scFvs against the VP1-CDE region of feline calicivirus from a phage display library and characterization of their antigen-binding and antiviral potential in vitro.",
+      "actual_organisms": [
+        "Feline calicivirus"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42374805",
+      "title": "Development and Application of a Blocking ELISA for the Detection of Feline Calicivirus Antibodies Based on Monoclonal Antibodies Against VP1 Protein.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genome organization and replication cycle of Feline leukemia virus?",
+      "cited_pmid": "42795539",
+      "title": "Isolation, Molecular Characterization, and Pathogenicity Evaluation of a Genotype GI Feline Calicivirus Isolate.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Feline leukemia virus?",
+      "cited_pmid": "42570535",
+      "title": "Functional divergence of feline calicivirus genotypes shapes virulence and antigenic diversity.",
+      "actual_organisms": [
+        "Feline calicivirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -328858,6 +328896,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Avian leukosis virus?",
       "missed_pmid": "42731233",
       "title": "Research note: ELISA kit replacement leads to false negatives in ALV eradication-A case study in Chinese yellow-feathered broilers."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What are the clinical symptoms and disease presentation of Feline calicivirus?",
+      "missed_pmid": "42800431",
+      "title": "Genetic diversity, pathogenicity, and serological cross-neutralization characteristics of contemporary feline calicivirus isolates from China."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
