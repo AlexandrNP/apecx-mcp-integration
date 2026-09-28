@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T07:44:21.765396+00:00",
-  "runs": 637,
+  "updated": "2026-09-28T07:54:13.820515+00:00",
+  "runs": 638,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27007,
+  "n_false_positives": 27022,
   "n_false_negatives": 5133,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 2
+    "false_positives": 15,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -304166,6 +304166,163 @@
         "Slow bee paralysis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "40438408",
+      "title": "Rapid detection of avipoxvirus using a fluorescent probe-based multienzyme isothermal amplification assay.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10260",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "41569631",
+      "title": "Structural Insights Into the Nuclear Import of Gallid Alphaherpesvirus 1 Large Tegument Protein.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "40005564",
+      "title": "First Complete Genome of Reticuloendotheliosis Virus in a Mallard Duck from Brazil: Phylogenetic Insights and Evolutionary Analysis.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "42511146",
+      "title": "A Triplex Crystal Digital RT-PCR for the Detection of Avian Leukosis Virus, Chicken Infectious Anemia Virus, and Fowl Adenovirus.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354736",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "42731233",
+      "title": "Research note: ELISA kit replacement leads to false negatives in ALV eradication-A case study in Chinese yellow-feathered broilers.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844223"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Fowlpox virus?",
+      "cited_pmid": "40076597",
+      "title": "Point-of-Care Diagnostic Test for Rapid Detection of Infectious Laryngotracheitis Virus by Loop-Mediated Isothermal Amplification and Nanoprobes.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "42413680",
+      "title": "Marek's disease virus-encoded microRNA-M6-5p suppresses viral replication by targeting UL42.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Fowlpox virus?",
+      "cited_pmid": "42594766",
+      "title": "Molecular characterization and biological characteristics of a highly pathogenic recombinant ALV-J strain (HUE2023) with cross-clade gp85 recombination.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1401444"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "How does Fowlpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42524070",
+      "title": "Deciphering host-virus interaction networks in ALV infection: an integrative multi-omics perspective.",
+      "actual_organisms": [
+        "Avian leukosis virus"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "How does Fowlpox virus evade or modulate the host immune response?",
+      "cited_pmid": "39804092",
+      "title": "Host-virus interactions during infection with a wild-type ILTV strain or a glycoprotein G deletion mutant ILTV vaccine strain in an ex vivo system.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Avian leukosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Avian leukosis virus?",
+      "cited_pmid": "40005564",
+      "title": "First Complete Genome of Reticuloendotheliosis Virus in a Mallard Duck from Brazil: Phylogenetic Insights and Evolutionary Analysis.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Gallid alphaherpesvirus 1?",
+      "cited_pmid": "39899476",
+      "title": "Marek's disease virus-1 unique gene LORF1 is involved in viral replication and MDV-1/Md5-induced atrophy of the bursa of Fabricius.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10389"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Gallid alphaherpesvirus 1?",
+      "cited_pmid": "40005564",
+      "title": "First Complete Genome of Reticuloendotheliosis Virus in a Mallard Duck from Brazil: Phylogenetic Insights and Evolutionary Analysis.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
       ]
     }
   ],
