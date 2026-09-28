@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T19:14:20.461222+00:00",
-  "runs": 693,
+  "updated": "2026-09-28T19:34:11.413980+00:00",
+  "runs": 694,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27624,
-  "n_false_negatives": 5166,
+  "n_false_positives": 27627,
+  "n_false_negatives": 5167,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 3,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -311158,6 +311158,35 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_333760"
       ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 4?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 4?",
+      "cited_pmid": "41979349",
+      "title": "A fusion protein's weak link: functional constraints revealed by inhibitory peptide interaction with the parainfluenza fusion protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -342156,6 +342185,12 @@
       "question": "What antiviral drugs or treatments are effective against Norovirus?",
       "missed_pmid": "42556538",
       "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human respirovirus 3?",
+      "missed_pmid": "31954277",
+      "title": "Human parainfluenza virus circulation, United States, 2011-2019."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
