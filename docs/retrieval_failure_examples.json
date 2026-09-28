@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T10:07:59.225851+00:00",
-  "runs": 649,
+  "updated": "2026-09-28T10:15:42.182321+00:00",
+  "runs": 650,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27128,
-  "n_false_negatives": 5146,
+  "n_false_positives": 27134,
+  "n_false_negatives": 5149,
   "new_this_run": {
-    "false_positives": 25,
-    "false_negatives": 2
+    "false_positives": 6,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -305535,6 +305535,73 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77204"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "cited_pmid": "42401561",
+      "title": "Cryo-EM structure of African horse sickness virus VP2 receptor-binding protein enables nanoparticle vaccine design.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77204"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "31100884",
+      "title": "Phylogenetic Characterization of the Palyam Serogroup Orbiviruses.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "26733292",
+      "title": "Complete genome sequence of a Chuzan virus strain isolated for the first time in mainland China.",
+      "actual_organisms": [
+        "Palyam virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77204"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
     }
   ],
   "false_negatives": [
@@ -336413,6 +336480,24 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Lassa mammarenavirus?",
       "missed_pmid": "38031051",
       "title": "Epidemiology and Genomic characteristics of arenavirus in rodents from the southeast coast of P.R. China."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "missed_pmid": "26601440",
+      "title": "Zoonotic and emerging orbivirus infections."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "How does Bluetongue virus evade or modulate the host immune response?",
+      "missed_pmid": "42463755",
+      "title": "CRISPR-Cas9 mediated knockout of the white gene in the bluetongue virus vector, Culicoides sonorensis (biting midge)."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bluetongue virus?",
+      "missed_pmid": "42104528",
+      "title": "Assessing infection rates in field-collected Culicoides populations: Example of a large-scale study on bluetongue and epizootic hemorrhagic disease viruses in Culicoides species (Diptera: Ceratopogonidae) in Reunion Island, Indian ocean."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
