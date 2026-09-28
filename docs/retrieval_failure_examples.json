@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T15:25:44.374609+00:00",
-  "runs": 674,
+  "updated": "2026-09-28T15:44:01.145640+00:00",
+  "runs": 675,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27345,
+  "n_false_positives": 27352,
   "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -308015,6 +308015,79 @@
         "Coxsackievirus B3",
         "http://purl.obolibrary.org/obo/NCBITaxon_10090",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "cited_pmid": "42546198",
+      "title": "The EV-A71 RNA-binding protein Matrin 3 facilitates viral replication by stabilizing viral RNA via ZDHHC20-mediated palmitoylation.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus D68?",
+      "cited_pmid": "42482485",
+      "title": "Intestinal Organoids as Models to Study Viruses: Current Application and Future Perspective.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "How does Enterovirus D68 evade or modulate the host immune response?",
+      "cited_pmid": "42742229",
+      "title": "Enterovirus 71 drives TLR2-NF-\u03baB-dependent inflammatory skeletal muscle injury in neonatal BALB/c mice.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2045071"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42750430",
+      "title": "Clinical Characteristics of Enterovirus D68 Respiratory Disease in Colorado Children Over a Decade: 2014-2025.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42578348",
+      "title": "Enterovirus D68 Detected in Hospitalized Children With Severe Acute Respiratory Infections in Zambia.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "42735468",
+      "title": "Long-term clinical and genomic surveillance of rare respiratory enterovirus C types in France, 2013-2025.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2650411",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749421",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760819",
+        "http://purl.obolibrary.org/obo/NCBITaxon_861519"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "42655720",
+      "title": "Seroepidemiology of Enterovirus D68 in Xiamen Children: A Cross-Sectional Study in 2022.",
+      "actual_organisms": [
+        "Enterovirus D68"
       ]
     }
   ],
