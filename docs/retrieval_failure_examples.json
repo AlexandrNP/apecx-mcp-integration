@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T16:34:19.516553+00:00",
-  "runs": 680,
+  "updated": "2026-09-28T17:05:10.017496+00:00",
+  "runs": 681,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27456,
-  "n_false_negatives": 5158,
+  "n_false_positives": 27465,
+  "n_false_negatives": 5159,
   "new_this_run": {
-    "false_positives": 22,
-    "false_negatives": 0
+    "false_positives": 9,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -309286,6 +309286,107 @@
       "actual_organisms": [
         "Human coronavirus OC43"
       ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42781794",
+      "title": "Diagnostics for Hemorrhagic Fever Viruses: Lassa Fever as an Example.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42777316",
+      "title": "Extended IL-4 priming of macrophages induces an antiviral state that restricts lymphocytic choriomeningitis virus replication.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42788769",
+      "title": "Monoclonal antibodies raised against the Jun\u00edn virus glycoprotein show broad reactivity and provide protection in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "42780641",
+      "title": "Jun\u00edn virus and Argentine haemorrhagic fever: Virology, pathogenesis, diagnosis, and prevention strategies.",
+      "actual_organisms": [
+        "Junin mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Junin mammarenavirus?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -340236,6 +340337,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Venezuelan equine encephalitis virus?",
       "missed_pmid": "40430233",
       "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lassa mammarenavirus?",
+      "missed_pmid": "42285356",
+      "title": "In silico prioritization and cheminformatics identify structurally diverse small-molecule inhibitors of Lassa virus glycoprotein-mediated membrane fusion."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
