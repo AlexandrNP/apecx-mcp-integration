@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:20:17.288531+00:00",
-  "runs": 555,
+  "updated": "2026-09-28T02:21:51.477591+00:00",
+  "runs": 556,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26171,
+  "n_false_positives": 26190,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 14,
+    "false_positives": 19,
     "false_negatives": 0
   },
   "false_positives": [
@@ -294818,6 +294818,226 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31704",
         "http://purl.obolibrary.org/obo/NCBITaxon_42769",
         "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 1?",
+      "cited_pmid": "42292462",
+      "title": "Behind the mask of relapsing bimodal encephalitis: herpesvirus 7 and Epstein-Barr virus associated with Hashimoto's encephalopathy: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41905024",
+      "title": "Identification of a novel multi epitope vaccine against human herpes virus 7 (HHV-7) to combat CNS disorders in children and adolescents using subtractive proteomics and immunoinformatic approaches.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42292462",
+      "title": "Behind the mask of relapsing bimodal encephalitis: herpesvirus 7 and Epstein-Barr virus associated with Hashimoto's encephalopathy: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the genome organization and replication cycle of Mumps orthorubulavirus?",
+      "cited_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the epidemiology and outbreak history of Human betaherpesvirus 7?",
+      "cited_pmid": "42376602",
+      "title": "Surveillance of enterovirus infection and genotypes/subgenotypes of enteroviruses in Dak Lak, Vietnam in 2022-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human betaherpesvirus 7?",
+      "cited_pmid": "2014240",
+      "title": "Effect of mutations affecting the p6 gag protein on human immunodeficiency virus particle release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "42524876",
+      "title": "Evolutionary and molecular characteristics of high-Shannon entropy codons in VP1 of Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "34668744",
+      "title": "Eptesicus fuscus Orthorubulavirus, a Close Relative of Human Parainfluenza Virus 4, Discovered in a Bat in South Dakota.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1300978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2884705",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "41593743",
+      "title": "Molecular characterization of mumps viruses from the 2022-2023 outbreak reveals circulation of multiple genotypes in Uganda.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42797874",
+      "title": "High Frequency of HHV-7 Reactivation in Neurological and Neuropsychiatric Long COVID: A Retrospective Observational Study.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "39088577",
+      "title": "Novel sialidase inhibitors suppress mumps virus replication and infection.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052560",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus A6?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
