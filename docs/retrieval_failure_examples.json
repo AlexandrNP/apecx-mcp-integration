@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:57:54.301579+00:00",
-  "runs": 541,
+  "updated": "2026-09-28T01:59:18.147544+00:00",
+  "runs": 542,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25965,
+  "n_false_positives": 25971,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -292469,6 +292469,65 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_90371",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "2014229",
+      "title": "Identification of a determinant within the human immunodeficiency virus 1 surface envelope glycoprotein critical for productive infection of primary monocytes.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "cited_pmid": "42534940",
+      "title": "Persistent Parvovirus B19 Viremia Despite Repeated Intravenous Immunoglobulin Therapy After Kidney Transplantation: A Case Report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "1850169",
+      "title": "A virus-encoded \"superantigen\" in a retrovirus-induced immunodeficiency syndrome of mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "cited_pmid": "15560060",
+      "title": "The natural history of chronic hepatitis C virus infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 1?",
+      "cited_pmid": "42534940",
+      "title": "Persistent Parvovirus B19 Viremia Despite Repeated Intravenous Immunoglobulin Therapy After Kidney Transplantation: A Case Report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
       ]
     }
   ],
