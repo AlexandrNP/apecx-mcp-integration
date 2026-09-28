@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:50:16.571376+00:00",
-  "runs": 507,
+  "updated": "2026-09-28T00:52:10.603275+00:00",
+  "runs": 508,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25423,
-  "n_false_negatives": 5082,
+  "n_false_positives": 25448,
+  "n_false_negatives": 5093,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 7
+    "false_positives": 25,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -286417,6 +286417,298 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_42789"
       ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42228746",
+      "title": "VP1-141 is a determinant of a Vero cell-adapted Coxsackievirus A10 for vaccine development.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "9820845",
+      "title": "Herpes simplex virus type 1 DNase: functional analysis of the enzyme expressed by recombinant baculovirus.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "41740582",
+      "title": "Broad-spectrum inhibitor of non-structural protein 2 protease shows therapeutic efficacy against Venezuelan equine encephalitis viral infection.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
+      "cited_pmid": "41849539",
+      "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41950307",
+      "title": "Design of a neutralizing and protective pan-encephalitic alphavirus receptor decoy protein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41659433",
+      "title": "Discovering Novel Therapeutic VHHs for Emerging Viruses: Perspectives from VEEV Selection Strategies.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42247493",
+      "title": "Structural and functional mapping of protective human monoclonal antibodies against enterovirus A71.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41988191",
+      "title": "Discovering novel therapeutic VHHs for emerging viruses: perspectives from VEEV selection strategies.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "cited_pmid": "42242120",
+      "title": "Can we trust non-polio enterovirus sero-surveillance? Evaluation of cross-neutralisation between enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "42349797",
+      "title": "Ondansetron exhibits potent antiviral activity against enterovirus 71 infection in vitro and in vivo.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "41740582",
+      "title": "Broad-spectrum inhibitor of non-structural protein 2 protease shows therapeutic efficacy against Venezuelan equine encephalitis viral infection.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "cited_pmid": "32644758",
+      "title": "Venezuelan Equine Encephalitis",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 1?",
+      "cited_pmid": "9707813",
+      "title": "Gerstmann's syndrome following an acute herpes simplex encephalitis.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 1?",
+      "cited_pmid": "41960431",
+      "title": "Importin \u03b11 contributes to Venezuelan equine encephalitis virus-induced cell death, but is not required for the capsid-mediated blockage of nucleocytoplasmic trafficking.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42250266",
+      "title": "Pathogen-Specific Evasion of Innate Immunity by Alphaviruses (CHIKV, VEEV, and SINV).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42515600",
+      "title": "Cellular Responses to Flavivirus Infections: Stress Signaling at the Crossroads of Host Defense and Virus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "41849539",
+      "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "42486368",
+      "title": "Physicochemical fingerprinting reveals convergent evolutionary determinants of enterovirus A71 neurovirulence through integrative machine learning and structural analysis.",
+      "actual_organisms": [
+        "Enterovirus A71"
+      ]
     }
   ],
   "false_negatives": [
@@ -316911,6 +317203,72 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Influenza B virus?",
       "missed_pmid": "42574486",
       "title": "Nucleocapsid-like cryo-EM structure of influenza B virus."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Venezuelan equine encephalitis virus?",
+      "missed_pmid": "41740582",
+      "title": "Broad-spectrum inhibitor of non-structural protein 2 protease shows therapeutic efficacy against Venezuelan equine encephalitis viral infection."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "missed_pmid": "42577415",
+      "title": "Characterization of virus neuroinvasion, blood-brain barrier integrity and neuroinflammation following Powassan virus infection in mice."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9820842",
+      "title": "The US5 open reading frame of herpes simplex virus type 1 does encode a glycoprotein (gJ)."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9820848",
+      "title": "Lack of detectable interaction between HSV-1 and integrins or tachykinins."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9707376",
+      "title": "RD6-2198, a novel betain-type fluoroalkylated oligomer, inhibits the replications of human immunodeficiency virus type 1 and other enveloped viruses."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9820846",
+      "title": "Environmental influence on immune inhibition of release of herpes simplex virus from cells."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9707373",
+      "title": "The effects of interferon-alpha and acyclovir on herpes simplex virus type-1 ribonucleotide reductase."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "missed_pmid": "9778788",
+      "title": "Identification of the UL56 protein of herpes simplex virus type 1 within the virion by immuno electron microscopy."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "missed_pmid": "9825226",
+      "title": "Molecular aspects of herpes simplex virus I latency, reactivation, and recurrence."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 1?",
+      "missed_pmid": "9747890",
+      "title": "A dominant V beta bias in the CTL response after HSV-1 infection is determined by peptide residues predicted to also interact with the TCR beta-chain CDR3."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "How does Human alphaherpesvirus 1 evade or modulate the host immune response?",
+      "missed_pmid": "9711538",
+      "title": "Spontaneous shift of an HSV type 1 productive, persistently infected macrophage-like culture to a non-productive culture."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
