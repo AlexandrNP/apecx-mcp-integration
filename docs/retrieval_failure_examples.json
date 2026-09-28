@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:54:39.314389+00:00",
-  "runs": 612,
+  "updated": "2026-09-28T04:09:36.866670+00:00",
+  "runs": 613,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26801,
-  "n_false_negatives": 5124,
+  "n_false_positives": 26808,
+  "n_false_negatives": 5125,
   "new_this_run": {
-    "false_positives": 1,
-    "false_negatives": 0
+    "false_positives": 7,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -301903,6 +301903,85 @@
       "actual_organisms": [
         "Echovirus 11"
       ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42761272",
+      "title": "Synthetic consensus DNA vaccines against Merkel cell polyomavirus large and small T antigens induce robust polyfunctional T cell responses.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42691630",
+      "title": "HMGB1 as a convergent host factor in virus-induced carcinogenesis.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "How does Merkel cell polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42744829",
+      "title": "PD-1 regulates CD4+ T cell-mediated CD8+ T cell responses in the brain to balance viral control and neuroinflammation.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is known about KI polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42761272",
+      "title": "Synthetic consensus DNA vaccines against Merkel cell polyomavirus large and small T antigens induce robust polyfunctional T cell responses.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is known about KI polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42767667",
+      "title": "Native Versus Allograft BK Polyomavirus Nephropathy: A Matched Cohort Study of Clinicopathological Features and Outcomes.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is the genome organization and replication cycle of KI polyomavirus?",
+      "cited_pmid": "42691630",
+      "title": "HMGB1 as a convergent host factor in virus-induced carcinogenesis.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -332649,6 +332728,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
       "missed_pmid": "38102627",
       "title": "Prevalence and genotype distribution of human papillomavirus infection among women in Jingzhou, China: a population-based study of 51,720 women."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "missed_pmid": "37301085",
+      "title": "Case report: Metastasis of Merkel cell carcinoma in the small intestine."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
