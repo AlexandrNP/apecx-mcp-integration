@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:04:04.710773+00:00",
-  "runs": 583,
+  "updated": "2026-09-28T03:05:34.592638+00:00",
+  "runs": 584,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26489,
-  "n_false_negatives": 5114,
+  "n_false_positives": 26496,
+  "n_false_negatives": 5116,
   "new_this_run": {
-    "false_positives": 23,
-    "false_negatives": 1
+    "false_positives": 7,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -298459,6 +298459,83 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_693996",
         "http://purl.obolibrary.org/obo/NCBITaxon_694009"
       ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42100657",
+      "title": "Development of an indirect enzyme-linked immunosorbent assay based on the nucleocapsid protein of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42568142",
+      "title": "In vitro investigation of host Synaptogyrin-2 role in BVDV-1 replication.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41932427",
+      "title": "Viral isolation and genomic characteristics of the first bovine parainfluenza virus type 3 isolated from water buffaloes (Bubalus bubalis) in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42755548",
+      "title": "Isolation and Characterization of bovine parainfluenza virus type 3 genotype C from brown cattle with respiratory disease in Yili, Xinjiang, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "42720819",
+      "title": "Combined use of dill essential oil and tannic acid creates stage-specific, and time-dependent antiviral effect against bovine viral pathogens (BoHV-1, BVDV, BPIV-3, BRSV, and BEV).",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Bovine parainfluenza virus 3",
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "How does Bluetongue virus evade or modulate the host immune response?",
+      "cited_pmid": "41702236",
+      "title": "Distinct and synergistic immunomodulatory roles of PSGL-1 and PD-1 in CP versus NCP BVDV-1 infections: A novel mechanism of CD8+ T-cell exhaustion and viral pathogenesis.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine parainfluenza virus 3?",
+      "cited_pmid": "41472275",
+      "title": "Identification and Characterization of a Novel BVDV-1b Cluster in Sardinia Through Whole Genome Sequencing.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
     }
   ],
   "false_negatives": [
@@ -329145,6 +329222,18 @@
       "question": "How does Swinepox virus evade or modulate the host immune response?",
       "missed_pmid": "35992711",
       "title": "Rabbit hemorrhagic disease virus VP60 protein expressed in recombinant swinepox virus self-assembles into virus-like particles with strong immunogenicity in rabbits."
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine viral diarrhea virus 1?",
+      "missed_pmid": "42492780",
+      "title": "Standardization of a quantitative multiplex real-time PCR system for the detection of bovine respiratory disease pathogens in clinical samples of dairy cattle from southern Brazil."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42799934",
+      "title": "Evaluation of indolicidin for inactivation of bovine alphaherpesvirus 1 in semen."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
