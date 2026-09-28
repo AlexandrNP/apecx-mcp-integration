@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:10:45.846354+00:00",
-  "runs": 549,
+  "updated": "2026-09-28T02:12:17.326640+00:00",
+  "runs": 550,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26063,
+  "n_false_positives": 26070,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 26,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -293588,6 +293588,82 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2045064",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052320"
+      ]
+    },
+    {
+      "organism": "Sabia mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sabia mammarenavirus?",
+      "cited_pmid": "42202225",
+      "title": "Structures of New World mammarenavirus glycoproteins as targets for antibody-mediated neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chapare mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Chapare mammarenavirus?",
+      "cited_pmid": "34132574",
+      "title": "Antibody-Based Inhibition of Pathogenic New World Hemorrhagic Fever Mammarenaviruses by Steric Occlusion of the Human Transferrin Receptor 1 Apical Domain.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is known about Laguna Negra orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29879985",
+      "title": "Description and characterization of a novel live-attenuated tri-segmented Machupo virus in Guinea pigs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Laguna Negra orthohantavirus?",
+      "cited_pmid": "19660427",
+      "title": "Genetic characterization of a Juquitiba-like viral lineage in Oligoryzomys nigripes in Rio de Janeiro, Brazil.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_139032",
+        "http://purl.obolibrary.org/obo/NCBITaxon_139033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_379964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_430511"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Laguna Negra orthohantavirus?",
+      "cited_pmid": "37899233",
+      "title": "[South American Hemorrhagic Fever viruses and the cutting edge of the vaccine and antiviral development].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Laguna Negra orthohantavirus?",
+      "cited_pmid": "26087934",
+      "title": "Viral load of patients with hantavirus pulmonary syndrome in Argentina.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Laguna Negra orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Laguna Negra orthohantavirus?",
+      "cited_pmid": "40751015",
+      "title": "Metal-induced conformational changes in the Sabi\u00e1 virus spike complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617"
       ]
     }
   ],
