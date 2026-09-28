@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T18:04:18.305389+00:00",
-  "runs": 687,
+  "updated": "2026-09-28T18:14:15.308426+00:00",
+  "runs": 688,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27543,
-  "n_false_negatives": 5162,
+  "n_false_positives": 27567,
+  "n_false_negatives": 5163,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 0
+    "false_positives": 24,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -310258,6 +310258,288 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10242",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "41810598",
+      "title": "Differential Induction and Signaling of Type I and III Interferons During Infection of Human Nasal Epithelial Cells With the Four Human Parainfluenza Virus Types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560526",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42244924",
+      "title": "Circulation of Human Coronaviruses in SARS-CoV-2 and Influenza-negative patients with respiratory infections during Ghana's 2021 COVID-19 pandemic.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "41396244",
+      "title": "Characterization of human parainfluenza virus type 2 circulating in southern France between 2017 and 2022 using whole-genome sequencing.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "37734534",
+      "title": "Clinical impact of human parainfluenza virus infections before and during the COVID-19 pandemic in Southern China.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "41305396",
+      "title": "Long-Term Trends in Human Parainfluenza Virus Types 1, 2, and 3 Infection in Korea (2007-2024).",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "42167496",
+      "title": "Symptomatology of SARS-CoV-2 versus seasonal coronavirus infection in healthy young children.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Influenza A virus?",
+      "cited_pmid": "42012947",
+      "title": "Paramyxovirus infection driven by heteromultivalent sialoglycotope binding.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_186938",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "How does Influenza A virus evade or modulate the host immune response?",
+      "cited_pmid": "42055251",
+      "title": "Innate airway responses shape permissiveness to human respiratory syncytial virus.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "How does Influenza A virus evade or modulate the host immune response?",
+      "cited_pmid": "42168570",
+      "title": "The seven human coronavirus main proteases exhibit differential modulation of NF-\u03baB suppression via TAB1 cleavage.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11137",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1335626",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "37906378",
+      "title": "Genetic analysis of human parainfluenza type 2 virus in Riyadh, Saudi Arabia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42570380",
+      "title": "The discovery of potent and selective N6-modified adenosine derivatives as effective chemotherapeutic agents to overcome p53-dependent drug resistance in cancer and HPIV-3/AdV5 respiratory tract infections.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus NL63?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "39684830",
+      "title": "Development of Primer Panels for Amplicon Sequencing of Human Parainfluenza Viruses Type 1 and 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human respirovirus 3?",
+      "cited_pmid": "37906378",
+      "title": "Genetic analysis of human parainfluenza type 2 virus in Riyadh, Saudi Arabia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 pathogenesis and transmission?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 2?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 2?",
+      "cited_pmid": "41979349",
+      "title": "A fusion protein's weak link: functional constraints revealed by inhibitory peptide interaction with the parainfluenza fusion protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -341232,6 +341514,12 @@
       "question": "What is the genome organization and replication cycle of Orf virus?",
       "missed_pmid": "34079832",
       "title": "A Comparison of Parapoxviruses in North American Pinnipeds."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "missed_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
