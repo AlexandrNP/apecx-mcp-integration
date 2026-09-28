@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:54:59.279663+00:00",
-  "runs": 577,
+  "updated": "2026-09-28T02:56:35.848089+00:00",
+  "runs": 578,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26432,
+  "n_false_positives": 26444,
   "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 12,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297863,6 +297863,131 @@
       "actual_organisms": [
         "Sacbrood virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38658899",
+      "title": "Rice yellow mottle virus is a suitable amplicon vector for an efficient production of an anti-leishmianiasis vaccine in Nicotiana benthamiana leaves.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1921436",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38568"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus pathogenesis and transmission?",
+      "cited_pmid": "37475836",
+      "title": "Metagenomics reveals the structure of\u00a0Mastrevirus-host interaction network within an agro-ecosystem.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10812",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1182518"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "40733379",
+      "title": "Identification and Distribution of Begomoviruses Infecting Cassava Fields in Sierra Leone.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "40078636",
+      "title": "Emergence of begomoviruses and DNA satellites associated with weeds and intercrops: a potential threat to sustainable production of cassava in C\u00f4te d'Ivoire.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1458186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2609695",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976679",
+        "http://purl.obolibrary.org/obo/NCBITaxon_761702"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42667301",
+      "title": "Stochastic Analysis of a Plant-Vector-Virus Model with Saturated Incidence Rate.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_393599"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "39599824",
+      "title": "Rice Yellow Mottle Virus (RYMV): A Review.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tobacco mosaic virus?",
+      "cited_pmid": "39162474",
+      "title": "Geminivirus C4/AC4 proteins hijack cellular COAT PROTEIN COMPLEX I for chloroplast targeting and viral infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10840"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "How does Tobacco mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "40465802",
+      "title": "Comparative analysis of pattern-triggered and effector-triggered immunity gene expression in susceptible and tolerant cassava genotypes following begomovirus infection.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_63723"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "How does Tobacco mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "36229931",
+      "title": "Rapid evolution of an RNA virus to escape recognition by a rice nucleotide-binding and leucine-rich repeat domain immune receptor.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What antiviral drugs or treatments are effective against Maize streak virus?",
+      "cited_pmid": "42690783",
+      "title": "Scaffold Hopping for Pesticide Discovery: Design, Synthesis, and Biological Activity Research of Novel Raspberry Ketone Derivatives.",
+      "actual_organisms": [
+        "Tobacco mosaic virus"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Maize streak virus?",
+      "cited_pmid": "37133339",
+      "title": "Molecular Diversity of Rice Yellow Mottle Virus in Uganda and Relationships with Other Strains from Africa.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the clinical symptoms and disease presentation of Rice yellow mottle virus?",
+      "cited_pmid": "42797780",
+      "title": "Dahlia Virome Analysis Reveals Multiple Novel Viruses in Mixed Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
       ]
     }
   ],
