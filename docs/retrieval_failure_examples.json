@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:08:10.751413+00:00",
-  "runs": 487,
+  "updated": "2026-09-28T00:10:10.584691+00:00",
+  "runs": 488,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25193,
-  "n_false_negatives": 5014,
+  "n_false_positives": 25196,
+  "n_false_negatives": 5019,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 4
+    "false_positives": 3,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -283841,6 +283841,38 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "37901353",
+      "title": "Differences in CpG island distribution between exogenous and endogenous jaagsiekte sheep retrovirus strains.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_140052"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What antiviral drugs or treatments are effective against Visna-maedi virus?",
+      "cited_pmid": "41920397",
+      "title": "Interferon dynamics in deltaretroviruses: why HTLV-1 evades, but BLV responds.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "38791660",
+      "title": "Development of a Bead-Based Multiplex Fluorescent Immunoassay to Detect Antibodies against Maedi-Visna Virus in Sheep.",
+      "actual_organisms": [
+        "Visna-maedi virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -313927,6 +313959,36 @@
       "question": "How does Human parainfluenza virus 2 evade or modulate the host immune response?",
       "missed_pmid": "33408172",
       "title": "Human Parainfluenza Virus Type 2 V Protein Modulates Iron Homeostasis."
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What diagnostic assays or laboratory tests detect Visna-maedi virus?",
+      "missed_pmid": "35993078",
+      "title": "Pathological, molecular, and serological study of small ruminant lentiviruses in Jordan."
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "How does Visna-maedi virus evade or modulate the host immune response?",
+      "missed_pmid": "36016323",
+      "title": "Evolutionary Conservation of PP2A Antagonism and G2/M Cell Cycle Arrest in Maedi-Visna Virus Vif."
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Caprine arthritis encephalitis virus?",
+      "missed_pmid": "34950725",
+      "title": "Case Report: A Case of Caprine Arthritis Encephalitis in Dairy Goat Farms in South Korea."
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What is the epidemiology and outbreak history of Jaagsiekte sheep retrovirus?",
+      "missed_pmid": "42126457",
+      "title": "Nasal adenocarcinoma induced by jaagsiekte sheep retrovirus in a juvenile goat: first report on pathological and molecular findings."
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What are the clinical symptoms and disease presentation of Jaagsiekte sheep retrovirus?",
+      "missed_pmid": "35603075",
+      "title": "Clinical, molecular, and pathological investigations of ovine pulmonary adenocarcinoma in the middle of Iraq."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
