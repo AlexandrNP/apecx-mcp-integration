@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:28:44.709807+00:00",
-  "runs": 560,
+  "updated": "2026-09-28T02:30:28.948959+00:00",
+  "runs": 561,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26243,
+  "n_false_positives": 26252,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 9,
     "false_negatives": 0
   },
   "false_positives": [
@@ -295673,6 +295673,101 @@
       "actual_organisms": [
         "Seneca Valley virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
+      "cited_pmid": "42655673",
+      "title": "Preferential Exhaustion and Loss of Predominant Reservoir in Gut-Associated Lymph Nodes of a SIVmac239-Infected Rhesus Macaque with Terminal AIDS.",
+      "actual_organisms": [
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "cited_pmid": "42647641",
+      "title": "Dose-ranging pharmacokinetics, safety, and efficacy of a 90-day intravaginal ring delivering islatravir in pigtail macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_57667"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 1?",
+      "cited_pmid": "42496872",
+      "title": "Vitamins as modulators of Deltaretrovirus infection: implications for HTLV-1 and bovine leukemia virus-associated diseases.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human immunodeficiency virus 1?",
+      "cited_pmid": "42770717",
+      "title": "Reading immune restoration through Mycobacterium tuberculosis intrahost evolution.",
+      "actual_organisms": [
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1773"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42591061",
+      "title": "Comparison of 2 commercial antibody ELISA kits for identification of high proviral load carrier cattle in strategic control of bovine leukemia virus infection.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428211"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42566024",
+      "title": "Visual typing detection of bovine leukemia virus with a lateral flow immunoassay based on latex microspheres.",
+      "actual_organisms": [
+        "Bovine leukemia virus"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42554915",
+      "title": "Tracing feline herpesvirus-1 exposure in domestic cats from Namibia: associations with neutralising antibodies, vaccination, clinical signs, and retroviral status.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "cited_pmid": "42647641",
+      "title": "Dose-ranging pharmacokinetics, safety, and efficacy of a 90-day intravaginal ring delivering islatravir in pigtail macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_57667"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "cited_pmid": "42622610",
+      "title": "Circulating platelet-natural killer cell complexes are elevated in people living with human immunodeficiency virus on antiretroviral therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
       ]
     }
   ],
