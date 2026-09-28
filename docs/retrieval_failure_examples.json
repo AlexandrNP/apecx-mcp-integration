@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:29:48.535648+00:00",
-  "runs": 497,
+  "updated": "2026-09-28T00:32:26.690812+00:00",
+  "runs": 498,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25296,
-  "n_false_negatives": 5053,
+  "n_false_positives": 25299,
+  "n_false_negatives": 5056,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 0
+    "false_positives": 3,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -285017,6 +285017,42 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10376"
       ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "cited_pmid": "32232463",
+      "title": "Tick-Borne Diseases in the United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1618189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "37766282",
+      "title": "Generation and Characterisation of Monoclonal Antibodies against Nairobi Sheep Disease Virus Nucleoprotein.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052514",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Nairobi sheep disease virus?",
+      "cited_pmid": "36794933",
+      "title": "Characterization of a Novel Orbivirus from Cattle Reveals Active Circulation of a Previously Unknown and Pathogenic Orbivirus in Ruminants in Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1289939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3025059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -315337,6 +315373,24 @@
       "question": "What antiviral drugs or treatments are effective against Tai Forest ebolavirus?",
       "missed_pmid": "33494199",
       "title": "Ta\u00ef Forest Virus Does Not Cause Lethal Disease in Ferrets."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Tick-borne encephalitis virus?",
+      "missed_pmid": "42443670",
+      "title": "Design of Nucleoside Prodrugs for the Inhibition of Tick-Borne Encephalitis Virus Reproduction."
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is the epidemiology and outbreak history of Colorado tick fever virus?",
+      "missed_pmid": "29363458",
+      "title": "Case Report: A Case of Colorado Tick Fever Acquired in Southwestern Saskatchewan."
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "How does Colorado tick fever virus evade or modulate the host immune response?",
+      "missed_pmid": "34218056",
+      "title": "Colorado tick fever virus induces apoptosis in human endothelial cells\u00a0to facilitate viral replication."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
