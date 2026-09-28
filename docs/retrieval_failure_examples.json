@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:41:26.898430+00:00",
-  "runs": 605,
+  "updated": "2026-09-28T03:42:53.780553+00:00",
+  "runs": 606,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26744,
+  "n_false_positives": 26750,
   "n_false_negatives": 5123,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -301286,6 +301286,65 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42663706",
+      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42670618",
+      "title": "Evidence for type replacement as a consequence of vaccination and implications for cervical screening.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 51?",
+      "cited_pmid": "36624228",
+      "title": "Genetic diversity of human papillomavirus (HPV) as specified by the detection method, gender, and year of sampling: a retrospective cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 39?",
+      "cited_pmid": "38178597",
+      "title": "Human papillomavirus prevalence and genotype distribution in Liaocheng men between 2016 and 2022.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 39?",
+      "cited_pmid": "36624228",
+      "title": "Genetic diversity of human papillomavirus (HPV) as specified by the detection method, gender, and year of sampling: a retrospective cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
     }
   ],
