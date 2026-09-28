@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T22:44:07.922696+00:00",
-  "runs": 704,
+  "updated": "2026-09-28T22:54:14.214962+00:00",
+  "runs": 705,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27745,
+  "n_false_positives": 27756,
   "n_false_negatives": 5172,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -312467,6 +312467,140 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_149595",
         "http://purl.obolibrary.org/obo/NCBITaxon_226901",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "cited_pmid": "41902228",
+      "title": "Molecular Characterization of Complete Simian Foamy Virus Genomes from Three Colobine Monkeys Reveals Highly Divergent Evolutionary Trajectories and Identifies Transmission to Humans.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "41326689",
+      "title": "Characterization of a synthetic infectious cloned DNA of simian foamy virus serotype 1.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_338478"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the epidemiology and outbreak history of Simian immunodeficiency virus?",
+      "cited_pmid": "40872784",
+      "title": "Thirteenth International Foamy Virus Conference-Meeting Report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "cited_pmid": "12456156",
+      "title": "What is your diagnosis?: Multifocal subcutaneous tumors in a young male baboon.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian immunodeficiency virus?",
+      "cited_pmid": "42346010",
+      "title": "Engineering Viral Surface Antigens to Improve Display on Virus-like Particle (VLP) Vaccine Prototypes.",
+      "actual_organisms": [
+        "Gibbon ape leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian immunodeficiency virus?",
+      "cited_pmid": "36343471",
+      "title": "Ecotropic HIV-1 vectors pseudotyped with R-peptide-deleted envelope protein variants reveal improved gene transfer efficiencies.",
+      "actual_organisms": [
+        "Gibbon ape leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1511762"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What are the clinical symptoms and disease presentation of Yaba monkey tumor virus?",
+      "cited_pmid": "36986405",
+      "title": "Epidemiological Survey and Risk Factor Analysis of 14 Potential Pathogens in Golden Snub-Nosed Monkeys at Shennongjia National Nature Reserve, China.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77643"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yaba monkey tumor virus?",
+      "cited_pmid": "41902228",
+      "title": "Molecular Characterization of Complete Simian Foamy Virus Genomes from Three Colobine Monkeys Reveals Highly Divergent Evolutionary Trajectories and Identifies Transmission to Humans.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian foamy virus?",
+      "cited_pmid": "16054706",
+      "title": "Real-time PCR assay for the detection of tanapox virus and yaba-like disease virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What is known about Gibbon ape leukemia virus pathogenesis and transmission?",
+      "cited_pmid": "37384730",
+      "title": "Viruses in saliva from sanctuary chimpanzees (Pan troglodytes) in Republic of Congo and Uganda.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What is the epidemiology and outbreak history of Gibbon ape leukemia virus?",
+      "cited_pmid": "40872786",
+      "title": "Simian Foamy Virus Prevalence and Evolutionary Relationships in Two Free-Living Lion Tamarin Populations from Rio de Janeiro, Brazil.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
       ]
     }
   ],
