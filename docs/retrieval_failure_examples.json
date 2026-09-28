@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:20:56.065623+00:00",
-  "runs": 492,
+  "updated": "2026-09-28T00:22:41.329484+00:00",
+  "runs": 493,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25220,
-  "n_false_negatives": 5035,
+  "n_false_positives": 25245,
+  "n_false_negatives": 5039,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 11
+    "false_positives": 25,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -284145,6 +284145,303 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "37384730",
+      "title": "Viruses in saliva from sanctuary chimpanzees (Pan troglodytes) in Republic of Congo and Uganda.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "32268512",
+      "title": "Genome Analysis and Replication Studies of the African Green Monkey Simian Foamy Virus Serotype 3 Strain FV2014.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian immunodeficiency virus?",
+      "cited_pmid": "36878926",
+      "title": "The crystal structure of a simian Foamy Virus receptor binding domain provides clues about entry into host cells.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What diagnostic assays or laboratory tests detect Yaba monkey tumor virus?",
+      "cited_pmid": "32110713",
+      "title": "Seroprevalence of viral infections in captive rhesus and cynomolgus macaques.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10375",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_154334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yaba monkey tumor virus?",
+      "cited_pmid": "31978513",
+      "title": "Phylogenetic analyses reveal that simian foamy virus isolated from Japanese Yakushima macaques (Macaca fuscata yakui) is distinct from most of Japanese Hondo macaques (Macaca fuscata fuscata).",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42313978",
+      "title": "An HIV vaccine blueprint.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37093892",
+      "title": "Neutralization of zoonotic retroviruses by human antibodies: Genotype-specific epitopes within the receptor-binding domain from simian foamy virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35605011",
+      "title": "Plasma antibodies from humans infected with zoonotic simian foamy virus do not inhibit cell-to-cell transmission of the virus despite binding to the surface of infected cells.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "36417189",
+      "title": "Contemporary Distribution, Estimated Age, and Prehistoric Migrations of Old World Monkey Retroviruses.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1048243",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_196403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "34250513",
+      "title": "Transmission of infectious viruses in the natural setting at human-animal interface.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "32268512",
+      "title": "Genome Analysis and Replication Studies of the African Green Monkey Simian Foamy Virus Serotype 3 Strain FV2014.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "32110713",
+      "title": "Seroprevalence of viral infections in captive rhesus and cynomolgus macaques.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10375",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_154334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "16054706",
+      "title": "Real-time PCR assay for the detection of tanapox virus and yaba-like disease virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "41326689",
+      "title": "Characterization of a synthetic infectious cloned DNA of simian foamy virus serotype 1.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_338478"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "42693271",
+      "title": "BCL-2 inhibition at antiretroviral therapy initiation reduces the intact SIV reservoir in macaques.",
+      "actual_organisms": [
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "33507996",
+      "title": "Human T-cell lymphotropic virus type 1 transmission dynamics in rural villages in the Democratic Republic of the Congo with high nonhuman primate exposure.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33747",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the clinical symptoms and disease presentation of Simian virus 40?",
+      "cited_pmid": "12456156",
+      "title": "What is your diagnosis?: Multifocal subcutaneous tumors in a young male baboon.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the clinical symptoms and disease presentation of Simian virus 40?",
+      "cited_pmid": "2773312",
+      "title": "Studies on Tanapox virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the clinical symptoms and disease presentation of Simian virus 40?",
+      "cited_pmid": "6274988",
+      "title": "Burkitt's lymphoma.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian virus 40?",
+      "cited_pmid": "36878926",
+      "title": "The crystal structure of a simian Foamy Virus receptor binding domain provides clues about entry into host cells.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian virus 40?",
+      "cited_pmid": "15105545",
+      "title": "Yaba-like disease virus protein Y144R, a member of the complement control protein family, is present on enveloped virions that are associated with virus-induced actin tails.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653087"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "How does Simian virus 40 evade or modulate the host immune response?",
+      "cited_pmid": "17959666",
+      "title": "Yaba monkey tumor virus encodes a functional inhibitor of interleukin-18.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Simian virus 40?",
+      "cited_pmid": "40872786",
+      "title": "Simian Foamy Virus Prevalence and Evolutionary Relationships in Two Free-Living Lion Tamarin Populations from Rio de Janeiro, Brazil.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Simian virus 40?",
+      "cited_pmid": "32616640",
+      "title": "Complete Genome Sequence of a Baboon Simian Foamy Virus Isolated from an Infected Human.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Simian virus 40?",
+      "cited_pmid": "41902228",
+      "title": "Molecular Characterization of Complete Simian Foamy Virus Genomes from Three Colobine Monkeys Reveals Highly Divergent Evolutionary Trajectories and Identifies Transmission to Humans.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -314357,6 +314654,30 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Equine arteritis virus?",
       "missed_pmid": "35495124",
       "title": "Development of a TaqMan\u00ae Allelic Discrimination qPCR Assay for Rapid Detection of Equine CXCL16 Allelic Variants Associated With the Establishment of Long-Term Equine Arteritis Virus Carrier State in Stallions."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "missed_pmid": "32506843",
+      "title": "Close-up: HIV/SIV intasome structures shed new light on integrase inhibitor binding and viral escape mechanisms."
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What is the genome organization and replication cycle of Yaba monkey tumor virus?",
+      "missed_pmid": "6292349",
+      "title": "The molecular biology of Yaba tumour pox virus: analysis of lipids, proteins and DNA."
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yaba monkey tumor virus?",
+      "missed_pmid": "2998018",
+      "title": "Cloning and physical mapping of Yaba monkey tumor virus DNA."
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the epidemiology and outbreak history of Simian virus 40?",
+      "missed_pmid": "191078",
+      "title": "Inhibition of simian virus 40 DNA synthesis in Yaba virus-preinfected cells."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
