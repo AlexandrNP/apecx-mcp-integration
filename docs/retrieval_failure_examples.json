@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:10:29.632208+00:00",
-  "runs": 517,
+  "updated": "2026-09-28T01:12:12.074636+00:00",
+  "runs": 518,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25588,
-  "n_false_negatives": 5097,
+  "n_false_positives": 25604,
+  "n_false_negatives": 5098,
   "new_this_run": {
-    "false_positives": 5,
+    "false_positives": 16,
     "false_negatives": 1
   },
   "false_positives": [
@@ -288293,6 +288293,184 @@
         "Chikungunya virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tick-borne encephalitis virus?",
+      "cited_pmid": "42228742",
+      "title": "Expanding diversity of tick-borne phleboviruses (Phlebovirus mukawaense, Mudanjiang phlebovirus, Gomselga Virus, and Onega tick phlebovirus) in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789411",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2800875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052664",
+        "http://purl.obolibrary.org/obo/NCBITaxon_780"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41407241",
+      "title": "Replication competent La Crosse virus pseudotyped VSV vector system as vaccine and serological diagnostic reagent.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "How does Murray Valley encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "How does Murray Valley encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "40970210",
+      "title": "Immunodominant structural proteins Gc and N drive T cell-mediated protection against La Crosse virus.",
+      "actual_organisms": [
+        "La Crosse virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What antiviral drugs or treatments are effective against La Crosse virus?",
+      "cited_pmid": "41902195",
+      "title": "Antiviral Activity of Microbial Metabolites Monensin and Brefeldin A Against Toscana Virus: In Vitro Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the epidemiology and outbreak history of La Crosse virus?",
+      "cited_pmid": "40127699",
+      "title": "Prevalence of Murray Valley encephalitis virus antibodies in northern Victoria following the 2023 outbreak: a cross-sectional serological survey.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "39429370",
+      "title": "Therapeutic Plasma Exchange for Murray Valley Encephalitis: A Case Report and Review of Clinical Features, Diagnosis, and Challenges in Management.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41407241",
+      "title": "Replication competent La Crosse virus pseudotyped VSV vector system as vaccine and serological diagnostic reagent.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "42562316",
+      "title": "Bovine lactoferrin confers antiviral effect against La Crosse virus by interfering with virus-heparan sulfate proteoglycan binding.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "How does Toscana virus evade or modulate the host immune response?",
+      "cited_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Toscana virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -318877,6 +319055,12 @@
       "question": "What antiviral drugs or treatments are effective against Zika virus?",
       "missed_pmid": "42742313",
       "title": "Solanaceae-Derived Spirostane Saponins Inhibit Dengue Virus Replication and Viral Protein Expression and Exhibit Activity Against Multiple Arboviruses."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "missed_pmid": "41901791",
+      "title": "Molecular Epidemiology of Toscana Virus in Northern and Central Italy Using Metagenomic Next-Generation Sequencing."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
