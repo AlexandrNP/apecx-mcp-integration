@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:02:43.152109+00:00",
-  "runs": 544,
+  "updated": "2026-09-28T02:04:17.110977+00:00",
+  "runs": 545,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26007,
+  "n_false_positives": 26020,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 27,
+    "false_positives": 13,
     "false_negatives": 0
   },
   "false_positives": [
@@ -292961,6 +292961,154 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2884705",
         "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41905024",
+      "title": "Identification of a novel multi epitope vaccine against human herpes virus 7 (HHV-7) to combat CNS disorders in children and adolescents using subtractive proteomics and immunoinformatic approaches.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42762643",
+      "title": "Transcriptional decoupling of the epithelial-immune bridge is associated with suboptimal influenza B virus immunogenicity.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11120"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis E virus?",
+      "cited_pmid": "42605089",
+      "title": "[Metagenomic sequencing-based pathogen analysis in pediatric severe acute non-A-E hepatitis].",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis E virus?",
+      "cited_pmid": "41905024",
+      "title": "Identification of a novel multi epitope vaccine against human herpes virus 7 (HHV-7) to combat CNS disorders in children and adolescents using subtractive proteomics and immunoinformatic approaches.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "42742532",
+      "title": "Use of Dried Blood Spots for Identifying Hepatitis E Infections in an Outbreak Setting.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza B virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza B virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42700662",
+      "title": "Evaluation of the clinical performance of the JETest Influenza A/B Antigen Rapid Test Kit versus real-time reverse transcription-PCR for influenza detection.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42779859",
+      "title": "Impact of hepatitis E virus host- and virus-derived insertions on the antiviral response in primary human hepatocytes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
