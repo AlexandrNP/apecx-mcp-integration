@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:26:57.196132+00:00",
-  "runs": 598,
+  "updated": "2026-09-28T03:28:19.015165+00:00",
+  "runs": 599,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26672,
+  "n_false_positives": 26681,
   "n_false_negatives": 5120,
   "new_this_run": {
-    "false_positives": 16,
-    "false_negatives": 2
+    "false_positives": 9,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -300468,6 +300468,102 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38619081",
+      "title": "Pattern of multiple human papillomavirus infection and type competition: An analysis in healthy Chinese women aged 18-45 years.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 18?",
+      "cited_pmid": "40640817",
+      "title": "Genetic variability in HPV 33 and 35 E6 and E7 genes from South African and Mozambican women with different cervical cytology status.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42774225",
+      "title": "Assessing high-throughput surrogate assays for real-world HPV16- and HPV18-specific vaccine immune monitoring: a comparison of PBNA, cCLIA, and IgG.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 51?",
+      "cited_pmid": "37468974",
+      "title": "Cervical carcinogenesis risk association of HPV33 E6 and E7 genetic variations in Taizhou, Southeast China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42663706",
+      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "38346260",
+      "title": "Codon usage bias of human papillomavirus type 33 and 58: A comprehensive analysis.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "37468974",
+      "title": "Cervical carcinogenesis risk association of HPV33 E6 and E7 genetic variations in Taizhou, Southeast China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 39?",
+      "cited_pmid": "40640817",
+      "title": "Genetic variability in HPV 33 and 35 E6 and E7 genes from South African and Mozambican women with different cervical cytology status.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
       ]
     }
   ],
