@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T05:05:04.493062+00:00",
-  "runs": 622,
+  "updated": "2026-09-28T05:14:26.713516+00:00",
+  "runs": 623,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26873,
+  "n_false_positives": 26875,
   "n_false_negatives": 5127,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 1
+    "false_positives": 2,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -302694,6 +302694,28 @@
       "actual_organisms": [
         "Invertebrate iridescent virus 6",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What diagnostic assays or laboratory tests detect Torque teno midi virus?",
+      "cited_pmid": "37631978",
+      "title": "Expansion of Betatorquevirus and/or Gammatorquevirus in Patients with Severe Clinical Outcomes of the Liver Diseases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687333",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the genome organization and replication cycle of Torque teno midi virus?",
+      "cited_pmid": "41099065",
+      "title": "The replication protein of duck circovirus unwinds dsDNA in an ATP-driven and metal ion-dependent manner from 3' to 5'.",
+      "actual_organisms": [
+        "Duck circovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
     }
   ],
