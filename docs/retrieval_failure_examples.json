@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:04:17.110977+00:00",
-  "runs": 545,
+  "updated": "2026-09-28T02:05:43.418308+00:00",
+  "runs": 546,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26020,
+  "n_false_positives": 26021,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 1,
     "false_negatives": 0
   },
   "false_positives": [
@@ -293110,6 +293110,20 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
+      "cited_pmid": "41811867",
+      "title": "A clinical SARS-CoV-2 Mpro inhibitor blocks replication of multiple enteroviruses and confers oral in vivo protection in animal models.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
       ]
     }
   ],
