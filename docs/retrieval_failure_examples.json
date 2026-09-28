@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T05:14:26.713516+00:00",
-  "runs": 623,
+  "updated": "2026-09-28T05:24:00.832603+00:00",
+  "runs": 624,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26875,
-  "n_false_negatives": 5127,
+  "n_false_positives": 26894,
+  "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 0
+    "false_positives": 19,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -302717,6 +302717,205 @@
         "Duck circovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is known about Infectious salmon anemia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "22405879",
+      "title": "Development of an in vitro system to measure the sensitivity to the antiviral Mx protein of fish viruses.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "Infectious hematopoietic necrosis virus",
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is known about Infectious salmon anemia virus pathogenesis and transmission?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genome organization and replication cycle of Infectious salmon anemia virus?",
+      "cited_pmid": "22570241",
+      "title": "Complete genome sequence of the European sheatfish virus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1127767"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "41841392",
+      "title": "Establishment and evaluation of an in-situ hybridization assay for infectious pancreatic necrosis virus.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "22570241",
+      "title": "Complete genome sequence of the European sheatfish virus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1127767"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "27229663",
+      "title": "Susceptibility of Australian Redfin Perch Perca fluviatilis Experimentally Challenged with Epizootic Hematopoietic Necrosis Virus (EHNV).",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "How does Infectious hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "42313451",
+      "title": "Characterization of cell lines persistently infected with infectious pancreatic necrosis virus.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is known about Infectious pancreatic necrosis virus pathogenesis and transmission?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious pancreatic necrosis virus?",
+      "cited_pmid": "23665768",
+      "title": "A loop-mediated isothermal amplification method for the detection of members of the genus Ranavirus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_365144"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "28818331",
+      "title": "Molecular epidemiology of Epizootic haematopoietic necrosis virus (EHNV).",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41903595",
+      "title": "Identification of potential virulence sites of IHNV G protein and its impact on pathogenicity and immunogenicity of IHNV in rainbow trout (Oncorhynchus mykiss).",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_228582"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus pathogenesis and transmission?",
+      "cited_pmid": "41831384",
+      "title": "Rainbow trout (Oncorhynchus mykiss) G3BP1 function as an antiviral molecule against infectious hematopoietic necrosis virus infection.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "42764132",
+      "title": "Diagnostic evaluation of an EF1\u03b1 RT-qPCR assay for RNA quality control in IPNV detection.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "41841392",
+      "title": "Establishment and evaluation of an in-situ hybridization assay for infectious pancreatic necrosis virus.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "41886141",
+      "title": "GC-MS Profiling, Cytotoxicity and Antiviral Activity of Caulerpa lentillifera and C. macrodisca from Northern Coastal Waters of Borneo Island, Eastern Malaysia.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "42352348",
+      "title": "The Proto Type Galectin Drgal1-L2 from Zebrafish Hinders Infection by the Infectious Hematopoietic Necrosis Virus by Binding to Its Glycosylated Receptors on the Epithelial Cell Surface.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "How does Epizootic hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "41181121",
+      "title": "Characterisation of post-translational and transcriptional reprogramming of the immune response to ISAV and IPNV infections in salmon head kidney cells.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "How does Epizootic hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "42313451",
+      "title": "Characterization of cell lines persistently infected with infectious pancreatic necrosis virus.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "40692824",
+      "title": "Discovery of influenza-like virus clades in invertebrates and the evolutionary history and host-shifting events of Orthomyxoviridae in metazoans.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12429",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35323",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35324"
+      ]
     }
   ],
   "false_negatives": [
@@ -333481,6 +333680,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Soft-shelled turtle iridovirus?",
       "missed_pmid": "38793557",
       "title": "First Report of Endemic Frog Virus 3 (FV3)-like Ranaviruses in the Korean Clawed Salamander (Onychodactylus koreanus) in Asia."
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "missed_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
