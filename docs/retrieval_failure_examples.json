@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:13:55.467575+00:00",
-  "runs": 519,
+  "updated": "2026-09-28T01:15:44.906489+00:00",
+  "runs": 520,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25630,
-  "n_false_negatives": 5101,
+  "n_false_positives": 25633,
+  "n_false_negatives": 5103,
   "new_this_run": {
-    "false_positives": 26,
-    "false_negatives": 3
+    "false_positives": 3,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -288731,6 +288731,39 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_548682",
         "http://purl.obolibrary.org/obo/NCBITaxon_700375"
       ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "39089051",
+      "title": "Two thiosemicarbazones derived from 1-indanone as potent non-nucleoside inhibitors of bovine viral diarrhea virus of different genotypes and biotypes.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "41135374",
+      "title": "Sanguinarine inhibits bovine parainfluenza virus type 3 replication through CD97 suppression.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1109711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine parainfluenza virus 3?",
+      "cited_pmid": "41902275",
+      "title": "Characterization of Pestivirus tauri (BVDV-2, Subtype c) Isolates in Northern Italy Using Whole-Genome Sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052626"
+      ]
     }
   ],
   "false_negatives": [
@@ -319339,6 +319372,18 @@
       "question": "What is the epidemiology and outbreak history of Grass carp reovirus?",
       "missed_pmid": "42001979",
       "title": "An immersion challenge model for type II grass carp reovirus (GCRV-II) induces effective infection and activates antiviral immune response in grass carp."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "missed_pmid": "42294011",
+      "title": "Detection of bovine coronavirus in myocardial tissue of a naturally infected calf."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "41294350",
+      "title": "Developing a recombinase-aided amplification method combined with a lateral flow dipstick assay for rapid triplex detection of bovine coronavirus, infectious bovine rhinotracheitis virus, and bovine viral diarrhea virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
