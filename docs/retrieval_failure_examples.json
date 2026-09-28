@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:35:40.748838+00:00",
-  "runs": 601,
+  "updated": "2026-09-28T03:37:08.229179+00:00",
+  "runs": 602,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26697,
-  "n_false_negatives": 5120,
+  "n_false_positives": 26709,
+  "n_false_negatives": 5121,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 0
+    "false_positives": 12,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -300758,6 +300758,162 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12062",
         "http://purl.obolibrary.org/obo/NCBITaxon_138"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42198716",
+      "title": "Rapid Construction and Characterization of Infectious cDNA Clones and Reporter Viruses of Enteroviruses, Including Enterovirus A71 and Coxsackievirus B5, with Systematic Identification of Critical Determinants for Successful Reporter Virus Generation.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "cited_pmid": "42376602",
+      "title": "Surveillance of enterovirus infection and genotypes/subgenotypes of enteroviruses in Dak Lak, Vietnam in 2022-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B3?",
+      "cited_pmid": "41705593",
+      "title": "The Common Immune Responses Differences from Transcriptomic Profiling in Cardiomyocytes upon Coxsackievirus B5 and Echovirus 6 Infection.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "cited_pmid": "42198716",
+      "title": "Rapid Construction and Characterization of Infectious cDNA Clones and Reporter Viruses of Enteroviruses, Including Enterovirus A71 and Coxsackievirus B5, with Systematic Identification of Critical Determinants for Successful Reporter Virus Generation.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "42501872",
+      "title": "Pharmacological inhibition of neddylation by MLN4924 protects against Coxsackievirus B3-induced myocarditis.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "41811867",
+      "title": "A clinical SARS-CoV-2 Mpro inhibitor blocks replication of multiple enteroviruses and confers oral in vivo protection in animal models.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "41477008",
+      "title": "Genetic characterization of human enterovirus A71 genotypes C4 and B5 Circulating in Qingdao City, Shandong province, China, from 2023 to 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_33757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42785"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
     }
   ],
   "false_negatives": [
@@ -331480,6 +331636,12 @@
       "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
       "missed_pmid": "41759606",
       "title": "Genotype and age shape the risk of persistent high-risk human papillomavirus infections."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B3?",
+      "missed_pmid": "42801885",
+      "title": "Defining PISD mislocalization as a novel mechanism of mitochondrial damage in Coxsackievirus B3 infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
