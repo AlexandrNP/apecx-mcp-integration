@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:17:46.551523+00:00",
-  "runs": 592,
+  "updated": "2026-09-28T03:19:12.201580+00:00",
+  "runs": 593,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26602,
+  "n_false_positives": 26613,
   "n_false_negatives": 5117,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 11,
     "false_negatives": 0
   },
   "false_positives": [
@@ -299729,6 +299729,116 @@
       "title": "Clinical Outcomes and Risk Implications of HPV 31 Infection: A 10-Year Retrospective Cohort Study.",
       "actual_organisms": [
         "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37263686",
+      "title": "Age-specific and genotype-specific carcinogenic human papillomavirus prevalence in a country with a high cervical cancer burden: results of a cross-sectional study in Estonia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "How does Human papillomavirus type 33 evade or modulate the host immune response?",
+      "cited_pmid": "40677200",
+      "title": "Detection Rate, Genetic Polymorphism, Viral Load, Persistent Infection Capacity, and Pathogenicity of Human Papillomavirus Type 58.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "39363161",
+      "title": "Lineage and sublineage analysis of human papillomavirus type 58 in iranian women.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 58?",
+      "cited_pmid": "37461035",
+      "title": "Transcriptional activity of the long control region in human papillomavirus type 33 intratype variants.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 58?",
+      "cited_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 58?",
+      "cited_pmid": "32114254",
+      "title": "Bioinformatics analysis of HPV-68 E6 and E7 oncoproteins for designing a therapeutic epitope vaccine against HPV infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 58?",
+      "cited_pmid": "34942562",
+      "title": "Human papillomavirus 68 prevalence and genetic variability based on E6/E7 genes in Sichuan.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 58?",
+      "cited_pmid": "38346260",
+      "title": "Codon usage bias of human papillomavirus type 33 and 58: A comprehensive analysis.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "40287740",
+      "title": "Study on the detection rate, genetic polymorphism, viral load, persistent infection capacity, and pathogenicity of human papillomavirus type 33.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "38346260",
+      "title": "Codon usage bias of human papillomavirus type 33 and 58: A comprehensive analysis.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "32114254",
+      "title": "Bioinformatics analysis of HPV-68 E6 and E7 oncoproteins for designing a therapeutic epitope vaccine against HPV infection.",
+      "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
       ]
     }
