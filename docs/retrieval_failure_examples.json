@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T17:24:12.180858+00:00",
-  "runs": 683,
+  "updated": "2026-09-28T17:35:48.029427+00:00",
+  "runs": 684,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27499,
-  "n_false_negatives": 5161,
+  "n_false_positives": 27514,
+  "n_false_negatives": 5162,
   "new_this_run": {
     "false_positives": 15,
-    "false_negatives": 0
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -309753,6 +309753,178 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42489960",
+      "title": "Effective inactivated lumpy skin disease vaccine for cattle using a field viral strain and Montanide 206.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "42235709",
+      "title": "Distinct evolutionary patterns and structural insights into A33 and A34 glycoprotein in parapoxvirus.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185904",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "cited_pmid": "39491373",
+      "title": "The first molecular characterization and phylogenetic analysis of bovine papular stomatitis virus in Iran.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Cowpox virus?",
+      "cited_pmid": "33745070",
+      "title": "Geographic distribution and genetic characterization of poxviruses from human infections in Georgia, 2009-2014.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cowpox virus?",
+      "cited_pmid": "35631028",
+      "title": "Parapoxvirus Interleukin-10 Homologues Vary in Their Receptor Binding, Anti-Inflammatory, and Stimulatory Activities.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734575",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42647190",
+      "title": "Engineered fluorescence for live diagnostics and quantification of poxvirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11801",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "33745070",
+      "title": "Geographic distribution and genetic characterization of poxviruses from human infections in Georgia, 2009-2014.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus pathogenesis and transmission?",
+      "cited_pmid": "35896345",
+      "title": "Possibility of mechanical transmission of parapoxvirus by houseflies (Musca domestica) on cattle and sheep farms.",
+      "actual_organisms": [
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the clinical symptoms and disease presentation of Sheeppox virus?",
+      "cited_pmid": "33745070",
+      "title": "Geographic distribution and genetic characterization of poxviruses from human infections in Georgia, 2009-2014.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the clinical symptoms and disease presentation of Sheeppox virus?",
+      "cited_pmid": "38902518",
+      "title": "Prevalence, clinico-epidemiological features, and molecular characterization of bovine papular stomatitis virus in cattle in Iraq.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sheeppox virus?",
+      "cited_pmid": "42235709",
+      "title": "Distinct evolutionary patterns and structural insights into A33 and A34 glycoprotein in parapoxvirus.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185904",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "How does Sheeppox virus evade or modulate the host immune response?",
+      "cited_pmid": "42627681",
+      "title": "Targeting \u03b22-Adrenergic Receptor Stability With Lycorine Reveals a Host-Directed Pathway for Antiviral Defense Against Poxviruses.",
+      "actual_organisms": [
+        "Cowpox virus"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sheeppox virus?",
+      "cited_pmid": "41850851",
+      "title": "Genetic analysis of bovine papular stomatitis and pseudocowpox viruses circulating in Hokkaido, Japan's largest cattle-producing region.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129726"
+      ]
+    },
+    {
+      "organism": "Bovine papular stomatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine papular stomatitis virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Bovine papular stomatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine papular stomatitis virus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
     }
   ],
   "false_negatives": [
@@ -340721,6 +340893,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
       "missed_pmid": "42755684",
       "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "missed_pmid": "34079832",
+      "title": "A Comparison of Parapoxviruses in North American Pinnipeds."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
