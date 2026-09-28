@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:26:18.208621+00:00",
-  "runs": 559,
+  "updated": "2026-09-28T02:28:44.709807+00:00",
+  "runs": 560,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26239,
+  "n_false_positives": 26243,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -295627,6 +295627,52 @@
       "actual_organisms": [
         "Human metapneumovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Foot-and-mouth disease virus?",
+      "cited_pmid": "42488850",
+      "title": "Phylogenetic analysis of enteroviruses from non-human primates suggests two new species within the genus Enterovirus and inter-species recombination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the epidemiology and outbreak history of Seneca Valley virus?",
+      "cited_pmid": "42335074",
+      "title": "Encephalomyocarditis virus (EMCV): An overlooked threat to primates.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "How does Seneca Valley virus evade or modulate the host immune response?",
+      "cited_pmid": "42043227",
+      "title": "EMCV Non-Structural Protein 2C Antagonizes cGAS-STING-Mediated Type I Interferon Signaling via Promoting K48-Linked Polyubiquitination and Degradation of STING.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Encephalomyocarditis virus?",
+      "cited_pmid": "42188899",
+      "title": "Integrated Genomic Analysis Uncovers the Evolutionary Landscape and Global Dissemination of Senecavirus A.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
       ]
     }
   ],
