@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:03:22.003802+00:00",
-  "runs": 513,
+  "updated": "2026-09-28T01:05:22.784331+00:00",
+  "runs": 514,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25533,
-  "n_false_negatives": 5094,
+  "n_false_positives": 25557,
+  "n_false_negatives": 5096,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 0
+    "false_positives": 24,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -287706,6 +287706,270 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
         "http://purl.obolibrary.org/obo/NCBITaxon_47502"
       ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41513540",
+      "title": "Cross-binding antibodies capable of neutralising diverse hantaviruses are produced in response to Puumala virus infection.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Hantaan orthohantavirus?",
+      "cited_pmid": "39850002",
+      "title": "Outbreak of hantavirus disease caused by Puumala virus, Croatia, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Hantaan orthohantavirus?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "cited_pmid": "42130922",
+      "title": "Diagnostic and Clinical Challenges of Hantavirus-Associated Acute Kidney Injury.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hantaan orthohantavirus?",
+      "cited_pmid": "40879634",
+      "title": "Molecular Evolution and Zoonotic Potential of Muju Virus (Orthohantavirus puumalaense) in Craseomys regulus, Republic of Korea.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_340093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "41678361",
+      "title": "Remodelling of P-bodies and the cytoskeleton by Orthohantavirus puumalaense (Puumala virus).",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "41419169",
+      "title": "Characterization of minigenome systems for Hantaan and Seoul hantaviruses.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "cited_pmid": "39850002",
+      "title": "Outbreak of hantavirus disease caused by Puumala virus, Croatia, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "40406115",
+      "title": "Puumala orthohantavirus: prevalence, biology, disease, animal models and recent advances in therapeutics development and structural biology.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "How does BK polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "40879634",
+      "title": "Molecular Evolution and Zoonotic Potential of Muju Virus (Orthohantavirus puumalaense) in Craseomys regulus, Republic of Korea.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_340093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "41570236",
+      "title": "The first identification of Orthohantavirus dobravaense, Kurkino virus (Hantaviridae: Orthohantavirus) in the Volga Federal District.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3116880"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41513540",
+      "title": "Cross-binding antibodies capable of neutralising diverse hantaviruses are produced in response to Puumala virus infection.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B pathogenesis and transmission?",
+      "cited_pmid": "41452854",
+      "title": "Persistence of human enteric viruses in artificial and human saliva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "41088813",
+      "title": "Molecular Characterization of New Recombinant Human Adenoviruses Detected in Children with Acute Respiratory Tract Infections in Beijing, China, 2022-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus B?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus B?",
+      "cited_pmid": "41419169",
+      "title": "Characterization of minigenome systems for Hantaan and Seoul hantaviruses.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus B?",
+      "cited_pmid": "39850002",
+      "title": "Outbreak of hantavirus disease caused by Puumala virus, Croatia, 2021.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "40081258",
+      "title": "Confusing variety of symptoms: Lyme carditis coinciding with Puumala hantavirus infection.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "40285020",
+      "title": "Clinical Manifestations of Hemorrhagic Fever with Renal Syndrome, Various Nosologic Forms and Issues of Hantavirus Infections Terminology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human mastadenovirus B?",
+      "cited_pmid": "41679545",
+      "title": "Desmoglein 2 (DSG2)-knockout human respiratory epithelial cell model to study species B adenovirus receptor usage.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "How does Human mastadenovirus B evade or modulate the host immune response?",
+      "cited_pmid": "42090821",
+      "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -318272,6 +318536,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
       "missed_pmid": "41330946",
       "title": "Discovering the complete enhancer map of human herpesviruses using a natural language processing model."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40733543",
+      "title": "Characterisation of Orthohantavirus Serotypes in Human Infections in Kazakhstan."
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Puumala orthohantavirus?",
+      "missed_pmid": "41513540",
+      "title": "Cross-binding antibodies capable of neutralising diverse hantaviruses are produced in response to Puumala virus infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
