@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T10:34:10.646984+00:00",
-  "runs": 652,
+  "updated": "2026-09-28T10:54:09.476948+00:00",
+  "runs": 653,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27155,
-  "n_false_negatives": 5149,
+  "n_false_positives": 27166,
+  "n_false_negatives": 5150,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 0
+    "false_positives": 11,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -305819,6 +305819,136 @@
       "actual_organisms": [
         "Chikungunya virus"
       ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What diagnostic assays or laboratory tests detect Monkeypox virus?",
+      "cited_pmid": "16054706",
+      "title": "Real-time PCR assay for the detection of tanapox virus and yaba-like disease virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "cited_pmid": "17574698",
+      "title": "Comparative genetic analysis of genomic DNA sequences of two human isolates of Tanapox virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_304399",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the clinical symptoms and disease presentation of Monkeypox virus?",
+      "cited_pmid": "12456156",
+      "title": "What is your diagnosis?: Multifocal subcutaneous tumors in a young male baboon.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Monkeypox virus?",
+      "cited_pmid": "21917954",
+      "title": "Comparative analysis of poxvirus orthologues of the vaccinia virus E3 protein: modulation of protein kinase R activity, cytokine responses, and virus pathogenicity.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Monkeypox virus?",
+      "cited_pmid": "32056708",
+      "title": "Poxvirus encoded eIF2\u03b1 homolog, K3 family proteins, is a key determinant of poxvirus host species specificity.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "How does Monkeypox virus evade or modulate the host immune response?",
+      "cited_pmid": "41678605",
+      "title": "Poxvirus attack of antiviral defense pathways unleashes an effector-triggered NF-\u03baB response.",
+      "actual_organisms": [
+        "Myxoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Monkeypox virus?",
+      "cited_pmid": "42385547",
+      "title": "Divergent poxvirus identified in a non-native black rat from Madagascar.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3687202"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "14645589",
+      "title": "Complete genomic sequence and comparative analysis of the tumorigenic poxvirus Yaba monkey tumor virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Myxoma virus?",
+      "cited_pmid": "42778057",
+      "title": "Discovery of Mpox Virus in Bile: A Case with Multiple Coinfections.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "cited_pmid": "11277691",
+      "title": "The genome sequence of Yaba-like disease virus, a yatapoxvirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What are the clinical symptoms and disease presentation of Myxoma virus?",
+      "cited_pmid": "12456156",
+      "title": "What is your diagnosis?: Multifocal subcutaneous tumors in a young male baboon.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -336715,6 +336845,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Bluetongue virus?",
       "missed_pmid": "42104528",
       "title": "Assessing infection rates in field-collected Culicoides populations: Example of a large-scale study on bluetongue and epizootic hemorrhagic disease viruses in Culicoides species (Diptera: Ceratopogonidae) in Reunion Island, Indian ocean."
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Monkeypox virus?",
+      "missed_pmid": "42743913",
+      "title": "A single-dose inhalable rAAV-vectored vaccine against mpox virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
