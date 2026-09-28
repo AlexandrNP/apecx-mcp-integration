@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:22:52.209220+00:00",
-  "runs": 524,
+  "updated": "2026-09-28T01:24:51.634098+00:00",
+  "runs": 525,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25704,
+  "n_false_positives": 25717,
   "n_false_negatives": 5106,
   "new_this_run": {
-    "false_positives": 15,
+    "false_positives": 13,
     "false_negatives": 0
   },
   "false_positives": [
@@ -289614,6 +289614,133 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42184064",
+      "title": "Blood swabs represent an alternative sample matrix for detection of antibodies against classical swine fever virus during surveillance in wild boar.",
+      "actual_organisms": [
+        "Classical swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "40653488",
+      "title": "Deletion viral genome diversity among bovine viral diarrhea virus (BVDV) 1a and 1b strains.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "41078497",
+      "title": "Bovine viral diarrhea virus 2 strains generate deletion viral genomes primarily in the NS2 region of the viral genome.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "40303774",
+      "title": "Characterization of a Highly Virulent Noncytopathic Bovine Viral Diarrhea Virus 2b Isolate Detected in Cattle in Inner Mongolia, China.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42107207",
+      "title": "Annexin A2 orchestrates CSFV entry route selection via the annexin A2/S100A10 heterotetrameric complex.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42168735",
+      "title": "Decoding classical swine fever virus-swine protein interactions: a bioinformatics approach to targeted viral control.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "41702236",
+      "title": "Distinct and synergistic immunomodulatory roles of PSGL-1 and PD-1 in CP versus NCP BVDV-1 infections: A novel mechanism of CD8+ T-cell exhaustion and viral pathogenesis.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42349522",
+      "title": "Genome-wide transcriptome profiling in crossbred pigs after challenge with Classical Swine Fever Virus.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42115469",
+      "title": "Molecular evolution and antigenic mapping of classical swine fever virus: a comprehensive analysis of E2 genomic variability and selection dynamics.",
+      "actual_organisms": [
+        "Classical swine fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42357609",
+      "title": "Genetic Evolutionary Analysis and Characterization of Bovine Viral Diarrhea Virus in Gansu Province, China.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the epidemiology and outbreak history of Classical swine fever virus?",
+      "cited_pmid": "38752344",
+      "title": "Seroprevalence of Bovine Viral Diarrhea Virus in Wild Pigs (Sus scrofa) in 17 States in the USA.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "cited_pmid": "42583857",
+      "title": "[Yellow Fever Vaccine-Associated Viscerotropic Disease: A Case Report From T\u00fcrkiye].",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Classical swine fever virus?",
+      "cited_pmid": "37589803",
+      "title": "Novel genomic targets for proper subtyping of bovine viral diarrhea virus 1 (BVDV-1) and BVDV-2.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
       ]
     }
   ],
