@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:18:34.523117+00:00",
-  "runs": 554,
+  "updated": "2026-09-28T02:20:17.288531+00:00",
+  "runs": 555,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26157,
+  "n_false_positives": 26171,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 40,
+    "false_positives": 14,
     "false_negatives": 0
   },
   "false_positives": [
@@ -294666,6 +294666,158 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
         "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "42584567",
+      "title": "In vitro enzymatic assays invalidate dihydromyricetin as a potential inhibitor against enterovirus A71 3C protease: beware of fluorescence quenching artifacts.",
+      "actual_organisms": [
+        "Enterovirus A71"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human alphaherpesvirus 1?",
+      "cited_pmid": "42443199",
+      "title": "Antibody reveals conformational latch regulating dimerization in \u03b2- and \u03b3-herpesvirus proteases.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10359",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human alphaherpesvirus 1?",
+      "cited_pmid": "42485496",
+      "title": "Pathogenic Surveillance and Genetic Characteristics of Hand, Foot, and Mouth Disease Pathogens in Xi'an, 2020-2024.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
+      "cited_pmid": "12160245",
+      "title": "Use of the highly sensitive PCR method to detect the Herpes simplex virus type 1 genome and its expression in samples from Beh\u00e7et disease patients.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "cited_pmid": "42589228",
+      "title": "Efficacy and Mechanisms of Alkaloids Against Enterovirus A71: A Systematic Review and Meta-Analysis of Preclinical Evidence Integrated with Network Pharmacology and Molecular Docking.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "cited_pmid": "41683701",
+      "title": "Assessing Seroprevalence and Infection Dynamics of Oncogenic Gammaherpesviruses in South African Paediatric Patients Presenting with Inflammatory Conditions.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2014246",
+      "title": "Production of site-selected neutralizing human monoclonal antibodies against the third variable domain of the human immunodeficiency virus type 1 envelope glycoprotein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "15617234",
+      "title": "[Expression of foreign genes in adult rats' central nervous system by use of defective herpes simplex virus type 1 vectors].",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "2014240",
+      "title": "Effect of mutations affecting the p6 gag protein on human immunodeficiency virus particle release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "12160245",
+      "title": "Use of the highly sensitive PCR method to detect the Herpes simplex virus type 1 genome and its expression in samples from Beh\u00e7et disease patients.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "12549379",
+      "title": "[The experimental study on competitive PCR for quantitation of herpesviruses].",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the epidemiology and outbreak history of Human gammaherpesvirus 8?",
+      "cited_pmid": "42714139",
+      "title": "Dynamic epidemiological changes of hand, foot, and mouth disease and real-world effectiveness of EV-A71 vaccination: A case study in Shanghai (2009-2023).",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "42485496",
+      "title": "Pathogenic Surveillance and Genetic Characteristics of Hand, Foot, and Mouth Disease Pathogens in Xi'an, 2020-2024.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
       ]
     }
   ],
