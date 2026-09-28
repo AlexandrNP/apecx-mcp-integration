@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:22:08.689737+00:00",
-  "runs": 595,
+  "updated": "2026-09-28T03:23:33.501333+00:00",
+  "runs": 596,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26634,
+  "n_false_positives": 26649,
   "n_false_negatives": 5118,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 15,
     "false_negatives": 0
   },
   "false_positives": [
@@ -300062,6 +300062,171 @@
       "title": "Photoactivated Digital Recombinase Polymerase Amplification/CRISPR-Cas12a Assay for Point-of-Care of BK Polyomavirus Quantification.",
       "actual_organisms": [
         "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38619081",
+      "title": "Pattern of multiple human papillomavirus infection and type competition: An analysis in healthy Chinese women aged 18-45 years.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "37989845",
+      "title": "A novel tailed primer nucleic acid test for detection of HPV 16, 18 and 45 DNA at the point of care.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 11?",
+      "cited_pmid": "37263686",
+      "title": "Age-specific and genotype-specific carcinogenic human papillomavirus prevalence in a country with a high cervical cancer burden: results of a cross-sectional study in Estonia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "40323272",
+      "title": "Whole-genome sequencing of 1,083 HPV45 cases and controls identifies genetic variants associated with glandular cervical lesions.",
+      "actual_organisms": [
+        "Human papillomavirus type 45"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 45?",
+      "cited_pmid": "36511371",
+      "title": "Prevalence of Human Papillomavirus Genotypes in Tehran, Iran.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 52?",
+      "cited_pmid": "42233768",
+      "title": "Sublineage-Specific A45S Polymorphism Alters the Biological Function of the Human Papillomavirus 11 E7 Protein.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 52?",
+      "cited_pmid": "42547256",
+      "title": "Giant anogenital condyloma acuminata with extragenital involvement in an immunocompetent host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "41454963",
+      "title": "Codon usage bias of low-risk human papillomavirus types 6 and 11.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "34942562",
+      "title": "Human papillomavirus 68 prevalence and genetic variability based on E6/E7 genes in Sichuan.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 68?",
+      "cited_pmid": "38331373",
+      "title": "Single-tube four-target lateral flow assay detects human papillomavirus types associated with majority of cervical cancers.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 68?",
+      "cited_pmid": "42547256",
+      "title": "Giant anogenital condyloma acuminata with extragenital involvement in an immunocompetent host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "How does Human papillomavirus type 68 evade or modulate the host immune response?",
+      "cited_pmid": "42233768",
+      "title": "Sublineage-Specific A45S Polymorphism Alters the Biological Function of the Human Papillomavirus 11 E7 Protein.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
     }
   ],
