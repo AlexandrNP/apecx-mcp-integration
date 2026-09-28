@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T06:04:23.303618+00:00",
-  "runs": 627,
+  "updated": "2026-09-28T06:14:35.742567+00:00",
+  "runs": 628,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26929,
+  "n_false_positives": 26944,
   "n_false_negatives": 5128,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 15,
     "false_negatives": 0
   },
   "false_positives": [
@@ -303294,6 +303294,190 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11572",
         "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "32588240",
+      "title": "Isolation and characterization of a novel cripavirus, the first Dicistroviridae family member infecting the cotton mealybug Phenacoccus solenopsis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "30891366",
+      "title": "A metagenomic study of DNA viruses from samples of local varieties of common bean in Kenya.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_380669",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_446549",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280",
+        "http://purl.obolibrary.org/obo/NCBITaxon_671126"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "42401003",
+      "title": "Viral diversity in predatory insects used for biological control: Insights from a multi-country meta-viromic analysis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "29580079",
+      "title": "Metagenomic analysis of bat guano samples revealed the presence of viruses potentially carried by insects, among others by Apis mellifera in Hungary.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1041883",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "41463849",
+      "title": "First Detection of Deformed Wing Virus (DWV) and Acute Bee Paralysis Virus (ABPV) in Central Hungary in European Hornet (Vespa crabro Linnaeus, 1758).",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_68876",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "32588240",
+      "title": "Isolation and characterization of a novel cripavirus, the first Dicistroviridae family member infecting the cotton mealybug Phenacoccus solenopsis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "31795197",
+      "title": "Next-Generation Sequencing on Insectivorous Bat Guano: An Accurate Tool to Identify Arthropod Viruses of Potential Agricultural Concern.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213379",
+        "http://purl.obolibrary.org/obo/NCBITaxon_144051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Israeli acute paralysis virus?",
+      "cited_pmid": "31717432",
+      "title": "Viruses in the Invasive Hornet Vespa velutina.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2498590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Israeli acute paralysis virus?",
+      "cited_pmid": "42620928",
+      "title": "Screening and functional analysis of a host membrane protein interacting with the structural protein VP1 of deformed wing virus.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "42477720",
+      "title": "Chinese sacbrood virus destroys AcPPAN-copper homeostasis to evade phenoloxidase-based antiviral immunity in Apis cerana.",
+      "actual_organisms": [
+        "Sacbrood virus"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "42348559",
+      "title": "Co-inoculation with deformed wing virus and sacbrood virus affects viral and immune dynamics and synergistically increases honey bee mortality.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Israeli acute paralysis virus?",
+      "cited_pmid": "30891366",
+      "title": "A metagenomic study of DNA viruses from samples of local varieties of common bean in Kenya.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_380669",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_446549",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280",
+        "http://purl.obolibrary.org/obo/NCBITaxon_671126"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "32588240",
+      "title": "Isolation and characterization of a novel cripavirus, the first Dicistroviridae family member infecting the cotton mealybug Phenacoccus solenopsis.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "How does Sacbrood virus evade or modulate the host immune response?",
+      "cited_pmid": "42557280",
+      "title": "Experimental infection of acute bee paralysis virus induces differential responses of selected honey bee immune genes, independent of varroa resistance.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Aphid lethal paralysis virus?",
+      "cited_pmid": "42364905",
+      "title": "Persistence of deformed wing virus (DWV) in Apis mellifera L. colonies after Varroa destructor treatment with oxalic acid and amitraz.",
+      "actual_organisms": [
+        "Deformed wing virus"
       ]
     }
   ],
