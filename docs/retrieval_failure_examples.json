@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T07:54:13.820515+00:00",
-  "runs": 638,
+  "updated": "2026-09-28T08:14:12.829986+00:00",
+  "runs": 639,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27022,
-  "n_false_negatives": 5133,
+  "n_false_positives": 27027,
+  "n_false_negatives": 5135,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 0
+    "false_positives": 5,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -304324,6 +304324,70 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11636",
         "http://purl.obolibrary.org/obo/NCBITaxon_31931"
       ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "41465694",
+      "title": "Drosophila C Virus and La Jolla Virus Formulations for Plant Protection Against Spotted-Wing Drosophila.",
+      "actual_organisms": [
+        "Drosophila C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1654357"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "41173177",
+      "title": "Infection timelines and co-infection effects of Israeli acute paralysis virus and deformed wing virus in the honey bee (Apis mellifera).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cricket paralysis virus?",
+      "cited_pmid": "30891366",
+      "title": "A metagenomic study of DNA viruses from samples of local varieties of common bean in Kenya.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_380669",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_446549",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280",
+        "http://purl.obolibrary.org/obo/NCBITaxon_671126"
+      ]
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Drosophila C virus?",
+      "cited_pmid": "29749926",
+      "title": "Metagenomic analysis of Varroa-free Australian honey bees (Apis mellifera) shows a diverse Picornavirales virome.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_66834"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "How does Acute bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41759617",
+      "title": "Juvenile hormone enhances viral activity in bumble bees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
     }
   ],
   "false_negatives": [
@@ -335124,6 +335188,18 @@
       "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
       "missed_pmid": "33808848",
       "title": "Detection of Lotmaria passim, Crithidia mellificae and Replicative Forms of Deformed Wing Virus and Kashmir Bee Virus in the Small Hive Beetle (Aethina tumida)."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Acute bee paralysis virus?",
+      "missed_pmid": "40028018",
+      "title": "Generation, Propagation, and Titering of Dicistrovirus From an Infectious Clone."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Acute bee paralysis virus?",
+      "missed_pmid": "37531005",
+      "title": "Exploring viral infections in honey bee colonies: insights from a metagenomic study in southern Brazil."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
