@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:24:24.556129+00:00",
-  "runs": 494,
+  "updated": "2026-09-28T00:26:02.859508+00:00",
+  "runs": 495,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25262,
-  "n_false_negatives": 5043,
+  "n_false_positives": 25265,
+  "n_false_negatives": 5046,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 4
+    "false_positives": 3,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -284638,6 +284638,36 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10092",
         "http://purl.obolibrary.org/obo/NCBITaxon_59303"
       ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What is known about Ranid herpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "221384",
+      "title": "Pronephric tumour cell lines from herpesvirus-transformed cells.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Ranid herpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Ranid herpesvirus 1?",
+      "cited_pmid": "19891986",
+      "title": "Development and evaluation of a loop-mediated isothermal amplification assay for rapid detection of lymphocystis disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Soft-shelled turtle iridovirus?",
+      "cited_pmid": "28524816",
+      "title": "Phylogenetic Variation of Chelonid Alphaherpesvirus 5 (ChHV5) in Populations of Green Turtles Chelonia mydas along the Queensland Coast, Australia.",
+      "actual_organisms": [
+        "Chelonid herpesvirus 5"
+      ]
     }
   ],
   "false_negatives": [
@@ -314898,6 +314928,24 @@
       "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
       "missed_pmid": "42089609",
       "title": "Loss of nsp14-exonuclease activity impairs the replication, proofreading, fitness, and pathogenesis of SARS-CoV-2."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "missed_pmid": "12078986",
+      "title": "Experimental challenge and clinical cases of Bohle iridovirus (BIV) in native Australian anurans."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the clinical symptoms and disease presentation of Bohle iridovirus?",
+      "missed_pmid": "15883656",
+      "title": "Identification of a Bohle iridovirus thymidine kinase gene and demonstration of activity using vaccinia virus."
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Soft-shelled turtle iridovirus?",
+      "missed_pmid": "20399233",
+      "title": "A double antibody sandwich enzyme-linked immunosorbent assay for detection of soft-shelled turtle iridovirus antigens."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
