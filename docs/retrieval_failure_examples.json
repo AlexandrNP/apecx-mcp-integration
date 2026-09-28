@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T04:11:11.142200+00:00",
-  "runs": 614,
+  "updated": "2026-09-28T04:12:32.762672+00:00",
+  "runs": 615,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26817,
+  "n_false_positives": 26824,
   "n_false_negatives": 5125,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -302082,6 +302082,85 @@
         "Thottapalayam orthohantavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
         "http://purl.obolibrary.org/obo/NCBITaxon_467989"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "9541619",
+      "title": "Urine-associated horizontal transmission of Seoul virus among rats.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "9614875",
+      "title": "Conversion of VP1 to VPg in cells infected by infectious pancreatic necrosis virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "42714963",
+      "title": "Genomic characterization of Lao Mobatvirus strains reveals host-associated clustering in Southeast Asian bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2501367",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "42347213",
+      "title": "Integrated Downstream Analysis and Epidemiological Modelling of Hantavirus Infection: From Host Transcriptomics to Transmission Dynamics.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Hantaan orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seoul orthohantavirus?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "How does Seoul orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "42237939",
+      "title": "Fatty acid synthase promotes Hantaan virus infection through lipogenic regulation in the tree shrew model.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Andes orthohantavirus?",
+      "cited_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
       ]
     }
   ],
