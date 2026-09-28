@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T15:14:06.078147+00:00",
-  "runs": 672,
+  "updated": "2026-09-28T15:24:12.026311+00:00",
+  "runs": 673,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27336,
+  "n_false_positives": 27341,
   "n_false_negatives": 5158,
   "new_this_run": {
-    "false_positives": 11,
+    "false_positives": 5,
     "false_negatives": 0
   },
   "false_positives": [
@@ -307911,6 +307911,61 @@
         "Echovirus 7",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42213706",
+      "title": "Maternal antibody-mediated elimination of a Puumala hantavirus outbreak in a bank vole colony.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "41902274",
+      "title": "Human Hantavirus Infections in Hungary (2018-2025): Epidemiology, Molecular Detection Across Clinical Sample Types, and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "42796751",
+      "title": "Development and Evaluation of Three Indirect ELISA Methods Based on Novel Recombinant ASFV Antigens for Serological Detection of African Swine Fever.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12405"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42751279",
+      "title": "The Impact of Respiratory Syncytial Virus Undertesting on Estimates of Disease Burden and Vaccine Effectiveness in a Large Integrated Healthcare System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
       ]
     }
   ],
