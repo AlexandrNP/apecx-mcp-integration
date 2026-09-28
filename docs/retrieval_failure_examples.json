@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:09:15.114429+00:00",
-  "runs": 548,
+  "updated": "2026-09-28T02:10:45.846354+00:00",
+  "runs": 549,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26037,
+  "n_false_positives": 26063,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 11,
+    "false_positives": 26,
     "false_negatives": 0
   },
   "false_positives": [
@@ -293303,6 +293303,291 @@
       "actual_organisms": [
         "Human betaherpesvirus 7",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "29167248",
+      "title": "Complete Genome Sequence of a Novel Variant of Wenzhou Mammarenavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "38297087",
+      "title": "Selective replication and vertical transmission of Ebola virus in experimentally infected Angolan free-tailed bats.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "cited_pmid": "34197863",
+      "title": "Potent inhibition of arenavirus infection by a novel fusion inhibitor.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052328"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Andes orthohantavirus?",
+      "cited_pmid": "39503743",
+      "title": "Preliminary evidence that Bunyamwera virus causes severe disease characterized by systemic vascular and multiorgan necrosis in an immunocompromised mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
+      "cited_pmid": "39169025",
+      "title": "The structure of the Lujo virus spike complex.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Andes orthohantavirus?",
+      "cited_pmid": "38874413",
+      "title": "Cellular endosomal potassium ion flux regulates arenavirus uncoating during virus entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Andes orthohantavirus?",
+      "cited_pmid": "30768614",
+      "title": "Prevalence of W\u0113nzh\u014du virus in small mammals in Yunnan Province, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Andes orthohantavirus?",
+      "cited_pmid": "34999003",
+      "title": "Detection and genetic diversity of Mopeia virus in Mastomys natalensis from different habitats in the Limpopo National Park, Mozambique.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052320"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is known about Lujo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "28554857",
+      "title": "Effects of mammarenavirus infection (W\u0113nzh\u014du virus) on the morphology of Rattus exulans.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "cited_pmid": "34179329",
+      "title": "Genomic characterization of Wenzhou mammarenavirus detected in wild rodents in Guangzhou City, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lujo mammarenavirus?",
+      "cited_pmid": "34197863",
+      "title": "Potent inhibition of arenavirus infection by a novel fusion inhibitor.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052328"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lujo mammarenavirus?",
+      "cited_pmid": "28736175",
+      "title": "Structural Basis for Receptor Selectivity by the Whitewater Arroyo Mammarenavirus.",
+      "actual_organisms": [
+        "Whitewater Arroyo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lujo mammarenavirus?",
+      "cited_pmid": "34496846",
+      "title": "Molecular detection and genetic characterization of Wenzhou virus in rodents in Guangzhou, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lujo mammarenavirus?",
+      "cited_pmid": "30768614",
+      "title": "Prevalence of W\u0113nzh\u014du virus in small mammals in Yunnan Province, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34041391",
+      "title": "Combination of highly antigenic nucleoproteins to inaugurate a cross-reactive next generation vaccine candidate against Arenaviridae family.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907957",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052307",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is known about Whitewater Arroyo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "42791822",
+      "title": "Revisiting Animal Reservoirs of Hantavirus and Other Zoonotic Viruses Associated with Cruise Travel: Impact and Prevention.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42690165",
+      "title": "Andes Virus: From Transmission Dynamics to Pandemic Potential.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "42629989",
+      "title": "Plasmon-Driven Gene Amplification-Integrated Lateral Flow Assay for Ultrafast Diagnosis of Seoul Orthohantavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "34197863",
+      "title": "Potent inhibition of arenavirus infection by a novel fusion inhibitor.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052328"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "41334543",
+      "title": "[Addition of Three Viruses to the High-risk Pathogens of the Infectious Disease Prevention and Management Act].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302"
+      ]
+    },
+    {
+      "organism": "Whitewater Arroyo mammarenavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Whitewater Arroyo mammarenavirus?",
+      "cited_pmid": "39625987",
+      "title": "Targeting n-myristoyltransferases promotes a pan-Mammarenavirus inhibition through the degradation of the Z matrix protein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2045064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052320"
       ]
     }
   ],
