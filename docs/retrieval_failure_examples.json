@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T23:04:10.142926+00:00",
-  "runs": 706,
+  "updated": "2026-09-28T23:14:16.053840+00:00",
+  "runs": 707,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27761,
+  "n_false_positives": 27772,
   "n_false_negatives": 5173,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -312648,6 +312648,129 @@
       "actual_organisms": [
         "Avian infectious bronchitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "41423171",
+      "title": "Development of a rapid, real-time RT-RAA assay for sensitive detection of bovine enterovirus in fecal samples.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis A virus?",
+      "cited_pmid": "42482485",
+      "title": "Intestinal Organoids as Models to Study Viruses: Current Application and Future Perspective.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "How does Hepatitis A virus evade or modulate the host immune response?",
+      "cited_pmid": "42613835",
+      "title": "Mucosal Immunity: The Key to Combating Enteroviruses and Beyond.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "42648245",
+      "title": "Molecular epidemiology and genetic evolutionary patterns of parechovirus A1 circulating in Chiang Mai, Thailand: A decade-long analysis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "How does Human parechovirus evade or modulate the host immune response?",
+      "cited_pmid": "42555657",
+      "title": "The C5a-C5aR1 axis facilitates blood-brain barrier disruption induced by EV-A71 infection through neutrophil activation.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "cited_pmid": "42092639",
+      "title": "Characteristics of bovine enterovirus F in four provinces of China: isolation, pathogenicity and immunogenicity.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3413229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "cited_pmid": "42771225",
+      "title": "Shotgun metagenomic sequencing and genetic characterization of four enteric viruses in a dairy farm suffering a diarrhea outbreak of undetermined cause in adult cattle.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "42627561",
+      "title": "Isolation and partial 5'UTR-based molecular characterization of bovine enterovirus F from non-diarrheic cattle in T\u00fcrkiye.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3413229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "42721393",
+      "title": "Hospitalized Hepatitis A Cases in Jordan: A 10-Year Retrospective Comparison Between Pediatric and Adult Populations.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "41992312",
+      "title": "Construction of a reverse genetics and fluorescent reporter system for a bovine enterovirus isolated from cattle with diarrhea.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
       ]
     }
   ],
