@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:44:41.831095+00:00",
-  "runs": 533,
+  "updated": "2026-09-28T01:46:20.422249+00:00",
+  "runs": 534,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25835,
+  "n_false_positives": 25852,
   "n_false_negatives": 5108,
   "new_this_run": {
-    "false_positives": 25,
+    "false_positives": 17,
     "false_negatives": 0
   },
   "false_positives": [
@@ -291028,6 +291028,190 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10798",
         "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus pathogenesis and transmission?",
+      "cited_pmid": "8758061",
+      "title": "Epidemic dengue 2 in the city of Djibouti 1991-1992.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42761597",
+      "title": "Development and analytical validation of a multiplex qPCR assay for Toxoplasma gondii, Treponema pallidum, cytomegalovirus, and herpes simplex virus types 1 and 2 in neonates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "41593743",
+      "title": "Molecular characterization of mumps viruses from the 2022-2023 outbreak reveals circulation of multiple genotypes in Uganda.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846074",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "cited_pmid": "42532196",
+      "title": "A high-throughput screen to identify potential inhibitors of HSV-2.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Zika virus?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "How does Zika virus evade or modulate the host immune response?",
+      "cited_pmid": "42424315",
+      "title": "Glycoprotein G enables HSV-2 neuroinvasion and provides protection as a glycosylated vaccine antigen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
+      "cited_pmid": "42532197",
+      "title": "Susceptibility of clinical isolates, laboratory-adapted and drug-resistant herpes simplex virus strains to helicase-primase inhibitor adibelivir (IM-250) and its synergy in combination therapy with acyclovir, penciclovir and foscarnet.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "42620976",
+      "title": "A case of neonatal herpes simplex virus type 2 encephalitis with TLR3 gene mutation and literature review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "How does Mumps orthorubulavirus evade or modulate the host immune response?",
+      "cited_pmid": "42424315",
+      "title": "Glycoprotein G enables HSV-2 neuroinvasion and provides protection as a glycosylated vaccine antigen.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42709545",
+      "title": "Structure-based design of soluble prefusion-stabilized herpes simplex virus type 2 glycoprotein B antigens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "36961236",
+      "title": "[Mumps virus (Paramyxoviridae: Orthorubulavirus: Mumps orthorubulavirus) genotyping as a component of laboratory confirmation of infection].",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "42198716",
+      "title": "Rapid Construction and Characterization of Infectious cDNA Clones and Reporter Viruses of Enteroviruses, Including Enterovirus A71 and Coxsackievirus B5, with Systematic Identification of Critical Determinants for Successful Reporter Virus Generation.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "cited_pmid": "39088577",
+      "title": "Novel sialidase inhibitors suppress mumps virus replication and infection.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052560",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
