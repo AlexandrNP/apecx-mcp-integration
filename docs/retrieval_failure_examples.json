@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T08:54:17.411459+00:00",
-  "runs": 642,
+  "updated": "2026-09-28T09:04:21.871294+00:00",
+  "runs": 643,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27060,
+  "n_false_positives": 27067,
   "n_false_negatives": 5140,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 1
+    "false_positives": 7,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -304760,6 +304760,81 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_12232",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What is the genome organization and replication cycle of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "28818331",
+      "title": "Molecular epidemiology of Epizootic haematopoietic necrosis virus (EHNV).",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What is the epidemiology and outbreak history of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "How does Channel catfish virus evade or modulate the host immune response?",
+      "cited_pmid": "22405879",
+      "title": "Development of an in vitro system to measure the sensitivity to the antiviral Mx protein of fish viruses.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "41795192",
+      "title": "Development and Validation of a Multiplex RT-PCR Assay for the Simultaneous Detection of Three Major Viral Pathogens in Salmonids: IHNV, ISAV and SAV.",
+      "actual_organisms": [
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3349490"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "27540051",
+      "title": "Complete Genome Sequence of a Bohle iridovirus Isolate from Ornate Burrowing Frogs (Limnodynastes ornatus) in Australia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_100220"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "42744106",
+      "title": "Effects of TRAF6 knockout on transcriptomic and alternative splicing responses to VHSV genotype II infection.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "38540323",
+      "title": "Discovery, Pathogenesis, and Complete Genome Characterization of Lates calcarifer Herpesvirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_217686",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2497408",
+        "http://purl.obolibrary.org/obo/NCBITaxon_548682"
       ]
     }
   ],
