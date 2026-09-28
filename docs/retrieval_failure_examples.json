@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T04:34:34.878820+00:00",
-  "runs": 619,
+  "updated": "2026-09-28T04:44:30.528478+00:00",
+  "runs": 620,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26840,
+  "n_false_positives": 26849,
   "n_false_negatives": 5125,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 9,
     "false_negatives": 0
   },
   "false_positives": [
@@ -302337,6 +302337,95 @@
       "title": "The Trajectory of KoRV-A Evolution Indicates Initial Integration into the Koala Germline Genome Near Coffs Harbour.",
       "actual_organisms": [
         "unknown"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Acute bee paralysis virus?",
+      "cited_pmid": "31834965",
+      "title": "Contrasting impacts of a novel specialist vector on multihost viral pathogen epidemiology in wild and managed bees.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41561081",
+      "title": "Acute bee paralysis virus regulation of microRNA expression dynamics in the insect host (Apis mellifera) cell line, AmE-711.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41759617",
+      "title": "Juvenile hormone enhances viral activity in bumble bees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chronic bee paralysis virus?",
+      "cited_pmid": "31834965",
+      "title": "Contrasting impacts of a novel specialist vector on multihost viral pathogen epidemiology in wild and managed bees.",
+      "actual_organisms": [
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "41980752",
+      "title": "Experimental infections with a honey bee virus induce fitness costs in ant colonies.",
+      "actual_organisms": [
+        "Acute bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "41759617",
+      "title": "Juvenile hormone enhances viral activity in bumble bees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "41173177",
+      "title": "Infection timelines and co-infection effects of Israeli acute paralysis virus and deformed wing virus in the honey bee (Apis mellifera).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "How does Slow bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41980752",
+      "title": "Experimental infections with a honey bee virus induce fitness costs in ant colonies.",
+      "actual_organisms": [
+        "Acute bee paralysis virus"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "How does Slow bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41759617",
+      "title": "Juvenile hormone enhances viral activity in bumble bees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
       ]
     }
   ],
