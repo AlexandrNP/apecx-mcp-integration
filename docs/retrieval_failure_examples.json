@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:08:37.973544+00:00",
-  "runs": 516,
+  "updated": "2026-09-28T01:10:29.632208+00:00",
+  "runs": 517,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25583,
-  "n_false_negatives": 5096,
+  "n_false_positives": 25588,
+  "n_false_negatives": 5097,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 0
+    "false_positives": 5,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -288246,6 +288246,53 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10566",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "cited_pmid": "42588574",
+      "title": "Cross-Family Mechanistic Analysis of Plant Alkaloids Against Neglected Arboviruses and Related RNA Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "7406113",
+      "title": "Limitations of the complement-fixation test for distinguishing naturally acquired from vaccine-induced yellow fever infection in flavivirus-hyperendemic areas.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "6268925",
+      "title": "[Several yellow fever cases in an endemic area in Ivory Coast: serological and epidemiological evidence (author's transl)].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42655727",
+      "title": "AMPK-Orchestrated Metabolic Reprogramming in Some Flavivirus Infections: Mechanisms and Therapeutic Opportunities.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42748151",
+      "title": "Unraveling the epidemiological and dispersal dynamics of the 2024-2025 chikungunya virus epidemic on R\u00e9union Island.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -318824,6 +318871,12 @@
       "question": "What diagnostic assays or laboratory tests detect Puumala orthohantavirus?",
       "missed_pmid": "41513540",
       "title": "Cross-binding antibodies capable of neutralising diverse hantaviruses are produced in response to Puumala virus infection."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "missed_pmid": "42742313",
+      "title": "Solanaceae-Derived Spirostane Saponins Inhibit Dengue Virus Replication and Viral Protein Expression and Exhibit Activity Against Multiple Arboviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
