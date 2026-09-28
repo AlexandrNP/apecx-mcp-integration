@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T17:54:27.281137+00:00",
-  "runs": 686,
+  "updated": "2026-09-28T18:04:18.305389+00:00",
+  "runs": 687,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27539,
+  "n_false_positives": 27543,
   "n_false_negatives": 5162,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -310213,6 +310213,50 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
         "http://purl.obolibrary.org/obo/NCBITaxon_333760",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "42778057",
+      "title": "Discovery of Mpox Virus in Bile: A Case with Multiple Coinfections.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "42798412",
+      "title": "A retrospective comparative diagnostic evaluation of three commercial qPCR kits for the diagnosis of mpox virus on an enriched sample set.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42798412",
+      "title": "A retrospective comparative diagnostic evaluation of three commercial qPCR kits for the diagnosis of mpox virus on an enriched sample set.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
     }
   ],
