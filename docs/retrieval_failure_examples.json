@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T17:35:48.029427+00:00",
-  "runs": 684,
+  "updated": "2026-09-28T17:44:14.514525+00:00",
+  "runs": 685,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27514,
+  "n_false_positives": 27529,
   "n_false_negatives": 5162,
   "new_this_run": {
     "false_positives": 15,
-    "false_negatives": 1
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -309924,6 +309924,175 @@
         "Cowpox virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10244",
         "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "41132490",
+      "title": "Low temperature increases adenovirus replication via intracellular alkalization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "40563048",
+      "title": "Clinical analysis of Mycoplasma pneumoniae pneumonia combined with adenovirus infection in children with lobar pneumonia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "42783219",
+      "title": "Etiology and Clinical Manifestations of Acute Respiratory Infections in Pediatric Patients: A Retrospective Study in Moscow, Russia.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_329641"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "How does Influenza A virus evade or modulate the host immune response?",
+      "cited_pmid": "42478837",
+      "title": "Mucosal boosting of chimpanzee adenovirus-vectored vaccine encoding SARS-CoV-2 RBD-heterodimer provides robust protection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310542",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42730619",
+      "title": "Imprinting-Like Serological Signatures in Human Adenovirus Infections Revealed by Cross-Adsorption Neutralization Profiling of HAdV-3, HAdV-5, and HAdV-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42061096",
+      "title": "A randomized, observer-blind, phase 1 study of immune responses to three human adenovirus type 26 vector-based vaccines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46928"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "41775079",
+      "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human metapneumovirus?",
+      "cited_pmid": "41989164",
+      "title": "CD46 and DSG2 synergistically mediate human adenovirus type 7 infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10519",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "How does Human metapneumovirus evade or modulate the host immune response?",
+      "cited_pmid": "41762478",
+      "title": "Adenovirus induces pediatric pneumonia via triggering macrophage polarization and IL-6 production via NF-\u03baB activation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human metapneumovirus?",
+      "cited_pmid": "41780169",
+      "title": "A novel chimpanzee-derived adenovirus, a recombinant of Mastadenovirus exoticum and Mastadenovirus blackbeardi members, reveals lineage-specific recombination hotspots in simian adenoviruses.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2980954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
       ]
     }
   ],
