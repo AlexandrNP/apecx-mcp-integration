@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:53:27.885142+00:00",
-  "runs": 576,
+  "updated": "2026-09-28T02:54:59.279663+00:00",
+  "runs": 577,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26417,
+  "n_false_positives": 26432,
   "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 8,
+    "false_positives": 15,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297683,6 +297683,186 @@
         "Turnip mosaic virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_3240607"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "40421802",
+      "title": "Comprehensive mutational analysis of the sequence-function relationship within a viral internal ribosome entry site.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What antiviral drugs or treatments are effective against Deformed wing virus?",
+      "cited_pmid": "42475393",
+      "title": "Quercetin, a flavonoid, suppresses viral proliferation by interfering with the ubiquitin transfer from E1 to E2 enzymes.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Deformed wing virus?",
+      "cited_pmid": "37873388",
+      "title": "Introduction of Dicistrovirus IRESs into UAS/SV40-polyA constructs results in premature polyadenylation and strong overexpression of the upstream ORF in Drosophila animals.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "42058241",
+      "title": "Epidemiological Study and Phylogenetic analysis of Common Pathogenic Viruses of Honeybee in Apiaries of Iran.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_68876",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genome organization and replication cycle of Cricket paralysis virus?",
+      "cited_pmid": "42034402",
+      "title": "ORF603 derived from AcMNPV plays entirely opposite roles in regulating BmNPV infection.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "42437985",
+      "title": "Seasonal dynamics of seven viruses and Varroa destructor in Apis mellifera colonies: a 4-year survey in Tokyo.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "41825512",
+      "title": "Investigation of viral and parasitic pathogens in Bombus terrestris (Hymenoptera: Apidae) populations.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1100043",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977",
+        "http://purl.obolibrary.org/obo/NCBITaxon_288676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_670782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cricket paralysis virus?",
+      "cited_pmid": "41217189",
+      "title": "Insights into the viral landscape of the western honey bee and native bees in Bangladesh.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669400",
+      "title": "Bombyx mori lipase-1 reduces viral replication and proliferation by inhibiting the expression of the DNA-binding protein (dbp) gene.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "42188169",
+      "title": "Silkworm SOCS2 Differentially Promotes Multiple Steps of BmNPV Proliferation and Modulates the mRNA Expression of SOCS-STAT Network Components.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734023"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "42032854",
+      "title": "Bombyx mori BmLis1 inhibits BmNPV replication by promoting the cell cycle G2/M progression.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "41966301",
+      "title": "Apolipophorin-III inhibits BmNPV replication by reprogramming sphingolipid metabolism to accumulate ceramide.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Sacbrood virus?",
+      "cited_pmid": "42209118",
+      "title": "A tetraspanin from domestic silkworm could inhibit the proliferation of Bombyx mori nucleopolyhedrovirus (BmNPV) by participating in the autophagy pathway.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "How does Sacbrood virus evade or modulate the host immune response?",
+      "cited_pmid": "42352356",
+      "title": "Bombyx mori C-Type Lectin 16 Inhibits BmNPV Proliferation by Degrading Viral Protein Bm9 via Ubiquitin-Proteasome System.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "41950991",
+      "title": "Molecular characterization and phylogenetic analysis of Sacbrood virus in Varroa destructor.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
       ]
     }
   ],
