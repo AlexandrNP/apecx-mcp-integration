@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T04:44:30.528478+00:00",
-  "runs": 620,
+  "updated": "2026-09-28T04:54:59.436140+00:00",
+  "runs": 621,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26849,
-  "n_false_negatives": 5125,
+  "n_false_positives": 26854,
+  "n_false_negatives": 5126,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 0
+    "false_positives": 5,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -302427,6 +302427,66 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_294365"
       ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "40558095",
+      "title": "Experimental and evolutionary evidence for horizontal transfer of an envelope fusion protein gene between thogotoviruses and baculoviruses.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2986952",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3383484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35323"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "cited_pmid": "35337025",
+      "title": "A Renewed Appreciation of Helicoverpa armigera Nucleopolyhedrovirus BJ (Formerly Helicoverpa assulta Nucleopolyhedrovirus) with Whole Genome Sequencing.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2306063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558016"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Spodoptera frugiperda nucleopolyhedrovirus?",
+      "cited_pmid": "35055934",
+      "title": "Efficacy of Helicoverpa Armigera Nucleopolyhedrovirus on Soybean for Control of Helicoverpa zea (Boddie) (Lepidoptera: Noctuidae) in Arkansas Agriculture.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Spodoptera frugiperda nucleopolyhedrovirus?",
+      "cited_pmid": "41326060",
+      "title": "Breaking the barrier: RNAi-mediated silencing of SlitCPG2 disrupts peritrophic matrix integrity and enhances SpltNPV infection in Spodoptera litura.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46242"
+      ]
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "How does Spodoptera frugiperda nucleopolyhedrovirus evade or modulate the host immune response?",
+      "cited_pmid": "42264754",
+      "title": "Baculovirus manipulation of nutrient-based host choice via an infection responsive olfactory receptor in Spodoptera exigua.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -333179,6 +333239,12 @@
       "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
       "missed_pmid": "37301085",
       "title": "Case report: Metastasis of Merkel cell carcinoma in the small intestine."
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Autographa californica nucleopolyhedrovirus?",
+      "missed_pmid": "40787986",
+      "title": "LEF-6 phosphorylation regulates the binding and trafficking of baculovirus late gene transcripts."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
