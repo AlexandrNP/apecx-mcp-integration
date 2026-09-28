@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T20:15:42.731392+00:00",
-  "runs": 696,
+  "updated": "2026-09-28T21:04:12.538995+00:00",
+  "runs": 697,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27658,
+  "n_false_positives": 27667,
   "n_false_negatives": 5169,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 1
+    "false_positives": 9,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -311528,6 +311528,106 @@
       "actual_organisms": [
         "Bovine viral diarrhea virus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genome organization and replication cycle of Rabies lyssavirus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rabies lyssavirus?",
+      "cited_pmid": "40143333",
+      "title": "Genomic Insights into Neglected Orthobunyaviruses: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748249",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80935"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "26610546",
+      "title": "Genetic and Phylogenetic Characterization of Tataguine and Witwatersrand Viruses and Other Orthobunyaviruses of the Anopheles A, Capim, Guam\u00e1, Koongol, Mapputta, Tete, and Turlock Serogroups.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Toscana virus?",
+      "cited_pmid": "42786366",
+      "title": "Computational Design of a Trivalent Multi-Epitope mRNA Vaccine Candidate Against Western, Eastern, and Venezuelan Equine Encephalitis Viruses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Toscana virus?",
+      "cited_pmid": "21465087",
+      "title": "Identification of a phylogenetically distinct orthobunyavirus from group C.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_334520"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "How does Bwamba orthobunyavirus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
       ]
     }
   ],
