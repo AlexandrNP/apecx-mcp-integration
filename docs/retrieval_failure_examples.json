@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T13:24:13.978732+00:00",
-  "runs": 665,
+  "updated": "2026-09-28T13:34:09.224123+00:00",
+  "runs": 666,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27257,
-  "n_false_negatives": 5155,
+  "n_false_positives": 27273,
+  "n_false_negatives": 5156,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 0
+    "false_positives": 16,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -306980,6 +306980,179 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "42383739",
+      "title": "ATG9A is an essential host factor for parechovirus RNA replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A16?",
+      "cited_pmid": "42514993",
+      "title": "Fulminant Hepatitis Due to Enterovirus E25 Systemic Infection in a Pediatric Patient.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "How does Coxsackievirus A16 evade or modulate the host immune response?",
+      "cited_pmid": "41337939",
+      "title": "Coxsackievirus B3 regulates macrophage polarization through ANXA3 to promote the development of myocarditis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "42669541",
+      "title": "Emergence of Human Parechovirus Type 5 Meningitis in Japan, 2025.",
+      "actual_organisms": [
+        "Human parechovirus"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42722143",
+      "title": "Crystal structures of Parechovirus A1 3Dpol reveal a mechanism of conformational stabilization in +ssRNA virus RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "42437597",
+      "title": "Epidemiological trends in viral CNS infections in a French university hospital from 2019 to 2024, as revealed by multiplex PCR testing of cerebrospinal fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "42555528",
+      "title": "Calycosin targets the MAPK-EGR1 signaling axis to inhibit enterovirus 71 replication in cells and human colonic organoids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "42648245",
+      "title": "Molecular epidemiology and genetic evolutionary patterns of parechovirus A1 circulating in Chiang Mai, Thailand: A decade-long analysis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
     }
   ],
   "false_negatives": [
@@ -337912,6 +338085,12 @@
       "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
       "missed_pmid": "42798688",
       "title": "Discovery of potential RdRp catalytic domain inhibitors against Crimean-Congo hemorrhagic fever virus from Andrographis paniculata via LC-MS/MS profiling and computational approaches."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "missed_pmid": "42338686",
+      "title": "Molecular characterization of enteroviruses in patients with acute respiratory infection and influenza-like illness in the Central African Republic revealed mainly polioviruses and other enteric enterovirus types."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
