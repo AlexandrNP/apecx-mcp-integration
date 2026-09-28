@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:11:42.925022+00:00",
-  "runs": 588,
+  "updated": "2026-09-28T03:13:15.195989+00:00",
+  "runs": 589,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26545,
+  "n_false_positives": 26559,
   "n_false_negatives": 5117,
   "new_this_run": {
-    "false_positives": 6,
+    "false_positives": 14,
     "false_negatives": 0
   },
   "false_positives": [
@@ -299082,6 +299082,168 @@
       "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42355501",
+      "title": "The Forgotten Gate: Choroid Plexus and Blood-CSF Barrier in Arboviral Encephalitis.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42265108",
+      "title": "LRP4 is an entry receptor for multiple encephalitic alphaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "42421318",
+      "title": "Transgene sequence codon optimization and composition determines replication competence of self-amplifying RNA.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the epidemiology and outbreak history of Mayaro virus?",
+      "cited_pmid": "42439134",
+      "title": "[Emerging infectious diseases in France: what are the risks for pregnancy?].",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mayaro virus?",
+      "cited_pmid": "42355501",
+      "title": "The Forgotten Gate: Choroid Plexus and Blood-CSF Barrier in Arboviral Encephalitis.",
+      "actual_organisms": [
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "How does Mayaro virus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "42540242",
+      "title": "Evaluation of the Antiviral Activity of Monomeric, Dimeric, and Oligomeric Flavonoids against Chikungunya and Mayaro Viruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1981168",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "cited_pmid": "42439134",
+      "title": "[Emerging infectious diseases in France: what are the risks for pregnancy?].",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "42796720",
+      "title": "Endothelial Collapse as a Convergent Immunovascular Phenotype in Sepsis and Severe Arboviral Disease: The SIMVAC Model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "How does Sindbis virus evade or modulate the host immune response?",
+      "cited_pmid": "42726899",
+      "title": "Encephalitic alphavirus infection induces long-term humoral and cell-mediated responses in seropositive participants from Panama.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
+      "cited_pmid": "42508914",
+      "title": "A double-platform assay for rapid and on-site detection of chikungunya virus by integrating catalytic hairpin assembly with lateral flow immunochromatography assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1897738",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
+      "cited_pmid": "42610905",
+      "title": "Multiplexed RT-LAMP Assays in Handheld Devices for In-Situ Detection of Chikungunya, Dengue, Mayaro, and Zika Viruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Semliki Forest virus?",
+      "cited_pmid": "42636212",
+      "title": "Vector competence of temperate and tropical mosquito species for Babanki virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_48540"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Semliki Forest virus?",
+      "cited_pmid": "42667977",
+      "title": "Mosquito diversity and arbovirus detection in Paraguay: first evidence of dengue and chikungunya virus infection in field populations.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
