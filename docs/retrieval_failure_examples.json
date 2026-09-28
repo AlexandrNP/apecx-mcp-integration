@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:02:34.073294+00:00",
-  "runs": 582,
+  "updated": "2026-09-28T03:04:04.710773+00:00",
+  "runs": 583,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26466,
-  "n_false_negatives": 5113,
+  "n_false_positives": 26489,
+  "n_false_negatives": 5114,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 23,
     "false_negatives": 1
   },
   "false_positives": [
@@ -298222,6 +298222,243 @@
       "actual_organisms": [
         "Feline calicivirus"
       ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36273875",
+      "title": "Immunogenicity of a recombinant hemagglutinin neuraminidase-Porcine rubulavirus produced by Escherichia coli of Porcine rubulavirus gives protective immunity of litter after challenge.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32976525",
+      "title": "Immunoinformatics approach for predicting epitopes in HN and F proteins of Porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35992711",
+      "title": "Rabbit hemorrhagic disease virus VP60 protein expressed in recombinant swinepox virus self-assembles into virus-like particles with strong immunogenicity in rabbits.",
+      "actual_organisms": [
+        "Swinepox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11976"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus pathogenesis and transmission?",
+      "cited_pmid": "26584829",
+      "title": "Molecular and epidemiological studies of Porcine rubulavirus infection - an overview.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus pathogenesis and transmission?",
+      "cited_pmid": "26728078",
+      "title": "Molecular characterisation of Porcine rubulavirus (PorPV) isolates from different outbreaks in Mexico.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42797925",
+      "title": "Development and Application of a Triplex qPCR Assay for the Simultaneous Detection of African Swine Fever Virus, Porcine Circovirus Type 2, and Porcine Circovirus Type 3.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1868221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genome organization and replication cycle of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "28185101",
+      "title": "Full-genome sequencing and phylogenetic analysis of four neurovirulent Mexican isolates of porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the epidemiology and outbreak history of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "23734711",
+      "title": "Serological survey of veterinarians to assess the zoonotic potential of three emerging swine diseases in Mexico.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_171"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "23770154",
+      "title": "Respiratory disease in growing pigs after Porcine rubulavirus experimental infection.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42775871",
+      "title": "The multi-pronged entry of African swine fever virus: from host factors to therapeutic targets.",
+      "actual_organisms": [
+        "African swine fever virus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect African swine fever virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of African swine fever virus?",
+      "cited_pmid": "36986394",
+      "title": "First Report of Swinepox in a Wild Boar in Italy: Pathologic and Molecular Findings.",
+      "actual_organisms": [
+        "Swinepox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of African swine fever virus?",
+      "cited_pmid": "34696467",
+      "title": "Swinepox Virus Strains Isolated from Domestic Pigs and Wild Boar in Germany Display Altered Coding Capacity in the Terminal Genome Region Encoding for Species-Specific Genes.",
+      "actual_organisms": [
+        "Swinepox virus"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What diagnostic assays or laboratory tests detect Swinepox virus?",
+      "cited_pmid": "42797925",
+      "title": "Development and Application of a Triplex qPCR Assay for the Simultaneous Detection of African Swine Fever Virus, Porcine Circovirus Type 2, and Porcine Circovirus Type 3.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1868221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What diagnostic assays or laboratory tests detect Swinepox virus?",
+      "cited_pmid": "42734722",
+      "title": "Establishment of a blocking ELISA for assessing neutralizing antibody levels against porcine epidemic diarrhea virus.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1586324",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What antiviral drugs or treatments are effective against Swinepox virus?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Swinepox virus?",
+      "cited_pmid": "42775871",
+      "title": "The multi-pronged entry of African swine fever virus: from host factors to therapeutic targets.",
+      "actual_organisms": [
+        "African swine fever virus"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Swinepox virus?",
+      "cited_pmid": "32976525",
+      "title": "Immunoinformatics approach for predicting epitopes in HN and F proteins of Porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "cited_pmid": "42797636",
+      "title": "The Silent Vehicle: Validating the Biological Signals and Noises of Baculovirus Vectors in Macrophage-Targeted Vaccines.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "cited_pmid": "42797847",
+      "title": "African Swine Fever Virus DP71L Protein Inhibits Dextran Sulfate Sodium (DSS)-Induced Murine Colitis.",
+      "actual_organisms": [
+        "African swine fever virus"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "cited_pmid": "42714166",
+      "title": "Mutations in the macrodomain 1 of nsp3 attenuate PEDV virulence in vivo without impairing in vitro replication.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
     }
   ],
   "false_negatives": [
@@ -328902,6 +329139,12 @@
       "question": "What are the clinical symptoms and disease presentation of Feline calicivirus?",
       "missed_pmid": "42800431",
       "title": "Genetic diversity, pathogenicity, and serological cross-neutralization characteristics of contemporary feline calicivirus isolates from China."
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "missed_pmid": "35992711",
+      "title": "Rabbit hemorrhagic disease virus VP60 protein expressed in recombinant swinepox virus self-assembles into virus-like particles with strong immunogenicity in rabbits."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
