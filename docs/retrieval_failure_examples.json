@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:10:15.163986+00:00",
-  "runs": 587,
+  "updated": "2026-09-28T03:11:42.925022+00:00",
+  "runs": 588,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26539,
+  "n_false_positives": 26545,
   "n_false_negatives": 5117,
   "new_this_run": {
-    "false_positives": 17,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -299004,6 +299004,84 @@
         "Feline coronavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11135",
         "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "42759937",
+      "title": "EHD4 facilitates Zika virus infection by regulating extracellular vesicle-associated viral release and cell attachment.",
+      "actual_organisms": [
+        "Dengue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42725737",
+      "title": "MDV-like endogenous viral elements act as immune rheostats in Aedes cells by modulating defensin A-mediated responses to arboviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Japanese encephalitis virus?",
+      "cited_pmid": "42703614",
+      "title": "Under-ascertainment of medically attended tick-borne encephalitis virus infections by tick-borne encephalitis surveillance in selected areas of Austria, Denmark, Finland, Germany, Latvia, Sweden, and Switzerland.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "cited_pmid": "42788643",
+      "title": "Virome Diversity and Zoonotic Risks of Haemaphysalis concinna Ticks in Northeastern China.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608046",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980415",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2795181",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2983972",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tick-borne encephalitis virus?",
+      "cited_pmid": "42796714",
+      "title": "Genotype-Specific Amino Acid Signatures in the Gn/Gc Glycoprotein of Severe Fever with Thrombocytopenia Syndrome Virus Associated with Neurological Symptoms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835"
       ]
     }
   ],
