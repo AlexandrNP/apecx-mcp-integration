@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:08:46.081744+00:00",
-  "runs": 586,
+  "updated": "2026-09-28T03:10:15.163986+00:00",
+  "runs": 587,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26522,
+  "n_false_positives": 26539,
   "n_false_negatives": 5117,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 1
+    "false_positives": 17,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -298810,6 +298810,200 @@
       "actual_organisms": [
         "Canine herpesvirus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "cited_pmid": "42622352",
+      "title": "EXPRESS: Agreement between point-of-care and external reference laboratory RT-qPCR testing for feline coronavirus in cats with suspected feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus 229E?",
+      "cited_pmid": "42620651",
+      "title": "Sustained clinical remission and long-term safety of molnupiravir as first-line therapy for effusive feline infectious peritonitis: a 40-week retrospective study.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "How does Human coronavirus 229E evade or modulate the host immune response?",
+      "cited_pmid": "42758786",
+      "title": "A feline coronavirus nucleocapsid protein disrupts ZC3HAV1-viral RNA association to counteract host RNA-level restriction.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus 229E?",
+      "cited_pmid": "42797868",
+      "title": "Balancing Genome Plasticity and Evolutionary Constraint During the Long-Term Evolution of Feline Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human coronavirus 229E?",
+      "cited_pmid": "42662021",
+      "title": "First molecular detection and genetic characterization of feline coronavirus from India.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "42622352",
+      "title": "EXPRESS: Agreement between point-of-care and external reference laboratory RT-qPCR testing for feline coronavirus in cats with suspected feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42786517",
+      "title": "Occurrence of respiratory and enteric bacteria and viruses in calves in Iceland.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1661",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75985"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42778896",
+      "title": "A decade of endemic human coronaviruses: epidemiological patterns and clinical significance in an adult cohort at a tertiary care hospital in Germany.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "http://purl.obolibrary.org/obo/NCBITaxon_277944",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290028",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42768131",
+      "title": "Molecular detection of feline viruses in free-ranging European wildcats (Felis s. silvestris) of the Harz Mountains, Germany.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1170234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39725"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "42590897",
+      "title": "EXPRESS: Renal Health in Cats with Feline Infectious Peritonitis treated with GS-441524: Baseline Findings and Longitudinal Effects.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42655726",
+      "title": "A Review: Bovine Coronavirus Evolution, Molecular Epidemiology, and Genetic Variation.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42772549",
+      "title": "Detection and Genomic Characterization of an Emerging Bovine Coronavirus in Southwest China.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42662021",
+      "title": "First molecular detection and genetic characterization of feline coronavirus from India.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42749190",
+      "title": "Molecular epidemiological surveillance of the feline coronavirus reveals novel recombinant FCoV strains with evidence of ongoing viral evolution.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
       ]
     }
   ],
