@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:36:16.457340+00:00",
-  "runs": 499,
+  "updated": "2026-09-28T00:38:26.043388+00:00",
+  "runs": 500,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25301,
-  "n_false_negatives": 5059,
+  "n_false_positives": 25322,
+  "n_false_negatives": 5064,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 3
+    "false_positives": 21,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -285077,6 +285077,230 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41544331",
+      "title": "SVA virus-like vesicle vaccine based on VEEV-VSVG vector elicits efficient immune responses and protection in swine.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42655817",
+      "title": "Development of a mu3ABC-Based Lateral Flow Immunochromatographic Strip for Rapid DIVA-Compatible Detection of Antibodies Specific to Foot-and-Mouth Disease Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "42148648",
+      "title": "Genome sequence of a historical vesicular stomatitis New Jersey virus isolate collected in 1965 from a naturally infected cow in El Salvador.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972578"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "41623554",
+      "title": "Phorbol Myristate Acetate Inhibits Senecavirus A Replication by Activating IKBKE-Mediated IFN Pathway and NF-\u03baB Signal.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "39259728",
+      "title": "A comprehensive study of SARS-CoV-2 main protease (Mpro) inhibitor-resistant mutants selected in a VSV-based system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "42799644",
+      "title": "Evolutionary and Spatiotemporal Dynamics of Foot-and-Mouth Disease Virus in Ethiopia (1957-2025): A Molecular Perspective on Serotype Persistence and Emergence.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What are the clinical symptoms and disease presentation of Orf virus?",
+      "cited_pmid": "42777745",
+      "title": "Safety and immunogenicity of a recombinant vesicular stomatitis virus-based Sudan virus vaccine in adults in the USA: a single-blind, first-in-human, dose-escalation phase 1 clinical trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "How does Orf virus evade or modulate the host immune response?",
+      "cited_pmid": "42017991",
+      "title": "LC3-associated phagocytosis is a new strategy to inhibit picornavirus infection through increasing interferon levels and lysosomal degradation.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "35553417",
+      "title": "Phylodynamics of Alagoas vesiculovirus in Brazil.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972579",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "41569072",
+      "title": "Genetic diversity and evolutionary dynamics of Senecavirus A in Brazil.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "42515016",
+      "title": "A Revised Classification of Vesicular Stomatitis Virus (VSV) Genotypes and Subtypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Foot-and-mouth disease virus?",
+      "cited_pmid": "42515016",
+      "title": "A Revised Classification of Vesicular Stomatitis Virus (VSV) Genotypes and Subtypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is known about Seneca Valley virus pathogenesis and transmission?",
+      "cited_pmid": "36737291",
+      "title": "Vesicular Stomatitis Virus.",
+      "actual_organisms": [
+        "Vesicular stomatitis New Jersey virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is known about Seneca Valley virus pathogenesis and transmission?",
+      "cited_pmid": "38402042",
+      "title": "Vesicular Stomatitis Virus.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is known about Seneca Valley virus pathogenesis and transmission?",
+      "cited_pmid": "34451457",
+      "title": "Review of Vesicular Stomatitis in the United States with Focus on 2019 and 2020 Outbreaks.",
+      "actual_organisms": [
+        "Vesicular stomatitis New Jersey virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genome organization and replication cycle of Seneca Valley virus?",
+      "cited_pmid": "42489650",
+      "title": "Tymoviruses partition selection using overlapping genes to allow their replication genes and their movement protein gene to evolve independently.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genome organization and replication cycle of Seneca Valley virus?",
+      "cited_pmid": "42148648",
+      "title": "Genome sequence of a historical vesicular stomatitis New Jersey virus isolate collected in 1965 from a naturally infected cow in El Salvador.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972578"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genome organization and replication cycle of Seneca Valley virus?",
+      "cited_pmid": "42515653",
+      "title": "Toxic Relationships: Characterization of a Putative Virally Encoded Toxin in the Thermophilic Archaeal Fusellovirus SSV1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2100760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_244589"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seneca Valley virus?",
+      "cited_pmid": "42405772",
+      "title": "Coronavirus membrane protein with a fluorescent protein tag enables particle tracking for the study of virus assembly and egress in live cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "How does Seneca Valley virus evade or modulate the host immune response?",
+      "cited_pmid": "42536682",
+      "title": "Host-Orf virus interactions: A comprehensive review of pathogenesis and immune evasion mechanisms.",
+      "actual_organisms": [
+        "Orf virus"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seneca Valley virus?",
+      "cited_pmid": "35553417",
+      "title": "Phylodynamics of Alagoas vesiculovirus in Brazil.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972579",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -315433,6 +315657,36 @@
       "question": "What is the epidemiology and outbreak history of Human parainfluenza virus 2?",
       "missed_pmid": "35672928",
       "title": "Human parainfluenza 2 &amp; 4: Clinical and genetic epidemiology in the UK, 2013-2017, reveals distinct disease features and co-circulating genomic subtypes."
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What antiviral drugs or treatments are effective against Foot-and-mouth disease virus?",
+      "missed_pmid": "32581148",
+      "title": "Recombinant vesicular stomatitis virus glycoprotein carrying a foot-and-mouth disease virus epitope as a vaccine candidate."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is known about Seneca Valley virus pathogenesis and transmission?",
+      "missed_pmid": "41745991",
+      "title": "Infectious Dose of a 2018 Senecavirus A Isolate in Neonatal Pigs."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is known about Seneca Valley virus pathogenesis and transmission?",
+      "missed_pmid": "41569072",
+      "title": "Genetic diversity and evolutionary dynamics of Senecavirus A in Brazil."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genome organization and replication cycle of Seneca Valley virus?",
+      "missed_pmid": "41715256",
+      "title": "Vesicular Disease Caused by Seneca Valley Virus in Pigs, England, 2022."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seneca Valley virus?",
+      "missed_pmid": "41759768",
+      "title": "Detection, isolation and molecular characterization of Senecavirus A in porcine semen: Implications for control programs."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
