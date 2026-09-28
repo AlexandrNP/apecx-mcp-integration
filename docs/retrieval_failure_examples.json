@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T09:14:19.426528+00:00",
-  "runs": 644,
+  "updated": "2026-09-28T09:24:25.516381+00:00",
+  "runs": 645,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27069,
+  "n_false_positives": 27079,
   "n_false_negatives": 5141,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 1
+    "false_positives": 10,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -304855,6 +304855,123 @@
         "Tomato spotted wilt virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1078947",
         "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "38805657",
+      "title": "Effects of summer treatments against Varroa destructor on viral load and colony performance of Apis mellifera colonies in Eastern Canada.",
+      "actual_organisms": [
+        "Kashmir bee virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "40859294",
+      "title": "Construction of a portable multiplex detection system for four bee viral paralysis diseases based on RT-PCR-microfluidic chip integrated technology.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "40421802",
+      "title": "Comprehensive mutational analysis of the sequence-function relationship within a viral internal ribosome entry site.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "38805657",
+      "title": "Effects of summer treatments against Varroa destructor on viral load and colony performance of Apis mellifera colonies in Eastern Canada.",
+      "actual_organisms": [
+        "Kashmir bee virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "42477720",
+      "title": "Chinese sacbrood virus destroys AcPPAN-copper homeostasis to evade phenoloxidase-based antiviral immunity in Apis cerana.",
+      "actual_organisms": [
+        "Sacbrood virus"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "How does Chronic bee paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "41888193",
+      "title": "Evidence for virus-associated recapping behaviour in honey bees (Apis mellifera) with differential detection sensitivity between varroa-resistant and non-resistant colonies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "cited_pmid": "42086144",
+      "title": "Nosema ceranae and honey bee-associated virus levels in commercial beekeeping operations across Southwestern Saudi Arabia.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is the genome organization and replication cycle of Kashmir bee virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "41888193",
+      "title": "Evidence for virus-associated recapping behaviour in honey bees (Apis mellifera) with differential detection sensitivity between varroa-resistant and non-resistant colonies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "41920000",
+      "title": "Attraction versus avoidance: honeybees vary in response to virus-contaminated food.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
       ]
     }
   ],
