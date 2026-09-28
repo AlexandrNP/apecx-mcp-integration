@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:02:55.757772+00:00",
-  "runs": 485,
+  "updated": "2026-09-28T00:06:22.409742+00:00",
+  "runs": 486,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25184,
-  "n_false_negatives": 5008,
+  "n_false_positives": 25187,
+  "n_false_negatives": 5010,
   "new_this_run": {
     "false_positives": 3,
-    "false_negatives": 0
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -283748,6 +283748,33 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10892",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What diagnostic assays or laboratory tests detect Barley yellow dwarf virus?",
+      "cited_pmid": "34285979",
+      "title": "Protocol for RYMV Inoculation and Resistance Evaluation in Rice Seedlings.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the genome organization and replication cycle of Barley yellow dwarf virus?",
+      "cited_pmid": "29097464",
+      "title": "Complete Genome Sequence of a New Strain of Rice yellow mottle virus from Malawi, Characterized by a Recombinant VPg Protein.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rice yellow mottle virus?",
+      "cited_pmid": "39403868",
+      "title": "Catalase regulation during plant-virus-vector interaction.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -313798,6 +313825,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Semliki Forest virus?",
       "missed_pmid": "40193402",
       "title": "Proximity interactome of alphavirus replicase component nsP3 includes proviral host factors eIF4G and AHNAK."
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rice yellow mottle virus?",
+      "missed_pmid": "29097464",
+      "title": "Complete Genome Sequence of a New Strain of Rice yellow mottle virus from Malawi, Characterized by a Recombinant VPg Protein."
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "How does Rice yellow mottle virus evade or modulate the host immune response?",
+      "missed_pmid": "34285979",
+      "title": "Protocol for RYMV Inoculation and Resistance Evaluation in Rice Seedlings."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
