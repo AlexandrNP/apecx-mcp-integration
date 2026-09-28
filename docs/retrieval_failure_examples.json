@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:50:24.923895+00:00",
-  "runs": 574,
+  "updated": "2026-09-28T02:51:55.185452+00:00",
+  "runs": 575,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26396,
+  "n_false_positives": 26409,
   "n_false_negatives": 5111,
   "new_this_run": {
-    "false_positives": 9,
+    "false_positives": 13,
     "false_negatives": 0
   },
   "false_positives": [
@@ -297434,6 +297434,167 @@
         "Grapevine fanleaf virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is known about Cucumber mosaic virus pathogenesis and transmission?",
+      "cited_pmid": "42714087",
+      "title": "Resistance to Bean Common Mosaic Virus Conferred by the bc-u Gene Does Not Affect Replication or Systemic Spread of the Virus in Common Bean but Ameliorates the Strain-Specific Systemic Necrosis.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "cited_pmid": "40290764",
+      "title": "Development of rapid and simple detection of bean common mosaic virus (BCMV) in mung beans (Vigna radiata) using reverse transcription-loop mediated isothermal amplification (RT-LAMP).",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "Potato virus Y",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12198",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "cited_pmid": "40270808",
+      "title": "Latent infection of Vigna unguiculata with seed-borne bean common mosaic virus modulates plant growth and may contribute to mutualistic symbiosis between the virus and host plant.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the genome organization and replication cycle of Cucumber mosaic virus?",
+      "cited_pmid": "41225909",
+      "title": "Characterization and Construction of Full-Length cDNA Infectious Clone of a Novel BCMV Isolate in Pathogroup III.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240595",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cucumber mosaic virus?",
+      "cited_pmid": "42655669",
+      "title": "Genetic Diversity and Phylogeny of Chilli Veinal Mottle Virus in Yunnan Tobacco-Planting Regions Based on the CP Gene.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y pathogenesis and transmission?",
+      "cited_pmid": "42714087",
+      "title": "Resistance to Bean Common Mosaic Virus Conferred by the bc-u Gene Does Not Affect Replication or Systemic Spread of the Virus in Common Bean but Ameliorates the Strain-Specific Systemic Necrosis.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "42410684",
+      "title": "Prevalence and diversity of yellow dwarf virus strains in Nebraska cereal crops.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169986",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "cited_pmid": "41594938",
+      "title": "Durable Management of Plant Viruses: Insights into Host Resistance and Tolerance Mechanisms.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "42627729",
+      "title": "Differential response of winter wheat and barley cultivars to yellow dwarf virus strains and aphid vectors.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "41596536",
+      "title": "Exploring the Peanut Viromes Across 15 Cultivars in Korea.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Potato virus Y?",
+      "cited_pmid": "42162287",
+      "title": "Repeated identification of plant-associated polerovirus 3 (PaPV3) and of a novel polerovirus in the virome of French grain cereals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_119164",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1825924",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3685905"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What diagnostic assays or laboratory tests detect Barley yellow dwarf virus?",
+      "cited_pmid": "40290764",
+      "title": "Development of rapid and simple detection of bean common mosaic virus (BCMV) in mung beans (Vigna radiata) using reverse transcription-loop mediated isothermal amplification (RT-LAMP).",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "Potato virus Y",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12198",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the genome organization and replication cycle of Barley yellow dwarf virus?",
+      "cited_pmid": "41225909",
+      "title": "Characterization and Construction of Full-Length cDNA Infectious Clone of a Novel BCMV Isolate in Pathogroup III.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240595",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
       ]
     }
   ],
