@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:06:22.409742+00:00",
-  "runs": 486,
+  "updated": "2026-09-28T00:08:10.751413+00:00",
+  "runs": 487,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25187,
-  "n_false_negatives": 5010,
+  "n_false_positives": 25193,
+  "n_false_negatives": 5014,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 2
+    "false_positives": 6,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -283775,6 +283775,72 @@
       "actual_organisms": [
         "Barley yellow dwarf virus"
       ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36594442",
+      "title": "Evaluation of a Live-Attenuated Human Parainfluenza Virus Type 2 Vaccine in Adults and Children.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "29322811",
+      "title": "Establishment of reverse transcription polymerase chain reaction assay for simultaneous detection of human parainfluenza virus types 1 to 4 in children with influenza like illnesses.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "10424646",
+      "title": "Development of a blocking ELISA for screening antibodies to porcine rubulavirus, La Piedad Michoacan Virus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2898537"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
+      "cited_pmid": "31956229",
+      "title": "Inhibitions of human parainfluenza virus type 2 replication by ribavirin and mycophenolate mofetil are restored by guanosine and S-(4-nitrobenzyl)-6-thioinosine.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
+      "cited_pmid": "31954277",
+      "title": "Human parainfluenza virus circulation, United States, 2011-2019.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "33270253",
+      "title": "The landscape of extrapulmonary manifestations of human parainfluenza viruses: A systematic narrative review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -313837,6 +313903,30 @@
       "question": "How does Rice yellow mottle virus evade or modulate the host immune response?",
       "missed_pmid": "34285979",
       "title": "Protocol for RYMV Inoculation and Resistance Evaluation in Rice Seedlings."
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "28102432",
+      "title": "Synthesis of human parainfluenza virus 4 nucleocapsid-like particles in yeast and their use for detection of virus-specific antibodies in human serum."
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus pathogenesis and transmission?",
+      "missed_pmid": "20963613",
+      "title": "Completion of the full-length genome sequence of human parainfluenza virus types 4A and 4B: sequence analysis of the large protein genes and gene start, intergenic and end sequences."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 2?",
+      "missed_pmid": "37039701",
+      "title": "Molecular Evolution of Human Parainfluenza Virus Type 2 Based on Hemagglutinin-Neuraminidase Gene."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "How does Human parainfluenza virus 2 evade or modulate the host immune response?",
+      "missed_pmid": "33408172",
+      "title": "Human Parainfluenza Virus Type 2 V Protein Modulates Iron Homeostasis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
