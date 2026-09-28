@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:15:44.906489+00:00",
-  "runs": 520,
+  "updated": "2026-09-28T01:17:48.643537+00:00",
+  "runs": 521,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25633,
-  "n_false_negatives": 5103,
+  "n_false_positives": 25643,
+  "n_false_negatives": 5104,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 2
+    "false_positives": 10,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -288764,6 +288764,119 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11099",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052626"
       ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42497136",
+      "title": "Orientation of Gp96 and Calreticulin T-cell epitopes in a multiepitope HPV16 E7 vaccine construct affects predicted immunostimulatory properties: An in silico and expression validation study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "40374014",
+      "title": "Optimization of human T-cell lymphotropic virus type 1 (HTLV-1) serological and molecular diagnosis for alternative blood samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "39187753",
+      "title": "A novel high-performance rapid screening test for the detection of total HTLV-I and HTLV-II antibodies in HTLV-I/II infected patients.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "40306581",
+      "title": "Strictly screening of HTLV-1/2 peptides can drive the development of rapid point-of-care tests.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "39338913",
+      "title": "A Systematical Review on ART Use in HTLV Infection: Clinical, Virological, and Immunological Outcomes.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human gammaherpesvirus 8?",
+      "cited_pmid": "42589622",
+      "title": "Experimental Analysis of HPV16 L1/L2 Chimeric VLP Internalization by Human Peripheral Blood Leukocytes.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "40934547",
+      "title": "Molecular characterization of Human T-cell Lymphotropic Viruses 1 and 2 (HTLV-1 and HTLV-2) in samples from blood donation candidates in the state of Par\u00e1, Brazilian Amazon.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "39459860",
+      "title": "Intrafamilial Transmission of HTLV-1 and HTLV-2 in Indigenous Peoples of the Brazilian Amazon: Molecular Characterization and Phylogenetic Analysis.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "cited_pmid": "40306581",
+      "title": "Strictly screening of HTLV-1/2 peptides can drive the development of rapid point-of-care tests.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against Merkel cell polyomavirus?",
+      "cited_pmid": "39338913",
+      "title": "A Systematical Review on ART Use in HTLV Infection: Clinical, Virological, and Immunological Outcomes.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191"
+      ]
     }
   ],
   "false_negatives": [
@@ -319384,6 +319497,12 @@
       "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
       "missed_pmid": "41294350",
       "title": "Developing a recombinase-aided amplification method combined with a lateral flow dipstick assay for rapid triplex detection of bovine coronavirus, infectious bovine rhinotracheitis virus, and bovine viral diarrhea virus."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "missed_pmid": "42435459",
+      "title": "Significance of Epstein-Barr Virus and Human Papillomavirus type 16 in the development of pleomorphic adenomas of the salivary glands."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
