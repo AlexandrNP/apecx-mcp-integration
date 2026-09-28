@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:05:34.592638+00:00",
-  "runs": 584,
+  "updated": "2026-09-28T03:07:11.305754+00:00",
+  "runs": 585,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26496,
+  "n_false_positives": 26508,
   "n_false_negatives": 5116,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 2
+    "false_positives": 12,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -298535,6 +298535,134 @@
       "actual_organisms": [
         "Bovine viral diarrhea virus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the clinical symptoms and disease presentation of Monkeypox virus?",
+      "cited_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "cited_pmid": "42668370",
+      "title": "Selective culling and the potential persistence of lumpy skin disease in cattle herds: insights from a mechanistic transmission model.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "42573229",
+      "title": "Seroprevalence of Lumpy Skin Disease and Livestock Owners' Knowledge, Attitudes and Practices in Selected Districts of Kazakhstan.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "42576656",
+      "title": "Strengthening Regional Control of Transboundary Animal Diseases in the Greater Mekong Subregion of Southeast Asia: Four Decades of Diagnostics, Surveillance, Field Epidemiology, and Policy Translation.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "42782136",
+      "title": "Genomic characteristics of the first five monkeypox virus clade Ib cases in Thailand: August 2024-March 2025.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Orf virus?",
+      "cited_pmid": "42786314",
+      "title": "Molecular Characterization of a Novel Mycovirus Isolated from Binucleate Rhizoctonia AG\u2011Bb strain 8-Q-36.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1322061",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1592833",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2842929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35325"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Lumpy skin disease virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Lumpy skin disease virus?",
+      "cited_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lumpy skin disease virus?",
+      "cited_pmid": "42646177",
+      "title": "A Vascularized, Adipose-Containing Human Skin Equivalent Enables Long-Term Culture and Models Orthopoxvirus-Mediated Immune Suppression.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lumpy skin disease virus?",
+      "cited_pmid": "42114492",
+      "title": "Ectromelia virus growth factor is not secreted from infected cells and plays no apparent role for virus replication in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12643"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "How does Lumpy skin disease virus evade or modulate the host immune response?",
+      "cited_pmid": "42395043",
+      "title": "Antiviral innate immunity and adaptive immune responses against monkeypox and viral immune evasion.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lumpy skin disease virus?",
+      "cited_pmid": "42784973",
+      "title": "Characterization of a novel poxvirus associated with an epidermal keratinocytic dermatopathy in a captive population of the endangered Knysna seahorse Hippocampuscapensis.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341"
       ]
     }
   ],
