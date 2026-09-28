@@ -1,9 +1,9 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T23:14:16.053840+00:00",
-  "runs": 707,
+  "updated": "2026-09-28T23:24:12.334629+00:00",
+  "runs": 708,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27772,
+  "n_false_positives": 27783,
   "n_false_negatives": 5173,
   "new_this_run": {
     "false_positives": 11,
@@ -312771,6 +312771,121 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12305",
         "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42629989",
+      "title": "Plasmon-Driven Gene Amplification-Integrated Lateral Flow Assay for Ultrafast Diagnosis of Seoul Orthohantavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "42620593",
+      "title": "Rapid response and surveillance for high-risk contacts during May 2026 Andes hantavirus outbreak: a Northern Italy experience.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Influenza A virus?",
+      "cited_pmid": "40493689",
+      "title": "A systematic review of the distribution and prevalence of viruses detected in the Peromyscus maniculatus species complex (Rodentia: Cricetidae).",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human metapneumovirus?",
+      "cited_pmid": "42116630",
+      "title": "Genomic Analysis of Sin Nombre Virus Sequences, Northwestern United States, 2023.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
       ]
     }
   ],
