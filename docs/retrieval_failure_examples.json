@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:13:35.683261+00:00",
-  "runs": 490,
+  "updated": "2026-09-28T00:16:58.194031+00:00",
+  "runs": 491,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25207,
-  "n_false_negatives": 5023,
+  "n_false_positives": 25211,
+  "n_false_negatives": 5024,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 4
+    "false_positives": 4,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -284003,6 +284003,45 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42784634",
+      "title": "Functional divergence of the Bhanja virus NSs protein modulates interferon antagonism and viral fitness across divergent lineages.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213620",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733256",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rift Valley fever virus?",
+      "cited_pmid": "42728614",
+      "title": "Phylogeographic epidemiology of Dabie bandavirus in East Asia: divergent transmission networks and genotype\u2011linked clinical severity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the clinical symptoms and disease presentation of Toscana virus?",
+      "cited_pmid": "42574266",
+      "title": "Severe Fever With Thrombocytopenia Syndrome: An Autopsy-Proven Case With Radiologic-Pathologic Correlation.",
+      "actual_organisms": [
+        "unknown"
+      ]
     }
   ],
   "false_negatives": [
@@ -314143,6 +314182,12 @@
       "question": "What is the genome organization and replication cycle of Sabia mammarenavirus?",
       "missed_pmid": "20007272",
       "title": "Z proteins of New World arenaviruses bind RIG-I and interfere with type I interferon induction."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41902195",
+      "title": "Antiviral Activity of Microbial Metabolites Monensin and Brefeldin A Against Toscana Virus: In Vitro Evaluation and Mechanistic Insights."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
