@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:01:18.654379+00:00",
-  "runs": 484,
+  "updated": "2026-09-28T00:02:55.757772+00:00",
+  "runs": 485,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25181,
+  "n_false_positives": 25184,
   "n_false_negatives": 5008,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 5
+    "false_positives": 3,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -283714,6 +283714,39 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10892",
         "http://purl.obolibrary.org/obo/NCBITaxon_40052"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41920455",
+      "title": "\"Expression of a recombinant chimeric capsid-nucleocapsid protein from bovine leukemia virus genotype 1 for the diagnosis of enzootic bovine leukosis\".",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41920397",
+      "title": "Interferon dynamics in deltaretroviruses: why HTLV-1 evades, but BLV responds.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42197343",
+      "title": "Exceptional Bluetongue Epidemic Caused by Co-Circulation of Several Serotypes in Spain in 2024.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
