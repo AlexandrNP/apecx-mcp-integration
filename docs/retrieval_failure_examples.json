@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:32:26.690812+00:00",
-  "runs": 498,
+  "updated": "2026-09-28T00:36:16.457340+00:00",
+  "runs": 499,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25299,
-  "n_false_negatives": 5056,
+  "n_false_positives": 25301,
+  "n_false_negatives": 5059,
   "new_this_run": {
-    "false_positives": 3,
+    "false_positives": 2,
     "false_negatives": 3
   },
   "false_positives": [
@@ -285053,6 +285053,30 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3025059",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus NL63?",
+      "cited_pmid": "41476209",
+      "title": "Prevalence, clinical characteristics and pattern of distribution of seasonal corona virus associated acute respiratory tract infections among adults and children in the Central Province of Sri Lanka from January 2020 to October 2022.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11137",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "How does Human parainfluenza virus 2 evade or modulate the host immune response?",
+      "cited_pmid": "32423918",
+      "title": "Direct Antiviral Activity of IFN-Stimulated Genes Is Responsible for Resistance to Paramyxoviruses in ISG15-Deficient Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -315391,6 +315415,24 @@
       "question": "How does Colorado tick fever virus evade or modulate the host immune response?",
       "missed_pmid": "34218056",
       "title": "Colorado tick fever virus induces apoptosis in human endothelial cells\u00a0to facilitate viral replication."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "missed_pmid": "41476209",
+      "title": "Prevalence, clinical characteristics and pattern of distribution of seasonal corona virus associated acute respiratory tract infections among adults and children in the Central Province of Sri Lanka from January 2020 to October 2022."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human coronavirus OC43?",
+      "missed_pmid": "41857372",
+      "title": "SARS-CoV-2 crossreactive B-cells outnumber seasonal coronavirus spike-specific clones at the end of the COVID-19 pandemic."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is the epidemiology and outbreak history of Human parainfluenza virus 2?",
+      "missed_pmid": "35672928",
+      "title": "Human parainfluenza 2 &amp; 4: Clinical and genetic epidemiology in the UK, 2013-2017, reveals distinct disease features and co-circulating genomic subtypes."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
