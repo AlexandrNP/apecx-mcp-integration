@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:43:45.361466+00:00",
-  "runs": 503,
+  "updated": "2026-09-28T00:45:24.509390+00:00",
+  "runs": 504,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25338,
-  "n_false_negatives": 5068,
+  "n_false_positives": 25348,
+  "n_false_negatives": 5073,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 0
+    "false_positives": 10,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -285470,6 +285470,108 @@
         "Porcine circovirus 1",
         "http://purl.obolibrary.org/obo/NCBITaxon_10912"
       ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42781097",
+      "title": "Investigation of Hepatitis E virus seroprevalence in fattening pigs in Taiwan.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "42727860",
+      "title": "Mouse models of acute and chronic hepatitis E virus infection.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "How does Hepacivirus hominis evade or modulate the host immune response?",
+      "cited_pmid": "42779859",
+      "title": "Impact of hepatitis E virus host- and virus-derived insertions on the antiviral response in primary human hepatocytes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepacivirus hominis?",
+      "cited_pmid": "42676516",
+      "title": "Hepatitis A and E in rural northern India: clinico-epidemiological and molecular surveillance from a tertiary care hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "10892422",
+      "title": "\"Trial moves rapidly on, when the judge has determined the sentence beforehand\" (W. Scott: Ivanhoe, 36) or pitfalls in serosurvey of anti-hepatitis C antibody in children.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "10806813",
+      "title": "Extrahepatic and intrahepatic replication and expression of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "10825999",
+      "title": "Viral hepatitis C.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis A virus?",
+      "cited_pmid": "15617329",
+      "title": "[Core protein of hepatitis C virus expressed in transgenic mice is associated with the expression of Fas molecule].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis A virus?",
+      "cited_pmid": "10681787",
+      "title": "[Four-year follow-up and molecular epidemiologic investigation of intrafamilial transmission of HCV infection].",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "cited_pmid": "10726058",
+      "title": "Targets for inhibition of hepatitis C virus replication.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -315880,6 +315982,36 @@
       "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 1?",
       "missed_pmid": "39770626",
       "title": "One-Step Multiplex Real-Time Fluorescent Quantitative Reverse Transcription PCR for Simultaneous Detection of Four Waterfowl Viruses."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "10726053",
+      "title": "Pathogenesis of chronic hepatitis C virus infection."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "missed_pmid": "11361880",
+      "title": "Characteristics and treatment of hepatitis C virus infection in HIV-coinfected subjects."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepacivirus hominis?",
+      "missed_pmid": "10681745",
+      "title": "[Genotype distribution of hepatitis C virus in hepatocellular carcinoma tissue in Hunan province]."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "How does Hepatitis E virus evade or modulate the host immune response?",
+      "missed_pmid": "42579071",
+      "title": "Lower hepatitis E clearance rates in thoracic organ recipients compared to visceral organ recipients: an effect of stronger immunosuppression?"
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Hepatitis E virus?",
+      "missed_pmid": "42560576",
+      "title": "Hepatitis E virus surveillance in wild ruminants from northwestern Italy: results of a three-year molecular survey."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
