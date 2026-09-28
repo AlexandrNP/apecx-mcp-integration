@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T03:14:51.175388+00:00",
-  "runs": 590,
+  "updated": "2026-09-28T03:16:17.553137+00:00",
+  "runs": 591,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26583,
+  "n_false_positives": 26589,
   "n_false_negatives": 5117,
   "new_this_run": {
-    "false_positives": 24,
+    "false_positives": 6,
     "false_negatives": 0
   },
   "false_positives": [
@@ -299520,6 +299520,71 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12089"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Rhinovirus B?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rhinovirus B?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "How does Rhinovirus B evade or modulate the host immune response?",
+      "cited_pmid": "41631248",
+      "title": "An attenuated coxsackievirus B5 mutant carrying VP1-N157K retains oncolytic potency against non-small cell lung cancer.",
+      "actual_organisms": [
+        "Coxsackievirus B5"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "How does Rhinovirus B evade or modulate the host immune response?",
+      "cited_pmid": "42084379",
+      "title": "A chimeric trivalent Echovirus vaccine designed by loop substitution elicits cross-neutralizing immunity against serotypes 11, 18, and 30.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rhinovirus B?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the epidemiology and outbreak history of Echovirus 11?",
+      "cited_pmid": "40966750",
+      "title": "Neonatal Enterovirus and Parechovirus Infections: National Enterovirus Surveillance System, United States, 2004-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
       ]
     }
   ],
