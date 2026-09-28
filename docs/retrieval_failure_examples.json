@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T02:45:47.166658+00:00",
-  "runs": 571,
+  "updated": "2026-09-28T02:47:18.603254+00:00",
+  "runs": 572,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26378,
-  "n_false_negatives": 5109,
+  "n_false_positives": 26382,
+  "n_false_negatives": 5110,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 0
+    "false_positives": 4,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -297226,6 +297226,57 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_290031",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is the genome organization and replication cycle of Maize streak virus?",
+      "cited_pmid": "39861914",
+      "title": "High-Throughput Oxford Nanopore Sequencing Unveils Complex Viral Population in Kansas Wheat: Implications for Sustainable Virus Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980428",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427622",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431715",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3433003",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_675845"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "How does Maize streak virus evade or modulate the host immune response?",
+      "cited_pmid": "41594938",
+      "title": "Durable Management of Plant Viruses: Insights into Host Resistance and Tolerance Mechanisms.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Maize streak virus?",
+      "cited_pmid": "40599754",
+      "title": "Global distribution, evolutionary dynamics, and origins of wheat streak mosaic virus.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the clinical symptoms and disease presentation of Rice yellow mottle virus?",
+      "cited_pmid": "39763273",
+      "title": "A new disease symptomology observed in wheat is associated with high levels of Triticum mosaic virus transcripts.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
     }
   ],
   "false_negatives": [
@@ -327882,6 +327933,12 @@
       "question": "How does Human immunodeficiency virus 1 evade or modulate the host immune response?",
       "missed_pmid": "42771288",
       "title": "BRD proteins in human retroviral infection: emerging evidence from HIV-1 and future perspectives for HTLV-1."
+    },
+    {
+      "organism": "Wheat streak mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Wheat streak mosaic virus?",
+      "missed_pmid": "41623648",
+      "title": "Comprehensive phenotyping and genotyping of a large diverse panel of the wheat wild relative, Aegilops tauschii for wheat streak mosaic virus tolerance."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
