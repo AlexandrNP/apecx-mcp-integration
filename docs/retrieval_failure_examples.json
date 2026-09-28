@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T04:12:32.762672+00:00",
-  "runs": 615,
+  "updated": "2026-09-28T04:15:55.871265+00:00",
+  "runs": 616,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26824,
+  "n_false_positives": 26833,
   "n_false_negatives": 5125,
   "new_this_run": {
-    "false_positives": 7,
+    "false_positives": 9,
     "false_negatives": 0
   },
   "false_positives": [
@@ -302161,6 +302161,107 @@
       "actual_organisms": [
         "Sin Nombre orthohantavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "41635303",
+      "title": "Exploring enterovirus pathogenesis and cancer therapy potential through reverse genetics.",
+      "actual_organisms": [
+        "Echovirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42482485",
+      "title": "Intestinal Organoids as Models to Study Viruses: Current Application and Future Perspective.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024).",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42383739",
+      "title": "ATG9A is an essential host factor for parechovirus RNA replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "42532198",
+      "title": "IMB-A3, an isoindolinone derivative, functions as a molecular glue to promote CRBN-mediated ubiquitination and degradation of enterovirus A71 2C protein.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42613835",
+      "title": "Mucosal Immunity: The Key to Combating Enteroviruses and Beyond.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
     }
   ],
