@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T06:54:02.207357+00:00",
-  "runs": 632,
+  "updated": "2026-09-28T07:07:50.043633+00:00",
+  "runs": 633,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 26976,
+  "n_false_positives": 26989,
   "n_false_negatives": 5130,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 2
+    "false_positives": 13,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -303819,6 +303819,152 @@
       "title": "Nucleic acid detection and molecular traceability of equine herpesvirus 1 in imported horses.",
       "actual_organisms": [
         "Equine herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42741611",
+      "title": "Canine parvovirus in Africa: Explaining persistent disease despite vaccination.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506662",
+      "title": "Development of a New Feline Combination Vaccine Including a Novel RNA Particle Vaccine Against Feline Leukemia Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_810"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "42507265",
+      "title": "Impact of VP2 mutations on viral fitness in canine parvovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "42654809",
+      "title": "Preliminary Screening for Selected Viral Pathogens in Red Fox Carcasses from Pisa Province, Italy.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1108949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1194757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_291484"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "42567608",
+      "title": "A one-pot detection method based on restriction endonuclease recognition for rapid detection of canine parvovirus and precise genotyping of the 2c variant.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2261",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "42652023",
+      "title": "Natural Infection of Domestic Dogs with Raccoon Dog and Fox Amdoparvovirus During a Severe Disease Outbreak.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310911"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "42515624",
+      "title": "First Genetic Detection and Characterization of Canine Parvovirus 2 in Botswana.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "42660184",
+      "title": "Canine parvovirus monoclonal antibody successfully prevented disease when administered before canine parvovirus experimental challenge.",
+      "actual_organisms": [
+        "Canine parvovirus"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "42674009",
+      "title": "Canine parvovirus cases (2010-2023): a retrospective study of 78,977 cases demonstrates declining incidence, but mortality risk remains.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "42513970",
+      "title": "Development and Validation of a Predictive Model for Wheezing Illness Following Human Bocavirus 1 Infection in Children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_689403"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human bocavirus?",
+      "cited_pmid": "42765113",
+      "title": "Emergence of canine parvovirus-2c in domestic cats and adaptive evolution of the NS1 gene: Molecular epidemiology of feline parvoviruses in Northern Vietnam (2022-2025).",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "How does Feline panleukopenia virus evade or modulate the host immune response?",
+      "cited_pmid": "42797816",
+      "title": "Molecular Mechanisms Between Canine Parvovirus 2 and Host Interactions: From Viruses to Innate Immune Signaling Pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
       ]
     }
   ],
