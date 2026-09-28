@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T01:59:18.147544+00:00",
-  "runs": 542,
+  "updated": "2026-09-28T02:01:14.278611+00:00",
+  "runs": 543,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25971,
+  "n_false_positives": 25980,
   "n_false_negatives": 5109,
   "new_this_run": {
-    "false_positives": 6,
+    "false_positives": 9,
     "false_negatives": 0
   },
   "false_positives": [
@@ -292528,6 +292528,125 @@
       "title": "Persistent Parvovirus B19 Viremia Despite Repeated Intravenous Immunoglobulin Therapy After Kidney Transplantation: A Case Report.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "41359667",
+      "title": "FC-duplex IgG1 (HTLV-1/2): Qualifying the flow cytometry IgG1 duplex assay for differential diagnosis of HTLV-1 and HTLV-2 infections.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42655700",
+      "title": "Experiences from Two Decades of HTLV-1/2 Testing in a Low-Prevalence Area in Southern Germany, 2004 to 2024.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the epidemiology and outbreak history of Human betaherpesvirus 7?",
+      "cited_pmid": "40573355",
+      "title": "High Prevalence and Risk Factors for Infection with Human T-Lymphotropic Viruses 1 and 2 in the Municipality of Ananindeua, Par\u00e1, Northern Brazil.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "40934547",
+      "title": "Molecular characterization of Human T-cell Lymphotropic Viruses 1 and 2 (HTLV-1 and HTLV-2) in samples from blood donation candidates in the state of Par\u00e1, Brazilian Amazon.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human betaherpesvirus 7?",
+      "cited_pmid": "40489561",
+      "title": "High prevalence of simian foamy virus infection of South American Indians.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11642",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "40489561",
+      "title": "High prevalence of simian foamy virus infection of South American Indians.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11642",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human gammaherpesvirus 8?",
+      "cited_pmid": "40431676",
+      "title": "Human T-Lymphotropic Virus (HTLV): Epidemiology, Genetic, Pathogenesis, and Future Challenges.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "cited_pmid": "42655700",
+      "title": "Experiences from Two Decades of HTLV-1/2 Testing in a Low-Prevalence Area in Southern Germany, 2004 to 2024.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Merkel cell polyomavirus?",
+      "cited_pmid": "40934547",
+      "title": "Molecular characterization of Human T-cell Lymphotropic Viruses 1 and 2 (HTLV-1 and HTLV-2) in samples from blood donation candidates in the state of Par\u00e1, Brazilian Amazon.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
