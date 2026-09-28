@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-28T00:52:10.603275+00:00",
-  "runs": 508,
+  "updated": "2026-09-28T00:54:06.173267+00:00",
+  "runs": 509,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25448,
+  "n_false_positives": 25450,
   "n_false_negatives": 5093,
   "new_this_run": {
-    "false_positives": 25,
-    "false_negatives": 11
+    "false_positives": 2,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -286708,6 +286708,28 @@
       "title": "Physicochemical fingerprinting reveals convergent evolutionary determinants of enterovirus A71 neurovirulence through integrative machine learning and structural analysis.",
       "actual_organisms": [
         "Enterovirus A71"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "cited_pmid": "38522136",
+      "title": "An isothermal nucleic acid amplification-based enzymatic recombinase amplification method for dual detection of porcine epidemic diarrhea virus and porcine rotavirus A.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "37302675",
+      "title": "Evolutionary analysis of all eleven genes of species C rotaviruses circulating in humans and domestic animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
