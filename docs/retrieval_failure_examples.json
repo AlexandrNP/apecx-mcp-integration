@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T13:14:29.737592+00:00",
-  "runs": 768,
+  "updated": "2026-09-29T13:24:18.838595+00:00",
+  "runs": 769,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28359,
+  "n_false_positives": 28369,
   "n_false_negatives": 5188,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 1
+    "false_positives": 10,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -319342,6 +319342,118 @@
       "title": "Molecular characteristics, phylodynamics, and evolutionary changes of avian infectious bronchitis virus detected from chickens in Yunnan Province, 2021-2024.",
       "actual_organisms": [
         "Avian infectious bronchitis virus"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "35336125",
+      "title": "Development of Real-Time Molecular Assays for the Detection of Wesselsbron Virus in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "42743925",
+      "title": "Programmed ribosomal frameshifting triggers translational stress to promote viral replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "36558837",
+      "title": "Whole-Genome Sequencing of Six Neglected Arboviruses Circulating in Africa Using Sequence-Independent Single Primer Amplification (SISPA) and MinION Nanopore Technologies.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11023",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052514",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "40127699",
+      "title": "Prevalence of Murray Valley encephalitis virus antibodies in northern Victoria following the 2023 outbreak: a cross-sectional serological survey.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rocio virus?",
+      "cited_pmid": "42795607",
+      "title": "Design and Evaluation of a Multi-Epitope Vaccine Targeting Conserved Envelope and NS5 Proteins of Usutu Virus Using Immunoinformatics.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "How does Rocio virus evade or modulate the host immune response?",
+      "cited_pmid": "42497965",
+      "title": "IL-6 family cytokines behind acute COVID-19 and Long COVID syndrome: Mechanisms, biomarkers, and intervention strategies.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rocio virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
