@@ -1,9 +1,9 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T07:14:06.923115+00:00",
-  "runs": 735,
+  "updated": "2026-09-29T07:35:04.978594+00:00",
+  "runs": 736,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28117,
+  "n_false_positives": 28120,
   "n_false_negatives": 5181,
   "new_this_run": {
     "false_positives": 3,
@@ -316674,6 +316674,44 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_185905",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "42260333",
+      "title": "Complete sequence, analysis and organization of the Graphiphora augur granulovirus genome.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3679851",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558017"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What diagnostic assays or laboratory tests detect Cydia pomonella granulovirus?",
+      "cited_pmid": "41310286",
+      "title": "Strategic Timing of Larval Harvest as a Practical Approach to Increase Baculovirus Mass Production.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048335"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "How does Cydia pomonella granulovirus evade or modulate the host immune response?",
+      "cited_pmid": "37184157",
+      "title": "The gut microbiome of Helicoverpa armigera enhances immune response to baculovirus infection via suppression of Duox-mediated reactive oxygen species.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1350",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1591",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1783272",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2767886"
       ]
     }
   ],
