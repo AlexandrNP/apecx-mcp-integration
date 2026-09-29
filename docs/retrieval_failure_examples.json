@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T14:45:21.316424+00:00",
-  "runs": 776,
+  "updated": "2026-09-29T14:54:43.244010+00:00",
+  "runs": 777,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28428,
-  "n_false_negatives": 5190,
+  "n_false_positives": 28433,
+  "n_false_negatives": 5191,
   "new_this_run": {
-    "false_positives": 13,
-    "false_negatives": 0
+    "false_positives": 5,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -320147,6 +320147,61 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_586418",
         "http://purl.obolibrary.org/obo/NCBITaxon_586421"
       ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rhinovirus B?",
+      "cited_pmid": "42637770",
+      "title": "A dual-receptor checkpoint primes enterovirus D68 for respiratory cell entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "How does Rhinovirus B evade or modulate the host immune response?",
+      "cited_pmid": "42613835",
+      "title": "Mucosal Immunity: The Key to Combating Enteroviruses and Beyond.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "37951882",
+      "title": "Establishment of RT-RPA-Cas12a assay for rapid and sensitive detection of human rhinovirus B.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "42546198",
+      "title": "The EV-A71 RNA-binding protein Matrin 3 facilitates viral replication by stabilizing viral RNA via ZDHHC20-mediated palmitoylation.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus A71?",
+      "cited_pmid": "39772231",
+      "title": "Genetic Diversity and Epidemiology of Enteroviruses and Rhinoviruses in Children Hospitalized with Acute Respiratory Infections in Novosibirsk, Russia (2023-2024).",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2749421",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -351289,6 +351344,12 @@
       "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
       "missed_pmid": "42801863",
       "title": "Development and internal analytical validation of plaque reduction neutralization test for clinical trial application of Kyasanur forest disease virus vaccine."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus D68?",
+      "missed_pmid": "39772231",
+      "title": "Genetic Diversity and Epidemiology of Enteroviruses and Rhinoviruses in Children Hospitalized with Acute Respiratory Infections in Novosibirsk, Russia (2023-2024)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
