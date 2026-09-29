@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T15:22:41.781629+00:00",
-  "runs": 778,
+  "updated": "2026-09-29T15:24:57.679553+00:00",
+  "runs": 779,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28438,
+  "n_false_positives": 28440,
   "n_false_negatives": 5191,
   "new_this_run": {
-    "false_positives": 5,
+    "false_positives": 2,
     "false_negatives": 0
   },
   "false_positives": [
@@ -320264,6 +320264,36 @@
       "title": "Small Ruminant Lentiviruses and Caseous Lymphadenitis.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797887",
+      "title": "Bovine Adenovirus 3-Based Viral Vectors for Veterinary Vaccine Development: Progress, Limitations, and Future Directions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "42797839",
+      "title": "Detection of Respiratory Viruses in Wastewater Samples Using Commercial Multiplex PCR Assays.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162387",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002"
       ]
     }
   ],
