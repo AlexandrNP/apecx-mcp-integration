@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T05:54:21.007748+00:00",
-  "runs": 733,
+  "updated": "2026-09-29T06:44:34.451184+00:00",
+  "runs": 734,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28103,
+  "n_false_positives": 28114,
   "n_false_negatives": 5181,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 1
+    "false_positives": 11,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -316503,6 +316503,139 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11034",
         "http://purl.obolibrary.org/obo/NCBITaxon_620"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "cited_pmid": "42286165",
+      "title": "Viral protease-mediated polyprotein processing in human astroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "cited_pmid": "42720819",
+      "title": "Combined use of dill essential oil and tannic acid creates stage-specific, and time-dependent antiviral effect against bovine viral pathogens (BoHV-1, BVDV, BPIV-3, BRSV, and BEV).",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42657802",
+      "title": "Carboxypeptidase A6 contributes to bovine enterovirus F production through apoptosis-associated PI3K/AKT/FOXO1 signaling.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3413229"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human parechovirus?",
+      "cited_pmid": "42709036",
+      "title": "Expanded detection of canine enteric viruses in UK dogs with diarrhoea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human astrovirus?",
+      "cited_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42383739",
+      "title": "ATG9A is an essential host factor for parechovirus RNA replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42663734",
+      "title": "Development of a rapid antiviral screening assay based on GFP reporter virus of bovine enterovirus.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What antiviral drugs or treatments are effective against Human astrovirus?",
+      "cited_pmid": "42720819",
+      "title": "Combined use of dill essential oil and tannic acid creates stage-specific, and time-dependent antiviral effect against bovine viral pathogens (BoHV-1, BVDV, BPIV-3, BRSV, and BEV).",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the epidemiology and outbreak history of Human astrovirus?",
+      "cited_pmid": "42751544",
+      "title": "Emergence and spread of multirecombinant enterovirus A71 lineages C1.3/RF5 and C1.3/RF6 associated with neurological diseases in Europe, 2016-2022, ENPEN multicentre study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the epidemiology and outbreak history of Human astrovirus?",
+      "cited_pmid": "42437597",
+      "title": "Epidemiological trends in viral CNS infections in a French university hospital from 2019 to 2024, as revealed by multiplex PCR testing of cerebrospinal fluid samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human astrovirus?",
+      "cited_pmid": "42488850",
+      "title": "Phylogenetic analysis of enteroviruses from non-human primates suggests two new species within the genus Enterovirus and inter-species recombination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
