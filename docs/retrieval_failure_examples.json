@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T10:04:05.738853+00:00",
-  "runs": 750,
+  "updated": "2026-09-29T10:14:23.639296+00:00",
+  "runs": 751,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28228,
+  "n_false_positives": 28238,
   "n_false_negatives": 5184,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -317919,6 +317919,126 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11309",
         "http://purl.obolibrary.org/obo/NCBITaxon_12160",
         "http://purl.obolibrary.org/obo/NCBITaxon_197911"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "41547537",
+      "title": "Development and preliminary validation of a rapid on-site detection method for Schmallenberg virus using RT-RAA-LFD.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bunyamwera virus?",
+      "cited_pmid": "42277345",
+      "title": "The complete nucleoprotein gene molecular characterization of Akabane Virus in T\u00fcrkiye.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genome organization and replication cycle of Cache Valley virus?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cache Valley virus?",
+      "cited_pmid": "42520941",
+      "title": "Identification of specific host cell potassium ion channels that mediate escape of bunyamwera virus from late endosome compartments.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "42368258",
+      "title": "Mechanistic mathematical model of the in vitro infection dynamics of Bunyamwera and Batai viruses including MOI-dependent shortening of the eclipse phase.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What are the clinical symptoms and disease presentation of Akabane virus?",
+      "cited_pmid": "42146327",
+      "title": "Molnupiravir Treatment Associated With Clearance of Cache Valley Virus From Cerebrospinal Fluid in an Immunocompromised Child With Meningoencephalitis.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "cited_pmid": "41038248",
+      "title": "Cache Valley virus serologically identified in sheep with congenitally malformed lambs in Alabama.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "How does Schmallenberg virus evade or modulate the host immune response?",
+      "cited_pmid": "39890788",
+      "title": "NSm is a critical determinant for bunyavirus transmission between vertebrate and mosquito hosts.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
       ]
     }
   ],
