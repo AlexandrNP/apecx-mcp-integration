@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T10:24:12.761423+00:00",
-  "runs": 752,
+  "updated": "2026-09-29T10:34:04.531619+00:00",
+  "runs": 753,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28242,
+  "n_false_positives": 28245,
   "n_false_negatives": 5184,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 3,
     "false_negatives": 0
   },
   "false_positives": [
@@ -318085,6 +318085,38 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11084",
         "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "42627027",
+      "title": "Origin, evolution and transmission dynamics of Orthobunyavirus Oropoucheense.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "cited_pmid": "42190645",
+      "title": "Elevated Antibody Levels against Aedes triseriatus Salivary Gland Antigen in Household Members of La Crosse Virus Neuroinvasive Disease Cases.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What diagnostic assays or laboratory tests detect Cache Valley virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
