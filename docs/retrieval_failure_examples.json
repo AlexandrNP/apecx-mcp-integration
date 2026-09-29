@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T11:04:20.800509+00:00",
-  "runs": 756,
+  "updated": "2026-09-29T11:14:33.815627+00:00",
+  "runs": 757,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28259,
+  "n_false_positives": 28261,
   "n_false_negatives": 5185,
   "new_this_run": {
-    "false_positives": 6,
+    "false_positives": 2,
     "false_negatives": 0
   },
   "false_positives": [
@@ -318273,6 +318273,28 @@
       "title": "Endothelial Collapse as a Convergent Immunovascular Phenotype in Sepsis and Severe Arboviral Disease: The SIMVAC Model.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42268796",
+      "title": "Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "cited_pmid": "42157587",
+      "title": "Eastern equine encephalitis virus infection in an American pygmy goat.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426299"
       ]
     }
   ],
