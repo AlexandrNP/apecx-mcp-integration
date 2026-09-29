@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T03:24:14.213017+00:00",
-  "runs": 724,
+  "updated": "2026-09-29T03:34:24.010212+00:00",
+  "runs": 725,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28001,
+  "n_false_positives": 28008,
   "n_false_negatives": 5176,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -315337,6 +315337,80 @@
       "actual_organisms": [
         "Porcine rubulavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "cited_pmid": "18155122",
+      "title": "The complete genome sequence of the Atlantic salmon paramyxovirus (ASPV).",
+      "actual_organisms": [
+        "Atlantic salmon paramyxovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35350"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Channel catfish virus?",
+      "cited_pmid": "15212287",
+      "title": "Phylogenetic position of a paramyxovirus from Atlantic salmon Salmo salar.",
+      "actual_organisms": [
+        "Atlantic salmon paramyxovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35350"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Channel catfish virus?",
+      "cited_pmid": "19306611",
+      "title": "Genetic analysis of paramyxovirus isolates from Pacific salmon reveals two independently co-circulating lineages.",
+      "actual_organisms": [
+        "Atlantic salmon paramyxovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35350"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What is the genome organization and replication cycle of Red sea bream iridovirus?",
+      "cited_pmid": "18155122",
+      "title": "The complete genome sequence of the Atlantic salmon paramyxovirus (ASPV).",
+      "actual_organisms": [
+        "Atlantic salmon paramyxovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35350"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Red sea bream iridovirus?",
+      "cited_pmid": "15212287",
+      "title": "Phylogenetic position of a paramyxovirus from Atlantic salmon Salmo salar.",
+      "actual_organisms": [
+        "Atlantic salmon paramyxovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35350"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Nervous necrosis virus?",
+      "cited_pmid": "16903229",
+      "title": "Virus-like particles associated with heart and skeletal muscle inflammation (HSMI).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Atlantic salmon paramyxovirus",
+      "question": "What diagnostic assays or laboratory tests detect Atlantic salmon paramyxovirus?",
+      "cited_pmid": "41537285",
+      "title": "Development and Validation of a Multienzyme Isothermal Rapid Amplification-Based Fluorescence Assay for Detection of Megalocytivirus pagrus 1.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
       ]
     }
   ],
