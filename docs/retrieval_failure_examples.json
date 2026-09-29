@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T14:34:06.082349+00:00",
-  "runs": 775,
+  "updated": "2026-09-29T14:45:21.316424+00:00",
+  "runs": 776,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28415,
+  "n_false_positives": 28428,
   "n_false_negatives": 5190,
   "new_this_run": {
-    "false_positives": 1,
+    "false_positives": 13,
     "false_negatives": 0
   },
   "false_positives": [
@@ -319987,6 +319987,165 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11584",
         "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "41505093",
+      "title": "Binding of Glycyl-tRNA synthetase to Mengovirus RNA stimulates translation.",
+      "actual_organisms": [
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "How does Saffold virus evade or modulate the host immune response?",
+      "cited_pmid": "42043227",
+      "title": "EMCV Non-Structural Protein 2C Antagonizes cGAS-STING-Mediated Type I Interferon Signaling via Promoting K48-Linked Polyubiquitination and Degradation of STING.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42065795",
+      "title": "Co-infection with a viral pathogen (Theiler's murine encephalomyelitis virus) tended to improve host tolerance but significantly enhanced resistance to Heligmosomoides bakeri.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6338"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41754498",
+      "title": "The Safety of Alcaligenes Lipid A in a Virus-Induced Immune Disease Model Associated with IgA, Th17 Cells, and Microbiota.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_101359",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_239759",
+        "http://purl.obolibrary.org/obo/NCBITaxon_507",
+        "http://purl.obolibrary.org/obo/NCBITaxon_511"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "37550694",
+      "title": "Generation of a recombinant Saffold Virus expressing UnaG as a marker for the visualization of viral infection.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42453577",
+      "title": "Curcumol alleviates cardiac and cerebral injury caused by encephalomyocarditis virus (EMCV) in Kunming mice via suppressing NF-\u03baB/NLRP3 inflammasome pathway.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "36533933",
+      "title": "Detection of Six Different Human Enteric Viruses Contaminating Environmental Water in Chiang Mai, Thailand.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42007817",
+      "title": "Co-circulation of multiple arboviruses in acute febrile patients in Yunnan, China, identified by metagenomic sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42335074",
+      "title": "Encephalomyocarditis virus (EMCV): An overlooked threat to primates.",
+      "actual_organisms": [
+        "Encephalomyocarditis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "35096871",
+      "title": "Global Status of Bufavirus, Cosavirus, and Saffold Virus in Gastroenteritis: A Systematic Review and Meta-Analysis.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1233383",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586421"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "41397982",
+      "title": "Saffold virus exploits integrin \u03b1v\u03b28 and sulfated glycosaminoglycans as cooperative attachment receptors for infection.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427731"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "33165867",
+      "title": "Persistent Detection of Cosavirus and Saffold Cardiovirus in Riachuelo River, Argentina.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "37805831",
+      "title": "Distribution and molecular characterization of saffold virus and human cosavirus in children admitted to hospitals with acute gastroenteritis in Thailand, 2017-2022.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1233383",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1330491",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586421"
       ]
     }
   ],
