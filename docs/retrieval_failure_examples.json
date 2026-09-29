@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T04:04:11.834279+00:00",
-  "runs": 727,
+  "updated": "2026-09-29T04:44:17.179798+00:00",
+  "runs": 728,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28031,
-  "n_false_negatives": 5179,
+  "n_false_positives": 28036,
+  "n_false_negatives": 5180,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 3
+    "false_positives": 5,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -315685,6 +315685,57 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42706610",
+      "title": "Immunogenicity evaluation of recombinant rabies virus-vectored multivalent vaccines expressing feline calicivirus VP1 and feline herpesvirus 1 gB/gD genes.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus pathogenesis and transmission?",
+      "cited_pmid": "42648114",
+      "title": "FECV and FIPV: What biotype labels can, and cannot, tell us about feline coronavirus biology.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline leukemia virus?",
+      "cited_pmid": "42622352",
+      "title": "EXPRESS: Agreement between point-of-care and external reference laboratory RT-qPCR testing for feline coronavirus in cats with suspected feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline leukemia virus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "How does Feline leukemia virus evade or modulate the host immune response?",
+      "cited_pmid": "42731278",
+      "title": "PD-L1 expression in tissues of cats with naturally occurring feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -346761,6 +346812,12 @@
       "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
       "missed_pmid": "42090821",
       "title": "Immunopathogenic insights into members of the class Bunyaviricetes: a comparative review of emerging zoonotic threats."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is known about Feline coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42376619",
+      "title": "Molecular and Clinical Screening of Selected Feline Viral Infections in Sulaymaniyah, Kurdistan Region, Iraq."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
