@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T13:04:16.029444+00:00",
-  "runs": 767,
+  "updated": "2026-09-29T13:14:29.737592+00:00",
+  "runs": 768,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28353,
-  "n_false_negatives": 5187,
+  "n_false_positives": 28359,
+  "n_false_negatives": 5188,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 0
+    "false_positives": 6,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -319282,6 +319282,67 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_586418",
         "http://purl.obolibrary.org/obo/NCBITaxon_586421"
       ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "cited_pmid": "42377026",
+      "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42646719",
+      "title": "The Vaccine-Field Strain Gap in Bovine Neonatal Diarrhea: Molecular Epidemiology of Rotavirus, Coronavirus, and Enterotoxigenic Escherichia coli and Priorities for Vaccine Updating.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42606349",
+      "title": "Epidemiological characteristics and structural-functional implications of spike protein variations in a bovine coronavirus isolate from diarrheic calves.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "How does Transmissible gastroenteritis virus evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42709010",
+      "title": "A New Threat Emerges: The First Detection of GVIII Genotype IBV in China and the Urgent Need for Molecular Surveillance.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42736223",
+      "title": "Molecular characteristics, phylodynamics, and evolutionary changes of avian infectious bronchitis virus detected from chickens in Yunnan Province, 2021-2024.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -350406,6 +350467,12 @@
       "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
       "missed_pmid": "42805163",
       "title": "Multiple outbreaks of norovirus caused by persistent transmission in a hospitality setting in Victoria, Australia, 2023."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
+      "missed_pmid": "42377026",
+      "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
