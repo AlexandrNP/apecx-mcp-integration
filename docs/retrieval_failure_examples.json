@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T15:24:57.679553+00:00",
-  "runs": 779,
+  "updated": "2026-09-29T15:28:23.455258+00:00",
+  "runs": 780,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28440,
+  "n_false_positives": 28449,
   "n_false_negatives": 5191,
   "new_this_run": {
-    "false_positives": 2,
+    "false_positives": 9,
     "false_negatives": 0
   },
   "false_positives": [
@@ -320294,6 +320294,108 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31605",
         "http://purl.obolibrary.org/obo/NCBITaxon_693996",
         "http://purl.obolibrary.org/obo/NCBITaxon_694002"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "41547537",
+      "title": "Development and preliminary validation of a rapid on-site detection method for Schmallenberg virus using RT-RAA-LFD.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "42009539",
+      "title": "[Dynamics of the replication process of Akabane virus GZTS-1 strain in Vero cells].",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the epidemiology and outbreak history of La Crosse virus?",
+      "cited_pmid": "34808093",
+      "title": "Potential Mosquito Vectors for Shuni Virus, South Africa, 2014-2018.",
+      "actual_organisms": [
+        "Shuni virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "33496223",
+      "title": "Shuni Virus in Cases of Neurologic Disease in Humans, South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "cited_pmid": "42277345",
+      "title": "The complete nucleoprotein gene molecular characterization of Akabane Virus in T\u00fcrkiye.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "36288038",
+      "title": "Identification of Novel Reassortant Shuni Virus Strain in Clinical Cases of Israeli Ruminants, 2020-2021.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Schmallenberg virus?",
+      "cited_pmid": "37764908",
+      "title": "Identification and Molecular Characterization of Shamonda Virus in an Aborted Goat Fetus in South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
       ]
     }
   ],
