@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T09:44:06.506733+00:00",
-  "runs": 748,
+  "updated": "2026-09-29T09:54:03.536048+00:00",
+  "runs": 749,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28224,
+  "n_false_positives": 28227,
   "n_false_negatives": 5184,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 3,
     "false_negatives": 0
   },
   "false_positives": [
@@ -317876,6 +317876,37 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10486",
         "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41297608",
+      "title": "Improvement in UV resistance of entomopathogenic viruses by coating silica nanoparticles on occlusion bodies surface.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599",
+        "http://purl.obolibrary.org/obo/NCBITaxon_78219"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cydia pomonella granulovirus?",
+      "cited_pmid": "41587310",
+      "title": "Baculoviruses hijack host midgut-derived tachykinin to regulate phototactic climbing behavior and promote viral transmission.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "How does Cydia pomonella granulovirus evade or modulate the host immune response?",
+      "cited_pmid": "42188169",
+      "title": "Silkworm SOCS2 Differentially Promotes Multiple Steps of BmNPV Proliferation and Modulates the mRNA Expression of SOCS-STAT Network Components.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2734023"
       ]
     }
   ],
