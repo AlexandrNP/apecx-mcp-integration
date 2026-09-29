@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T07:54:05.674420+00:00",
-  "runs": 738,
+  "updated": "2026-09-29T08:04:12.818741+00:00",
+  "runs": 739,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28136,
+  "n_false_positives": 28149,
   "n_false_negatives": 5181,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 13,
     "false_negatives": 0
   },
   "false_positives": [
@@ -316914,6 +316914,140 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1914855",
         "http://purl.obolibrary.org/obo/NCBITaxon_84739",
         "http://purl.obolibrary.org/obo/NCBITaxon_84740"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Taura syndrome virus?",
+      "cited_pmid": "42531959",
+      "title": "Construction of an infectious clone of Spodoptera frugiperda densovirus and its biological characteristics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "How does Taura syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "42722174",
+      "title": "WSSV exploits host glycolytic reprogramming to promote hemocyanin lactylation and enhance cell-associated WSSV levels in shrimp.",
+      "actual_organisms": [
+        "White spot syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "How does Taura syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "42801657",
+      "title": "Non-Coding Transcripts From Diversified Members of IgLec Family Protect Antiviral Effectors From Viral miRNA.",
+      "actual_organisms": [
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Taura syndrome virus?",
+      "cited_pmid": "42514990",
+      "title": "Metagenomic Characterization and Molecular Screening of Pathogens in Freshwater Amphipods (Gammarus lacustris) from Kazakhstan: Implications for Aquaculture Biosecurity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Taura syndrome virus?",
+      "cited_pmid": "42655678",
+      "title": "Bat-Associated Parvoviruses: High Genetic Diversity and Novel Viruses in Gia Lai and Dong Nai Provinces, Vietnam.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41106741",
+      "title": "Generation and evaluation of nanobodies specific for the proteins from infectious hypodermal and hematopoietic necrosis virus.",
+      "actual_organisms": [
+        "Infectious hypodermal and hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "cited_pmid": "41373644",
+      "title": "Insights on Minimizing False Positives in IHHNV Detection: Experiences from Ecuador's Penaeus vannamei Aquaculture.",
+      "actual_organisms": [
+        "Infectious hypodermal and hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_662"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42531959",
+      "title": "Construction of an infectious clone of Spodoptera frugiperda densovirus and its biological characteristics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "33271489",
+      "title": "Complete genome reconstruction and genetic analysis of Taura syndrome virus of shrimp from archival Davidson's-fixed paraffin embedded tissue.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "41666027",
+      "title": "No longer uncertain: the validation of tenebrionid insects as hosts of Blattambidensovirus incertum1 isolates by phylogeny and infection studies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3059782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3344889",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40120"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "41167357",
+      "title": "Transcriptomic analysis reveals the mechanism of viral modulation of host immunity facilitating calicivirus replication in Pelteobagrus fulvidraco.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "42541130",
+      "title": "Characterizing the parvovirome of Swazi bats: novel species, highly divergent lineages, endogenous viral elements, and taxonomic challenges.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3698898"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "42514990",
+      "title": "Metagenomic Characterization and Molecular Screening of Pathogens in Freshwater Amphipods (Gammarus lacustris) from Kazakhstan: Implications for Aquaculture Biosecurity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
     }
   ],
