@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T10:54:23.820141+00:00",
-  "runs": 755,
+  "updated": "2026-09-29T11:04:20.800509+00:00",
+  "runs": 756,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28253,
+  "n_false_positives": 28259,
   "n_false_negatives": 5185,
   "new_this_run": {
-    "false_positives": 0,
-    "false_negatives": 1
+    "false_positives": 6,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -318208,6 +318208,71 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What is the epidemiology and outbreak history of Heartland virus?",
+      "cited_pmid": "40586979",
+      "title": "Has the epidemiologic conundrum of Rift Valley fever changed?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Heartland virus?",
+      "cited_pmid": "41910422",
+      "title": "Molecular and serological evidence of Nairobi sheep disease virus in Haemaphysalis longicornis and sheep in eastern Shandong Peninsula, China.",
+      "actual_organisms": [
+        "Nairobi sheep disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nairobi sheep disease virus",
+      "question": "What is the genome organization and replication cycle of Nairobi sheep disease virus?",
+      "cited_pmid": "30567991",
+      "title": "M Segment-Based Minigenomes and Virus-Like Particle Assays as an Approach To Assess the Potential of Tick-Borne Phlebovirus Genome Reassortment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1933191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What diagnostic assays or laboratory tests detect Uukuniemi virus?",
+      "cited_pmid": "42736151",
+      "title": "[Diagnostic value of multi-parameter combined detection for severe fever with thrombocytopenia syndrome virus infection].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "42788740",
+      "title": "Establishment of an ex vivo vascular tissue model to investigate bunyavirus-triggered vascular endothelial injury.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What are the clinical symptoms and disease presentation of Uukuniemi virus?",
+      "cited_pmid": "42796720",
+      "title": "Endothelial Collapse as a Convergent Immunovascular Phenotype in Sepsis and Severe Arboviral Disease: The SIMVAC Model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
