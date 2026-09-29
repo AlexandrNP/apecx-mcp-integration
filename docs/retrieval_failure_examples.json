@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T01:04:08.346837+00:00",
-  "runs": 715,
+  "updated": "2026-09-29T01:14:13.316737+00:00",
+  "runs": 716,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27863,
+  "n_false_positives": 27869,
   "n_false_negatives": 5176,
   "new_this_run": {
-    "false_positives": 24,
-    "false_negatives": 2
+    "false_positives": 6,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -313760,6 +313760,71 @@
         "Japanese encephalitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "41332395",
+      "title": "Recovery of Infectious Oz Virus From Cloned cDNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2137161",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "cited_pmid": "40910687",
+      "title": "Molnupiravir inhibits Bourbon virus infection and disease-associated pathology in mice.",
+      "actual_organisms": [
+        "Bourbon virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Chikungunya virus?",
+      "cited_pmid": "37714509",
+      "title": "Genomic and phylogenetic profiling of RNA of tick-borne arboviruses in Hainan Island, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Colorado tick fever virus?",
+      "cited_pmid": "39499956",
+      "title": "Heartland Virus Infection in Elderly Patient Initially Suspected of Having Ehrlichiosis, North Carolina, USA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_945"
+      ]
+    },
+    {
+      "organism": "Bourbon virus",
+      "question": "What is the genome organization and replication cycle of Bourbon virus?",
+      "cited_pmid": "41332395",
+      "title": "Recovery of Infectious Oz Virus From Cloned cDNA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2137161",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
