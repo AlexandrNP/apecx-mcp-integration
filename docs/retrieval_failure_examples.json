@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T05:44:28.429632+00:00",
-  "runs": 732,
+  "updated": "2026-09-29T05:54:21.007748+00:00",
+  "runs": 733,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28091,
-  "n_false_negatives": 5180,
+  "n_false_positives": 28103,
+  "n_false_negatives": 5181,
   "new_this_run": {
-    "false_positives": 18,
-    "false_negatives": 0
+    "false_positives": 12,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -316372,6 +316372,138 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11082",
         "http://purl.obolibrary.org/obo/NCBITaxon_37124"
       ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42766670",
+      "title": "Epidemiological investigation of Shuni virus infections in hospitals in two provinces of South Africa (2019-2021) using molecular and serological surveillance.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "35336125",
+      "title": "Development of Real-Time Molecular Assays for the Detection of Wesselsbron Virus in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
+      "cited_pmid": "40563128",
+      "title": "Detection of Novel Orthobunyavirus Reassortants in Fatal Neurologic Case in Horse and Culicoides Biting Midges, South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What are the clinical symptoms and disease presentation of O'nyong-nyong virus?",
+      "cited_pmid": "33496223",
+      "title": "Shuni Virus in Cases of Neurologic Disease in Humans, South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of O'nyong-nyong virus?",
+      "cited_pmid": "39530699",
+      "title": "Genotypic and phylogeographic insights into a pre-epidemic variant of Wesselsbron virus detected in sylvatic Aedes mcintoshi from Semuliki Forest, Uganda.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What diagnostic assays or laboratory tests detect Wesselsbron virus?",
+      "cited_pmid": "42766670",
+      "title": "Epidemiological investigation of Shuni virus infections in hospitals in two provinces of South Africa (2019-2021) using molecular and serological surveillance.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What diagnostic assays or laboratory tests detect Wesselsbron virus?",
+      "cited_pmid": "33496223",
+      "title": "Shuni Virus in Cases of Neurologic Disease in Humans, South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genome organization and replication cycle of Wesselsbron virus?",
+      "cited_pmid": "32316542",
+      "title": "Reverse Genetics System for Shuni Virus, an Emerging Orthobunyavirus with Zoonotic Potential.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Wesselsbron virus?",
+      "cited_pmid": "36803054",
+      "title": "Characterization of experimental Shuni virus infection in the mouse.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Wesselsbron virus?",
+      "cited_pmid": "42126229",
+      "title": "TIM-1 promotes infection with mosquito cell-derived alphaviruses through virion-associated phospholipids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "How does Wesselsbron virus evade or modulate the host immune response?",
+      "cited_pmid": "42278338",
+      "title": "Shigella flexneri-Encoded E3 Ubiquitin Ligase IpaH2 Reveals Plakophilin-2 as a Host Restriction Factor for Sindbis Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_620"
+      ]
+    },
+    {
+      "organism": "Shuni virus",
+      "question": "How does Shuni virus evade or modulate the host immune response?",
+      "cited_pmid": "42278338",
+      "title": "Shigella flexneri-Encoded E3 Ubiquitin Ligase IpaH2 Reveals Plakophilin-2 as a Host Restriction Factor for Sindbis Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_620"
+      ]
     }
   ],
   "false_negatives": [
@@ -347454,6 +347586,12 @@
       "question": "What is known about Feline coronavirus and neutralizing antibodies or vaccines?",
       "missed_pmid": "42376619",
       "title": "Molecular and Clinical Screening of Selected Feline Viral Infections in Sulaymaniyah, Kurdistan Region, Iraq."
+    },
+    {
+      "organism": "Shuni virus",
+      "question": "How does Shuni virus evade or modulate the host immune response?",
+      "missed_pmid": "33383649",
+      "title": "Shuni Virus Replicates at the Maternal-Fetal Interface of the Ovine and Human Placenta."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
