@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T09:34:06.089176+00:00",
-  "runs": 747,
+  "updated": "2026-09-29T09:44:06.506733+00:00",
+  "runs": 748,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28211,
+  "n_false_positives": 28224,
   "n_false_negatives": 5184,
   "new_this_run": {
     "false_positives": 13,
-    "false_negatives": 1
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -317724,6 +317724,158 @@
       "actual_organisms": [
         "Channel catfish virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is known about Largemouth bass virus pathogenesis and transmission?",
+      "cited_pmid": "28097494",
+      "title": "Establishment and characterization of a heart-derived cell line from goldfish (Carassius auratus).",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_100217",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_128987"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genome organization and replication cycle of Largemouth bass virus?",
+      "cited_pmid": "38922563",
+      "title": "Characterization of an envelope protein 118L in invertebrate iridescent virus 6 (IIV6).",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genome organization and replication cycle of Largemouth bass virus?",
+      "cited_pmid": "27540051",
+      "title": "Complete Genome Sequence of a Bohle iridovirus Isolate from Ornate Burrowing Frogs (Limnodynastes ornatus) in Australia.",
+      "actual_organisms": [
+        "Bohle iridovirus"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genome organization and replication cycle of Largemouth bass virus?",
+      "cited_pmid": "37326048",
+      "title": "[Transcriptional Analysis of the Gene Encoding the Putative Myristoylated Membrane Protein (ORF458R) of Invertebrate Iridescent Virus 6 (IIV6)].",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Largemouth bass virus?",
+      "cited_pmid": "40357853",
+      "title": "The Function of TER94 of Spodoptera frugiperda 9 Cells When Infected With Invertebrate Iridescent Virus-6.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Largemouth bass virus?",
+      "cited_pmid": "41403127",
+      "title": "Genomic Characterisation of Red Sea Bream Iridovirus (RSIV) Samples Collected in Japan in 2024 Revealed Genotype II and the First Detection of the Intermediate Type in Japan.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430774"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "38922563",
+      "title": "Characterization of an envelope protein 118L in invertebrate iridescent virus 6 (IIV6).",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1886599"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "37326048",
+      "title": "[Transcriptional Analysis of the Gene Encoding the Putative Myristoylated Membrane Protein (ORF458R) of Invertebrate Iridescent Virus 6 (IIV6)].",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "33127354",
+      "title": "Conserved motifs in the invertebrate iridescent virus 6 (IIV6) genome regulate virus transcription.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2017757",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bohle iridovirus?",
+      "cited_pmid": "40357853",
+      "title": "The Function of TER94 of Spodoptera frugiperda 9 Cells When Infected With Invertebrate Iridescent Virus-6.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bohle iridovirus?",
+      "cited_pmid": "36640993",
+      "title": "Identification of the potential matrix protein of invertebrate iridescent virus 6 (IIV6).",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "How does Bohle iridovirus evade or modulate the host immune response?",
+      "cited_pmid": "29746571",
+      "title": "p38b and JAK-STAT signaling protect against Invertebrate iridescent virus 6 infection in Drosophila.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "How does Bohle iridovirus evade or modulate the host immune response?",
+      "cited_pmid": "29601483",
+      "title": "Invertebrate Iridoviruses: A Glance over the Last Decade.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
       ]
     }
   ],
