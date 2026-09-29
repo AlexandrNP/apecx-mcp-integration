@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T07:44:33.078374+00:00",
-  "runs": 737,
+  "updated": "2026-09-29T07:54:05.674420+00:00",
+  "runs": 738,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28126,
+  "n_false_positives": 28136,
   "n_false_negatives": 5181,
   "new_this_run": {
-    "false_positives": 6,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -316790,6 +316790,130 @@
         "Ranavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_315953",
         "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "24886972",
+      "title": "Genome-wide analyses of proliferation-important genes of Iridovirus-tiger frog virus by RNAi.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_160691",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bohle iridovirus?",
+      "cited_pmid": "21756948",
+      "title": "Construction of green fluorescent protein-tagged recombinant iridovirus to assess viral replication.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "21756948",
+      "title": "Construction of green fluorescent protein-tagged recombinant iridovirus to assess viral replication.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "24886972",
+      "title": "Genome-wide analyses of proliferation-important genes of Iridovirus-tiger frog virus by RNAi.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_160691",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "26419355",
+      "title": "Characterization of DNA aptamers generated against the soft-shelled turtle iridovirus with antiviral effects.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "30066272",
+      "title": "Soft-shelled turtle iridovirus enters cells via cholesterol-dependent, clathrin-mediated endocytosis as well as macropinocytosis.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "31748669",
+      "title": "Genome analysis of Ranavirus frog virus 3 isolated from American Bullfrog (Lithobates catesbeianus) in South America.",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1914855",
+        "http://purl.obolibrary.org/obo/NCBITaxon_262968"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "38793597",
+      "title": "Phylogenomic Characterization of Ranavirus Isolated from Wild Smallmouth Bass (Micropterus dolomieu).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_84740",
+        "http://purl.obolibrary.org/obo/NCBITaxon_871658"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "38793557",
+      "title": "First Report of Endemic Frog Virus 3 (FV3)-like Ranaviruses in the Korean Clawed Salamander (Onychodactylus koreanus) in Asia.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1914855",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2044919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_380178"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "How does Santee-Cooper ranavirus evade or modulate the host immune response?",
+      "cited_pmid": "22452879",
+      "title": "Expression analysis of immune response genes in fish epithelial cells following ranavirus infection.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1914855",
+        "http://purl.obolibrary.org/obo/NCBITaxon_84739",
+        "http://purl.obolibrary.org/obo/NCBITaxon_84740"
       ]
     }
   ],
