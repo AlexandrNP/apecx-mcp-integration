@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T08:04:12.818741+00:00",
-  "runs": 739,
+  "updated": "2026-09-29T08:14:17.399467+00:00",
+  "runs": 740,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28149,
+  "n_false_positives": 28152,
   "n_false_negatives": 5181,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 3,
     "false_negatives": 0
   },
   "false_positives": [
@@ -317048,6 +317048,38 @@
       "title": "Metagenomic Characterization and Molecular Screening of Pathogens in Freshwater Amphipods (Gammarus lacustris) from Kazakhstan: Implications for Aquaculture Biosecurity.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What diagnostic assays or laboratory tests detect Channel catfish virus?",
+      "cited_pmid": "41537378",
+      "title": "Development of an mRNA-specific real-time PCR for the detection of replicating cyprinid herpesvirus-3 (CyHV-3) in carp and non-target species.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "41170937",
+      "title": "CRISPR-Enhanced RAA-SHERLOCK Assay for Point-of-Care Detection of Cyprinid Herpesvirus-3: Development, Validation and Clinical Application.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What is the genome organization and replication cycle of Grass carp reovirus?",
+      "cited_pmid": "40581311",
+      "title": "Kr\u03cbppel-like factor 12a and 12b inhibit Cyvirus cyprinidallo3 replication by repressing viral ORF8 promoter activity.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3050271"
       ]
     }
   ],
