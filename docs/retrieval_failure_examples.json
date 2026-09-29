@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T04:54:23.746211+00:00",
-  "runs": 729,
+  "updated": "2026-09-29T05:04:26.450691+00:00",
+  "runs": 730,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28038,
+  "n_false_positives": 28042,
   "n_false_negatives": 5180,
   "new_this_run": {
-    "false_positives": 2,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -315754,6 +315754,57 @@
       "title": "Rapid colorimetric detection of Citrus tristeza virus combining portable sample preparation and reverse transcription-loop mediated isothermal amplification.",
       "actual_organisms": [
         "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What diagnostic assays or laboratory tests detect Oropouche virus?",
+      "cited_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What are the clinical symptoms and disease presentation of Akabane virus?",
+      "cited_pmid": "42797801",
+      "title": "Pediatric Arboviral Infections in Europe: Epidemiology, Clinical Features, Diagnosis and Prevention.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "How does Akabane virus evade or modulate the host immune response?",
+      "cited_pmid": "42655648",
+      "title": "Oropouche Virus: Comparative Study of Two Strains Reveals Distinct Innate Immunity Modulation.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
