@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T12:24:16.878117+00:00",
-  "runs": 764,
+  "updated": "2026-09-29T12:44:15.359069+00:00",
+  "runs": 765,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28322,
-  "n_false_negatives": 5185,
+  "n_false_positives": 28336,
+  "n_false_negatives": 5186,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 0
+    "false_positives": 14,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -318940,6 +318940,166 @@
         "Colorado tick fever virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42583853",
+      "title": "[Six-Years Human Parvovirus B19 Data from a University Hospital: Analysis of the Recent Increase in Case Numbers].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus B?",
+      "cited_pmid": "42660184",
+      "title": "Canine parvovirus monoclonal antibody successfully prevented disease when administered before canine parvovirus experimental challenge.",
+      "actual_organisms": [
+        "Canine parvovirus"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "42559165",
+      "title": "Concurrent Papular-Purpuric Gloves-and-Socks Syndrome and Petechial Bathing-Trunk Eruption Associated With Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "How does Human mastadenovirus B evade or modulate the host immune response?",
+      "cited_pmid": "42797816",
+      "title": "Molecular Mechanisms Between Canine Parvovirus 2 and Host Interactions: From Viruses to Innate Immune Signaling Pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus B?",
+      "cited_pmid": "42765113",
+      "title": "Emergence of canine parvovirus-2c in domestic cats and adaptive evolution of the NS1 gene: Molecular epidemiology of feline parvoviruses in Northern Vietnam (2022-2025).",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "42797819",
+      "title": "Parvovirus B19 and Cellular Transcriptome Dynamics in UT7/EpoS1 Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "41780169",
+      "title": "A novel chimpanzee-derived adenovirus, a recombinant of Mastadenovirus exoticum and Mastadenovirus blackbeardi members, reveals lineage-specific recombination hotspots in simian adenoviruses.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2980954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241406",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "42534940",
+      "title": "Persistent Parvovirus B19 Viremia Despite Repeated Intravenous Immunoglobulin Therapy After Kidney Transplantation: A Case Report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human bocavirus?",
+      "cited_pmid": "41989164",
+      "title": "CD46 and DSG2 synergistically mediate human adenovirus type 7 infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10519",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "How does Human bocavirus evade or modulate the host immune response?",
+      "cited_pmid": "42645719",
+      "title": "Possible involvement of viral infection in the pathogenesis of myasthenia gravis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "How does Human bocavirus evade or modulate the host immune response?",
+      "cited_pmid": "42558152",
+      "title": "Adenoviral E3/49K: CD45-targeted immune evasion and therapeutic potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine parvovirus?",
+      "cited_pmid": "42530339",
+      "title": "Identification of human transferrin receptor as an entry co-receptor for parvovirus B19 infection of human erythroid progenitor cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40121",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -350052,6 +350212,12 @@
       "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
       "missed_pmid": "42425227",
       "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection."
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42575305",
+      "title": "Genetic analysis of human adenovirus type 7 circulating in China during 2014-2025."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
