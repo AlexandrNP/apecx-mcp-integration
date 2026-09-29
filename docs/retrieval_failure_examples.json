@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T14:14:14.034982+00:00",
-  "runs": 773,
+  "updated": "2026-09-29T14:24:06.703209+00:00",
+  "runs": 774,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28406,
+  "n_false_positives": 28414,
   "n_false_negatives": 5190,
   "new_this_run": {
-    "false_positives": 22,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -319881,6 +319881,100 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10255",
         "http://purl.obolibrary.org/obo/NCBITaxon_10469",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Monkeypox virus?",
+      "cited_pmid": "39066257",
+      "title": "Tanapox Virus and Yaba Monkey Tumor Virus K3 Orthologs Inhibit Primate Protein Kinase R in a Species-Specific Fashion.",
+      "actual_organisms": [
+        "Tanapox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38804",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "38782262",
+      "title": "Parapoxvirus species revisited by whole genome sequencing: A retrospective analysis of bovine virus isolates.",
+      "actual_organisms": [
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What diagnostic assays or laboratory tests detect Tanapox virus?",
+      "cited_pmid": "42798412",
+      "title": "A retrospective comparative diagnostic evaluation of three commercial qPCR kits for the diagnosis of mpox virus on an enriched sample set.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Tanapox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tanapox virus?",
+      "cited_pmid": "42746578",
+      "title": "Reverse vaccinology and immunoinformatics identify multi-epitope vaccine candidates against molluscum contagiosum virus.",
+      "actual_organisms": [
+        "Molluscum contagiosum virus"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is known about Pseudocowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42805404",
+      "title": "Nanomedicine and One Health Approaches for Monkeypox: Emerging Preclinical Strategies for Prevention, Diagnosis, and Treatment.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Pseudocowpox virus?",
+      "cited_pmid": "42798412",
+      "title": "A retrospective comparative diagnostic evaluation of three commercial qPCR kits for the diagnosis of mpox virus on an enriched sample set.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Pseudocowpox virus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "How does Pseudocowpox virus evade or modulate the host immune response?",
+      "cited_pmid": "42748357",
+      "title": "Differential pathogenesis and antiviral treatment outcomes of MPXV clade Ib and clade IIb in a BALB/c mouse model.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
       ]
     }
   ],
