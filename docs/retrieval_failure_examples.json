@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T10:14:23.639296+00:00",
-  "runs": 751,
+  "updated": "2026-09-29T10:24:12.761423+00:00",
+  "runs": 752,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28238,
+  "n_false_positives": 28242,
   "n_false_negatives": 5184,
   "new_this_run": {
-    "false_positives": 10,
+    "false_positives": 4,
     "false_negatives": 0
   },
   "false_positives": [
@@ -318039,6 +318039,52 @@
         "Bunyamwera virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11572",
         "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the clinical symptoms and disease presentation of Toscana virus?",
+      "cited_pmid": "40274388",
+      "title": "The Growing Threat of Tick-Borne Viruses: Global Trends, Clinical Outcomes, and Diagnostic Strategies.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Heartland virus?",
+      "cited_pmid": "31210134",
+      "title": "[Cell biology of phlebovirus entry].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Heartland virus?",
+      "cited_pmid": "39039413",
+      "title": "Making Rift Valley Fever Viral Particles Fluorescent.",
+      "actual_organisms": [
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What are the clinical symptoms and disease presentation of Uukuniemi virus?",
+      "cited_pmid": "40274388",
+      "title": "The Growing Threat of Tick-Borne Viruses: Global Trends, Clinical Outcomes, and Diagnostic Strategies.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
       ]
     }
   ],
