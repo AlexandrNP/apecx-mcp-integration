@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T10:34:04.531619+00:00",
-  "runs": 753,
+  "updated": "2026-09-29T10:44:15.581052+00:00",
+  "runs": 754,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28245,
+  "n_false_positives": 28253,
   "n_false_negatives": 5184,
   "new_this_run": {
-    "false_positives": 3,
+    "false_positives": 8,
     "false_negatives": 0
   },
   "false_positives": [
@@ -318117,6 +318117,97 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
         "http://purl.obolibrary.org/obo/NCBITaxon_59301",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "39570990",
+      "title": "Development of a seroepidemiological tool for bat-borne and shrew-borne hantaviruses and its application using samples from Zambia.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "36975587",
+      "title": "A Brief History of Bunyaviral Family Hantaviridae.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "How does Sin Nombre orthohantavirus evade or modulate the host immune response?",
+      "cited_pmid": "22944108",
+      "title": "Distinct innate immune responses in human macrophages and endothelial cells infected with shrew-borne hantaviruses.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467989",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "24509342",
+      "title": "Discovery of hantaviruses in bats and insectivores and the evolution of the genus Hantavirus.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sin Nombre orthohantavirus?",
+      "cited_pmid": "21896819",
+      "title": "Short report: Genetic diversity of Thottapalayam virus, a Hantavirus harbored by the Asian house shrew (Suncus murinus) in Nepal.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Puumala orthohantavirus?",
+      "cited_pmid": "36975587",
+      "title": "A Brief History of Bunyaviral Family Hantaviridae.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052480"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Puumala orthohantavirus?",
+      "cited_pmid": "21896819",
+      "title": "Short report: Genetic diversity of Thottapalayam virus, a Hantavirus harbored by the Asian house shrew (Suncus murinus) in Nepal.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Thottapalayam orthohantavirus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
       ]
     }
   ],
