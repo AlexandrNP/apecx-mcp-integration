@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T12:44:15.359069+00:00",
-  "runs": 765,
+  "updated": "2026-09-29T12:54:19.538562+00:00",
+  "runs": 766,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28336,
-  "n_false_negatives": 5186,
+  "n_false_positives": 28341,
+  "n_false_negatives": 5187,
   "new_this_run": {
-    "false_positives": 14,
+    "false_positives": 5,
     "false_negatives": 1
   },
   "false_positives": [
@@ -319100,6 +319100,54 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_40121",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42800431",
+      "title": "Genetic diversity, pathogenicity, and serological cross-neutralization characteristics of contemporary feline calicivirus isolates from China.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
+      "cited_pmid": "42570535",
+      "title": "Functional divergence of feline calicivirus genotypes shapes virulence and antigenic diversity.",
+      "actual_organisms": [
+        "Feline calicivirus"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42795539",
+      "title": "Isolation, Molecular Characterization, and Pathogenicity Evaluation of a Genotype GI Feline Calicivirus Isolate.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "42800431",
+      "title": "Genetic diversity, pathogenicity, and serological cross-neutralization characteristics of contemporary feline calicivirus isolates from China.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human astrovirus?",
+      "cited_pmid": "42570535",
+      "title": "Functional divergence of feline calicivirus genotypes shapes virulence and antigenic diversity.",
+      "actual_organisms": [
+        "Feline calicivirus"
+      ]
     }
   ],
   "false_negatives": [
@@ -350218,6 +350266,12 @@
       "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
       "missed_pmid": "42575305",
       "title": "Genetic analysis of human adenovirus type 7 circulating in China during 2014-2025."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42805163",
+      "title": "Multiple outbreaks of norovirus caused by persistent transmission in a hospitality setting in Victoria, Australia, 2023."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
