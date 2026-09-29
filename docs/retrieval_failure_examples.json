@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T08:44:33.936181+00:00",
-  "runs": 743,
+  "updated": "2026-09-29T08:54:07.987543+00:00",
+  "runs": 744,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28170,
+  "n_false_positives": 28175,
   "n_false_negatives": 5182,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 1
+    "false_positives": 5,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -317270,6 +317270,62 @@
       "actual_organisms": [
         "African cassava mosaic virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "40020892",
+      "title": "Phylodynamics and phylogeography of watermelon mosaic virus: Multiple local invasion routes in southern France and recombination-driven limits to global analysis.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tobacco mosaic virus?",
+      "cited_pmid": "40397168",
+      "title": "Genetic Diversity and Phylogenetic Analysis of Watermelon Mosaic Virus in T\u00fcrkiye: Insights into Emerging and Classic Populations.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cucumber mosaic virus?",
+      "cited_pmid": "40397168",
+      "title": "Genetic Diversity and Phylogenetic Analysis of Watermelon Mosaic Virus in T\u00fcrkiye: Insights into Emerging and Classic Populations.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "42797780",
+      "title": "Dahlia Virome Analysis Reveals Multiple Novel Viruses in Mixed Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Turnip mosaic virus?",
+      "cited_pmid": "41718578",
+      "title": "Occurrence and Regional Distribution of Melon Viruses in Xinjiang Uygur Autonomous Region, China.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11987",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12205",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558690",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91753"
       ]
     }
   ],
