@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T13:24:18.838595+00:00",
-  "runs": 769,
+  "updated": "2026-09-29T13:34:02.916109+00:00",
+  "runs": 770,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28369,
-  "n_false_negatives": 5188,
+  "n_false_positives": 28372,
+  "n_false_negatives": 5190,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 0
+    "false_positives": 3,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -319455,6 +319455,42 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_551523",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42801863",
+      "title": "Development and internal analytical validation of plaque reduction neutralization test for clinical trial application of Kyasanur forest disease virus vaccine.",
+      "actual_organisms": [
+        "Kyasanur Forest disease virus"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42803205",
+      "title": "Evidence of Japanese Encephalitis Virus Exposure in Feral Pig Populations in North Queensland, Australia.",
+      "actual_organisms": [
+        "Japanese encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Kyasanur Forest disease virus?",
+      "cited_pmid": "42798604",
+      "title": "Development and evaluation of a two-tube multiplex real-time PCR assay for differential detection of Monkeypox virus clades Ia, Ib, IIa, and IIb.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -350585,6 +350621,18 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Porcine deltacoronavirus?",
       "missed_pmid": "42377026",
       "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42805160",
+      "title": "Summary of National Surveillance Data on Vaccine Preventable Diseases in Australia, 2019-2022."
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "missed_pmid": "42801863",
+      "title": "Development and internal analytical validation of plaque reduction neutralization test for clinical trial application of Kyasanur forest disease virus vaccine."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
