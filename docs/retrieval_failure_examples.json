@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T12:54:19.538562+00:00",
-  "runs": 766,
+  "updated": "2026-09-29T13:04:16.029444+00:00",
+  "runs": 767,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28341,
+  "n_false_positives": 28353,
   "n_false_negatives": 5187,
   "new_this_run": {
-    "false_positives": 5,
-    "false_negatives": 1
+    "false_positives": 12,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -319147,6 +319147,140 @@
       "title": "Functional divergence of feline calicivirus genotypes shapes virulence and antigenic diversity.",
       "actual_organisms": [
         "Feline calicivirus"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is known about Saffold virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "42656030",
+      "title": "IRES Mutation Confers a Replicative Advantage to SVA by Enhancing Translation Efficiency.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "42791759",
+      "title": "Prevalence and Genomic Features of Aichivirus D in Yaks in Western China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1897731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194960"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Saffold virus?",
+      "cited_pmid": "42188899",
+      "title": "Integrated Genomic Analysis Uncovers the Evolutionary Landscape and Global Dissemination of Senecavirus A.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the epidemiology and outbreak history of Seneca Valley virus?",
+      "cited_pmid": "33165867",
+      "title": "Persistent Detection of Cosavirus and Saffold Cardiovirus in Riachuelo River, Argentina.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Seneca Valley virus?",
+      "cited_pmid": "38662794",
+      "title": "Picornavirus security proteins promote the release of extracellular vesicle enclosed viruses via the modulation of host kinases.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12124"
+      ]
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Seneca Valley virus?",
+      "cited_pmid": "42501789",
+      "title": "First report and molecular characterization of bovine kobuvirus in beef cattle from eastern Inner Mongolia, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "42061535",
+      "title": "Development and application of a novel multi-peptide indirect ELISA based on VP1/VP2/VP3 proteins for the antibody detection against Senecavirus A.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42224368",
+      "title": "A designed peptide disrupting viral protease cleavage restores cGAS-DNA phase separation and type I interferon responses.",
+      "actual_organisms": [
+        "Seneca Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "33165867",
+      "title": "Persistent Detection of Cosavirus and Saffold Cardiovirus in Riachuelo River, Argentina.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "34990710",
+      "title": "Viral capture sequencing detects unexpected viruses in the cerebrospinal fluid of adults with meningitis.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11590"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "37805831",
+      "title": "Distribution and molecular characterization of saffold virus and human cosavirus in children admitted to hospitals with acute gastroenteritis in Thailand, 2017-2022.",
+      "actual_organisms": [
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1233383",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1330491",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1425211",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586421"
       ]
     }
   ],
