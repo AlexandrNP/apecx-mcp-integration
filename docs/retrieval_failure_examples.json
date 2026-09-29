@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T08:34:05.791482+00:00",
-  "runs": 742,
+  "updated": "2026-09-29T08:44:33.936181+00:00",
+  "runs": 743,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28168,
-  "n_false_negatives": 5181,
+  "n_false_positives": 28170,
+  "n_false_negatives": 5182,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 0
+    "false_positives": 2,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -317252,6 +317252,25 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_80614"
       ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "40733379",
+      "title": "Identification and Distribution of Begomoviruses Infecting Cassava Fields in Sierra Leone.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "41069991",
+      "title": "Cassava mosaic disease in Burkina Faso: epidemiological aspects and disease management perspectives.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
     }
   ],
   "false_negatives": [
@@ -348340,6 +348359,12 @@
       "question": "How does Shuni virus evade or modulate the host immune response?",
       "missed_pmid": "33383649",
       "title": "Shuni Virus Replicates at the Maternal-Fetal Interface of the Ovine and Human Placenta."
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What diagnostic assays or laboratory tests detect Maize streak virus?",
+      "missed_pmid": "42805266",
+      "title": "Ecology and Evolutionary Dynamics of the A-Strain Maize Streak Virus and the Decade-Long Strategies Targeting Streak-Resistant Maize."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
