@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T00:34:20.078167+00:00",
-  "runs": 713,
+  "updated": "2026-09-29T00:44:14.932479+00:00",
+  "runs": 714,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27837,
-  "n_false_negatives": 5173,
+  "n_false_positives": 27839,
+  "n_false_negatives": 5174,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 0
+    "false_positives": 2,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -313475,6 +313475,27 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2946186",
         "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
       ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mouse mammary tumor virus?",
+      "cited_pmid": "42212305",
+      "title": "Unravelling viral identity: avoiding the trap of endogenous sequences for viral surveillance of small ruminant oncogenic retroviruses.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64283"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "42594766",
+      "title": "Molecular characterization and biological characteristics of a highly pathogenic recombinant ALV-J strain (HUE2023) with cross-clade gp85 recombination.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1401444"
+      ]
     }
   ],
   "false_negatives": [
@@ -344515,6 +344536,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Avian leukosis virus?",
       "missed_pmid": "42302616",
       "title": "Research Note: Genome-wide association study identifies a 1.03-Mb resistance-associated haplotype on chromosome 12 associated with avian leukosis virus susceptibility in Wuhua yellow chickens."
+    },
+    {
+      "organism": "Koala retrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Koala retrovirus?",
+      "missed_pmid": "41375433",
+      "title": "Development and Validation of a Standardised Genomic Tool for Conservation Management of the Koala (Phascolarctos cinereus)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
