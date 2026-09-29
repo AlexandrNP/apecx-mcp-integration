@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T06:44:34.451184+00:00",
-  "runs": 734,
+  "updated": "2026-09-29T07:14:06.923115+00:00",
+  "runs": 735,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28114,
+  "n_false_positives": 28117,
   "n_false_negatives": 5181,
   "new_this_run": {
-    "false_positives": 11,
+    "false_positives": 3,
     "false_negatives": 0
   },
   "false_positives": [
@@ -316635,6 +316635,44 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
         "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What diagnostic assays or laboratory tests detect Sheeppox virus?",
+      "cited_pmid": "42243874",
+      "title": "Development and partial validation of a TaqMan quantitative PCR assay to detect Cervidpoxvirus.",
+      "actual_organisms": [
+        "Deerpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427847",
+        "http://purl.obolibrary.org/obo/NCBITaxon_573055"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What diagnostic assays or laboratory tests detect Sheeppox virus?",
+      "cited_pmid": "42700775",
+      "title": "Rapid point-of-care lateral flow assay for differentiation of capripoxviruses using RPA-CRISPR-Cas12a.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Swinepox virus",
+      "question": "How does Swinepox virus evade or modulate the host immune response?",
+      "cited_pmid": "42235709",
+      "title": "Distinct evolutionary patterns and structural insights into A33 and A34 glycoprotein in parapoxvirus.",
+      "actual_organisms": [
+        "Bovine papular stomatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185904",
+        "http://purl.obolibrary.org/obo/NCBITaxon_185905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
