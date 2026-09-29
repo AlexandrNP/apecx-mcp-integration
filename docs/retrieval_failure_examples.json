@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T03:04:16.692577+00:00",
-  "runs": 722,
+  "updated": "2026-09-29T03:14:35.493386+00:00",
+  "runs": 723,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27984,
+  "n_false_positives": 27991,
   "n_false_negatives": 5176,
   "new_this_run": {
-    "false_positives": 13,
+    "false_positives": 7,
     "false_negatives": 0
   },
   "false_positives": [
@@ -315136,6 +315136,98 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "41452916",
+      "title": "Systemic infection with insect-specific viruses does not affect Plasmodium sporozoite formation in Anopheles mosquitoes.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1457165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2601858",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052241",
+        "http://purl.obolibrary.org/obo/NCBITaxon_418103",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5833"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "40735815",
+      "title": "Modulation of DNA methyltransferases (DNMTs) in Spodoptera frugiperda (Sf9) cells following AcMNPV infection, and its effects on the virus-cell interaction.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "39819374",
+      "title": "The infectivity of virus particles from Wolbachia-infected Drosophila.",
+      "actual_organisms": [
+        "Drosophila C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1869227",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_953",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "29601483",
+      "title": "Invertebrate Iridoviruses: A Glance over the Last Decade.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cricket paralysis virus?",
+      "cited_pmid": "40357853",
+      "title": "The Function of TER94 of Spodoptera frugiperda 9 Cells When Infected With Invertebrate Iridescent Virus-6.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cricket paralysis virus?",
+      "cited_pmid": "40558095",
+      "title": "Experimental and evolutionary evidence for horizontal transfer of an envelope fusion protein gene between thogotoviruses and baculoviruses.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2986952",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3383484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35323"
+      ]
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Autographa californica nucleopolyhedrovirus?",
+      "cited_pmid": "40357853",
+      "title": "The Function of TER94 of Spodoptera frugiperda 9 Cells When Infected With Invertebrate Iridescent Virus-6.",
+      "actual_organisms": [
+        "Invertebrate iridescent virus 6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
       ]
     }
   ],
