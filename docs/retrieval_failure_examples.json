@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T11:44:04.169049+00:00",
-  "runs": 760,
+  "updated": "2026-09-29T11:54:42.979675+00:00",
+  "runs": 761,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28271,
+  "n_false_positives": 28281,
   "n_false_negatives": 5185,
   "new_this_run": {
-    "false_positives": 4,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -318407,6 +318407,109 @@
       "actual_organisms": [
         "Porcine rubulavirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "40172966",
+      "title": "Structural switching dynamically controls the doubly pseudoknotted Rous sarcoma virus-programmed ribosomal frameshifting element.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "40901068",
+      "title": "Exogenous Jaagsiekte sheep retrovirus (JSRV) Inner Mongolia strain: whole-genome characterization and viral particle packaging.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47898"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "40827928",
+      "title": "Dynamic interactions of retroviral Gag condensates with nascent viral RNA at transcriptional burst sites: implications for genomic RNA packaging.",
+      "actual_organisms": [
+        "Rous sarcoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What antiviral drugs or treatments are effective against Visna-maedi virus?",
+      "cited_pmid": "38546893",
+      "title": "Investigating the correlation between prominent viruses and hematological malignancies: a literature review.",
+      "actual_organisms": [
+        "Rous sarcoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Visna-maedi virus?",
+      "cited_pmid": "39829876",
+      "title": "Dynamic interactions of retroviral Gag condensates with nascent viral RNA at transcriptional burst sites: implications for genomic RNA packaging.",
+      "actual_organisms": [
+        "Rous sarcoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Visna-maedi virus?",
+      "cited_pmid": "42212305",
+      "title": "Unravelling viral identity: avoiding the trap of endogenous sequences for viral surveillance of small ruminant oncogenic retroviruses.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64283"
+      ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "42621637",
+      "title": "Genetic diversity in German Pomeranian Coarsewool sheep and the possibility of breeding for maedi-visna resistance.",
+      "actual_organisms": [
+        "Visna-maedi virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "How does Rous sarcoma virus evade or modulate the host immune response?",
+      "cited_pmid": "41619651",
+      "title": "Maedi infection modulates oncogenic and inflammatory signaling in ovine pulmonary adenomatosis through TLR4/NF-\u03baB and JAK2/STAT3 pathways: A Trojan horse mechanism.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "cited_pmid": "42212305",
+      "title": "Unravelling viral identity: avoiding the trap of endogenous sequences for viral surveillance of small ruminant oncogenic retroviruses.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64283"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "cited_pmid": "40901068",
+      "title": "Exogenous Jaagsiekte sheep retrovirus (JSRV) Inner Mongolia strain: whole-genome characterization and viral particle packaging.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47898"
       ]
     }
   ],
