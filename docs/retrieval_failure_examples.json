@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T03:14:35.493386+00:00",
-  "runs": 723,
+  "updated": "2026-09-29T03:24:14.213017+00:00",
+  "runs": 724,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 27991,
+  "n_false_positives": 28001,
   "n_false_negatives": 5176,
   "new_this_run": {
-    "false_positives": 7,
+    "false_positives": 10,
     "false_negatives": 0
   },
   "false_positives": [
@@ -315228,6 +315228,115 @@
       "actual_organisms": [
         "Invertebrate iridescent virus 6",
         "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36273875",
+      "title": "Immunogenicity of a recombinant hemagglutinin neuraminidase-Porcine rubulavirus produced by Escherichia coli of Porcine rubulavirus gives protective immunity of litter after challenge.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "cited_pmid": "26854342",
+      "title": "Co-infection of classic swine H1N1 influenza virus in pigs persistently infected with porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12845"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "29415728",
+      "title": "Genetic variation analysis of PCV1 strains isolated from Guangxi Province of China in 2015.",
+      "actual_organisms": [
+        "Porcine circovirus 1",
+        "Porcine circovirus 2"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "26728078",
+      "title": "Molecular characterisation of Porcine rubulavirus (PorPV) isolates from different outbreaks in Mexico.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "32502553",
+      "title": "Porcine circoviruses: current status, knowledge gaps and challenges.",
+      "actual_organisms": [
+        "Porcine circovirus 1",
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1868221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2686039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "33177604",
+      "title": "Discovery and comparative genomic analysis of elk circovirus (ElkCV), a novel circovirus species and the first reported from a cervid host.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2844110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the epidemiology and outbreak history of Classical swine fever virus?",
+      "cited_pmid": "23734711",
+      "title": "Serological survey of veterinarians to assess the zoonotic potential of three emerging swine diseases in Mexico.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12104",
+        "http://purl.obolibrary.org/obo/NCBITaxon_171"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Classical swine fever virus?",
+      "cited_pmid": "32976525",
+      "title": "Immunoinformatics approach for predicting epitopes in HN and F proteins of Porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
       ]
     }
   ],
