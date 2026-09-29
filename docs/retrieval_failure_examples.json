@@ -1,9 +1,9 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-29T08:54:07.987543+00:00",
-  "runs": 744,
+  "updated": "2026-09-29T09:04:10.783546+00:00",
+  "runs": 745,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 28175,
+  "n_false_positives": 28180,
   "n_false_negatives": 5182,
   "new_this_run": {
     "false_positives": 5,
@@ -317326,6 +317326,73 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12232",
         "http://purl.obolibrary.org/obo/NCBITaxon_558690",
         "http://purl.obolibrary.org/obo/NCBITaxon_91753"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "41538379",
+      "title": "Improved Diagnostic Tools to Reliably Detect Modern Wheat Mosaic Virus Isolates.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "39729964",
+      "title": "Triticum mosaic virus: An overview of biology, functional genomics, gene expression vector, and management strategies.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1230390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_155002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431715",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "39861914",
+      "title": "High-Throughput Oxford Nanopore Sequencing Unveils Complex Viral Population in Kansas Wheat: Implications for Sustainable Virus Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980428",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3427622",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431715",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3433003",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_675845"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "40599754",
+      "title": "Global distribution, evolutionary dynamics, and origins of wheat streak mosaic virus.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the clinical symptoms and disease presentation of Potato virus Y?",
+      "cited_pmid": "39763273",
+      "title": "A new disease symptomology observed in wheat is associated with high levels of Triticum mosaic virus transcripts.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
       ]
     }
   ],
