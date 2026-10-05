@@ -45,6 +45,10 @@ def _make_bare_step() -> SynthesisContextAssemblyStep:
     step._bvbrc_cache_dir = None
     step._max_violin = 10
     step._max_bvbrc = 10
+    # Grounding off: _resolve_query_iris runs OUTSIDE the return_exceptions gather,
+    # so (unlike the branch skip-flags) it must be set explicitly. These tests
+    # exercise branch-failure degradation, not IRI grounding.
+    step._ground_iri = False
     return step
 
 

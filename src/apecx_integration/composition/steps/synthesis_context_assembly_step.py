@@ -1,11 +1,11 @@
-"""Nanobrain ``BaseStep`` that assembles all four retrieval branches
+"""Nanobrain ``BaseStep`` that assembles all five retrieval branches
 into the synthesis input bundle consumed by ``RagSynthesisStep``.
 
 This is the fan-in step of the synthesis pipeline.  It accepts a
-plain query string, runs three retrieval branches concurrently
-(domain RAG search, VIOLIN/BV-BRC tabular lookup, PubMed harvester),
-and returns the complete ``synthesis_input`` dict that
-``RagSynthesisStep.process()`` expects::
+plain query string, runs five retrieval branches concurrently
+(domain RAG search, VIOLIN/BV-BRC tabular lookup, PubMed harvester,
+Globus harmonized-corpus search), and returns the complete
+``synthesis_input`` dict that ``RagSynthesisStep.process()`` expects::
 
     {
         "query":          str,
@@ -13,7 +13,12 @@ and returns the complete ``synthesis_input`` dict that
         "bvbrc_genomes":  list[dict],  # from alphavirus_genomes.tsv
         "violin_mappings": list[dict], # from VIOLIN CSVs
         "publications":   list[dict],  # from PubMed eSearch+efetch
+        "globus_results": list[dict],  # from the APECx Globus Search index
     }
+
+When ``ground_to_organism_iri`` is set (default), the Globus and PubMed
+branches are additionally filtered to the NCBITaxon IRI(s) resolved from
+the query (off-organism records dropped; untagged records kept).
 
 Design decision — why a single assembly step rather than four separate
 steps linked in sequence:
@@ -178,6 +183,23 @@ class SynthesisContextAssemblyStepConfig(StepConfig):
         ),
     )
 
+    # --- Ontology (taxon-IRI) grounding ---
+    ground_to_organism_iri: bool = Field(
+        default=True,
+        description=(
+            "When True, resolve the organism(s) named in the query to "
+            "NCBITaxon IRI(s) and use them to drop off-organism records "
+            "from the Globus and PubMed branches (false-positive "
+            "reduction). Keep-untagged policy: a record carrying NO taxon "
+            "tag is KEPT (unknown != wrong — preserves recall and the "
+            "PDB/EMDB structural records that carry no taxon IRI); only a "
+            "record whose taxon tag CONFLICTS with every resolved IRI is "
+            "dropped. When no organism resolves from the query, both "
+            "branches pass through unfiltered — identical to the "
+            "pre-grounding behavior."
+        ),
+    )
+
 
 class SynthesisContextAssemblyStep(BaseStep):
     """Fan-in assembly step — runs three retrieval branches
@@ -230,6 +252,7 @@ class SynthesisContextAssemblyStep(BaseStep):
             "skip_bvbrc": getattr(config, "skip_bvbrc", False),
             "max_globus_hits": getattr(config, "max_globus_hits", 10),
             "skip_globus": getattr(config, "skip_globus", False),
+            "ground_to_organism_iri": getattr(config, "ground_to_organism_iri", True),
         }
 
     def _init_from_config(
@@ -285,6 +308,8 @@ class SynthesisContextAssemblyStep(BaseStep):
 
         self._max_globus: int = int(component_config.get("max_globus_hits", 10))
         self._skip_globus: bool = bool(component_config.get("skip_globus", False))
+
+        self._ground_iri: bool = bool(component_config.get("ground_to_organism_iri", True))
 
     # ------------------------------------------------------------------
     # Entity normalization
@@ -389,19 +414,129 @@ class SynthesisContextAssemblyStep(BaseStep):
         )
         return violin_mappings, bvbrc_genomes
 
-    def _globus_search(self, query: str) -> list[dict[str, Any]]:
-        """Query the APECx Globus Search index.
+    def _resolve_query_iris(self, query: str) -> list[str]:
+        """Resolve organism name(s) in ``query`` to NCBITaxon IRI(s).
+
+        Reuses the SAME organism extractor the PubMed term-builder uses
+        (``taxonomy_resolver.extract_virus_names``) and the shared
+        dictionary resolver (``literature.resolve.resolve_organism_to_iri``).
+        Returns the union of resolved IRIs (so a comparative query like
+        "CHIKV vs MAYV" keeps both organisms). Empty when grounding is
+        disabled or no organism resolves — the branches then pass through
+        unfiltered.
+        """
+        if not self._ground_iri:
+            return []
+        # Degrade-loud: the resolver opens the synonym-dictionary sqlite; a missing/
+        # locked/corrupt dictionary raises here. This runs BEFORE the gather's
+        # return_exceptions net, so an unguarded raise would propagate out of
+        # process() and (under Workflow.run / G127) silently empty the whole 5-branch
+        # synthesis. Catch it → warn → return [] so BOTH branches pass through
+        # unfiltered (the pre-grounding behavior), matching _ground_publications and
+        # HarvestStampStep._build_gazetteer.
+        try:
+            from apecx_integration.agents.globus_search import taxonomy_resolver
+            from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
+
+            iris: list[str] = []
+            for name in taxonomy_resolver.extract_virus_names(query) or []:
+                iri = resolve_organism_to_iri(name)
+                if iri and iri not in iris:
+                    iris.append(iri)
+            return iris
+        except Exception as exc:
+            log.warning(
+                "%s: organism IRI resolution unavailable (%s: %s); grounding OFF for "
+                "this query (both branches pass through unfiltered)",
+                self.name,
+                type(exc).__name__,
+                exc,
+            )
+            return []
+
+    @staticmethod
+    def _keep_by_iri(record_iris: list[str], target_iris: list[str]) -> bool:
+        """Keep-untagged grounding predicate: keep a record with no taxon
+        tag (unknown != wrong) or one matching ANY target IRI; drop only a
+        record whose taxon tag conflicts with every target."""
+        return not record_iris or any(t in record_iris for t in target_iris)
+
+    def _globus_search(self, query: str, target_iris: list[str]) -> list[dict[str, Any]]:
+        """Query the APECx Globus Search index, then IRI-ground the hits.
 
         Read-only access to the harvester-populated corpus (PubMed +
         PDB + DataCite records). Network call — failures are
         propagated as ``GlobusSearchUnavailableError`` and caught by
         the outer ``asyncio.gather(return_exceptions=True)``.
+
+        When ``target_iris`` is non-empty, off-organism hits are dropped
+        result-side via ``_datacite.datacite_taxon_iris`` + the
+        keep-untagged policy (PDB records carry organism names but no
+        taxon IRI, so they survive as untagged).
         """
         from apecx_integration.agents.globus_search import search
 
-        return search(query, max_results=self._max_globus)
+        hits = search(query, max_results=self._max_globus)
+        if not target_iris:
+            return hits
+        from apecx_integration.agents.globus_search._datacite import datacite_taxon_iris
 
-    def _pubmed_harvest(self, query: str, entities: list[Any] | None) -> list[dict[str, Any]]:
+        kept = [
+            h
+            for h in hits
+            if self._keep_by_iri(datacite_taxon_iris(h.get("content") or {}), target_iris)
+        ]
+        log.info(
+            "%s: globus IRI-grounding %d->%d (target=%s)",
+            self.name,
+            len(hits),
+            len(kept),
+            target_iris,
+        )
+        return kept
+
+    def _ground_publications(
+        self, pubs: list[dict[str, Any]], target_iris: list[str]
+    ) -> list[dict[str, Any]]:
+        """Stamp harvested publications with taxon IRIs and drop off-organism ones.
+
+        Builds a gazetteer from the synonym dictionary (same ``_is_taggable``
+        precision guard as the literature_rag path), stamps each pub's
+        title+abstract, then applies the keep-untagged policy. Degrades LOUD:
+        any failure (missing dictionary, tagger error) logs a warning and
+        returns the pubs UNFILTERED — grounding never crashes the branch.
+        """
+        if not target_iris:
+            return pubs
+        try:
+            from apecx_integration.agents.literature.gazetteer import build_from_dictionary
+            from apecx_integration.agents.literature.stamped_corpus import stamp_abstract
+            from apecx_integration.synonym_dictionary.loader import default_dictionary_path
+
+            gz = build_from_dictionary(str(default_dictionary_path()), entity_type="pathogen")
+        except Exception as exc:
+            log.warning(
+                "%s: PubMed IRI-grounding unavailable (%s: %s); passing %d pubs unfiltered",
+                self.name,
+                type(exc).__name__,
+                exc,
+                len(pubs),
+            )
+            return pubs
+        stamped = [stamp_abstract(p, gz) for p in pubs]
+        kept = [p for p in stamped if self._keep_by_iri(p["iris"], target_iris)]
+        log.info(
+            "%s: pubmed IRI-grounding %d->%d (target=%s)",
+            self.name,
+            len(pubs),
+            len(kept),
+            target_iris,
+        )
+        return kept
+
+    def _pubmed_harvest(
+        self, query: str, entities: list[Any] | None, target_iris: list[str]
+    ) -> list[dict[str, Any]]:
         """Drive the PubMed harvest synchronously on a fresh loop.
 
         Called from a worker thread (asyncio.to_thread) so a fresh
@@ -431,7 +566,7 @@ class SynthesisContextAssemblyStep(BaseStep):
             self._max_publications,
         )
         try:
-            return asyncio.run(_pubmed_helpers.harvest(term, max_papers=self._max_publications))
+            pubs = asyncio.run(_pubmed_helpers.harvest(term, max_papers=self._max_publications))
         except Exception as exc:
             log.warning(
                 "%s: PubMed harvest failed (%s: %s); returning []",
@@ -440,6 +575,7 @@ class SynthesisContextAssemblyStep(BaseStep):
                 exc,
             )
             return []
+        return self._ground_publications(pubs, target_iris)
 
     # ------------------------------------------------------------------
     # Step entry point
@@ -512,17 +648,22 @@ class SynthesisContextAssemblyStep(BaseStep):
         # whole synthesis call. The synthesizer's
         # ``fail_on_empty_retrieval`` gate still fires if EVERY branch
         # ends up empty, so silent total failure is impossible.
+        # Resolve organism IRI(s) once; both the Globus and PubMed branches
+        # ground against the same set. Empty when grounding is disabled or no
+        # organism resolves -> both branches pass through unfiltered.
+        target_iris = self._resolve_query_iris(query)
+
         async def _pubmed_task() -> list[dict]:
             if self._skip_pubmed:
                 return []
-            return await asyncio.to_thread(self._pubmed_harvest, query, entities)
+            return await asyncio.to_thread(self._pubmed_harvest, query, entities, target_iris)
 
         async def _globus_task() -> list[dict]:
             # Skip when explicitly disabled OR when the cap is 0
             # (operator-level "off" without removing the field).
             if self._skip_globus or self._max_globus <= 0:
                 return []
-            return await asyncio.to_thread(self._globus_search, query)
+            return await asyncio.to_thread(self._globus_search, query, target_iris)
 
         rag_result, violin_bvbrc, publications, globus_hits = await asyncio.gather(
             asyncio.to_thread(self._rag_search, query),

@@ -206,7 +206,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/composition/steps/solution_memory_step.py` | SolutionMemoryStep — file-backed cross-problem memory (MemFlow-style). |
 | `src/apecx_integration/composition/steps/structural_evidence_step.py` | StructuralEvidenceStep — pull PDB + EMDB structural records for the query. |
 | `src/apecx_integration/composition/steps/structural_reasoning_step.py` | StructuralReasoningStep — map sequence conservation onto 3D structure (E2-P). |
-| `src/apecx_integration/composition/steps/synthesis_context_assembly_step.py` | Nanobrain ``BaseStep`` that assembles all four retrieval branches |
+| `src/apecx_integration/composition/steps/synthesis_context_assembly_step.py` | Nanobrain ``BaseStep`` that assembles all five retrieval branches |
 | `src/apecx_integration/composition/steps/task_category_router_step.py` | TaskCategoryRouterStep — deterministic retrieval-grounded enrichment. |
 | `src/apecx_integration/composition/steps/taxon_candidate_review_step.py` | TaxonCandidateReviewStep — LLM picks the right taxon, then a deterministic CDS-coverage gate. |
 | `src/apecx_integration/composition/steps/taxon_synonym_generation_step.py` | TaxonSynonymGenerationStep — LLM-driven candidate virus-name generation (taxon-resolution |
@@ -231,8 +231,10 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/composition/workflows/epitope_combination_feasibility_assessment/__init__.py` | epitope_combination_feasibility_assessment - approved follow-up grouping assessment. |
 | `src/apecx_integration/composition/workflows/epitope_combination_feasibility_assessment/builder.py` | epitope_combination_feasibility_assessment - lightweight nanobrain builder. |
 | `src/apecx_integration/composition/workflows/harmonized_index_search/builder.py` | harmonized_index_search — a ONE-step inner workflow: run HarmonizedSearchExecuteStep |
-| `src/apecx_integration/composition/workflows/literature_rag/__init__.py` | literature_rag — ontology-filtered literature RAG workflow (SKELETON). |
+| `src/apecx_integration/composition/workflows/literature_rag/__init__.py` | literature_rag — ontology-filtered literature RAG workflow. |
+| `src/apecx_integration/composition/workflows/literature_rag/builder.py` | literature_rag — lightweight builder (MCP catalog entry-point). |
 | `src/apecx_integration/composition/workflows/literature_rag/steps/__init__.py` | Step classes for the literature_rag workflow skeleton. |
+| `src/apecx_integration/composition/workflows/literature_rag/steps/harvest_stamp_step.py` | HarvestStampStep — the harvest front-end that makes literature_rag runnable |
 | `src/apecx_integration/composition/workflows/literature_rag/steps/literature_rag_step.py` | LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer. |
 | `src/apecx_integration/composition/workflows/literature_rag/steps/ontology_filter_step.py` | OntologyFilterStep — narrow a stamped record set to one NCBITaxon IRI. |
 | `src/apecx_integration/composition/workflows/literature_rag/steps/resolve_step.py` | ResolveOrganismStep — enrich the envelope with a target NCBITaxon IRI. |

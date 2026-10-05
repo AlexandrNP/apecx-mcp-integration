@@ -155,6 +155,13 @@ def test_literature_rag_answers_and_cites_real_pmid(monkeypatch):
     monkeypatch.setenv("APECX_LLM_MODEL", _LLM_MODEL)
     monkeypatch.setenv("APECX_LLM_TEMPERATURE", "0")
 
+    # This test exercises the AGENT/LLM synthesis path. The default locus is DESKTOP,
+    # where LiteratureRagStep now hands evidence to the host (status=host_synthesizes)
+    # instead of calling the apecx LLM — so pin AGENT locus to reach the synthesizer.
+    import apecx_integration.composition.runtime.execution_locus as _loc
+
+    monkeypatch.setattr(_loc, "_ACTIVE_LOCUS", _loc.ExecutionLocus.AGENT)
+
     step = _new_step()
     result = asyncio.run(
         step.process(

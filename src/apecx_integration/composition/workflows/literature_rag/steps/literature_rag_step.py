@@ -78,6 +78,13 @@ class LiteratureRagStep(BaseStep):
     """Literature RAG answerer — retrieve top-k records, synthesize a cited answer."""
 
     COMPONENT_TYPE: str = "literature_rag_step"
+    # This step is the FINAL narrative synthesis of the literature_rag pipeline: in
+    # desktop locus it omits the apecx LLM call and the host (Claude Desktop)
+    # synthesizes from the handed-over evidence (CLAUDE.md "Two operating modes").
+    # The run-time requires_llm gate reads this so it does NOT refuse the workflow on
+    # a desktop with no apecx LLM configured — without it the gate brands the step
+    # ``in_dag`` and a desktop user with no Ollama is wrongly refused the tool.
+    LLM_ROLE: str = "final_synthesis"
 
     #: The step's single input data-unit name (see sibling YAML).
     _INPUT_UNIT: str = "rag_input"
@@ -164,6 +171,32 @@ class LiteratureRagStep(BaseStep):
         order = np.argsort(-sims)[:k]
         return [usable[int(i)] for i in order]
 
+    @staticmethod
+    def _render_host_evidence(question: str, records: list[dict[str, Any]]) -> str:
+        """Deterministic evidence body handed to the host LLM in desktop locus.
+
+        Mirrors RagSynthesisStep's desktop inversion (hand the FULL deterministic
+        evidence, not an empty 'defer to host' scaffold): the connected assistant
+        writes the cited narrative from these retrieved, ontology-filtered records.
+        """
+        lines = [
+            f"# Literature evidence for: {question}",
+            "",
+            "The connected assistant synthesizes the answer from the retrieved, "
+            "ontology-filtered PubMed records below. Cite each claim with its "
+            "``[PMID:<id>]``.",
+            "",
+        ]
+        for rec in records:
+            pmid = str(rec.get("pmid") or "").strip()
+            title = str(rec.get("title") or "").strip()
+            abstract = str(rec.get("abstract") or "").strip()
+            lines.append(f"## [PMID:{pmid}] {title}".rstrip() if pmid else f"## {title}".rstrip())
+            if abstract:
+                lines.append(abstract)
+            lines.append("")
+        return "\n".join(lines).strip()
+
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         envelope = self._unwrap_envelope(input_data)
         filtered_records = envelope.get("filtered_records") or []
@@ -183,6 +216,34 @@ class LiteratureRagStep(BaseStep):
                 f"'question' string; got {type(question).__name__}={question!r}"
             )
         question = question.strip()
+
+        # Desktop locus: the connected host LLM is the synthesizer (CLAUDE.md "Two
+        # operating modes" + LLM_ROLE). Hand it the FULL ontology-filtered evidence +
+        # PMIDs and let it write the narrative. Done BEFORE retrieval on purpose: the
+        # embedding narrowing (_retrieve_topk) needs the heavy ``rag`` extra, and
+        # desktop mode must stay dependency-light (and the set is already bounded by
+        # the harvest cap). The requires_llm gate reads LLM_ROLE so the tool is NOT
+        # refused on a desktop with no Ollama.
+        from apecx_integration.composition.runtime.execution_locus import (
+            ExecutionLocus,
+            get_active_locus,
+        )
+
+        if get_active_locus() == ExecutionLocus.DESKTOP:
+            citations = sorted(
+                {str(r.get("pmid")).strip() for r in filtered_records if r.get("pmid")}
+            )
+            self.nb_logger.info(
+                "literature_rag LiteratureRagStep: desktop locus — handing %d "
+                "ontology-filtered record(s) to the host for synthesis (no apecx "
+                "LLM, no embedding retrieval)",
+                len(filtered_records),
+            )
+            return {
+                "answer": self._render_host_evidence(question, filtered_records),
+                "citations": citations,
+                "status": "host_synthesizes",
+            }
 
         # 1. Retrieve top-k records (CPU-bound; offload so the event loop stays free).
         topk = await asyncio.to_thread(self._retrieve_topk, question, filtered_records, _TOP_K)

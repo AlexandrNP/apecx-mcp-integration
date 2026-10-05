@@ -1,0 +1,44 @@
+# literature_rag step 0 (builder-only) — HarvestStampStep (PubMed harvest + taxon stamp)
+#
+# The harvest front-end that makes literature_rag runnable from a bare
+# {organism, question} request: harvests PubMed (organism-anchored term) and
+# stamps each record with its NCBITaxon IRIs, emitting the
+# {organism, question, stamped_records} envelope the resolve step consumes.
+# The step OWNS its input/output data units + trigger (framework rule); the
+# builder owns the link to resolve_organism_step.
+#
+# NOTE: this step is wired by the lightweight builder
+# (composition/workflows/literature_rag/builder.py), NOT by
+# literature_rag_workflow.yml (which stays the pre-stamped-records entry point).
+
+name: harvest_stamp_step
+description: >
+  PubMed harvest + taxon-IRI stamp. Reads {organism, question, max_papers?} from
+  the request envelope, builds an organism-anchored eSearch term, harvests PubMed,
+  stamps each record with its NCBITaxon IRIs, and outputs
+  {organism, question, stamped_records} for the downstream resolve step.
+
+input_data_units:
+  literature_rag_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: literature_rag_input
+    description: >
+      ``{organism: str, question: str, max_papers?: int}`` — the scientist request.
+      This is the workflow's first-step deposit point: the MCP catalog entry's
+      ``input_envelope_key`` MUST equal this data-unit name.
+    persistent: false
+
+output_data_units:
+  harvest_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: harvest_output
+    description: >
+      ``{organism: str, question: str, stamped_records: list}`` — each record
+      ``{pmid, title, abstract, iris}``. Single output unit, so the framework
+      writes the whole returned dict here. Fed to resolve_organism_step via the
+      builder's harvest_to_resolve link.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "literature_rag_input"

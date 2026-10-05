@@ -289,3 +289,52 @@ workflows:
     output_envelope_key: workflow_output
     settle_ms: 500
     timeout_seconds: 120.0
+
+  - tool_name: literature_rag
+    description: |
+      Answer a question from the PubMed literature for ONE organism, with ontology
+      grounding. It harvests PubMed itself (organism-anchored search), stamps each
+      abstract with NCBITaxon IRIs, KEEPS only papers about the resolved organism
+      (dropping off-organism false positives), then returns a cited, grounded answer
+      with the supporting PMIDs.
+
+      USE IT FOR literature questions scoped to one virus, like: "what does the
+      literature say about E1 epitopes in chikungunya?", "summarize what is known
+      about EEEV neurovirulence from PubMed", "find papers on dengue NS1 vaccine
+      targets". For epitope/structure analysis use viral_epitope_analysis instead;
+      for multi-source grounded synthesis use rag_e2e_synthesis.
+
+      No apecx LLM is required in desktop/MCP mode — the ontology-filtered evidence
+      is returned for the calling assistant to synthesize; the headless backend
+      synthesizes internally. Harvests over the network; the branch degrades loudly
+      (a dictionary/ network miss yields an honest no-evidence answer, never a crash).
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.literature_rag.builder
+      function: build_literature_rag_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        organism:
+          type: string
+          description: "Organism / virus name to scope the literature to, e.g. 'Chikungunya virus'."
+        question:
+          type: string
+          description: "The scientist's literature question."
+        max_papers:
+          type: integer
+          description: "PubMed harvest cap (optional, default 20)."
+      required:
+        - organism
+        - question
+    # First step is `harvest_stamp` (HarvestStampStep); its input DU
+    # `literature_rag_input` is the deposit point. Mis-keying this silently
+    # populates 0 data units (the input_envelope_key silent-failure shape).
+    input_envelope_key: literature_rag_input
+    output_envelope_key: workflow_output
+    # PubMed harvest (network) + stamping + (agent locus) an embedding retrieval +
+    # one LLM round-trip. Desktop locus skips the LLM + embedding and returns the
+    # filtered evidence, so it finishes well under this.
+    settle_ms: 2000
+    timeout_seconds: 300.0

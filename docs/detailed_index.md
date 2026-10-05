@@ -2013,7 +2013,7 @@ _StructuralReasoningStep — map sequence conservation onto 3D structure (E2-P).
 - `def _fetch_structure(pdb_id: str, *, prefer_assembly: bool=True)` — Download (and cache) the immutable RCSB structure for ``pdb_id``.
 
 ## `src/apecx_integration/composition/steps/synthesis_context_assembly_step.py`
-_Nanobrain ``BaseStep`` that assembles all four retrieval branches_
+_Nanobrain ``BaseStep`` that assembles all five retrieval branches_
 
 - class `SynthesisContextAssemblyStepConfig(StepConfig)` — Step config for SynthesisContextAssemblyStep.
   - `def _strip_framework_keys(cls, data: Any)`
@@ -2024,8 +2024,11 @@ _Nanobrain ``BaseStep`` that assembles all four retrieval branches_
   - `def _extract_search_terms(query: str, entities: list[Any] | None, query_terms: list[Any] | None)` — Build (name, type) pairs for the VIOLIN/BV-BRC lookup.
   - `def _rag_search(self, query: str)`
   - `def _violin_bvbrc_lookup(self, terms: list[tuple[str, str]])`
-  - `def _globus_search(self, query: str)` — Query the APECx Globus Search index.
-  - `def _pubmed_harvest(self, query: str, entities: list[Any] | None)` — Drive the PubMed harvest synchronously on a fresh loop.
+  - `def _resolve_query_iris(self, query: str)` — Resolve organism name(s) in ``query`` to NCBITaxon IRI(s).
+  - `def _keep_by_iri(record_iris: list[str], target_iris: list[str])` — Keep-untagged grounding predicate: keep a record with no taxon
+  - `def _globus_search(self, query: str, target_iris: list[str])` — Query the APECx Globus Search index, then IRI-ground the hits.
+  - `def _ground_publications(self, pubs: list[dict[str, Any]], target_iris: list[str])` — Stamp harvested publications with taxon IRIs and drop off-organism ones.
+  - `def _pubmed_harvest(self, query: str, entities: list[Any] | None, target_iris: list[str])` — Drive the PubMed harvest synchronously on a fresh loop.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/steps/task_category_router_step.py`
@@ -2314,14 +2317,32 @@ _harmonized_index_search — a ONE-step inner workflow: run HarmonizedSearchExec
 - `def build_harmonized_index_search_workflow()` — Build + load the 1-step harmonized-search-for-one-index inner workflow.
 
 ## `src/apecx_integration/composition/workflows/literature_rag/__init__.py`
-_literature_rag — ontology-filtered literature RAG workflow (SKELETON)._
+_literature_rag — ontology-filtered literature RAG workflow._
 
 _(no module-level classes or functions)_
+
+## `src/apecx_integration/composition/workflows/literature_rag/builder.py`
+_literature_rag — lightweight builder (MCP catalog entry-point)._
+
+- `def _du(name: str)`
+- `def _trig(du: str)`
+- `def _literature_rag_workflow_builder()` — Build (but do NOT load) the WorkflowBuilder. Exposed so tests can assert the
+- `def build_literature_rag_workflow()` — Construct + load the literature_rag workflow (catalog entry-point).
 
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/__init__.py`
 _Step classes for the literature_rag workflow skeleton._
 
 _(no module-level classes or functions)_
+
+## `src/apecx_integration/composition/workflows/literature_rag/steps/harvest_stamp_step.py`
+_HarvestStampStep — the harvest front-end that makes literature_rag runnable_
+
+- class `HarvestStampStep(BaseStep)` — PubMed harvest + taxon-IRI stamp — produces the ``stamped_records`` the
+  - `def _get_config_class(cls)`
+  - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the request envelope.
+  - `def _build_gazetteer(self)` — Build the taxon gazetteer from the synonym dictionary; degrade-loud to
+  - `def _harvest(self, term: str, gazetteer, max_papers: int)` — Synchronous harvest + stamp (network + CPU-bound); offloaded via to_thread.
+  - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/literature_rag_step.py`
 _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer._
@@ -2332,6 +2353,7 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _get_synthesis_config(self)` — Lazily load + cache the literature-tuned SynthesisConfig from YAML.
   - `def _get_embed_model(self)` — Lazily load + cache the sentence-transformers model on the instance.
   - `def _retrieve_topk(self, question: str, records: list[dict[str, Any]], k: int)` — Embed records + question, return the top-k records by cosine similarity.
+  - `def _render_host_evidence(question: str, records: list[dict[str, Any]])` — Deterministic evidence body handed to the host LLM in desktop locus.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/ontology_filter_step.py`
