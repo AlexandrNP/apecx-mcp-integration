@@ -1086,6 +1086,7 @@ _Stateless PubMed harvest + term-build helpers._
 - `def build_focused_term(query: str, *, owner_name: str='')` — Build an ORGANISM-ANCHORED PubMed eSearch term from a free-text query.
 - `def container_to_dict(container: Any)` — Project a ``PubMedContainer`` into the synthesizer's
 - `async def _esearch_relevance_pmids(term: str, max_papers: int)` — Return PubMed PMIDs for ``term`` in Best Match (relevance) order.
+- `def _harvester_cache_kwargs()` — Pick a WRITABLE cache root for the PubMed harvester, degrading gracefully.
 - `async def harvest(term: str, *, max_papers: int=0)` — Run the PubMed eSearch → eFetch chain for ``term``.
 
 ## `src/apecx_integration/composition/steps/_pymol_container/_pymol_job.py`

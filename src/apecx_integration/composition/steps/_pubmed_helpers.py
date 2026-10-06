@@ -284,6 +284,43 @@ async def _esearch_relevance_pmids(term: str, max_papers: int) -> list[str]:
     return pmids
 
 
+def _harvester_cache_kwargs() -> dict[str, Any]:
+    """Pick a WRITABLE cache root for the PubMed harvester, degrading gracefully.
+
+    ``apecx_harvesters`` defaults its ``cache_root`` to a CWD-relative ``.cache``
+    (``retrieve.py`` ``_DEFAULT_CACHE_ROOT``). Under a read-only filesystem (e.g. the
+    MCP server's cwd in some deployments) the harvester's ``_cache_save`` mkdir raises
+    ``OSError: [Errno 30] Read-only file system: '.cache'`` and crashes the whole
+    literature path. Resolve an absolute writable root instead (``$APECX_HARVESTER_CACHE``
+    → ``~/.apecx/harvester_cache`` → a tempdir); if none is writable, disable caching
+    (``use_cache=False``) so the harvest still runs in-memory. Never raises.
+    """
+    import os
+    import tempfile
+    from pathlib import Path
+
+    candidates: list[Path] = []
+    env = os.environ.get("APECX_HARVESTER_CACHE", "").strip()
+    if env:
+        candidates.append(Path(env))
+    candidates.append(Path.home() / ".apecx" / "harvester_cache")
+    candidates.append(Path(tempfile.gettempdir()) / "apecx_harvester_cache")
+    for root in candidates:
+        try:
+            root.mkdir(parents=True, exist_ok=True)
+            probe = root / ".write_probe"
+            probe.touch()
+            probe.unlink()
+            return {"cache_root": str(root)}
+        except OSError:
+            continue
+    log.warning(
+        "_pubmed_helpers: no writable harvester cache root (read-only filesystem?); "
+        "disabling the PubMed response cache for this run (use_cache=False)"
+    )
+    return {"use_cache": False}
+
+
 async def harvest(term: str, *, max_papers: int = 0) -> list[dict[str, Any]]:
     """Run the PubMed eSearch → eFetch chain for ``term``.
 
@@ -315,7 +352,7 @@ async def harvest(term: str, *, max_papers: int = 0) -> list[dict[str, Any]]:
     if not pmids:
         return []
 
-    harvester = PubMedHarvester()
+    harvester = PubMedHarvester(**_harvester_cache_kwargs())
     publications: list[dict[str, Any]] = []
     async for result in harvester.iter_results(pmids):
         if result.ok and result.record is not None:
