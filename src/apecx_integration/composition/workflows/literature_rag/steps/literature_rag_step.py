@@ -508,7 +508,12 @@ class LiteratureRagStep(BaseStep):
         if model is None:
             from sentence_transformers import SentenceTransformer  # noqa: I001
 
-            model = SentenceTransformer(_EMBED_MODEL_NAME)
+            from apecx_integration.agents._embedding_cache import embedding_cache_folder
+
+            # Pin a guaranteed-writable download cache so a read-only FS / no-HOME
+            # deploy degrades gracefully instead of crashing with
+            # "[Errno 30] Read-only file system: '.cache'" (the huggingface default).
+            model = SentenceTransformer(_EMBED_MODEL_NAME, cache_folder=embedding_cache_folder())
             self._embed_model = model
         return model
 

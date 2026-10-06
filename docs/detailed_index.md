@@ -63,6 +63,11 @@ _apecx_integration.agents — port of agent code formerly housed in_
 
 _(no module-level classes or functions)_
 
+## `src/apecx_integration/agents/_embedding_cache.py`
+_Writable download-cache location for the sentence-transformers embedding model._
+
+- `def embedding_cache_folder()` — Return a writable directory for the sentence-transformers model download.
+
 ## `src/apecx_integration/agents/_llm_config.py`
 _Single source of truth for the synthesis-path LLM model + a loud preflight._
 

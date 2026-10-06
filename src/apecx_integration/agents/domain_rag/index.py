@@ -273,7 +273,13 @@ class DomainRagIndex:
     def _load_model(self) -> SentenceTransformer:
         if self._model is None:
             SentenceTransformer, _, _ = _import_rag_libs()
-            self._model = SentenceTransformer(self._model_name, device=self._device)
+            from apecx_integration.agents._embedding_cache import embedding_cache_folder
+
+            # Writable download cache — graceful degrade on a read-only FS / no-HOME
+            # deploy instead of an [Errno 30] crash on the huggingface default dir.
+            self._model = SentenceTransformer(
+                self._model_name, device=self._device, cache_folder=embedding_cache_folder()
+            )
         return self._model
 
     def _encode(self, texts: list[str]) -> np.ndarray:

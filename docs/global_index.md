@@ -29,6 +29,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | File | Purpose |
 |---|---|
 | `src/apecx_integration/agents/__init__.py` | apecx_integration.agents — port of agent code formerly housed in |
+| `src/apecx_integration/agents/_embedding_cache.py` | Writable download-cache location for the sentence-transformers embedding model. |
 | `src/apecx_integration/agents/_llm_config.py` | Single source of truth for the synthesis-path LLM model + a loud preflight. |
 | `src/apecx_integration/agents/_llm_factory.py` | Shared LLM client factory for apecx_integration agents. |
 | `src/apecx_integration/agents/domain_rag/__init__.py` | Domain-specific FAISS RAG index for the apecx pipeline. |
