@@ -164,6 +164,32 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
             ),
         ).model_dump(mode="json")
 
+    # PDB: the APECx aggregate index is a PARTIAL harvest (~27K of PDB's ~230K entries), so
+    # taxon-correct structures are genuinely missing from it (verified 2026-10-07: the index
+    # held 4 of Nipah's 76 PDB structures, ZERO of the ~21 G/F glycoproteins). Augment the
+    # aggregate result with the authoritative, current RCSB set, scoped to the SAME taxon-
+    # resolved organism spellings (so still grounded, no off-organism bleed). EMDB keeps the
+    # aggregate-only path (no live-EMDB augmentation yet). result.organisms is populated only
+    # on the taxon-locked PDB path; an unresolved-species degrade (note set, organisms empty)
+    # falls through to the aggregate-only rendering below.
+    if index == "pdb" and result.organisms:
+        return await _pdb_search_with_live_augmentation(term, index, publisher, result)
+
+    return _render_aggregate_only(term, index, publisher, result)
+
+
+def _render_aggregate_only(
+    term: str, index: str, publisher: str, result, *, live_note: str = ""
+) -> dict:
+    """Render ONLY the APECx aggregate-index hits (the pre-augmentation path).
+
+    Used for EMDB, for the unresolved-species degrade, and as the loud fallback when live
+    RCSB augmentation is unavailable (``live_note`` names that degrade).
+    """
+    from apecx_integration.composition.schemas.workflow_result import (
+        WorkflowResult,  # noqa: PLC0415
+    )
+
     if not result.hits:
         note = result.note or (
             f"No {publisher} structural records in the APECx aggregate corpus matched `{term}`."
@@ -174,6 +200,8 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
             f"{publisher}; it taxon-locks on the deposited organism, not "
             f"NCBI-taxonomy harmonization.)"
         )
+        if live_note:
+            md += f"\n\n> {live_note}"
         return WorkflowResult(markdown=md).model_dump(mode="json")
 
     from apecx_integration.agents.globus_search._datacite import (  # noqa: PLC0415
@@ -188,6 +216,9 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
         f"the APECx aggregate index):",
         "",
     ]
+    if live_note:
+        md_lines.append(f"> {live_note}")
+        md_lines.append("")
     if result.note:
         # Records present but not taxon-locked — name the caveat (E3-2.5). DELIBERATE divergence
         # from StructuralEvidenceStep: this MCP tool SHOWS the non-taxon-locked hits with a visible
@@ -205,6 +236,89 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
         subjects = datacite_subjects(content, limit=4)
         kw = f" — {', '.join(subjects)}" if subjects else ""
         md_lines.append(f"- **[Globus {subject}]** *{title or '(untitled)'}*{kw}")
+    return WorkflowResult(markdown="\n".join(md_lines)).model_dump(mode="json")
+
+
+def _normalize_pdb_id(subject: str) -> str:
+    """Globus structural subjects are ``pdb:9IV9``; RCSB ids are ``9IV9``. Normalize to upper."""
+    return (subject or "").split(":", 1)[-1].strip().upper()
+
+
+async def _pdb_search_with_live_augmentation(term: str, index: str, publisher: str, result) -> dict:
+    """Merge the aggregate-index PDB hits with the authoritative live RCSB set.
+
+    ``result.organisms`` are the taxon-locked scientific-name spellings the facet pre-pass
+    enumerated; the live query uses the SAME spellings, so the union is still organism-
+    grounded. On an RCSB outage the function degrades LOUD to the aggregate-only rendering
+    with a named note (never a crash, never a silent drop).
+    """
+    from apecx_integration.agents.functional.rcsb_live import (  # noqa: PLC0415
+        RcsbLiveUnavailableError,
+        live_pdb_structures_for_organisms,
+    )
+    from apecx_integration.composition.schemas.workflow_result import (
+        WorkflowResult,  # noqa: PLC0415
+    )
+
+    # FIELD ASYMMETRY (deliberate, surfaced not hidden): result.organisms are spellings the
+    # Globus facet enumerated over ``pdb.polymer_entities.scientific_name`` in the PARTIAL
+    # aggregate index; the live query filters RCSB on ``rcsb_entity_source_organism.ncbi_scientific_name``.
+    # The union relies on those spellings agreeing. If the partial index never harvested a current
+    # spelling, the live query can still UNDERCOUNT (never over-count / contaminate — the filter is
+    # an exact organism-name match). Divergence the other way (in aggregate, not matched by the live
+    # query) is surfaced by the ``index_only`` block below, so it degrades VISIBLY, never silently.
+    try:
+        live = await live_pdb_structures_for_organisms(result.organisms, rows=100)
+    except RcsbLiveUnavailableError as exc:
+        log.warning("RCSB live augmentation unavailable for %r: %s", term, exc)
+        return _render_aggregate_only(
+            term,
+            index,
+            publisher,
+            result,
+            live_note=(
+                f"Live RCSB augmentation unavailable ({type(exc).__name__}); showing APECx "
+                f"aggregate-index records only (a partial harvest — counts may undercount PDB)."
+            ),
+        )
+
+    agg_ids = {_normalize_pdb_id(h.get("subject") or "") for h in result.hits}
+    live_ids = {s.pdb_id.upper() for s in live}
+    index_only = sorted(agg_ids - live_ids)
+
+    in_index = sum(1 for s in live if s.pdb_id.upper() in agg_ids)
+    organisms_label = ", ".join(result.organisms)
+    md_lines = [
+        f"### Structural search: `{term}` on `{index}`",
+        "",
+        f"**{len(live)}** experimental PDB structure(s) for *{organisms_label}* "
+        f"(authoritative RCSB, taxon-locked on deposited organism):",
+        "",
+        f"> Provenance: {in_index} of these were present in the APECx aggregate index; the "
+        f"rest were sourced live from RCSB (current, authoritative), scoped to the taxon-"
+        f"resolved organism spelling(s) above. The aggregate index is a partial harvest "
+        f"(~27K of PDB's ~230K entries) and undercounts.",
+        "",
+    ]
+    for s in live:
+        bits = []
+        if s.resolution is not None:
+            bits.append(f"{s.resolution} Å")
+        if s.method:
+            bits.append(s.method)
+        if s.molecules:
+            bits.append(", ".join(s.molecules[:4]))
+        meta = f" — {' | '.join(bits)}" if bits else ""
+        md_lines.append(f"- **[PDB {s.pdb_id}]** *{s.title or '(untitled)'}*{meta}")
+
+    if index_only:
+        # Records the aggregate index carries but the RCSB organism-name query did not return
+        # (e.g. deposited under a spelling outside result.organisms) — surface them honestly.
+        md_lines.append("")
+        md_lines.append(
+            f"> Also in the APECx aggregate index but not matched by the live organism query "
+            f"({len(index_only)}): {', '.join(index_only)}"
+        )
     return WorkflowResult(markdown="\n".join(md_lines)).model_dump(mode="json")
 
 

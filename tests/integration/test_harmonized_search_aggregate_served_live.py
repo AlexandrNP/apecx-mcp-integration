@@ -49,13 +49,20 @@ def test_pdb_and_emdb_return_source_distinct_records():
 
 @needs_globus
 def test_pdb_tool_path_is_taxon_locked_no_cross_virus_leak():
-    """E3-2.3 lockstep: the MCP tool taxon-locks a CHIKV term — West Nile excluded, hits non-empty."""
+    """E3-2.3 lockstep: the MCP tool taxon-locks a CHIKV term — West Nile excluded, hits non-empty.
+
+    Since 2026-10-07 the PDB tool path AUGMENTS the (partial) aggregate index with the
+    authoritative live RCSB set, scoped to the SAME taxon-resolved organism spellings — so
+    hits render as ``[PDB <id>]`` and the result is the complete CHIKV structure set. The
+    taxon-lock invariant is unchanged: West Nile must still be excluded.
+    """
     from apecx_integration.mcp_surface.tools.harmonized_search import harmonized_search
 
     out = asyncio.run(harmonized_search(term="chikungunya envelope", index="pdb"))
     assert out["status"] == "ok", out
     md = out["markdown"]
-    # CC-1: non-empty real result (at least one Globus PDB accession rendered).
-    assert "[Globus pdb:" in md, md[:400]
+    # CC-1: non-empty real result (authoritative RCSB-augmented PDB structures rendered).
+    assert "[PDB " in md, md[:400]
+    assert "authoritative RCSB" in md, md[:400]
     # Taxon precision: the free-text baseline leaks a West Nile structure; the tool must not.
     assert "west nile" not in md.lower(), "MCP tool leaked a West Nile structure"

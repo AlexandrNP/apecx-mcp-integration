@@ -37,6 +37,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/agents/functional/_cache.py` | On-disk JSON cache for the functional-annotation clients (E3-3, CC-4). |
 | `src/apecx_integration/agents/functional/_http.py` | Shared async HTTP-with-retry base for the functional-annotation clients. |
 | `src/apecx_integration/agents/functional/iedb_client.py` | IEDB client — known B/T-cell epitopes for an antigen (E3-3.3, bonus). |
+| `src/apecx_integration/agents/functional/rcsb_live.py` | Live RCSB PDB structural search — authoritative, current, taxon-filtered. |
 | `src/apecx_integration/agents/functional/residue_annotation.py` | Residue-level annotation orchestration + numbering bridge + cross-check (E3-3.4). |
 | `src/apecx_integration/agents/functional/sifts_client.py` | SIFTS client — PDB→UniProt accession + author-numbering residue bridge (E3-3.1). |
 | `src/apecx_integration/agents/functional/uniprot_client.py` | UniProt client — residue-level sequence features + canonical sequence (E3-3.2). |

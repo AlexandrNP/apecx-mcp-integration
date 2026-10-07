@@ -131,6 +131,16 @@ _IEDB client — known B/T-cell epitopes for an antigen (E3-3.3, bonus)._
   - `async def search_epitopes(self, accession: str)` — Return the epitopes whose parent source antigen is ``UNIPROT:<accession>``.
   - `def _parse(rows: Any)`
 
+## `src/apecx_integration/agents/functional/rcsb_live.py`
+_Live RCSB PDB structural search — authoritative, current, taxon-filtered._
+
+- class `RcsbLiveUnavailableError(RuntimeError)` — RCSB Search/Data API unreachable or erroring after retries — caller degrades loud.
+- class `LiveStructure` — One RCSB structure with the metadata the structural MCP tool renders.
+- `async def _post_json(client: httpx.AsyncClient, url: str, payload: dict)` — POST ``payload`` as JSON with retry/backoff on transient errors.
+- `async def search_pdb_ids_by_organism_names(names: list[str], *, rows: int=100, timeout: float=_DEFAULT_TIMEOUT)` — PDB entry IDs whose source-organism scientific name is one of ``names`` (exact match).
+- `async def fetch_entry_metadata(ids: list[str], *, timeout: float=_DEFAULT_TIMEOUT)` — Batch-fetch title/resolution/method/organisms/molecules for ``ids`` via the Data API.
+- `async def live_pdb_structures_for_organisms(names: list[str], *, rows: int=100, timeout: float=_DEFAULT_TIMEOUT)` — Authoritative PDB structures for the taxon-resolved organism ``names``.
+
 ## `src/apecx_integration/agents/functional/residue_annotation.py`
 _Residue-level annotation orchestration + numbering bridge + cross-check (E3-3.4)._
 
@@ -3205,6 +3215,9 @@ _MCP tool — drive the harmonized_search nanobrain workflow._
 - `def _workflow_dir()` — Locate the harmonized_search workflow directory.
 - `def _load_workflow()` — Lazy-load and cache the harmonized_search workflow.
 - `async def _aggregate_served_search(term: str, index: str)` — Taxon-precise structural search for an aggregate-served index (pdb/emdb).
+- `def _render_aggregate_only(term: str, index: str, publisher: str, result, *, live_note: str='')` — Render ONLY the APECx aggregate-index hits (the pre-augmentation path).
+- `def _normalize_pdb_id(subject: str)` — Globus structural subjects are ``pdb:9IV9``; RCSB ids are ``9IV9``. Normalize to upper.
+- `async def _pdb_search_with_live_augmentation(term: str, index: str, publisher: str, result)` — Merge the aggregate-index PDB hits with the authoritative live RCSB set.
 - `async def harmonized_search(term: str, index: str, entity_type: str='')` — Search any APECx Globus index (BV-BRC genomes / proteins / protein structures /
 
 ## `src/apecx_integration/mcp_surface/tools/hpc.py`
