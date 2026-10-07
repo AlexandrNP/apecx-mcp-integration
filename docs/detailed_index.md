@@ -236,6 +236,15 @@ _Paper-coverage aggregation over a gazetteer-tagged corpus._
 - `def coverage_to_json(coverage: list[dict])` — Serialize coverage entries as pretty JSON with stable key order.
 - `def harvest_and_build(term: str, gazetteer: Gazetteer, *, max_papers: int=20)` — Harvest PubMed abstracts for ``term`` then build coverage (deliverable-1).
 
+## `src/apecx_integration/agents/literature/fulltext.py`
+_Open-access full-text retrieval for PubMed records (Europe PMC)._
+
+- class `FulltextUnavailableError(RuntimeError)` — Europe PMC unreachable or erroring after retries — caller degrades loud (keep abstracts).
+- `def _extract_body_text(xml: str, *, char_cap: int)` — Pull readable body text out of a JATS fullTextXML document.
+- `async def _fetch_one(client: httpx.AsyncClient, pmcid: str, *, char_cap: int)` — Fetch + extract one PMCID's body text. ``""`` on a 404/no-body (not open-access);
+- `async def fetch_fulltext_many(pmcids: list[str], *, concurrency: int=_DEFAULT_CONCURRENCY, char_cap: int=_DEFAULT_CHAR_CAP, timeout: float=_DEFAULT_TIMEOUT)` — Fetch open-access body text for each PMCID, bounded-concurrency.
+- `async def fetch_fulltext(pmcid: str, *, char_cap: int=_DEFAULT_CHAR_CAP, timeout: float=_DEFAULT_TIMEOUT)` — Open-access body text for one PMCID (``""`` when not open-access).
+
 ## `src/apecx_integration/agents/literature/gazetteer.py`
 _Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
 
@@ -256,7 +265,8 @@ _Bounded PubMed harvest → literature-record normalization._
 ## `src/apecx_integration/agents/literature/pipeline.py`
 _Harvest → stamp glue: the thin seam that turns a search term into stamped_
 
-- `def harvest_and_stamp(term: str, gazetteer: Gazetteer, *, max_papers: int=20)` — Harvest up to ``max_papers`` PubMed records for ``term`` and stamp each
+- `def harvest_and_stamp(term: str, gazetteer: Gazetteer, *, max_papers: int=20, with_fulltext: bool=True)` — Harvest up to ``max_papers`` PubMed records for ``term``, stamp each with its taxon
+- `def _attach_fulltext(records: list[dict])` — Populate ``record["full_text"]`` for records with a PMCID (open-access subset).
 
 ## `src/apecx_integration/agents/literature/resolve.py`
 _Resolve an organism name to its NCBITaxon PURL IRI._
@@ -2357,6 +2367,7 @@ _HarvestStampStep — the harvest front-end that makes literature_rag runnable_
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/literature_rag_step.py`
 _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer._
 
+- `def _evidence_text(record: dict[str, Any], *, char_cap: int)` — The richest grounding text for a record: open-access ``full_text`` (capped) when
 - class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — retrieve top-k records, synthesize a cited answer.
   - `def _get_config_class(cls)`
   - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the RAG envelope.

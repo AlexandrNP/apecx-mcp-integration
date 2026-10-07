@@ -1,7 +1,9 @@
 """LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer.
 
 Second (and final) step of the literature_rag workflow. Given a scientist
-``question`` plus a set of ``filtered_records`` (each ``{pmid, title, abstract}``),
+``question`` plus a set of ``filtered_records`` (each ``{pmid, title, abstract}``,
+and — for the open-access subset — ``full_text``; synthesis grounds on ``full_text``
+when present via :func:`_evidence_text`, since abstracts omit epitope/animal-model detail),
 this step:
 
   1. Embeds the records + the question with sentence-transformers
@@ -72,6 +74,24 @@ _EMBED_MODEL_NAME = "all-mpnet-base-v2"
 _TOP_K = 5
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
+
+#: Per-paper char caps on the evidence text (full text when open-access, else abstract).
+#: Desktop hands evidence to a large-context frontier host, so it can carry generous full
+#: text; the backend LLM is often a small local model with a tight context + a size gate,
+#: so its chunk text is capped tighter. Abstracts are short and unaffected by either cap.
+_FULLTEXT_DESKTOP_CAP = 12_000
+_FULLTEXT_BACKEND_CAP = 4_000
+
+
+def _evidence_text(record: dict[str, Any], *, char_cap: int) -> str:
+    """The richest grounding text for a record: open-access ``full_text`` (capped) when
+    present, else the ``abstract``. Abstracts omit the epitope-residue / animal-model detail
+    specialized questions need; the full-text body carries it (fetched upstream by the
+    literature pipeline), so synthesis grounds on it when available."""
+    full_text = str(record.get("full_text") or "").strip()
+    if full_text:
+        return full_text[:char_cap]
+    return str(record.get("abstract") or "").strip()
 
 
 class LiteratureRagStep(BaseStep):
@@ -190,10 +210,14 @@ class LiteratureRagStep(BaseStep):
         for rec in records:
             pmid = str(rec.get("pmid") or "").strip()
             title = str(rec.get("title") or "").strip()
-            abstract = str(rec.get("abstract") or "").strip()
+            evidence = _evidence_text(rec, char_cap=_FULLTEXT_DESKTOP_CAP)
             lines.append(f"## [PMID:{pmid}] {title}".rstrip() if pmid else f"## {title}".rstrip())
-            if abstract:
-                lines.append(abstract)
+            if str(rec.get("full_text") or "").strip():
+                # Name the evidence tier so the host knows this is body text, not just the
+                # abstract (and that it may be truncated to the per-paper cap).
+                lines.append("_(open-access full text — may be truncated)_")
+            if evidence:
+                lines.append(evidence)
             lines.append("")
         return "\n".join(lines).strip()
 
@@ -262,11 +286,14 @@ class LiteratureRagStep(BaseStep):
         index_to_pmid: dict[int, str] = {}
         for i, rec in enumerate(topk, start=1):
             title = str(rec.get("title") or "").strip()
-            abstract = str(rec.get("abstract") or "").strip()
+            # Ground on open-access full text (capped tighter than desktop — the backend LLM
+            # is often a small local model with a tight context + a size gate) when present,
+            # else the abstract.
+            evidence = _evidence_text(rec, char_cap=_FULLTEXT_BACKEND_CAP)
             pmid = str(rec.get("pmid") or "").strip()
             chunks.append(
                 {
-                    "text": (title + "\n" + abstract).strip(),
+                    "text": (title + "\n" + evidence).strip(),
                     "id": pmid or None,
                     "source": f"PMID:{pmid}" if pmid else None,
                 }

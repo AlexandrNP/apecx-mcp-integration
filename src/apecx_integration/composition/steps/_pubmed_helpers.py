@@ -192,11 +192,18 @@ def container_to_dict(container: Any) -> dict[str, Any]:
         doi = getattr(identifier, "identifier", "") or ""
 
     pmid = ""
+    pmcid = ""
     for alt in getattr(container, "alternateIdentifiers", None) or []:
-        if getattr(alt, "alternateIdentifierType", "") == "PMID":
-            pmid = getattr(alt, "alternateIdentifier", "") or ""
-            if pmid:
-                break
+        alt_type = getattr(alt, "alternateIdentifierType", "")
+        alt_value = getattr(alt, "alternateIdentifier", "") or ""
+        if alt_type == "PMID" and not pmid:
+            pmid = alt_value
+        elif alt_type == "PMCID" and not pmcid:
+            # The PMCID is already parsed into the container (loader stores the eFetch
+            # <ArticleId IdType="pmc">); it was DROPPED here, which forced full-text
+            # retrieval to re-resolve PMID->PMCID. Carry it so fulltext.py can fetch
+            # the open-access body directly.
+            pmcid = alt_value
 
     # The abstract — parsed by the loader from <AbstractText> into the DataCite ``descriptions``
     # list — was previously DROPPED here, so every downstream consumer (the synthesizer prompt
@@ -214,6 +221,7 @@ def container_to_dict(container: Any) -> dict[str, Any]:
         "year": str(year) if year else "",
         "journal": journal,
         "pmid": pmid,
+        "pmcid": pmcid,
         "abstract": abstract,
     }
 

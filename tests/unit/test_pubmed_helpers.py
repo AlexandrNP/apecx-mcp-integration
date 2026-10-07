@@ -230,6 +230,7 @@ def test_container_to_dict_minimal_returns_empty_strings():
         "year": "",
         "journal": "",
         "pmid": "",
+        "pmcid": "",
         "abstract": "",
     }
 
@@ -315,6 +316,21 @@ def test_container_to_dict_pmid_from_alternate_identifiers():
     )
     out = container_to_dict(container)
     assert out["pmid"] == "12345"
+
+
+def test_container_to_dict_carries_pmcid_from_alternate_identifiers():
+    """The PMCID (parsed from the eFetch <ArticleId IdType="pmc">) must be carried as
+    ``pmcid`` — it was previously DROPPED, forcing full-text retrieval to re-resolve
+    PMID->PMCID. Both PMID and PMCID come through together."""
+    container = _make_container(
+        alternateIdentifiers=[
+            SimpleNamespace(alternateIdentifierType="PMID", alternateIdentifier="12345"),
+            SimpleNamespace(alternateIdentifierType="PMCID", alternateIdentifier="PMC678"),
+        ]
+    )
+    out = container_to_dict(container)
+    assert out["pmid"] == "12345"
+    assert out["pmcid"] == "PMC678"
 
 
 def test_container_to_dict_doi_from_identifier():
