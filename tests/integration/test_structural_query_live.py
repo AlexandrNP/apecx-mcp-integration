@@ -205,3 +205,81 @@ def test_curated_virus_name_path_unaffected_by_fallback():
     assert result.note is None, result.note
     assert len(result.hits) >= 1
     assert any("mayaro" in o.lower() for o in result.organisms), result.organisms
+
+
+@needs_globus
+def test_keyword_residual_does_not_silently_zero_out_taxon_locked_records():
+    """Regression (2026-10-07): the structural-keyword residual must NOT silently drop
+    taxon-correct records.
+
+    BEFORE the fix the PDB branch applied the keyword tokens (e.g. "glycoprotein") as a
+    REQUIRED free-text ``q`` ANDed on top of the taxon-locked ``match_any`` filter. For
+    Nipah that zeroed out the result — the 4 real Nipah PDB records' DataCite payloads do
+    not carry the literal token "glycoprotein" — even though the taxon-lock alone matches
+    them. The fix falls back to ``q='*'`` (taxon-lock only) when the keyword query is empty,
+    so a taxon-correct, non-empty set is never silently dropped.
+    """
+    from apecx_integration.agents.globus_search import client as globus_client
+    from apecx_integration.agents.globus_search.structural_query import (
+        enumerate_organisms,
+        search_one_source,
+    )
+
+    organisms = enumerate_organisms(["nipah"])
+    assert organisms, "fixture: expected Nipah scientific_name spellings in the index"
+
+    # BEFORE-shape proof: the keyword residual ANDed over the taxon-lock returns ZERO,
+    # while the taxon-lock alone (q='*') returns real records. If this ever stops holding
+    # (the index gains glycoprotein-keyworded Nipah records) the bug shape is gone.
+    filters = [
+        {"type": "match_any", "field_name": "publisher.name", "values": ["RCSB PDB"]},
+        {
+            "type": "match_any",
+            "field_name": "pdb.polymer_entities.scientific_name",
+            "values": organisms,
+        },
+    ]
+    kw_only = globus_client.search('"glycoprotein"', max_results=50, filters=filters)
+    taxon_only = globus_client.search("*", max_results=50, filters=filters)
+    assert taxon_only, "fixture: taxon-lock alone must match real Nipah records"
+    # Enforce the bug SHAPE, not just document it: the keyword residual ANDed over the
+    # taxon-lock must return zero here. If the index later gains a glycoprotein-keyworded
+    # Nipah record this fails loudly — a signal to refresh the fixture, not a silent pass
+    # that stops exercising the fallback path.
+    assert not kw_only, (
+        "fixture: expected the keyword-ANDed query to be empty (the bug shape); "
+        f"got {len(kw_only)} — index changed, refresh this regression fixture."
+    )
+
+    # AFTER: the tool-level query recovers the taxon-locked records instead of a silent zero.
+    result = search_one_source(
+        "nipah glycoprotein", "pdb", "RCSB PDB", taxon_id=None, max_results=50
+    )
+    assert result.note is None, result.note
+    assert len(result.hits) >= 1, "CC-1: the fallback must recover real taxon-locked records"
+    assert len(result.hits) >= len(kw_only)
+    # Every recovered record is genuinely Nipah/Henipavirus-deposited (taxon-locked, no bleed).
+    from apecx_integration.agents.globus_search._datacite import datacite_organisms
+
+    for h in result.hits:
+        orgs = datacite_organisms(h.get("content") or {})
+        assert any(("nipah" in o.lower() or "henipavirus" in o.lower()) for o in orgs), (
+            h.get("subject"),
+            orgs,
+        )
+
+
+@needs_globus
+def test_keyword_focus_preserved_when_it_yields_hits():
+    """No-regression companion: when the keyword query DOES match (Chikungunya), the
+    focused keyword query is used — the ``q='*'`` fallback fires ONLY on an empty result."""
+    from apecx_integration.agents.globus_search.structural_query import search_one_source
+
+    result = search_one_source(
+        "chikungunya envelope glycoprotein", "pdb", "RCSB PDB", taxon_id=37124, max_results=50
+    )
+    assert result.note is None, result.note
+    assert len(result.hits) >= 1
+    # The focused keyword query was used (not the bare '*' fallback).
+    assert result.query_used != "*", result.query_used
+    assert "glycoprotein" in result.query_used or "envelope" in result.query_used

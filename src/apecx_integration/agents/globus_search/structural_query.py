@@ -364,12 +364,22 @@ def search_one_source(
                 "results not taxon-locked: no PDB organism spelling matched "
                 f"{resolution.names!r} in the structural corpus for {query!r}."
             )
-        q = " ".join(_quote_advanced_phrase(t) for t in (kw_tokens or resolution.terms))
         filters = [
             pub_filter,
             {"type": "match_any", "field_name": _PDB_SCIENTIFIC_NAME_FIELD, "values": organisms},
         ]
+        # The match_any on scientific_name ALREADY taxon-locks the result; the structural-keyword
+        # residual (e.g. "glycoprotein") is a FOCUSING signal applied as the free-text ``q``. But a
+        # required ``q`` silently drops taxon-correct records whose DataCite payload lacks the literal
+        # token — verified live 2026-10-07: Nipah q='"glycoprotein"' -> 0 while q='*' -> 4 real records
+        # (7SKT/7SKU/9IV9/9KNZ). So when the keyword-focused query returns nothing, fall back to the
+        # taxon-locked set (q='*') rather than a silent zero. note stays None (the match_any still
+        # guarantees taxon relevance), so the lockstep consumer (StructuralEvidenceStep) keeps these.
+        q = " ".join(_quote_advanced_phrase(t) for t in (kw_tokens or resolution.terms))
         hits = globus_client.search(q, max_results=max_results, filters=filters)
+        if not hits:
+            q = "*"
+            hits = globus_client.search(q, max_results=max_results, filters=filters)
         _tag(hits, source)
         return StructuralSearchResult(hits=hits, note=None, organisms=organisms, query_used=q)
 
