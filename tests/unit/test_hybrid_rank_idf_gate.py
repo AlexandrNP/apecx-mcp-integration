@@ -92,6 +92,65 @@ def test_gate_returns_fewer_than_15_on_sharp_drop():
     assert pmids == {f"strong{i}" for i in range(4)}
 
 
+def _assert_rare_match_protected(m: int):
+    """Invariant 1 (RARE-MATCH PROTECTION) for a question with 1 rare + ``m`` common facets.
+
+    Tester A's counterexample: TOP records carry all facets, RAREONLY carries only the single
+    highest-IDF facet, and a large COMMONONLY pile carries only the ``m`` common facets.
+    RAREONLY must SURVIVE the gate; the COMMONONLY pile must be trimmed.
+
+    This is exactly where the rejected fraction-of-SUM gate failed: TOP's SUM dwarfs
+    RAREONLY's lone rare-facet SUM, so a high fraction of TOP's score evicts RAREONLY while
+    COMMONONLY (SUM of m common hits) clears it — backwards. The discriminative-mass gate
+    thresholds the PEAK instead, so RAREONLY (peak == the best peak) always survives and the
+    COMMONONLY pile (peak == a common facet's low IDF) is trimmed no matter how many it stacks.
+    """
+    common = ["alpha", "bravo", "charlie"][:m]
+    question = "zephyr " + " ".join(common)
+    all_facets_title = question
+    # 2 TOP + 1 RAREONLY give the gate 3 discriminative survivors, so the recall floor
+    # (min(_GATE_MIN_KEEP=3, n)) is met WITHOUT padding any common-only record back in.
+    top = [_rec(f"top{i}", title=all_facets_title) for i in range(2)]
+    rareonly = [_rec("rareonly", title="zephyr")]
+    # 30 commons drive idf(common) toward its 1.0 floor and idf(zephyr) up -> a sharp peak gap.
+    commononly = [_rec(f"common{i}", title=" ".join(common)) for i in range(30)]
+
+    ranked = _rag_step()._hybrid_rank(question, top + rareonly + commononly, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert "rareonly" in pmids  # the lone rare-facet match is NOT gated out
+    assert not any(p.startswith("common") for p in pmids)  # common-only pile trimmed, not padded
+    assert pmids == {"top0", "top1", "rareonly"}
+
+
+def test_rare_match_protected_with_two_common_facets():
+    _assert_rare_match_protected(m=2)
+
+
+def test_rare_match_protected_with_three_common_facets():
+    _assert_rare_match_protected(m=3)
+
+
+def test_common_pile_trimmed_despite_high_sum_regardless_of_stack_depth():
+    """Invariant 2 (COMMON-PILE TRIMMING): a record matching ONLY common facets is trimmed
+    even when its SUM is large, and stacking MORE commons never rescues it.
+
+    Question = 1 rare ('zephyr') + 3 common. The off-topic pile matches all 3 commons (a big
+    SUM of 3.0) but no rare facet; the on-target tier matches the rare facet. The pile's
+    discriminative PEAK is just one common facet's IDF (~1.0) however many commons it stacks,
+    so it falls below the peak gate while the on-target tier (peak == rare IDF) survives.
+    """
+    question = "zephyr alpha bravo charlie"
+    on_target = [_rec(f"on{i}", title="zephyr alpha bravo charlie") for i in range(3)]
+    # Every pile record stacks all 3 common facets -> maximal common SUM, zero rare content.
+    pile = [_rec(f"pile{i}", title="alpha bravo charlie") for i in range(20)]
+
+    ranked = _rag_step()._hybrid_rank(question, on_target + pile, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert len(ranked) == 3  # only the on-target tier survives — NOT a padded 15
+    assert pmids == {f"on{i}" for i in range(3)}
+    assert not any(p.startswith("pile") for p in pmids)  # common-only pile dropped despite high SUM
+
+
 def test_gate_respects_min_floor_and_max_cap():
     step = _rag_step()
     # One strongly-relevant record (rare facet) among many irrelevant-but-usable ones.

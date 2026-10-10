@@ -86,11 +86,19 @@ _EMBED_MODEL_NAME = "all-mpnet-base-v2"
 #: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
 #: as the one cap — it no longer pre-caps.
 _TOP_K = 15
-#: Relevance-gate cutoff (cycle-2 lever b): after sorting by the IDF keyword score, keep
-#: records whose score is at least this FRACTION of the top record's score; drop the
-#: low-relevance tail. Chosen over an elbow/largest-gap rule because a fraction-of-top is
-#: scale-free, has no special-casing for 1-2 record sets, and is predictable to reason about.
-_GATE_FRACTION = 0.4
+#: Discriminative-mass gate cutoff (supersedes the rejected scalar fraction-of-SUM gate,
+#: incl. the 0.4 -> 0.6 bump): after ranking, keep a record only if its discriminative PEAK
+#: — the IDF weight of the single RAREST question facet it matches — is at least this
+#: fraction of the best peak in the candidate set. Gating the PEAK, not the SUM, is the fix:
+#: the hybrid score is a SUM of per-facet IDF weights, so a record stacking several COMMON
+#: (low-IDF) facets could out-score — and under the old fraction-of-SUM gate, evict — a
+#: record matching the single RARE (high-IDF) facet. A peak threshold means common pile-ups
+#: can never buy past the gate (their peak stays at the common facet's low IDF no matter how
+#: many they stack); only matching a genuinely rare facet clears it. So a lone rare-facet
+#: match always survives (its peak == the best peak) while common-only piles are trimmable.
+#: 0.5 = "the rarest facet a kept record matches is at least half as discriminative as the
+#: best available" — scale-free, no 1-2 record special-casing.
+_GATE_PEAK_FRACTION = 0.5
 #: Recall floor: never return fewer than this many usable records (capped by availability),
 #: even when the gate would cut harder — protects against an over-aggressive cut.
 _GATE_MIN_KEEP = 3
@@ -236,11 +244,13 @@ class LiteratureRagStep(BaseStep):
           * TIEBREAK — embedding cosine (:meth:`_embed_sims`). Degrades LOUD to zeros when
             sentence-transformers cannot load, collapsing the order to keyword-only.
 
-        Gate (lever b): keep records scoring at least ``_GATE_FRACTION`` of the top keyword
-        score, always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records — so a question
-        with few strongly-relevant records yields FEWER than ``k``, never a padded ``k``.
-        If NO facet matches any record (all keyword scores 0), fall back to embedding-cosine
-        top-``k``. Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
+        Gate (discriminative-mass): keep records whose discriminative PEAK (the IDF of the
+        single rarest facet they match) is at least ``_GATE_PEAK_FRACTION`` of the best peak,
+        always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records — so a question with few
+        strongly-relevant records yields FEWER than ``k``, never a padded ``k``, and a
+        common-only pile-up cannot survive by stacking low-IDF facets. If NO facet matches
+        any record (all keyword scores 0), fall back to embedding-cosine top-``k``.
+        Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
         """
         usable = [r for r in records if self._record_text(r)]
         if not usable:
@@ -276,14 +286,23 @@ class LiteratureRagStep(BaseStep):
             emb_order = sorted(range(len(usable)), key=lambda i: sims[i], reverse=True)
             return [usable[i] for i in emb_order[:k]]
 
-        # Sort by (IDF keyword score DESC, cosine DESC). Stable sort keeps input order for
-        # full ties, so repeated runs on identical candidates are deterministic.
-        order = sorted(range(len(usable)), key=lambda i: (kw_scores[i], sims[i]), reverse=True)
+        # A record's discriminative PEAK = the IDF of the single rarest facet it matches.
+        # Making it the PRIMARY sort key (IDF-sum DESC then cosine as tiebreaks) means a
+        # record that hits the rare discriminative facet ranks above one that merely piles
+        # up common facets. Stable sort keeps input order for full ties -> deterministic.
+        disc_peak = [max((idf[f] for f in present), default=0.0) for present in present_per_record]
+        order = sorted(
+            range(len(usable)),
+            key=lambda i: (disc_peak[i], kw_scores[i], sims[i]),
+            reverse=True,
+        )
 
-        # Adaptive relevance gate: keep the high-relevance head, drop the diluting tail.
-        top_score = kw_scores[order[0]]
-        threshold = _GATE_FRACTION * top_score
-        kept = [i for i in order if kw_scores[i] >= threshold]
+        # Discriminative-mass gate: keep records whose peak is at least _GATE_PEAK_FRACTION
+        # of the best peak. Thresholding the PEAK (not the SUM) is why stacking common
+        # low-IDF facets can never clear the gate, while a lone rare-facet match always does.
+        best_peak = disc_peak[order[0]]
+        threshold = _GATE_PEAK_FRACTION * best_peak
+        kept = [i for i in order if disc_peak[i] >= threshold]
         floor = min(_GATE_MIN_KEEP, len(usable))
         if len(kept) < floor:
             kept = order[:floor]
