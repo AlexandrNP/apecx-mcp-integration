@@ -128,8 +128,10 @@ def test_unknown_verdict_is_kept(monkeypatch):
     assert set(pmids) == {"mk_y0", "mk_y1", "mk_q0"}  # UNKNOWN kept alongside the yeses
 
 
-def test_floor_honoured_when_verify_rejects_most(monkeypatch):
-    """Verify says "no" to 4 of 5; the recall floor (min(3,5)=3) pads back from the full set."""
+def test_survivors_below_floor_return_survivors_not_padded(monkeypatch):
+    """Fix 1: verify rejects 4 of 5; survivors (1) < floor (min(3,5)=3) -> return ONLY the
+    survivor(s). The floor must NOT pad back up with LLM-rejected records (precision-first:
+    a smaller, clean set is correct). The no-reinject invariant: no rejected record appears."""
     monkeypatch.setenv("APECX_ENABLE_LLM_VERIFY", "1")
     step = _rag_step()
     records = _recs(["mk_y0", "mk_n0", "mk_n1", "mk_n2", "mk_n3"])
@@ -137,9 +139,25 @@ def test_floor_honoured_when_verify_rejects_most(monkeypatch):
     step._build_verify_llm = lambda: fake
 
     ranked = step._hybrid_rank(_Q, records, 15)
-    # verify keeps 1; floor pads to 3 from the full usable set (never below the floor).
-    assert len(ranked) == 3
-    assert "mk_y0" in {r["pmid"] for r in ranked}  # the one relevant record is retained
+    pmids = {r["pmid"] for r in ranked}
+    # Exactly the lone survivor — NOT padded to the floor, NO rejected record re-injected.
+    assert pmids == {"mk_y0"}
+    assert not (pmids & {"mk_n0", "mk_n1", "mk_n2", "mk_n3"})  # no-reinject invariant
+
+
+def test_floor_repopulates_from_survivors_only(monkeypatch):
+    """Fix 1: verify rejects most but survivors (4) >= floor -> keep exactly the survivors; a
+    stub-REJECTED record NEVER appears in the output (the no-reinject invariant)."""
+    monkeypatch.setenv("APECX_ENABLE_LLM_VERIFY", "1")
+    step = _rag_step()
+    records = _recs(["mk_y0", "mk_y1", "mk_y2", "mk_y3", "mk_n0", "mk_n1"])
+    fake = _FakeLLM({"mk_y0": "yes", "mk_y1": "yes", "mk_y2": "yes", "mk_y3": "yes"}, default="no")
+    step._build_verify_llm = lambda: fake
+
+    ranked = step._hybrid_rank(_Q, records, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert pmids == {"mk_y0", "mk_y1", "mk_y2", "mk_y3"}  # survivors only
+    assert not (pmids & {"mk_n0", "mk_n1"})  # no-reinject invariant: rejected never return
 
 
 def test_cap_holds_under_verify(monkeypatch):
@@ -151,6 +169,61 @@ def test_cap_holds_under_verify(monkeypatch):
 
     ranked = step._hybrid_rank(_Q, records, 15)
     assert len(ranked) == 15  # NOT 20
+
+
+# --- Fix 2: protect top retrieval-confidence tier from weak-verifier over-rejection ---------
+
+
+def _ce_rerank_by_marker(scores: dict[str, float]):
+    """Stub for ``_cross_encoder_rerank``: score each record by the CE value for its title marker.
+
+    Assigned as an instance attribute, so the signature is ``(question, records)`` (no ``self``).
+    Every value is >= 0.5 so all survive the absolute CE gate and reach the verify stage, where the
+    IN-POOL quantile decides which are protected.
+    """
+
+    def _fn(_question, records):
+        return [next(v for m, v in scores.items() if m in (r.get("title") or "")) for r in records]
+
+    return _fn
+
+
+def test_top_ce_survives_no_low_ce_dropped(monkeypatch):
+    """Fix 2: a top retrieval-confidence (CE) record SURVIVES a confident LLM "no"; a low-CE
+    record with the SAME "no" is DROPPED. The tier is the top quartile of the in-pool CE scores."""
+    monkeypatch.setenv("APECX_ENABLE_LLM_VERIFY", "1")
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    records = _recs(["mk_hi", "mk_lo0", "mk_lo1", "mk_lo2"])
+    # CE sigmoids: one clear top (0.95) + a low cluster. 75th pctile of [.51,.52,.55,.95] = 0.65,
+    # so ONLY mk_hi (0.95) is in the top tier; the rest are the uncertain tail.
+    step._cross_encoder_rerank = _ce_rerank_by_marker(
+        {"mk_hi": 0.95, "mk_lo0": 0.55, "mk_lo1": 0.52, "mk_lo2": 0.51}
+    )
+    step._build_verify_llm = lambda: _FakeLLM({}, default="no")  # LLM says "no" to EVERY candidate
+
+    ranked = step._hybrid_rank(_Q, records, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert "mk_hi" in pmids  # top-tier retrieval hit survives the LLM "no"
+    assert not (pmids & {"mk_lo0", "mk_lo1", "mk_lo2"})  # uncertain tail dropped on "no"
+
+
+def test_verify_is_deterministic(monkeypatch):
+    """Determinism: same inputs -> identical ordered output across repeated runs (both fixes on)."""
+    monkeypatch.setenv("APECX_ENABLE_LLM_VERIFY", "1")
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    records = _recs(["mk_hi", "mk_lo0", "mk_lo1", "mk_n0", "mk_n1"])
+    step._cross_encoder_rerank = _ce_rerank_by_marker(
+        {"mk_hi": 0.95, "mk_lo0": 0.6, "mk_lo1": 0.58, "mk_n0": 0.55, "mk_n1": 0.52}
+    )
+    step._build_verify_llm = lambda: _FakeLLM(
+        {"mk_hi": "no", "mk_n0": "no", "mk_n1": "no"}, default="yes"
+    )
+
+    first = [r["pmid"] for r in step._hybrid_rank(_Q, records, 15)]
+    second = [r["pmid"] for r in step._hybrid_rank(_Q, records, 15)]
+    assert first == second  # byte-identical order on repeat
 
 
 # --- wiring guard: flag OFF is identical to the pre-verify output --------------------------

@@ -147,6 +147,15 @@ _GATE_SEM_FRACTION = 0.5
 #: ladder (CE -> bi-encoder bar -> coverage-only) when the CrossEncoder cannot load; the recall
 #: floor still applies after the bar.
 _GATE_CE_ABS = 0.5
+#: Over-rejection protection quantile (verify Fix 2): a verify candidate whose retrieval-
+#: confidence score (joint CE sigmoid when the CE stage ran, else the bi-encoder cosine) is at
+#: or above this quantile of the CURRENT verify pool is in the TOP retrieval-confidence tier and
+#: SURVIVES even a confident LLM "no" — a single weak-verifier "no" must not drop a candidate the
+#: retrieval ranker is highly confident about. 0.75 = the top quartile; it is a standard quantile
+#: of the IN-POOL score distribution, NOT an eval-specific constant (the actual cut VALUE is
+#: derived from the pool at run time). The LLM verdict stays decisive for the uncertain
+#: middle/tail (below the quantile) and whenever there is no positive retrieval signal.
+_VERIFY_PROTECT_QUANTILE = 0.75
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -182,6 +191,27 @@ def _sigmoid(x: float) -> float:
         return 1.0 / (1.0 + math.exp(-x))
     e = math.exp(x)
     return e / (1.0 + e)
+
+
+def _quantile(values: list[float], q: float) -> float:
+    """Linear-interpolated ``q``-quantile (``q`` in [0, 1]) of ``values`` — pure-Python, numpy-free.
+
+    Matches numpy's default ``'linear'`` method so the derived tier cut is a STANDARD statistic of
+    the current candidate pool, not a hand-tuned constant. Empty ``values`` -> ``0.0``. Used by
+    :meth:`LiteratureRagStep._top_confidence_positions` to turn the fixed protection QUANTILE into a
+    concrete in-pool score threshold at run time.
+    """
+    xs = sorted(values)
+    if not xs:
+        return 0.0
+    if len(xs) == 1:
+        return xs[0]
+    pos = q * (len(xs) - 1)
+    lo = math.floor(pos)
+    hi = math.ceil(pos)
+    if lo == hi:
+        return xs[lo]
+    return xs[lo] + (xs[hi] - xs[lo]) * (pos - lo)
 
 
 def _cross_encoder_enabled() -> bool:
@@ -449,6 +479,22 @@ class LiteratureRagStep(BaseStep):
                 df[f] += 1
         return {f: math.log((n + 1) / (df[f] + 1)) + 1.0 for f in facets}
 
+    @staticmethod
+    def _top_confidence_positions(scores: list[float]) -> set[int]:
+        """Positions of the TOP retrieval-confidence tier within the in-pool ``scores`` (verify Fix 2).
+
+        A position is protected when its score is at or above the ``_VERIFY_PROTECT_QUANTILE``
+        (top-quartile) value of ``scores`` — a quantile of THIS pool's own distribution, so the cut
+        VALUE is derived from the current candidates, never a fixed eval constant. When there is no
+        positive signal (empty, or every score <= 0 — e.g. the CE stage did not run AND embeddings
+        are unavailable so the cosines are all zero), the tier is EMPTY: with no retrieval confidence
+        to trust, the LLM verdict stays fully decisive. Aligned to the order of ``scores``.
+        """
+        if not scores or not any(s > 0.0 for s in scores):
+            return set()
+        threshold = _quantile(scores, _VERIFY_PROTECT_QUANTILE)
+        return {pos for pos, s in enumerate(scores) if s >= threshold}
+
     def _hybrid_rank(
         self, question: str, records: list[dict[str, Any]], k: int
     ) -> list[dict[str, Any]]:
@@ -492,15 +538,22 @@ class LiteratureRagStep(BaseStep):
              survivors of (1)+(2), an apecx LLM READS each candidate (title+abstract) and judges
              whether it SATISFIES the question's specific criterion — the signal the embedding /
              cross-encoder stages cannot provide for records that share all surface vocabulary.
-             DROPS only a confident "not relevant" verdict; keeps "relevant" or UNKNOWN. SKIPPED
-             (one loud warning, pre-verify set returned) when the LLM is unreachable or every call
-             errors. Default OFF -> this stage is absent and the pipeline is byte-identical to the
-             pre-verify behaviour.
+             DROPS a confident "not relevant" verdict (False) ONLY when the candidate is NOT in the
+             TOP retrieval-confidence tier (Fix 2: a top-quantile CE/cosine hit SURVIVES even a
+             weak-verifier "no"); keeps "relevant" or UNKNOWN. The tier is the top quantile
+             (``_VERIFY_PROTECT_QUANTILE``) of the in-pool CE sigmoid (or bi-encoder cosine) — a
+             pool-derived cut, no eval constant. SKIPPED (one loud warning, pre-verify set returned)
+             when the LLM is unreachable or every call errors. Default OFF -> this stage is absent
+             and the pipeline is byte-identical to the pre-verify behaviour.
 
-        The kept set is always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records: the recall
-        floor applies AFTER all bars (coverage, CE/bi-encoder, LLM verify), so none can cut below
-        ``min(_GATE_MIN_KEEP, n)``. If NO facet matches any record (all keyword scores 0), fall back
-        to embedding-cosine top-``k``. Synchronous + CPU/IO-bound — caller runs it via
+        Recall floor: when verify did NOT run, the kept set is always between
+        ``min(_GATE_MIN_KEEP, n)`` and ``k`` — the floor pads from ``pad_source`` after the
+        coverage + CE/bi-encoder bars, so neither cuts below the floor (byte-identical to the
+        pre-verify behaviour). When verify DID run (Fix 1, precision-first), the floor may
+        repopulate ONLY from the verify-survivors, never re-injecting a rejected record; so if
+        verify trims below the floor the step returns exactly those survivors (a clean set smaller
+        than the floor is correct). If NO facet matches any record (all keyword scores 0), fall
+        back to embedding-cosine top-``k``. Synchronous + CPU/IO-bound — caller runs it via
         ``asyncio.to_thread``.
         """
         usable = [r for r in records if self._record_text(r)]
@@ -584,6 +637,9 @@ class LiteratureRagStep(BaseStep):
         # degraded fallback.
         pad_source = order
         ce_applied = False
+        #: Per-usable-index CE sigmoid scores, populated only when the CE stage runs. Read by the
+        #: LLM-verify over-rejection protection (Fix 2) as the strongest retrieval-confidence signal.
+        ce_by_index: dict[int, float] = {}
         if _cross_encoder_enabled() and kept:
             try:
                 ce_scores = self._cross_encoder_rerank(question, [usable[i] for i in kept])
@@ -630,6 +686,7 @@ class LiteratureRagStep(BaseStep):
         # built, OR every per-record call errored (all verdicts None), SKIP the filter entirely with
         # ONE warning and fall back to the pre-verify ``kept``. The floor+cap below then apply to the
         # verify result exactly as to the CE result, so the recall floor is never violated.
+        verify_applied = False
         if _llm_verify_enabled() and kept:
             try:
                 verdicts = self._llm_relevance_verdicts(question, [usable[i] for i in kept])
@@ -642,7 +699,24 @@ class LiteratureRagStep(BaseStep):
                 )
             else:
                 if any(v is not None for v in verdicts):
-                    kept = [i for i, v in zip(kept, verdicts, strict=True) if v is not False]
+                    # Fix 2 — protect the TOP retrieval-confidence tier from a weak-verifier "no".
+                    # Score each verify candidate by the strongest retrieval signal already computed
+                    # in THIS path (joint CE sigmoid when the CE stage ran, else the bi-encoder
+                    # cosine); the top-quantile tier is derived from that in-pool distribution. DROP
+                    # a candidate only on a confident "no" (False) that is NOT in the top tier; a
+                    # top-tier hit SURVIVES even on "no". "yes" (True) / UNKNOWN (None) still keep,
+                    # so uncertainty never silently drops evidence and the LLM verdict remains
+                    # decisive for the uncertain middle/tail. Prior order of ``kept`` preserved.
+                    conf_scores = (
+                        [ce_by_index[i] for i in kept] if ce_by_index else [sims[i] for i in kept]
+                    )
+                    protected = self._top_confidence_positions(conf_scores)
+                    kept = [
+                        i
+                        for pos, (i, v) in enumerate(zip(kept, verdicts, strict=True))
+                        if v is not False or pos in protected
+                    ]
+                    verify_applied = True
                 else:
                     self.nb_logger.warning(
                         "literature_rag LiteratureRagStep: every LLM verify call failed "
@@ -650,8 +724,15 @@ class LiteratureRagStep(BaseStep):
                         "pre-verify (CE/coverage) set"
                     )
 
+        # Recall floor. Fix 1 (precision): when the verify stage ACTUALLY ran, the floor may
+        # repopulate ONLY from the VERIFY-SURVIVORS — never re-inject an LLM-rejected record. The
+        # survivors ARE ``kept``, so if verify trimmed below the floor we return exactly those
+        # survivors (a smaller, clean set is correct under a precision-first objective): the
+        # pre-verify floor-pad from ``pad_source`` (which spans rejected records) is SKIPPED. When
+        # verify did NOT run (flag OFF / client unavailable / all-UNKNOWN), the floor behaves
+        # EXACTLY as before — padding from ``pad_source`` so no prior test/cycle is disturbed.
         floor = min(_GATE_MIN_KEEP, len(usable))
-        if len(kept) < floor:
+        if not verify_applied and len(kept) < floor:
             kept = pad_source[:floor]
         return [usable[i] for i in kept[:k]]
 

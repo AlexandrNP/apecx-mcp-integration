@@ -2377,6 +2377,7 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
 
 - `def _evidence_text(record: dict[str, Any], *, char_cap: int)` — The richest grounding text for a record: open-access ``full_text`` (capped) when
 - `def _sigmoid(x: float)` — Numerically-stable logistic map of an unbounded cross-encoder logit into (0, 1).
+- `def _quantile(values: list[float], q: float)` — Linear-interpolated ``q``-quantile (``q`` in [0, 1]) of ``values`` — pure-Python, numpy-free.
 - `def _cross_encoder_enabled()` — Whether the opt-in cross-encoder re-rank stage is ON (``APECX_ENABLE_CROSS_ENCODER``).
 - `def _llm_verify_enabled()` — Whether the opt-in LLM relevance-verify filter is ON (``APECX_ENABLE_LLM_VERIFY``).
 - `def _parse_verify_verdict(text: str)` — Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
@@ -2393,6 +2394,7 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _build_verify_llm(self)` — Build the apecx LLM for the verify filter via the SHARED factory (``APECX_LLM_*``).
   - `def _llm_relevance_verdicts(self, question: str, records: list[dict[str, Any]])` — Per-record LLM relevance verdict (aligned to ``records``): ``True``/``False``/``None``.
   - `def _facet_idf(facets: list[str], present_per_record: list[list[str]])` — IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
+  - `def _top_confidence_positions(scores: list[float])` — Positions of the TOP retrieval-confidence tier within the in-pool ``scores`` (verify Fix 2).
   - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
   - `def _render_host_evidence(question: str, records: list[dict[str, Any]])` — Deterministic evidence body handed to the host LLM in desktop locus.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
