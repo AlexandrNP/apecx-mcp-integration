@@ -235,6 +235,70 @@ def test_all_zero_keyword_scores_fall_back_to_embedding_top_15():
     assert any("facet" in w.lower() and "embedding" in w.lower() for w in step.nb_logger.warnings)
 
 
+# --- cycle-3: semantic gate (embedding cosine as a GATE COMPONENT) ---------
+
+
+def test_semantic_gate_trims_coverage_passing_low_cosine_record():
+    """Invariant 5 (SEMANTIC GATE): a coverage-PASSING record that is a cosine outlier is
+    trimmed by the semantic bar, so the COMBINED gate returns FEWER records than coverage alone.
+
+    5 records all match the same 3 rare facets -> identical discriminative coverage, so the
+    coverage gate alone keeps all 5. Injected cosines make rich4 a semantic outlier (0.1 vs a
+    best of 1.0); the within-set bar (_GATE_SEM_FRACTION=0.5 * 1.0 = 0.5) trims ONLY rich4.
+    """
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+    cos = {"rich0": 1.0, "rich1": 0.9, "rich2": 0.8, "rich3": 0.7, "rich4": 0.1}
+    step._embed_sims = lambda q, recs: [cos[r["pmid"]] for r in recs]
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert len(ranked) == 4  # coverage alone keeps 5; the semantic bar cuts rich4 -> 4
+    assert "rich4" not in pmids  # the semantic outlier is trimmed despite clearing coverage
+    assert pmids == {"rich0", "rich1", "rich2", "rich3"}
+
+
+def test_semantic_gate_skipped_when_embeddings_unavailable():
+    """Invariant 6 (SEMANTIC-GATE DEGRADE): when the embedding model cannot load, the semantic
+    bar is SKIPPED and the gate == coverage-only (same records coverage keeps), with the existing
+    loud warning — never a crash.
+    """
+    step = _rag_step()
+    step.nb_logger = _CaptureLogger()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+
+    def _raise(q, recs):
+        raise RuntimeError("no sentence-transformers")
+
+    step._embed_sims = _raise
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert len(ranked) == 5  # coverage-only: all 5 survive (no semantic trim)
+    assert pmids == {f"rich{i}" for i in range(5)}
+    assert any("unavailable" in w.lower() for w in step.nb_logger.warnings)  # loud degrade kept
+
+
+def test_semantic_gate_respects_min_floor():
+    """Invariant 7 (SEMANTIC-GATE FLOOR): when the semantic bar alone would cut below the recall
+    floor, the floor (min(_GATE_MIN_KEEP=3, n)) still pads back in sort order.
+
+    Only rich0 (cosine 1.0) clears the bar; the other four are outliers (0.1), so the semantic
+    gate would yield 1. The floor restores 3 records (top-of-order), rich0 first.
+    """
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+    cos = {"rich0": 1.0, "rich1": 0.1, "rich2": 0.1, "rich3": 0.1, "rich4": 0.1}
+    step._embed_sims = lambda q, recs: [cos[r["pmid"]] for r in recs]
+
+    ranked = step._hybrid_rank(question, records, 15)
+    assert len(ranked) == 3  # semantic bar alone -> 1; recall floor pads to min(3, n)=3
+    assert ranked[0]["pmid"] == "rich0"  # the one bar-clearing record leads the floor-padded set
+
+
 # --- lever (c): tightened stem match --------------------------------------
 
 

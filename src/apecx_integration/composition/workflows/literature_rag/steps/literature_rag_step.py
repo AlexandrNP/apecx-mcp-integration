@@ -103,6 +103,16 @@ _GATE_KEEP_FRACTION = 0.5
 #: Recall floor: never return fewer than this many usable records (capped by availability),
 #: even when the gate would cut harder — protects against an over-aggressive cut.
 _GATE_MIN_KEEP = 3
+#: Semantic gate cutoff (cycle-3): AFTER the discriminative-coverage gate, keep a record only if
+#: its question-cosine is >= this fraction of the BEST cosine among the COVERAGE-SURVIVING records
+#: — a within-set RELATIVE bar (scale-stable, like ``_GATE_KEEP_FRACTION``, so it never flips with
+#: the absolute cosine scale). This elevates the embedding signal from a mere sort tiebreak to a
+#: GATE COMPONENT: a record that matches the question's rare keywords but sits as a semantic
+#: outlier (low cosine) is trimmed even though it cleared coverage, so the COMBINED gate can
+#: return FEWER records than coverage alone. The bar is SKIPPED (gate degrades to coverage-only)
+#: when the embedding model is unavailable or carries no positive signal — degrade-loud, never
+#: crash; the recall floor (``_GATE_MIN_KEEP``) still applies after it.
+_GATE_SEM_FRACTION = 0.5
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -242,17 +252,29 @@ class LiteratureRagStep(BaseStep):
           * PRIMARY — IDF keyword score: sum over the DISTINCT facets a record contains of
             each facet's :meth:`_facet_idf` rarity weight over the candidate set. A rare,
             discriminative facet contributes far more than a common one (lever a).
-          * TIEBREAK — embedding cosine (:meth:`_embed_sims`). Degrades LOUD to zeros when
-            sentence-transformers cannot load, collapsing the order to keyword-only.
+          * SEMANTIC — embedding cosine (:meth:`_embed_sims`). Serves as both the sort tiebreak
+            AND a GATE COMPONENT (below). Degrades LOUD to zeros when sentence-transformers
+            cannot load, collapsing the order to keyword-only AND skipping the semantic gate.
 
-        Gate (discriminative-coverage): keep records whose discriminative COVERAGE — the IDF
-        mass of the discriminative facets (IDF >= ``_GATE_KEEP_FRACTION`` of the rarest facet's)
-        they match — is at least ``_GATE_KEEP_FRACTION`` of the best coverage in the set, always
-        between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records — so a question with few strongly-
-        relevant records yields FEWER than ``k`` (records carrying only ONE of several near-
-        equally-rare facets are trimmed once richer-coverage records exist), never a padded
-        ``k``, and a common-only pile-up cannot survive by stacking low-IDF facets. If NO facet
-        matches any record (all keyword scores 0), fall back to embedding-cosine top-``k``.
+        COMBINED gate — a record is kept only if it clears BOTH bars:
+
+          1. Discriminative-coverage: its discriminative COVERAGE — the IDF mass of the
+             discriminative facets (IDF >= ``_GATE_KEEP_FRACTION`` of the rarest facet's) it
+             matches — is at least ``_GATE_KEEP_FRACTION`` of the best coverage in the set. So a
+             question with few strongly-relevant records yields FEWER than ``k`` (records carrying
+             only ONE of several near-equally-rare facets are trimmed once richer-coverage records
+             exist), never a padded ``k``, and a common-only pile-up cannot survive by stacking
+             low-IDF facets.
+          2. Semantic (NEW): among the COVERAGE-SURVIVING records, its question-cosine is at least
+             ``_GATE_SEM_FRACTION`` of the best cosine in that surviving set — a within-set
+             RELATIVE bar so it is scale-stable. A keyword-matching but semantically-off record
+             (coverage-passing yet a cosine outlier) is trimmed, so the COMBINED gate can return
+             FEWER than coverage alone. Skipped (coverage-only) when the embedding model is
+             unavailable or carries no positive signal — degrade-loud, never crash.
+
+        The kept set is always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records: the recall
+        floor applies AFTER both bars, so neither can cut below ``min(_GATE_MIN_KEEP, n)``. If NO
+        facet matches any record (all keyword scores 0), fall back to embedding-cosine top-``k``.
         Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
         """
         usable = [r for r in records if self._record_text(r)]
@@ -264,18 +286,20 @@ class LiteratureRagStep(BaseStep):
         idf = self._facet_idf(facets, present_per_record)
         kw_scores = [sum(idf[f] for f in present) for present in present_per_record]
 
+        embed_available = True
         try:
             sims = self._embed_sims(question, usable)
         except Exception as exc:  # noqa: BLE001 — degrade-loud, never dump the full unranked set
             self.nb_logger.warning(
                 "literature_rag LiteratureRagStep: embedding model unavailable (%s: %s); "
                 "ranking by IDF keyword overlap ONLY — still gated + capped at k=%d, "
-                "NOT the full set",
+                "NOT the full set; semantic gate SKIPPED (coverage-only)",
                 type(exc).__name__,
                 exc,
                 k,
             )
             sims = [0.0] * len(usable)
+            embed_available = False
 
         # No facet matched any candidate -> keyword signal is empty; fall back to the
         # embedding-cosine top-k (lever b constraint), still capped, never the full set.
@@ -313,6 +337,21 @@ class LiteratureRagStep(BaseStep):
         best_cov = disc_cov[order[0]]
         threshold = _GATE_KEEP_FRACTION * best_cov
         kept = [i for i in order if disc_cov[i] >= threshold]
+
+        # Semantic gate (cycle-3): among the COVERAGE-SURVIVING records, keep only those whose
+        # question-cosine clears a within-set RELATIVE bar — _GATE_SEM_FRACTION of the best cosine
+        # in that surviving set. This elevates the embedding signal from tiebreak to a GATE
+        # COMPONENT, trimming coverage-passing records that are semantic outliers; the combined
+        # gate can thus return FEWER records than coverage alone. Preserves rank order (the
+        # comprehension keeps `kept`'s order). Skipped (degrade to coverage-only) when the
+        # embedding model is unavailable OR the best surviving cosine is non-positive (no usable
+        # semantic signal) — never crashes; the keyword-only / all-zero paths warned above.
+        if embed_available and kept:
+            best_sim = max(sims[i] for i in kept)
+            if best_sim > 0.0:
+                sem_threshold = _GATE_SEM_FRACTION * best_sim
+                kept = [i for i in kept if sims[i] >= sem_threshold]
+
         floor = min(_GATE_MIN_KEEP, len(usable))
         if len(kept) < floor:
             kept = order[:floor]
