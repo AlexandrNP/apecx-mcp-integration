@@ -3247,6 +3247,7 @@ _``infrastructure_status`` MCP tool._
 ## `src/apecx_integration/mcp_surface/tools/literature_qa.py`
 _MCP tool — ``literature_qa``: organism-scoped, cited literature Q&A._
 
+- `def _question_term(organism: str, question: str)` — PubMed eSearch term: the organism, AND the question's facets OR-grouped.
 - `def _dict_path()` — Resolve the synonym dictionary SQLite path (same source as the resolver).
 - `def _gazetteer_limit()` — Row bound for the gazetteer build; ``None`` (full) unless overridden.
 - `def _get_gazetteer()` — Build (once) + cache the pathogen gazetteer over the synonym dictionary.

@@ -5,8 +5,8 @@ Given an ``organism`` name and a free-text ``question``, it:
 
   1. Resolves the organism name to its canonical NCBITaxon PURL IRI
      (:func:`agents.literature.resolve.resolve_organism_to_iri`).
-  2. Harvests up to ``max_papers`` PubMed records for the organism term and
-     stamps each with the taxa it mentions
+  2. Harvests up to ``max_papers`` PubMed records for an organism-anchored term built
+     from the question's facets (:func:`_question_term`) and stamps each with the taxa it mentions
      (:func:`agents.literature.pipeline.harvest_and_stamp`, over a gazetteer built
      once from the synonym dictionary).
   3. Applies the IDENTIFIER FILTER: keeps only papers whose stamped ``iris``
@@ -43,6 +43,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import re
 
 # Base-dep-clean imports (no faiss / sentence-transformers). Bound at module top
 # so tests can monkeypatch them as module attributes.
@@ -50,6 +51,82 @@ from apecx_integration.agents.literature.pipeline import harvest_and_stamp
 from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
 
 log = logging.getLogger(__name__)
+
+_TOKEN_RE = re.compile(r"[A-Za-z0-9]+")
+_QUESTION_STOPWORDS = frozenset(
+    [
+        "a",
+        "an",
+        "and",
+        "are",
+        "article",
+        "articles",
+        "as",
+        "at",
+        "be",
+        "by",
+        "describe",
+        "each",
+        "for",
+        "from",
+        "how",
+        "id",
+        "ids",
+        "in",
+        "is",
+        "it",
+        "its",
+        "list",
+        "not",
+        "of",
+        "on",
+        "or",
+        "papers",
+        "pmid",
+        "pmids",
+        "publications",
+        "pubmed",
+        "reported",
+        "reporting",
+        "study",
+        "studies",
+        "that",
+        "the",
+        "their",
+        "this",
+        "to",
+        "what",
+        "which",
+        "with",
+        "was",
+        "were",
+        "where",
+        "who",
+    ]
+)
+
+
+def _question_term(organism: str, question: str) -> str:
+    """PubMed eSearch term: the organism, AND the question's facets OR-grouped.
+
+    Facets are the question's words minus generic/bibliographic words and the organism's
+    own words. With no facets left, falls back to the organism-only term (logged).
+    """
+    organism = organism.replace('"', "")
+    organism_words = {w.lower() for w in _TOKEN_RE.findall(organism)}
+    facets: list[str] = []
+    seen: set[str] = set()
+    for word in _TOKEN_RE.findall(question):
+        key = word.lower()
+        if len(key) < 2 or key in _QUESTION_STOPWORDS or key in organism_words or key in seen:
+            continue
+        seen.add(key)
+        facets.append(word)
+    if not facets:
+        log.warning("literature_qa: no question facets for %r; using organism-only term", organism)
+        return organism
+    return f'"{organism}"[Title/Abstract] AND ({" OR ".join(facets)})'
+
 
 # Process-lifetime caches. The gazetteer build is expensive (see module docstring);
 # the reader step loads sentence-transformers on first synthesis. Both are built
@@ -185,7 +262,10 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
     #    stays responsive and we never call asyncio.run() inside a running loop.
     gazetteer = _get_gazetteer()
     stamped = await asyncio.to_thread(
-        harvest_and_stamp, organism, gazetteer, max_papers=int(max_papers)
+        harvest_and_stamp,
+        _question_term(organism, question),
+        gazetteer,
+        max_papers=int(max_papers),
     )
     n_considered = len(stamped)
 
