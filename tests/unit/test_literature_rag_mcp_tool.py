@@ -104,9 +104,10 @@ def _rag_step():
 
 
 def test_literature_rag_step_desktop_omits_llm(monkeypatch):
-    """In desktop locus the step returns status=host_synthesizes with the filtered
-    evidence in `answer` + PMIDs in `citations`, and NEVER calls the apecx LLM (or
-    the embedding retrieval)."""
+    """In desktop locus the step returns status=host_synthesizes with the ranked
+    evidence in `answer` + PMIDs in `citations`, and NEVER calls the apecx LLM.
+    The hybrid rank+cap DOES run in desktop locus (that is the whole point) — we
+    stub the embedding tiebreak so the test needs no ``rag`` extra."""
     monkeypatch.setattr(
         "apecx_integration.composition.runtime.execution_locus.get_active_locus",
         lambda: ExecutionLocus.DESKTOP,
@@ -118,11 +119,9 @@ def test_literature_rag_step_desktop_omits_llm(monkeypatch):
     monkeypatch.setattr("apecx_integration.agents._llm_factory.build_chat_llm", _no_llm)
 
     step = _rag_step()
-    # If embedding retrieval were reached it would need the rag extra — make it explode
-    # so the test fails loudly if the desktop branch is ever moved back below retrieval.
-    step._get_embed_model = lambda: (_ for _ in ()).throw(
-        AssertionError("retrieval must be skipped in desktop locus")
-    )
+    # Rank+cap runs in desktop locus now; stub the embedding tiebreak so no heavy model
+    # loads (keyword overlap still decides primary order).
+    step._embed_sims = lambda question, records: [0.0] * len(records)
 
     env = {
         "rag_input": {

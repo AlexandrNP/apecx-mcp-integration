@@ -6,11 +6,13 @@ and — for the open-access subset — ``full_text``; synthesis grounds on ``ful
 when present via :func:`_evidence_text`, since abstracts omit epitope/animal-model detail),
 this step:
 
-  1. Embeds the records + the question with sentence-transformers
-     ``all-mpnet-base-v2`` and retrieves the top-``k`` most similar records
-     (cosine, ``k=5``). Retrieval is a self-contained, minimal embed+top-k here
-     (a sibling branch is adding a shared ``build_faiss_subindex``; this step does
-     NOT depend on it — we consolidate later).
+  1. Ranks the records with a HYBRID signal and keeps the top ``_TOP_K`` (=15):
+     primary key = the number of DISTINCT question facets each record mentions
+     (keyword overlap, :func:`agents.literature.facets.keyword_facet_hits`);
+     tiebreak = sentence-transformers ``all-mpnet-base-v2`` cosine similarity
+     (:meth:`_embed_sims`). This rank+cap is the step's SINGLE authority and runs
+     in EVERY locus (desktop included). If sentence-transformers cannot load, the
+     ranker degrades LOUD to keyword-only — still capped, never the full set.
   2. Feeds those records to the SHARED synthesizer
      ``apecx_integration.agents.rag_synthesis.synthesize_response`` and returns its
      Markdown answer with the cited PMIDs parsed out.
@@ -61,6 +63,10 @@ from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
 
+from apecx_integration.agents.literature.facets import (
+    extract_question_facets,
+    keyword_facet_hits,
+)
 from apecx_integration.agents.rag_synthesis import synthesize_response
 
 #: Sibling synthesis config — same schema as the bundled default, with a
@@ -68,10 +74,11 @@ from apecx_integration.agents.rag_synthesis import synthesize_response
 #: citation token (prompts live in YAML, not in this .py — framework rule).
 _SYNTHESIS_CONFIG_PATH = Path(__file__).resolve().parent / "synthesis_config.yml"
 
-#: Sentence-transformers model used for retrieval. Cached locally after first use.
+#: Sentence-transformers model used for the embedding tiebreak. Cached after first use.
 _EMBED_MODEL_NAME = "all-mpnet-base-v2"
-#: Number of records retrieved for the question (<= synthesis_config.max_rag_chunks=8).
-_TOP_K = 5
+#: The SINGLE rank+cap: hand out at most this many hybrid-ranked records, every locus.
+#: The tool (``literature_qa``) relies on THIS as the one cap — it no longer pre-caps.
+_TOP_K = 15
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -160,36 +167,61 @@ class LiteratureRagStep(BaseStep):
             self._embed_model = model
         return model
 
-    def _retrieve_topk(
-        self, question: str, records: list[dict[str, Any]], k: int
-    ) -> list[dict[str, Any]]:
-        """Embed records + question, return the top-k records by cosine similarity.
+    @staticmethod
+    def _record_text(record: dict[str, Any]) -> str:
+        """Title + abstract joined — the text both ranking signals read."""
+        return (
+            str(record.get("title") or "").strip()
+            + "\n"
+            + str(record.get("abstract") or "").strip()
+        ).strip()
 
-        Self-contained minimal embed+cosine-topk (no faiss dependency). Records
-        with no usable text (empty title AND abstract) are dropped before ranking.
-        Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
+    def _embed_sims(self, question: str, records: list[dict[str, Any]]) -> list[float]:
+        """Cosine similarity of each record (aligned to ``records``) to the question.
+
+        Reuses the self-contained sentence-transformers embed+cosine (no faiss). RAISES
+        if the embedding model cannot load — the caller (:meth:`_hybrid_rank`) catches
+        that and degrades LOUD to keyword-only ranking.
         """
-        import numpy as np
-
-        usable = [
-            r
-            for r in records
-            if (str(r.get("title") or "").strip() or str(r.get("abstract") or "").strip())
-        ]
-        if not usable:
-            return []
-        texts = [
-            (
-                str(r.get("title") or "").strip() + "\n" + str(r.get("abstract") or "").strip()
-            ).strip()
-            for r in usable
-        ]
         model = self._get_embed_model()
+        texts = [self._record_text(r) for r in records]
         doc_emb = model.encode(texts, normalize_embeddings=True, convert_to_numpy=True)
         q_emb = model.encode([question], normalize_embeddings=True, convert_to_numpy=True)[0]
-        sims = doc_emb @ q_emb
-        order = np.argsort(-sims)[:k]
-        return [usable[int(i)] for i in order]
+        return [float(s) for s in (doc_emb @ q_emb)]
+
+    def _hybrid_rank(
+        self, question: str, records: list[dict[str, Any]], k: int
+    ) -> list[dict[str, Any]]:
+        """Rank records by (distinct keyword-facet hits DESC, embedding cosine DESC); top-k.
+
+        The step's SINGLE rank+cap authority. Records with no usable text (empty title
+        AND abstract) are dropped first (as the old ``_retrieve_topk`` did). The keyword
+        signal is always available; the embedding tiebreak degrades LOUD to zeros (so the
+        order collapses to keyword-only) when sentence-transformers cannot load — the set
+        is STILL capped at ``k``, never handed out whole. Synchronous + CPU-bound — the
+        caller runs it via ``asyncio.to_thread``.
+        """
+        usable = [r for r in records if self._record_text(r)]
+        if not usable:
+            return []
+
+        facets = extract_question_facets(question)
+        kw_hits = [keyword_facet_hits(facets, self._record_text(r)) for r in usable]
+
+        try:
+            sims = self._embed_sims(question, usable)
+        except Exception as exc:  # noqa: BLE001 — degrade-loud, never dump the full unranked set
+            self.nb_logger.warning(
+                "literature_rag LiteratureRagStep: embedding model unavailable (%s: %s); "
+                "ranking by keyword-facet overlap ONLY — still capped at k=%d, NOT the full set",
+                type(exc).__name__,
+                exc,
+                k,
+            )
+            sims = [0.0] * len(usable)
+
+        order = sorted(range(len(usable)), key=lambda i: (kw_hits[i], sims[i]), reverse=True)
+        return [usable[i] for i in order[:k]]
 
     @staticmethod
     def _render_host_evidence(question: str, records: list[dict[str, Any]]) -> str:
@@ -241,37 +273,12 @@ class LiteratureRagStep(BaseStep):
             )
         question = question.strip()
 
-        # Desktop locus: the connected host LLM is the synthesizer (CLAUDE.md "Two
-        # operating modes" + LLM_ROLE). Hand it the FULL ontology-filtered evidence +
-        # PMIDs and let it write the narrative. Done BEFORE retrieval on purpose: the
-        # embedding narrowing (_retrieve_topk) needs the heavy ``rag`` extra, and
-        # desktop mode must stay dependency-light (and the set is already bounded by
-        # the harvest cap). The requires_llm gate reads LLM_ROLE so the tool is NOT
-        # refused on a desktop with no Ollama.
-        from apecx_integration.composition.runtime.execution_locus import (
-            ExecutionLocus,
-            get_active_locus,
-        )
-
-        if get_active_locus() == ExecutionLocus.DESKTOP:
-            citations = sorted(
-                {str(r.get("pmid")).strip() for r in filtered_records if r.get("pmid")}
-            )
-            self.nb_logger.info(
-                "literature_rag LiteratureRagStep: desktop locus — handing %d "
-                "ontology-filtered record(s) to the host for synthesis (no apecx "
-                "LLM, no embedding retrieval)",
-                len(filtered_records),
-            )
-            return {
-                "answer": self._render_host_evidence(question, filtered_records),
-                "citations": citations,
-                "status": "host_synthesizes",
-            }
-
-        # 1. Retrieve top-k records (CPU-bound; offload so the event loop stays free).
-        topk = await asyncio.to_thread(self._retrieve_topk, question, filtered_records, _TOP_K)
-        if not topk:
+        # SINGLE rank+cap authority — runs in EVERY locus (desktop included). Hybrid:
+        # primary key = distinct question-facet keyword hits, tiebreak = embedding cosine,
+        # capped at _TOP_K. Degrades LOUD to keyword-only if sentence-transformers can't
+        # load — never the full unranked set. CPU-bound; offloaded so the loop stays free.
+        ranked = await asyncio.to_thread(self._hybrid_rank, question, filtered_records, _TOP_K)
+        if not ranked:
             self.nb_logger.warning(
                 "literature_rag LiteratureRagStep: %d filtered_records but none carry "
                 "usable text (title/abstract); returning status=no_evidence",
@@ -279,12 +286,35 @@ class LiteratureRagStep(BaseStep):
             )
             return {"answer": "", "citations": [], "status": "no_evidence"}
 
-        # 2. Build RAG chunks. The synthesizer numbers surviving chunks 1..N in the
-        #    order given (its renderer also drops empty-text chunks; we pre-dropped
-        #    them above so index_to_pmid stays aligned with the synthesizer's #N).
+        # Desktop locus: the connected host LLM is the synthesizer (CLAUDE.md "Two
+        # operating modes" + LLM_ROLE). Hand it the ranked, capped ontology-filtered
+        # evidence + PMIDs (at most _TOP_K — NOT the full set) and let it write the
+        # narrative. The requires_llm gate reads LLM_ROLE so the tool is NOT refused on
+        # a desktop with no Ollama.
+        from apecx_integration.composition.runtime.execution_locus import (
+            ExecutionLocus,
+            get_active_locus,
+        )
+
+        if get_active_locus() == ExecutionLocus.DESKTOP:
+            citations = sorted({str(r.get("pmid")).strip() for r in ranked if r.get("pmid")})
+            self.nb_logger.info(
+                "literature_rag LiteratureRagStep: desktop locus — handing %d "
+                "hybrid-ranked record(s) to the host for synthesis (no apecx LLM)",
+                len(ranked),
+            )
+            return {
+                "answer": self._render_host_evidence(question, ranked),
+                "citations": citations,
+                "status": "host_synthesizes",
+            }
+
+        # Build RAG chunks from the ranked set. The synthesizer numbers surviving chunks
+        # 1..N in the order given (its renderer also drops empty-text chunks; we pre-dropped
+        # them in _hybrid_rank so index_to_pmid stays aligned with the synthesizer's #N).
         chunks: list[dict[str, Any]] = []
         index_to_pmid: dict[int, str] = {}
-        for i, rec in enumerate(topk, start=1):
+        for i, rec in enumerate(ranked, start=1):
             title = str(rec.get("title") or "").strip()
             # Ground on open-access full text (capped tighter than desktop — the backend LLM
             # is often a small local model with a tight context + a size gate) when present,
@@ -343,7 +373,7 @@ class LiteratureRagStep(BaseStep):
             "literature_rag LiteratureRagStep: synthesized %d-char answer over "
             "%d retrieved records; cited %d distinct PMID(s)",
             len(answer),
-            len(topk),
+            len(ranked),
             len(citations),
         )
         return {"answer": answer, "citations": citations, "status": "ok"}

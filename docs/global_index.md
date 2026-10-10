@@ -49,6 +49,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/agents/literature/__init__.py` | Literature-agent package — deterministic taxon tagging of abstracts for a |
 | `src/apecx_integration/agents/literature/ablation.py` | Headline ablation: does the organism-identifier filter improve the answers? |
 | `src/apecx_integration/agents/literature/coverage.py` | Paper-coverage aggregation over a gazetteer-tagged corpus. |
+| `src/apecx_integration/agents/literature/facets.py` | Shared question-facet extraction + keyword-overlap scoring (base-dep clean). |
 | `src/apecx_integration/agents/literature/fulltext.py` | Open-access full-text retrieval for PubMed records (Europe PMC). |
 | `src/apecx_integration/agents/literature/gazetteer.py` | Deterministic surface-form → NCBITaxon IRI tagger (skeleton). |
 | `src/apecx_integration/agents/literature/harvest.py` | Bounded PubMed harvest → literature-record normalization. |

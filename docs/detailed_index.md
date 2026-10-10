@@ -236,6 +236,12 @@ _Paper-coverage aggregation over a gazetteer-tagged corpus._
 - `def coverage_to_json(coverage: list[dict])` — Serialize coverage entries as pretty JSON with stable key order.
 - `def harvest_and_build(term: str, gazetteer: Gazetteer, *, max_papers: int=20)` — Harvest PubMed abstracts for ``term`` then build coverage (deliverable-1).
 
+## `src/apecx_integration/agents/literature/facets.py`
+_Shared question-facet extraction + keyword-overlap scoring (base-dep clean)._
+
+- `def extract_question_facets(question: str, organism: str='')` — The question's content tokens, in first-seen order, original case preserved.
+- `def keyword_facet_hits(facets: list[str], text: str)` — Count how many DISTINCT facets occur in ``text`` (case-insensitive).
+
 ## `src/apecx_integration/agents/literature/fulltext.py`
 _Open-access full-text retrieval for PubMed records (Europe PMC)._
 
@@ -2373,7 +2379,9 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the RAG envelope.
   - `def _get_synthesis_config(self)` — Lazily load + cache the literature-tuned SynthesisConfig from YAML.
   - `def _get_embed_model(self)` — Lazily load + cache the sentence-transformers model on the instance.
-  - `def _retrieve_topk(self, question: str, records: list[dict[str, Any]], k: int)` — Embed records + question, return the top-k records by cosine similarity.
+  - `def _record_text(record: dict[str, Any])` — Title + abstract joined — the text both ranking signals read.
+  - `def _embed_sims(self, question: str, records: list[dict[str, Any]])` — Cosine similarity of each record (aligned to ``records``) to the question.
+  - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by (distinct keyword-facet hits DESC, embedding cosine DESC); top-k.
   - `def _render_host_evidence(question: str, records: list[dict[str, Any]])` — Deterministic evidence body handed to the host LLM in desktop locus.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 

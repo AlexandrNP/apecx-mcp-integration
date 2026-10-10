@@ -43,85 +43,26 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-import re
 
 # Base-dep-clean imports (no faiss / sentence-transformers). Bound at module top
 # so tests can monkeypatch them as module attributes.
+from apecx_integration.agents.literature.facets import extract_question_facets
 from apecx_integration.agents.literature.pipeline import harvest_and_stamp
 from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
 
 log = logging.getLogger(__name__)
-
-_TOKEN_RE = re.compile(r"[A-Za-z0-9]+")
-_QUESTION_STOPWORDS = frozenset(
-    [
-        "a",
-        "an",
-        "and",
-        "are",
-        "article",
-        "articles",
-        "as",
-        "at",
-        "be",
-        "by",
-        "describe",
-        "each",
-        "for",
-        "from",
-        "how",
-        "id",
-        "ids",
-        "in",
-        "is",
-        "it",
-        "its",
-        "list",
-        "not",
-        "of",
-        "on",
-        "or",
-        "papers",
-        "pmid",
-        "pmids",
-        "publications",
-        "pubmed",
-        "reported",
-        "reporting",
-        "study",
-        "studies",
-        "that",
-        "the",
-        "their",
-        "this",
-        "to",
-        "what",
-        "which",
-        "with",
-        "was",
-        "were",
-        "where",
-        "who",
-    ]
-)
 
 
 def _question_term(organism: str, question: str) -> str:
     """PubMed eSearch term: the organism, AND the question's facets OR-grouped.
 
     Facets are the question's words minus generic/bibliographic words and the organism's
-    own words. With no facets left, falls back to the organism-only term (logged).
+    own words (:func:`agents.literature.facets.extract_question_facets` — the one shared
+    facet definition, also used by the reader's keyword ranker). With no facets left,
+    falls back to the organism-only term (logged).
     """
     organism = organism.replace('"', "")
-    organism_words = {w.lower() for w in _TOKEN_RE.findall(organism)}
-    facets: list[str] = []
-    seen: set[str] = set()
-    for word in _TOKEN_RE.findall(question):
-        key = word.lower()
-        if len(key) < 2 or key in _QUESTION_STOPWORDS or key in organism_words or key in seen:
-            continue
-        seen.add(key)
-        facets.append(word)
+    facets = extract_question_facets(question, organism)
     if not facets:
         log.warning("literature_qa: no question facets for %r; using organism-only term", organism)
         return organism
@@ -282,9 +223,10 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
         )
         return _empty("no_evidence", iri, n_considered, 0)
 
-    # 4. Read the filtered papers into a cited answer. The reader step returns the
-    #    honest status (ok / no_evidence / synthesis_failed) — pass it straight
-    #    through; never fabricate an "ok".
+    # 4. Hand the FULL IRI-filtered set to the reader; the reader is the SINGLE
+    #    rank+cap authority (hybrid keyword+embedding, capped at its _TOP_K), so there
+    #    is no second ranking here. The reader returns the honest status (ok /
+    #    no_evidence / synthesis_failed) — pass it straight through; never fabricate "ok".
     result = await _read_filtered(question, filtered)
     status = result.get("status") or "synthesis_failed"
     return {
