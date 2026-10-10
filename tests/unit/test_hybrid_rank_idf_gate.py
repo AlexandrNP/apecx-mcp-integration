@@ -330,8 +330,8 @@ def test_cross_encoder_trims_low_relevance_record_and_reorders_by_ce_score(monke
 
     5 records share identical discriminative coverage (same 3 rare facets), so coverage alone
     keeps all 5. Controlled normalised CE scores make rich2 most relevant and rich4 an outlier
-    (0.1 < _GATE_CE_FRACTION=0.5 * best 0.9 = 0.45): rich4 is trimmed and the result is sorted
-    by CE desc, NOT by coverage/input order.
+    (0.1 < _GATE_CE_ABS=0.5, the absolute bar): rich4 is trimmed while the four scores >= 0.5 are
+    kept, and the result is sorted by CE desc, NOT by coverage/input order.
     """
     monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")  # CE is OPT-IN; turn it on for this test
     step = _rag_step()
@@ -480,6 +480,117 @@ def test_cross_encoder_off_by_default_leaves_pre_ce_behaviour(monkeypatch):
 
     ranked = step._hybrid_rank(question, records, 15)  # bi-encoder sims=0 -> coverage-only
     assert {r["pmid"] for r in ranked} == {f"rich{i}" for i in range(5)}  # pre-CE result, no trim
+
+
+# --- cycle-5b: ABSOLUTE cross-encoder bar (replaces the relative-to-best bar) ----
+
+
+def test_absolute_bar_keeps_survivors_whose_sigmoid_clears_half(monkeypatch):
+    """Invariant 15 (ABSOLUTE KEEP): survivors whose sigmoid(CE) >= _GATE_CE_ABS=0.5 are all kept.
+
+    Raw logits [0.4, 0.3, 0.2] -> sigmoids ~[0.60, 0.57, 0.55], all > 0.5 -> none trimmed. The
+    RAW logits are injected via a stubbed CrossEncoder so the REAL sigmoid math runs (no download).
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(3)]
+    step._get_cross_encoder = lambda: _FakeCrossEncoder([0.4, 0.3, 0.2])
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = [r["pmid"] for r in ranked]
+    assert len(ranked) == 3  # all three sigmoids clear the absolute bar
+    assert pmids == ["rich0", "rich1", "rich2"]  # sorted by CE desc (== input order here)
+
+
+def test_absolute_bar_trims_close_to_best_survivor_below_half_saturation(monkeypatch):
+    """Invariant 16 (SATURATION CUT — the relative bar's failure, now fixed): when EVERY survivor
+    scores similarly but BELOW 0.5, the ABSOLUTE bar cuts them all (the recall floor then refills),
+    whereas the former relative-to-best bar kept everything (each >= 0.5*best) so the CE had no
+    effect. Here that means the output comes from the FLOOR, not the bar.
+
+    6 identical-coverage records, raw logits all -1.0 -> sigmoid ~0.27 each (all close to the best,
+    all < 0.5) -> absolute bar keeps 0 -> floor pads to min(_GATE_MIN_KEEP=3, n=6)=3. No empty set.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(6)]
+    step._get_cross_encoder = lambda: _FakeCrossEncoder([-1.0] * 6)
+
+    ranked = step._hybrid_rank(question, records, 15)
+    assert len(ranked) == 3  # absolute bar cut all 6; recall floor refilled min(3, n)=3
+    assert {r["pmid"] for r in ranked} == {
+        "rich0",
+        "rich1",
+        "rich2",
+    }  # floor pads in CE/coverage order
+
+
+def test_absolute_bar_all_high_saturation_keeps_all_no_spurious_trim(monkeypatch):
+    """Invariant 17 (NO SPURIOUS TRIM): when every survivor scores high the absolute bar passes
+    all of them — confirms the bar does not over-trim the saturated-high case.
+
+    4 identical-coverage records, raw logits all 3.0 -> sigmoid ~0.95 each, all >= 0.5 -> all kept.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(4)]
+    step._get_cross_encoder = lambda: _FakeCrossEncoder([3.0] * 4)
+
+    ranked = step._hybrid_rank(question, records, 15)
+    assert len(ranked) == 4  # all survivors clear the absolute bar -> none trimmed
+    assert {r["pmid"] for r in ranked} == {f"rich{i}" for i in range(4)}
+
+
+def test_absolute_bar_all_below_threshold_floor_fallback_from_full_usable_set(monkeypatch):
+    """Invariant 18 (ALL-BELOW -> FLOOR, no empty return): when the COVERAGE gate already cut below
+    the floor AND every CE survivor is below the absolute bar, the floor refills from the FULL
+    usable set (not just the CE survivors) to min(_GATE_MIN_KEEP=3, n), never returning empty.
+
+    1 rich record (lone rare 'zephyr') + 30 common-only records ('alpha' saturates -> IDF below the
+    discriminative cutoff -> coverage 0 -> coverage-gate cut). Coverage survivor = {rich}; raw logit
+    -2.0 -> sigmoid ~0.12 < 0.5 so even that survivor fails the absolute bar. The floor MUST still
+    return 3, led by the lone survivor, padded by trimmed commons in coverage order.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    question = "zephyr alpha"
+    records = [_rec("rich", title="zephyr")]
+    records += [_rec(f"common{i}", title="alpha") for i in range(30)]
+    step._get_cross_encoder = lambda: _FakeCrossEncoder([-2.0])  # lone coverage survivor, below bar
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = [r["pmid"] for r in ranked]
+    assert len(ranked) == 3  # floor refilled from the FULL usable set, not an empty return
+    assert pmids[0] == "rich"  # the lone coverage survivor leads the floor-padded set
+    assert pmids == ["rich", "common0", "common1"]  # deterministic pad in coverage order
+
+
+def test_wiring_guard_ce_on_differs_from_ce_off(monkeypatch):
+    """Invariant 19 (WIRING GUARD): with the flag ON and a stubbed CE scoring one survivor below
+    the absolute bar, the returned set DIFFERS from the flag-OFF result. A future regression that
+    silently ignores the CE (wiring broken) would make ON == OFF and fail this test.
+
+    5 identical-coverage records. OFF (flag unset): CE never runs -> coverage-only keeps all 5.
+    ON: raw logits [3,3,3,3,-3] -> rich4's sigmoid ~0.05 < 0.5 -> rich4 trimmed, 4 kept.
+    """
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+
+    monkeypatch.delenv("APECX_ENABLE_CROSS_ENCODER", raising=False)
+    off = {r["pmid"] for r in _rag_step()._hybrid_rank(question, records, 15)}
+
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    step._get_cross_encoder = lambda: _FakeCrossEncoder([3.0, 3.0, 3.0, 3.0, -3.0])
+    on = {r["pmid"] for r in step._hybrid_rank(question, records, 15)}
+
+    assert off == {f"rich{i}" for i in range(5)}  # flag OFF: full coverage set, CE never consulted
+    assert "rich4" in off and "rich4" not in on  # the below-bar record drops ONLY with the CE wired
+    assert on != off  # a regression that ignores the CE would make these identical -> caught here
+    assert on == {"rich0", "rich1", "rich2", "rich3"}
 
 
 # --- lever (c): tightened stem match --------------------------------------

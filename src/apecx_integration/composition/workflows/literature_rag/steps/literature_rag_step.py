@@ -126,10 +126,14 @@ _GATE_SEM_FRACTION = 0.5
 #: ENCODER (scores the (question, doc) pair JOINTLY, unlike the separately-embedded bi-encoder)
 #: re-ranks the coverage survivors and REPLACES the bi-encoder semantic bar when available (the
 #: stronger signal; running both double-trims). Keep a record only if its sigmoid-normalised CE
-#: score is >= this fraction of the best normalised score in the surviving set — a within-set
-#: RELATIVE bar (scale-stable like the fractions above). Degrades down the ladder (CE -> bi-
-#: encoder bar -> coverage-only) when the CrossEncoder cannot load; the recall floor still applies.
-_GATE_CE_FRACTION = 0.5
+#: score is >= this ABSOLUTE value — i.e. the cross-encoder positively judges the (question, doc)
+#: pair relevant (sigmoid >= 0.5 <=> raw logit >= 0). An absolute bar (not the former relative-to-
+#: best fraction) is the fix for the SATURATION failure: when every survivor scores similarly high
+#: the relative bar (>= fraction * best) trimmed nothing and the CE had no effect; the absolute bar
+#: still cuts any survivor the CE judges NOT relevant, even one close to the best. Degrades down the
+#: ladder (CE -> bi-encoder bar -> coverage-only) when the CrossEncoder cannot load; the recall
+#: floor still applies after the bar.
+_GATE_CE_ABS = 0.5
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -156,8 +160,9 @@ def _sigmoid(x: float) -> float:
     """Numerically-stable logistic map of an unbounded cross-encoder logit into (0, 1).
 
     Raw cross-encoder outputs are unbounded logits (can be negative); the sigmoid gives a
-    well-behaved 0-1 relevance so the within-set relative CE bar never mis-handles negatives
-    (a negative logit maps into (0, 0.5), a positive into (0.5, 1), zero to exactly 0.5). The
+    well-behaved 0-1 relevance so the absolute CE bar (``_GATE_CE_ABS`` = 0.5) never mis-handles
+    negatives (a negative logit maps into (0, 0.5) <-> NOT relevant, a positive into (0.5, 1) <->
+    relevant, zero to exactly 0.5 — the bar's own cut point). The
     branch avoids ``math.exp`` overflow on large-magnitude logits — degrade-loud: never crash.
     """
     if x >= 0.0:
@@ -291,8 +296,8 @@ class LiteratureRagStep(BaseStep):
 
         A cross-encoder scores the (question, doc) pair JOINTLY, so it separates near-
         duplicates the separately-embedded bi-encoder cannot. Raw outputs are unbounded logits;
-        :func:`_sigmoid` maps them into (0, 1) so the within-set relative CE bar is well-behaved
-        and never mis-gates a negative logit. Aligned to ``records``. RAISES if the CrossEncoder
+        :func:`_sigmoid` maps them into (0, 1) so the absolute CE bar (``_GATE_CE_ABS``) is well-
+        behaved and never mis-gates a negative logit. Aligned to ``records``. RAISES if the CrossEncoder
         cannot load — the caller (:meth:`_hybrid_rank`) catches it and degrades down the ladder.
         """
         model = self._get_cross_encoder()
@@ -347,9 +352,11 @@ class LiteratureRagStep(BaseStep):
              records exist), never a padded ``k``, and a common-only pile cannot survive by
              stacking low-IDF facets.
           2. Cross-encoder (NEW, strongest): re-rank the coverage survivors by sigmoid-normalised
-             joint CE score desc and keep those clearing ``_GATE_CE_FRACTION`` of the best score —
-             a within-set RELATIVE bar (scale-stable), so the combined gate returns FEWER than
-             coverage alone. DEGRADE LADDER when the CrossEncoder cannot load: fall back to the
+             joint CE score desc and keep those whose score clears the ABSOLUTE ``_GATE_CE_ABS``
+             bar (the CE positively judges the pair relevant), so the combined gate returns FEWER
+             than coverage alone AND still trims under saturation (all survivors similarly high) —
+             the case the former relative-to-best bar could not cut. DEGRADE LADDER when the
+             CrossEncoder cannot load: fall back to the
              bi-encoder semantic bar (keep cosine >= ``_GATE_SEM_FRACTION`` of the best surviving
              cosine); if the embedding model is also unavailable or carries no positive signal,
              degrade to coverage-only. Each degrade step warns LOUD; never crashes.
@@ -425,10 +432,13 @@ class LiteratureRagStep(BaseStep):
         # embedded bi-encoder cannot. It runs on the COVERAGE-gate survivors and REPLACES the
         # bi-encoder semantic bar when available (running both double-trims). Re-sort survivors by
         # the sigmoid-normalised CE score desc (ties -> prior coverage order, deterministic), then
-        # keep only those clearing a within-set RELATIVE bar (_GATE_CE_FRACTION of the best
-        # normalised score). DEGRADE LADDER, each tier loud: CE unavailable -> bi-encoder semantic
-        # bar (cycle-4) -> embeddings unavailable -> coverage-only. The recall floor applies after
-        # whichever bar ran, padding in that bar's own sort order.
+        # keep only those clearing the ABSOLUTE bar (_GATE_CE_ABS: sigmoid >= 0.5, the CE positively
+        # judges the pair relevant). The absolute bar replaces the former relative-to-best fraction,
+        # which could not trim under saturation (all survivors similarly high -> fraction*best kept
+        # everything -> CE had no effect); the absolute bar still cuts a survivor the CE judges NOT
+        # relevant even when it is close to the best. DEGRADE LADDER, each tier loud: CE unavailable
+        # -> bi-encoder semantic bar (cycle-4) -> embeddings unavailable -> coverage-only. The recall
+        # floor applies after whichever bar ran, padding in that bar's own sort order.
         # pad_source is the recall-floor refill order — it MUST span ALL usable records (not just
         # the gate survivors) in EVERY branch, so min(_GATE_MIN_KEEP, n) is always reachable even
         # when the coverage gate already cut below the floor. Default = coverage order over all
@@ -457,8 +467,7 @@ class LiteratureRagStep(BaseStep):
                 # min(_GATE_MIN_KEEP, n), never only the survivor count.
                 survivor_set = set(ce_sorted)
                 pad_source = ce_sorted + [i for i in order if i not in survivor_set]
-                ce_threshold = _GATE_CE_FRACTION * max(ce_by_index.values())
-                kept = [i for i in ce_sorted if ce_by_index[i] >= ce_threshold]
+                kept = [i for i in ce_sorted if ce_by_index[i] >= _GATE_CE_ABS]
                 ce_applied = True
 
         # Bi-encoder semantic bar (cycle-3/4) — now the FIRST degrade tier: runs ONLY when the
