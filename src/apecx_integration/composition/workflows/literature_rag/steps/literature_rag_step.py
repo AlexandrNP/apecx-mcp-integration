@@ -81,6 +81,15 @@ _SYNTHESIS_CONFIG_PATH = Path(__file__).resolve().parent / "synthesis_config.yml
 
 #: Sentence-transformers model used for the embedding tiebreak. Cached after first use.
 _EMBED_MODEL_NAME = "all-mpnet-base-v2"
+#: Cross-encoder model for the cycle-5 JOINT (question, doc) re-rank — the strongest
+#: relevance stage. Cached after first use; override via the env var below.
+_CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+_CROSS_ENCODER_MODEL_ENV = "APECX_CROSS_ENCODER_MODEL"
+#: The CE re-rank is OPT-IN. Auto-activating a heavy component on mere library presence is a
+#: silent-behavior anti-pattern (it changes ranking for everyone the moment sentence-transformers
+#: is installed), so the CE stage runs ONLY when this flag is truthy ('1'/'true'). Default OFF ->
+#: the pipeline is the pre-CE behavior (coverage -> bi-encoder bar -> coverage-only).
+_CROSS_ENCODER_ENABLE_ENV = "APECX_ENABLE_CROSS_ENCODER"
 #: The SINGLE rank+cap: hand out AT MOST this many hybrid-ranked records, every locus.
 #: "15 MAX" is the product spec — the adaptive gate (:meth:`_hybrid_rank`) returns FEWER
 #: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
@@ -113,6 +122,14 @@ _GATE_MIN_KEEP = 3
 #: when the embedding model is unavailable or carries no positive signal — degrade-loud, never
 #: crash; the recall floor (``_GATE_MIN_KEEP``) still applies after it.
 _GATE_SEM_FRACTION = 0.5
+#: Cross-encoder re-ranker cutoff (cycle-5): AFTER the discriminative-coverage gate, a CROSS-
+#: ENCODER (scores the (question, doc) pair JOINTLY, unlike the separately-embedded bi-encoder)
+#: re-ranks the coverage survivors and REPLACES the bi-encoder semantic bar when available (the
+#: stronger signal; running both double-trims). Keep a record only if its sigmoid-normalised CE
+#: score is >= this fraction of the best normalised score in the surviving set — a within-set
+#: RELATIVE bar (scale-stable like the fractions above). Degrades down the ladder (CE -> bi-
+#: encoder bar -> coverage-only) when the CrossEncoder cannot load; the recall floor still applies.
+_GATE_CE_FRACTION = 0.5
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -133,6 +150,33 @@ def _evidence_text(record: dict[str, Any], *, char_cap: int) -> str:
     if full_text:
         return full_text[:char_cap]
     return str(record.get("abstract") or "").strip()
+
+
+def _sigmoid(x: float) -> float:
+    """Numerically-stable logistic map of an unbounded cross-encoder logit into (0, 1).
+
+    Raw cross-encoder outputs are unbounded logits (can be negative); the sigmoid gives a
+    well-behaved 0-1 relevance so the within-set relative CE bar never mis-handles negatives
+    (a negative logit maps into (0, 0.5), a positive into (0.5, 1), zero to exactly 0.5). The
+    branch avoids ``math.exp`` overflow on large-magnitude logits — degrade-loud: never crash.
+    """
+    if x >= 0.0:
+        return 1.0 / (1.0 + math.exp(-x))
+    e = math.exp(x)
+    return e / (1.0 + e)
+
+
+def _cross_encoder_enabled() -> bool:
+    """Whether the opt-in cross-encoder re-rank stage is ON (``APECX_ENABLE_CROSS_ENCODER``).
+
+    Default OFF. Auto-activating a heavy component on mere library presence silently changes the
+    ranking the moment sentence-transformers is installed — an anti-pattern. ON only for an
+    explicit truthy flag (``'1'`` / ``'true'``, case-insensitive); anything else (unset / ``'0'``
+    / ``'false'``) keeps the pre-CE pipeline (coverage -> bi-encoder bar -> coverage-only).
+    """
+    import os
+
+    return os.environ.get(_CROSS_ENCODER_ENABLE_ENV, "").strip().lower() in {"1", "true"}
 
 
 class LiteratureRagStep(BaseStep):
@@ -223,6 +267,39 @@ class LiteratureRagStep(BaseStep):
         q_emb = model.encode([question], normalize_embeddings=True, convert_to_numpy=True)[0]
         return [float(s) for s in (doc_emb @ q_emb)]
 
+    def _get_cross_encoder(self):
+        """Lazily load + cache the sentence-transformers ``CrossEncoder`` on the instance.
+
+        Heavy import kept INSIDE the method (never at module top) so the package imports
+        without the ``rag`` extra installed (clean-install rule). Model overridable via
+        ``APECX_CROSS_ENCODER_MODEL``. RAISES (import/load failure) when the extra is absent
+        — the caller degrades LOUD down the relevance ladder.
+        """
+        model = getattr(self, "_cross_encoder", None)
+        if model is None:
+            import os
+
+            from sentence_transformers import CrossEncoder  # noqa: I001
+
+            name = os.environ.get(_CROSS_ENCODER_MODEL_ENV, _CROSS_ENCODER_MODEL)
+            model = CrossEncoder(name)
+            self._cross_encoder = model
+        return model
+
+    def _cross_encoder_rerank(self, question: str, records: list[dict[str, Any]]) -> list[float]:
+        """Sigmoid-normalised (0, 1) cross-encoder relevance of each record to the question.
+
+        A cross-encoder scores the (question, doc) pair JOINTLY, so it separates near-
+        duplicates the separately-embedded bi-encoder cannot. Raw outputs are unbounded logits;
+        :func:`_sigmoid` maps them into (0, 1) so the within-set relative CE bar is well-behaved
+        and never mis-gates a negative logit. Aligned to ``records``. RAISES if the CrossEncoder
+        cannot load — the caller (:meth:`_hybrid_rank`) catches it and degrades down the ladder.
+        """
+        model = self._get_cross_encoder()
+        pairs = [[question, self._record_text(r)] for r in records]
+        raw = model.predict(pairs)
+        return [_sigmoid(float(s)) for s in raw]
+
     @staticmethod
     def _facet_idf(facets: list[str], present_per_record: list[list[str]]) -> dict[str, float]:
         """IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
@@ -252,25 +329,30 @@ class LiteratureRagStep(BaseStep):
           * PRIMARY — IDF keyword score: sum over the DISTINCT facets a record contains of
             each facet's :meth:`_facet_idf` rarity weight over the candidate set. A rare,
             discriminative facet contributes far more than a common one (lever a).
-          * SEMANTIC — embedding cosine (:meth:`_embed_sims`). Serves as both the sort tiebreak
-            AND a GATE COMPONENT (below). Degrades LOUD to zeros when sentence-transformers
-            cannot load, collapsing the order to keyword-only AND skipping the semantic gate.
+          * SEMANTIC — bi-encoder cosine (:meth:`_embed_sims`): the sort tiebreak, and the
+            FALLBACK relevance bar (below). Degrades LOUD to zeros when sentence-transformers
+            cannot load, collapsing the order to keyword-only.
+          * CROSS-ENCODER — joint (question, doc) relevance (:meth:`_cross_encoder_rerank`,
+            sigmoid-normalised): the STRONGEST stage, which re-ranks + gates the coverage
+            survivors and REPLACES the bi-encoder bar when available.
 
-        COMBINED gate — a record is kept only if it clears BOTH bars:
+        RELEVANCE gate on the coverage survivors — the STRONGEST available bar runs (a DEGRADE
+        LADDER, each tier loud):
 
-          1. Discriminative-coverage: its discriminative COVERAGE — the IDF mass of the
-             discriminative facets (IDF >= ``_GATE_KEEP_FRACTION`` of the rarest facet's) it
-             matches — is at least ``_GATE_KEEP_FRACTION`` of the best coverage in the set. So a
-             question with few strongly-relevant records yields FEWER than ``k`` (records carrying
-             only ONE of several near-equally-rare facets are trimmed once richer-coverage records
-             exist), never a padded ``k``, and a common-only pile-up cannot survive by stacking
-             low-IDF facets.
-          2. Semantic (NEW): among the COVERAGE-SURVIVING records, its question-cosine is at least
-             ``_GATE_SEM_FRACTION`` of the best cosine in that surviving set — a within-set
-             RELATIVE bar so it is scale-stable. A keyword-matching but semantically-off record
-             (coverage-passing yet a cosine outlier) is trimmed, so the COMBINED gate can return
-             FEWER than coverage alone. Skipped (coverage-only) when the embedding model is
-             unavailable or carries no positive signal — degrade-loud, never crash.
+          1. Discriminative-coverage: a record is kept only if its discriminative COVERAGE — the
+             IDF mass of the discriminative facets (IDF >= ``_GATE_KEEP_FRACTION`` of the rarest
+             facet's) it matches — is at least ``_GATE_KEEP_FRACTION`` of the best coverage in the
+             set. So a question with few strongly-relevant records yields FEWER than ``k`` (records
+             carrying only ONE of several near-equally-rare facets are trimmed once richer-coverage
+             records exist), never a padded ``k``, and a common-only pile cannot survive by
+             stacking low-IDF facets.
+          2. Cross-encoder (NEW, strongest): re-rank the coverage survivors by sigmoid-normalised
+             joint CE score desc and keep those clearing ``_GATE_CE_FRACTION`` of the best score —
+             a within-set RELATIVE bar (scale-stable), so the combined gate returns FEWER than
+             coverage alone. DEGRADE LADDER when the CrossEncoder cannot load: fall back to the
+             bi-encoder semantic bar (keep cosine >= ``_GATE_SEM_FRACTION`` of the best surviving
+             cosine); if the embedding model is also unavailable or carries no positive signal,
+             degrade to coverage-only. Each degrade step warns LOUD; never crashes.
 
         The kept set is always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records: the recall
         floor applies AFTER both bars, so neither can cut below ``min(_GATE_MIN_KEEP, n)``. If NO
@@ -338,15 +420,54 @@ class LiteratureRagStep(BaseStep):
         threshold = _GATE_KEEP_FRACTION * best_cov
         kept = [i for i in order if disc_cov[i] >= threshold]
 
-        # Semantic gate (cycle-3): among the COVERAGE-SURVIVING records, keep only those whose
-        # question-cosine clears a within-set RELATIVE bar — _GATE_SEM_FRACTION of the best cosine
-        # in that surviving set. This elevates the embedding signal from tiebreak to a GATE
-        # COMPONENT, trimming coverage-passing records that are semantic outliers; the combined
-        # gate can thus return FEWER records than coverage alone. Preserves rank order (the
-        # comprehension keeps `kept`'s order). Skipped (degrade to coverage-only) when the
-        # embedding model is unavailable OR the best surviving cosine is non-positive (no usable
-        # semantic signal) — never crashes; the keyword-only / all-zero paths warned above.
-        if embed_available and kept:
+        # Cross-encoder re-ranker (cycle-5) — the STRONGEST relevance stage. A cross-encoder
+        # scores the (question, doc) pair JOINTLY, separating near-duplicates the separately-
+        # embedded bi-encoder cannot. It runs on the COVERAGE-gate survivors and REPLACES the
+        # bi-encoder semantic bar when available (running both double-trims). Re-sort survivors by
+        # the sigmoid-normalised CE score desc (ties -> prior coverage order, deterministic), then
+        # keep only those clearing a within-set RELATIVE bar (_GATE_CE_FRACTION of the best
+        # normalised score). DEGRADE LADDER, each tier loud: CE unavailable -> bi-encoder semantic
+        # bar (cycle-4) -> embeddings unavailable -> coverage-only. The recall floor applies after
+        # whichever bar ran, padding in that bar's own sort order.
+        # pad_source is the recall-floor refill order — it MUST span ALL usable records (not just
+        # the gate survivors) in EVERY branch, so min(_GATE_MIN_KEEP, n) is always reachable even
+        # when the coverage gate already cut below the floor. Default = coverage order over all
+        # usable; the CE path rebuilds it as CE-sorted survivors first, then the rest in coverage
+        # order (same full set, just re-prioritised) so the CE path never under-recalls its own
+        # degraded fallback.
+        pad_source = order
+        ce_applied = False
+        if _cross_encoder_enabled() and kept:
+            try:
+                ce_scores = self._cross_encoder_rerank(question, [usable[i] for i in kept])
+            except Exception as exc:  # noqa: BLE001 — degrade down the ladder, never crash
+                self.nb_logger.warning(
+                    "literature_rag LiteratureRagStep: cross-encoder re-ranker unavailable "
+                    "(%s: %s); degrading to the bi-encoder semantic bar (coverage-only if "
+                    "embeddings are also unavailable)",
+                    type(exc).__name__,
+                    exc,
+                )
+            else:
+                ce_by_index = dict(zip(kept, ce_scores, strict=True))
+                prior_rank = {idx: rank for rank, idx in enumerate(kept)}
+                ce_sorted = sorted(kept, key=lambda i: (-ce_by_index[i], prior_rank[i]))
+                # Floor refills from the FULL usable set: CE-sorted survivors, then the records
+                # the coverage gate already cut, in coverage order — so the floor always meets
+                # min(_GATE_MIN_KEEP, n), never only the survivor count.
+                survivor_set = set(ce_sorted)
+                pad_source = ce_sorted + [i for i in order if i not in survivor_set]
+                ce_threshold = _GATE_CE_FRACTION * max(ce_by_index.values())
+                kept = [i for i in ce_sorted if ce_by_index[i] >= ce_threshold]
+                ce_applied = True
+
+        # Bi-encoder semantic bar (cycle-3/4) — now the FIRST degrade tier: runs ONLY when the
+        # cross-encoder is unavailable (skipped when CE applied, to avoid double-trimming). Still
+        # skipped when the embedding model is unavailable OR the best surviving cosine is non-
+        # positive (-> coverage-only). Among the survivors keep those whose question-cosine clears
+        # _GATE_SEM_FRACTION of the best surviving cosine — a within-set RELATIVE bar. Preserves
+        # rank order; never crashes (the keyword-only / all-zero paths warned above).
+        if not ce_applied and embed_available and kept:
             best_sim = max(sims[i] for i in kept)
             if best_sim > 0.0:
                 sem_threshold = _GATE_SEM_FRACTION * best_sim
@@ -354,7 +475,7 @@ class LiteratureRagStep(BaseStep):
 
         floor = min(_GATE_MIN_KEEP, len(usable))
         if len(kept) < floor:
-            kept = order[:floor]
+            kept = pad_source[:floor]
         return [usable[i] for i in kept[:k]]
 
     @staticmethod

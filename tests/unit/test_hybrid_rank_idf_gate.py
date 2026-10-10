@@ -22,6 +22,12 @@ from apecx_integration.agents.literature.facets import (
 )
 
 
+def _ce_model_unavailable():
+    """Default cross-encoder stub: the model cannot load (no `rag` extra / no download in unit
+    tests), so `_cross_encoder_rerank` RAISES and the ranker degrades to the bi-encoder bar."""
+    raise RuntimeError("cross-encoder model unavailable in unit tests")
+
+
 def _rag_step():
     import apecx_integration.composition.workflows.literature_rag.steps as pkg
     from apecx_integration.composition.workflows.literature_rag.steps.literature_rag_step import (
@@ -31,6 +37,10 @@ def _rag_step():
     yml = str(Path(pkg.__file__).resolve().parent / "literature_rag_step.yml")
     step = LiteratureRagStep.from_config(yml)
     step._embed_sims = lambda q, recs: [0.0] * len(recs)  # neutralize tiebreak by default
+    # By default the cross-encoder is UNAVAILABLE in unit tests (never download a model), so the
+    # ranker degrades to the bi-encoder bar — the cycle-2/3/4 behaviour the tests below assume.
+    # CE-path tests override `_cross_encoder_rerank` (controlled scores) or `_get_cross_encoder`.
+    step._get_cross_encoder = _ce_model_unavailable
     return step
 
 
@@ -297,6 +307,179 @@ def test_semantic_gate_respects_min_floor():
     ranked = step._hybrid_rank(question, records, 15)
     assert len(ranked) == 3  # semantic bar alone -> 1; recall floor pads to min(3, n)=3
     assert ranked[0]["pmid"] == "rich0"  # the one bar-clearing record leads the floor-padded set
+
+
+# --- cycle-5: cross-encoder re-ranker (strongest relevance stage) ----------
+
+
+class _FakeCrossEncoder:
+    """Minimal stand-in for sentence-transformers ``CrossEncoder`` — returns a fixed RAW logit
+    array (aligned to the pairs) so `_cross_encoder_rerank` exercises its real sigmoid math
+    without downloading a model."""
+
+    def __init__(self, raw: list[float]):
+        self._raw = raw
+
+    def predict(self, pairs):  # noqa: ARG002 — raw scores are pre-set, not derived from pairs
+        return self._raw
+
+
+def test_cross_encoder_trims_low_relevance_record_and_reorders_by_ce_score(monkeypatch):
+    """Invariant 8 (CE RE-RANK): the cross-encoder trims a coverage-PASSING but low-CE record
+    and RE-ORDERS the survivors by joint CE score — the stronger signal the bi-encoder lacks.
+
+    5 records share identical discriminative coverage (same 3 rare facets), so coverage alone
+    keeps all 5. Controlled normalised CE scores make rich2 most relevant and rich4 an outlier
+    (0.1 < _GATE_CE_FRACTION=0.5 * best 0.9 = 0.45): rich4 is trimmed and the result is sorted
+    by CE desc, NOT by coverage/input order.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")  # CE is OPT-IN; turn it on for this test
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+    ce = {"rich0": 0.5, "rich1": 0.6, "rich2": 0.9, "rich3": 0.55, "rich4": 0.1}
+    step._cross_encoder_rerank = lambda q, recs: [ce[r["pmid"]] for r in recs]
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = [r["pmid"] for r in ranked]
+    assert len(ranked) == 4  # coverage keeps 5; the CE bar cuts rich4 -> 4
+    assert "rich4" not in pmids  # the low-CE record is trimmed despite clearing coverage
+    assert pmids == ["rich2", "rich1", "rich3", "rich0"]  # re-ordered by CE score desc
+
+
+def test_cross_encoder_sigmoid_handles_negative_raw_logits():
+    """Invariant 9 (SIGMOID-NORMALISATION): raw cross-encoder logits are unbounded; a NEGATIVE
+    logit must normalise into (0, 0.5) (not be mis-gated), a positive into (0.5, 1), zero to 0.5.
+
+    Exercises the REAL `_cross_encoder_rerank` with only the model load stubbed (a fake predict
+    returning a controlled raw array) — no download, no `rag` extra needed.
+    """
+    step = _rag_step()
+    raw = [-4.0, 0.0, 4.0]
+    step._get_cross_encoder = lambda: _FakeCrossEncoder(raw)
+    records = [_rec("neg", title="x"), _rec("zero", title="y"), _rec("pos", title="z")]
+
+    scores = step._cross_encoder_rerank("q", records)
+    assert 0.0 < scores[0] < 0.5  # negative logit -> (0, 0.5), sanely gated, not negative/clipped
+    assert scores[1] == 0.5  # zero logit -> exactly 0.5
+    assert 0.5 < scores[2] < 1.0  # positive logit -> (0.5, 1)
+
+
+def test_degrade_ce_unavailable_falls_back_to_bi_encoder_bar(monkeypatch):
+    """Invariant 10 (DEGRADE LADDER tier 2): when the cross-encoder cannot load, the ranker
+    falls back to the bi-encoder semantic bar (cycle-4) and warns LOUD about the cross-encoder.
+
+    rich4 is a bi-encoder cosine outlier (0.1); with the CE unavailable the semantic bar trims it
+    (the same cut cycle-4 made), proving the bi-encoder path — not coverage-only — is taken.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")  # CE opt-in ON, but the model fails below
+    step = _rag_step()
+    step.nb_logger = _CaptureLogger()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+
+    def _ce_raise(q, recs):
+        raise RuntimeError("no cross-encoder")
+
+    step._cross_encoder_rerank = _ce_raise
+    cos = {"rich0": 1.0, "rich1": 0.9, "rich2": 0.8, "rich3": 0.7, "rich4": 0.1}
+    step._embed_sims = lambda q, recs: [cos[r["pmid"]] for r in recs]
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = {r["pmid"] for r in ranked}
+    assert len(ranked) == 4  # bi-encoder bar cut rich4 (ladder tier 2, NOT coverage-only's 5)
+    assert "rich4" not in pmids
+    assert any("cross-encoder" in w.lower() for w in step.nb_logger.warnings)  # loud degrade
+
+
+def test_degrade_ce_and_embeddings_unavailable_is_coverage_only(monkeypatch):
+    """Invariant 11 (DEGRADE LADDER tier 3): when BOTH the cross-encoder and the embedding model
+    are unavailable, the gate degrades to coverage-only (no relevance bar), warning loud on each.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")  # CE opt-in ON; both bars fail below
+    step = _rag_step()
+    step.nb_logger = _CaptureLogger()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+
+    def _ce_raise(q, recs):
+        raise RuntimeError("no cross-encoder")
+
+    def _emb_raise(q, recs):
+        raise RuntimeError("no sentence-transformers")
+
+    step._cross_encoder_rerank = _ce_raise
+    step._embed_sims = _emb_raise
+
+    ranked = step._hybrid_rank(question, records, 15)
+    assert len(ranked) == 5  # coverage-only: neither bar trims the 5 equal-coverage records
+    warns = " ".join(step.nb_logger.warnings).lower()
+    assert "cross-encoder" in warns and "embedding" in warns  # both degrade tiers warned loud
+
+
+def test_floor_honoured_under_cross_encoder_gate(monkeypatch):
+    """Invariant 12 (CE-GATE FLOOR): when the CE bar alone would cut below the recall floor, the
+    floor (min(_GATE_MIN_KEEP=3, n)) pads back in CE-sort order, led by the bar-clearing record.
+
+    Here all 5 records CLEAR the coverage gate (same rare facets), so the floor pads from WITHIN
+    the CE survivors; the companion test below covers padding from OUTSIDE the survivor set.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+    ce = {"rich0": 1.0, "rich1": 0.1, "rich2": 0.1, "rich3": 0.1, "rich4": 0.1}
+    step._cross_encoder_rerank = lambda q, recs: [ce[r["pmid"]] for r in recs]
+
+    ranked = step._hybrid_rank(question, records, 15)
+    assert len(ranked) == 3  # CE bar alone -> 1; recall floor pads to min(3, n)=3
+    assert ranked[0]["pmid"] == "rich0"  # the one bar-clearing CE record leads the padded set
+
+
+def test_cross_encoder_floor_pads_from_outside_coverage_survivors(monkeypatch):
+    """Invariant 13 (CE FLOOR PADS FULL SET — regression): when the COVERAGE gate already cut
+    below the recall floor, the floor must refill from the FULL usable set, not only the CE
+    survivors — so the CE-on path never recalls LESS than its own CE-off fallback.
+
+    1 rich record (matches the lone rare 'zephyr') + 30 common-only records (match only the
+    saturated 'alpha', whose IDF falls below the discriminative cutoff -> coverage 0 -> cut by the
+    coverage gate). Coverage survivors = {rich} (1 < floor min(_GATE_MIN_KEEP=3, n=31)). The floor
+    MUST pad two trimmed commons back from the full set, led by the CE-scored survivor. Before the
+    fix this returned 1 (padding from survivors only) — a violation and worse than the CE-off path.
+    """
+    monkeypatch.setenv("APECX_ENABLE_CROSS_ENCODER", "1")
+    step = _rag_step()
+    question = "zephyr alpha"
+    records = [_rec("rich", title="zephyr")]
+    records += [
+        _rec(f"common{i}", title="alpha") for i in range(30)
+    ]  # 'alpha' saturates -> low IDF
+    step._cross_encoder_rerank = lambda q, recs: [0.9 for _ in recs]  # survivor clears its own bar
+
+    ranked = step._hybrid_rank(question, records, 15)
+    pmids = [r["pmid"] for r in ranked]
+    assert len(ranked) == 3  # floor refilled from the FULL usable set (was 1 before the fix)
+    assert pmids[0] == "rich"  # the lone coverage/CE survivor leads the floor-padded set
+    assert pmids == ["rich", "common0", "common1"]  # deterministic pad in coverage order
+
+
+def test_cross_encoder_off_by_default_leaves_pre_ce_behaviour(monkeypatch):
+    """Invariant 14 (OPT-IN): with the flag UNSET the CE stage never runs — the pipeline is the
+    pre-CE behavior (coverage -> bi-encoder bar -> coverage-only) and `_cross_encoder_rerank` is
+    not even called. Guards against silently activating the heavy stage on library presence.
+    """
+    monkeypatch.delenv("APECX_ENABLE_CROSS_ENCODER", raising=False)
+    step = _rag_step()
+
+    def _ce_should_not_run(q, recs):
+        raise AssertionError("cross-encoder must NOT run when APECX_ENABLE_CROSS_ENCODER is unset")
+
+    step._cross_encoder_rerank = _ce_should_not_run
+    question = "zephyr quokka mimsy"
+    records = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+
+    ranked = step._hybrid_rank(question, records, 15)  # bi-encoder sims=0 -> coverage-only
+    assert {r["pmid"] for r in ranked} == {f"rich{i}" for i in range(5)}  # pre-CE result, no trim
 
 
 # --- lever (c): tightened stem match --------------------------------------

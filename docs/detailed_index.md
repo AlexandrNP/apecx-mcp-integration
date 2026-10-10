@@ -2376,6 +2376,8 @@ _HarvestStampStep — the harvest front-end that makes literature_rag runnable_
 _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer._
 
 - `def _evidence_text(record: dict[str, Any], *, char_cap: int)` — The richest grounding text for a record: open-access ``full_text`` (capped) when
+- `def _sigmoid(x: float)` — Numerically-stable logistic map of an unbounded cross-encoder logit into (0, 1).
+- `def _cross_encoder_enabled()` — Whether the opt-in cross-encoder re-rank stage is ON (``APECX_ENABLE_CROSS_ENCODER``).
 - class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — retrieve top-k records, synthesize a cited answer.
   - `def _get_config_class(cls)`
   - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the RAG envelope.
@@ -2383,6 +2385,8 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _get_embed_model(self)` — Lazily load + cache the sentence-transformers model on the instance.
   - `def _record_text(record: dict[str, Any])` — Title + abstract joined — the text both ranking signals read.
   - `def _embed_sims(self, question: str, records: list[dict[str, Any]])` — Cosine similarity of each record (aligned to ``records``) to the question.
+  - `def _get_cross_encoder(self)` — Lazily load + cache the sentence-transformers ``CrossEncoder`` on the instance.
+  - `def _cross_encoder_rerank(self, question: str, records: list[dict[str, Any]])` — Sigmoid-normalised (0, 1) cross-encoder relevance of each record to the question.
   - `def _facet_idf(facets: list[str], present_per_record: list[list[str]])` — IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
   - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
   - `def _render_host_evidence(question: str, records: list[dict[str, Any]])` — Deterministic evidence body handed to the host LLM in desktop locus.
