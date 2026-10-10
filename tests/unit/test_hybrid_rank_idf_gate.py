@@ -101,9 +101,11 @@ def _assert_rare_match_protected(m: int):
 
     This is exactly where the rejected fraction-of-SUM gate failed: TOP's SUM dwarfs
     RAREONLY's lone rare-facet SUM, so a high fraction of TOP's score evicts RAREONLY while
-    COMMONONLY (SUM of m common hits) clears it — backwards. The discriminative-mass gate
-    thresholds the PEAK instead, so RAREONLY (peak == the best peak) always survives and the
-    COMMONONLY pile (peak == a common facet's low IDF) is trimmed no matter how many it stacks.
+    COMMONONLY (SUM of m common hits) clears it — backwards. The discriminative-COVERAGE gate
+    only counts DISCRIMINATIVE facets (the common facets fall below the rarity cutoff), so
+    RAREONLY (coverage == TOP's — both cover the one rare facet) always survives while the
+    COMMONONLY pile (coverage 0 — it matches no discriminative facet) is trimmed no matter
+    how many commons it stacks.
     """
     common = ["alpha", "bravo", "charlie"][:m]
     question = "zephyr " + " ".join(common)
@@ -135,9 +137,9 @@ def test_common_pile_trimmed_despite_high_sum_regardless_of_stack_depth():
     even when its SUM is large, and stacking MORE commons never rescues it.
 
     Question = 1 rare ('zephyr') + 3 common. The off-topic pile matches all 3 commons (a big
-    SUM of 3.0) but no rare facet; the on-target tier matches the rare facet. The pile's
-    discriminative PEAK is just one common facet's IDF (~1.0) however many commons it stacks,
-    so it falls below the peak gate while the on-target tier (peak == rare IDF) survives.
+    SUM of 3.0) but no rare facet; the common facets fall below the discriminative cutoff, so
+    the pile's COVERAGE is 0 however many commons it stacks, while the on-target tier (covers
+    the rare facet) survives.
     """
     question = "zephyr alpha bravo charlie"
     on_target = [_rec(f"on{i}", title="zephyr alpha bravo charlie") for i in range(3)]
@@ -149,6 +151,62 @@ def test_common_pile_trimmed_despite_high_sum_regardless_of_stack_depth():
     assert len(ranked) == 3  # only the on-target tier survives — NOT a padded 15
     assert pmids == {f"on{i}" for i in range(3)}
     assert not any(p.startswith("pile") for p in pmids)  # common-only pile dropped despite high SUM
+
+
+def test_coverage_gate_trims_single_facet_records_when_richer_coverage_exists():
+    """Invariant 3 (ANTI-UNDER-TRIM): with M near-equally-rare facets, records covering
+    SEVERAL of them rank above and TRIM the many single-facet matches; the gate returns FEWER
+    than min(N, k), never a padded k.
+
+    The rejected peak-only gate returned the full k here: every record matching any ONE of the
+    M equally-rare facets had disc_peak == best_peak, so none were cut. The discriminative-
+    COVERAGE gate cuts the single-facet records because each covers only ~1/M of the
+    discriminative mass the multi-facet 'rich' records cover.
+    """
+    question = "zephyr quokka mimsy"  # M=3 facets, driven near-equally rare below
+    rich = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(5)]
+    singles = (
+        [_rec(f"zeph{i}", title="zephyr") for i in range(8)]
+        + [_rec(f"quok{i}", title="quokka") for i in range(8)]
+        + [_rec(f"mims{i}", title="mimsy") for i in range(8)]
+    )
+    records = rich + singles  # N = 29; each facet df = 5 + 8 = 13 -> near-equal IDF
+
+    ranked = _rag_step()._hybrid_rank(question, records, 15)
+    pmids = [r["pmid"] for r in ranked]
+    assert len(ranked) == 5  # only the multi-coverage records survive
+    assert len(ranked) < min(len(records), 15)  # NOT the padded full k the peak gate returns
+    assert set(pmids) == {f"rich{i}" for i in range(5)}
+    assert not any(p.startswith(("zeph", "quok", "mims")) for p in pmids)  # singles trimmed
+    assert pmids[0].startswith("rich")  # multi-coverage records rank at the top
+
+
+def _coverage_keep_classes(scale: int) -> set[str]:
+    """Build a candidate set of FIXED RELATIVE composition at ``scale`` and return the set of
+    record class-prefixes the coverage gate keeps.
+
+    Composition (independent of scale): ``rich`` cover all 3 rare facets, ``single`` covers 1
+    rare facet, ``common`` covers only the saturated common facet. N = 35 * scale. ``rich`` is
+    3*scale so the min-keep floor (3) never pads a trimmed record back in at the small scale.
+    """
+    question = "zephyr quokka mimsy alpha"
+    rich = [_rec(f"rich{i}", title="zephyr quokka mimsy") for i in range(3 * scale)]
+    single = [_rec(f"single{i}", title="zephyr") for i in range(2 * scale)]
+    common = [_rec(f"common{i}", title="alpha") for i in range(30 * scale)]
+    ranked = _rag_step()._hybrid_rank(question, rich + single + common, 15)
+    return {r["pmid"].rstrip("0123456789") for r in ranked}
+
+
+def test_coverage_gate_keep_decision_is_scale_stable():
+    """Invariant 4 (SCALE-STABILITY): a record of fixed RELATIVE rarity/coverage gets the SAME
+    keep/cut outcome regardless of candidate-set size N. Both the rarity cutoff and the keep
+    cutoff are ratios WITHIN the set (never a raw log-N magnitude), so growing N 10x must not
+    flip the decision — the 'single' records stay trimmed and the 'common' pile stays dropped
+    at both scales.
+    """
+    small = _coverage_keep_classes(scale=1)  # N = 35
+    large = _coverage_keep_classes(scale=10)  # N = 350
+    assert small == large == {"rich"}  # single + common trimmed at BOTH scales
 
 
 def test_gate_respects_min_floor_and_max_cap():

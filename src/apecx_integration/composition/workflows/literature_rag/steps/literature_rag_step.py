@@ -86,19 +86,20 @@ _EMBED_MODEL_NAME = "all-mpnet-base-v2"
 #: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
 #: as the one cap — it no longer pre-caps.
 _TOP_K = 15
-#: Discriminative-mass gate cutoff (supersedes the rejected scalar fraction-of-SUM gate,
-#: incl. the 0.4 -> 0.6 bump): after ranking, keep a record only if its discriminative PEAK
-#: — the IDF weight of the single RAREST question facet it matches — is at least this
-#: fraction of the best peak in the candidate set. Gating the PEAK, not the SUM, is the fix:
-#: the hybrid score is a SUM of per-facet IDF weights, so a record stacking several COMMON
-#: (low-IDF) facets could out-score — and under the old fraction-of-SUM gate, evict — a
-#: record matching the single RARE (high-IDF) facet. A peak threshold means common pile-ups
-#: can never buy past the gate (their peak stays at the common facet's low IDF no matter how
-#: many they stack); only matching a genuinely rare facet clears it. So a lone rare-facet
-#: match always survives (its peak == the best peak) while common-only piles are trimmable.
-#: 0.5 = "the rarest facet a kept record matches is at least half as discriminative as the
-#: best available" — scale-free, no 1-2 record special-casing.
-_GATE_PEAK_FRACTION = 0.5
+#: Discriminative-COVERAGE gate cutoff (supersedes the rejected fraction-of-SUM gate AND the
+#: peak-only gate that under-trimmed): the SAME scale-free fraction does double duty, each use a
+#: ratio WITHIN the candidate set so neither flips with N / log N. (1) A facet is DISCRIMINATIVE
+#: when its IDF is >= this fraction of the rarest facet's IDF — so saturated common facets (low
+#: IDF) are excluded while genuinely rare facets are kept. (2) After ranking by discriminative
+#: COVERAGE (the IDF mass of the discriminative facets a record matches), keep a record only if
+#: its coverage is >= this fraction of the best coverage in the set. Gating COVERAGE (not a
+#: single facet's peak) is the fix for the peak gate's under-trim: when several facets are near-
+#: equally rare, every record matching any ONE had peak == best peak and so survived to the cap;
+#: coverage cuts the single-facet records once richer-coverage records exist, so the gate returns
+#: FEWER than k when the discriminative signal is exhausted. A lone rarest-facet match still
+#: clears it (its coverage == the best when nothing covers more) and common-only piles never do
+#: (coverage 0 — no discriminative facet matched).
+_GATE_KEEP_FRACTION = 0.5
 #: Recall floor: never return fewer than this many usable records (capped by availability),
 #: even when the gate would cut harder — protects against an over-aggressive cut.
 _GATE_MIN_KEEP = 3
@@ -244,12 +245,14 @@ class LiteratureRagStep(BaseStep):
           * TIEBREAK — embedding cosine (:meth:`_embed_sims`). Degrades LOUD to zeros when
             sentence-transformers cannot load, collapsing the order to keyword-only.
 
-        Gate (discriminative-mass): keep records whose discriminative PEAK (the IDF of the
-        single rarest facet they match) is at least ``_GATE_PEAK_FRACTION`` of the best peak,
-        always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records — so a question with few
-        strongly-relevant records yields FEWER than ``k``, never a padded ``k``, and a
-        common-only pile-up cannot survive by stacking low-IDF facets. If NO facet matches
-        any record (all keyword scores 0), fall back to embedding-cosine top-``k``.
+        Gate (discriminative-coverage): keep records whose discriminative COVERAGE — the IDF
+        mass of the discriminative facets (IDF >= ``_GATE_KEEP_FRACTION`` of the rarest facet's)
+        they match — is at least ``_GATE_KEEP_FRACTION`` of the best coverage in the set, always
+        between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records — so a question with few strongly-
+        relevant records yields FEWER than ``k`` (records carrying only ONE of several near-
+        equally-rare facets are trimmed once richer-coverage records exist), never a padded
+        ``k``, and a common-only pile-up cannot survive by stacking low-IDF facets. If NO facet
+        matches any record (all keyword scores 0), fall back to embedding-cosine top-``k``.
         Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
         """
         usable = [r for r in records if self._record_text(r)]
@@ -286,23 +289,30 @@ class LiteratureRagStep(BaseStep):
             emb_order = sorted(range(len(usable)), key=lambda i: sims[i], reverse=True)
             return [usable[i] for i in emb_order[:k]]
 
-        # A record's discriminative PEAK = the IDF of the single rarest facet it matches.
-        # Making it the PRIMARY sort key (IDF-sum DESC then cosine as tiebreaks) means a
-        # record that hits the rare discriminative facet ranks above one that merely piles
-        # up common facets. Stable sort keeps input order for full ties -> deterministic.
-        disc_peak = [max((idf[f] for f in present), default=0.0) for present in present_per_record]
+        # Discriminative facets = those whose IDF is within _GATE_KEEP_FRACTION of the rarest
+        # facet's IDF (a ratio WITHIN the set -> scale-free). A record's discriminative COVERAGE
+        # is the IDF mass of the discriminative facets it matches. Ranking by coverage (IDF-sum
+        # then cosine as tiebreaks) puts records covering MORE of the question's rare content
+        # above single-rare-facet matches; stable sort keeps input order on full ties.
+        max_idf = max(idf.values())
+        disc_facets = {f for f, w in idf.items() if w >= _GATE_KEEP_FRACTION * max_idf}
+        disc_cov = [
+            sum(idf[f] for f in present if f in disc_facets) for present in present_per_record
+        ]
         order = sorted(
             range(len(usable)),
-            key=lambda i: (disc_peak[i], kw_scores[i], sims[i]),
+            key=lambda i: (disc_cov[i], kw_scores[i], sims[i]),
             reverse=True,
         )
 
-        # Discriminative-mass gate: keep records whose peak is at least _GATE_PEAK_FRACTION
-        # of the best peak. Thresholding the PEAK (not the SUM) is why stacking common
-        # low-IDF facets can never clear the gate, while a lone rare-facet match always does.
-        best_peak = disc_peak[order[0]]
-        threshold = _GATE_PEAK_FRACTION * best_peak
-        kept = [i for i in order if disc_peak[i] >= threshold]
+        # Discriminative-coverage gate: keep records whose coverage is at least
+        # _GATE_KEEP_FRACTION of the best coverage. Gating the coverage RATIO (not a single
+        # facet's peak) trims single-rare-facet records once richer-coverage records exist, so
+        # the set shrinks below k when the discriminative signal is exhausted; a lone rarest
+        # match still clears it and common-only piles (coverage 0) never do.
+        best_cov = disc_cov[order[0]]
+        threshold = _GATE_KEEP_FRACTION * best_cov
+        kept = [i for i in order if disc_cov[i] >= threshold]
         floor = min(_GATE_MIN_KEEP, len(usable))
         if len(kept) < floor:
             kept = order[:floor]
