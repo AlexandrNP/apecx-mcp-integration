@@ -2380,7 +2380,9 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
 - `def _quantile(values: list[float], q: float)` — Linear-interpolated ``q``-quantile (``q`` in [0, 1]) of ``values`` — pure-Python, numpy-free.
 - `def _cross_encoder_enabled()` — Whether the opt-in cross-encoder re-rank stage is ON (``APECX_ENABLE_CROSS_ENCODER``).
 - `def _llm_verify_enabled()` — Whether the opt-in LLM relevance-verify filter is ON (``APECX_ENABLE_LLM_VERIFY``).
+- `def _llm_fusion_enabled()` — Whether the opt-in GRADED LLM+CE fusion stage is ON (``APECX_ENABLE_LLM_FUSION``).
 - `def _parse_verify_verdict(text: str)` — Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
+- `def _parse_fusion_score(text: str)` — Parse an LLM graded-relevance reply into a float in [0, 1] (fusion stage).
 - class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — retrieve top-k records, synthesize a cited answer.
   - `def _get_config_class(cls)`
   - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the RAG envelope.
@@ -2393,6 +2395,10 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _get_verify_prompt_template(self)` — Lazily load + cache the generic verify prompt template from the sibling file.
   - `def _build_verify_llm(self)` — Build the apecx LLM for the verify filter via the SHARED factory (``APECX_LLM_*``).
   - `def _llm_relevance_verdicts(self, question: str, records: list[dict[str, Any]])` — Per-record LLM relevance verdict (aligned to ``records``): ``True``/``False``/``None``.
+  - `def _get_fusion_prompt_template(self)` — Lazily load + cache the generic graded-score prompt template from the sibling file.
+  - `def _build_fusion_llm(self)` — Build the apecx LLM for the fusion stage via the SHARED factory (``APECX_LLM_*``).
+  - `def _llm_relevance_scores(self, question: str, records: list[dict[str, Any]])` — Per-record GRADED LLM relevance score (aligned to ``records``): a float in [0, 1], or
+  - `def _fusion_cut(sorted_desc: list[float])` — In-pool elbow threshold for the fusion joint scores: keep every score >= the return.
   - `def _facet_idf(facets: list[str], present_per_record: list[list[str]])` — IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
   - `def _top_confidence_positions(scores: list[float])` — Positions of the TOP retrieval-confidence tier within the in-pool ``scores`` (verify Fix 2).
   - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),

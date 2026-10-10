@@ -103,6 +103,27 @@ _LLM_VERIFY_ENABLE_ENV = "APECX_ENABLE_LLM_VERIFY"
 #: file, NOT in this .py (framework rule: prompts live in YAML/template files, never source). No
 #: domain terms, no PMIDs — purely a relevance-judgment template.
 _VERIFY_PROMPT_PATH = Path(__file__).resolve().parent / "verify_prompt.md"
+#: The GRADED LLM+CE FUSION stage is OPT-IN behind its OWN flag (mirrors the CE/verify flags, same
+#: anti-pattern rationale). It is a SEPARATE, newer alternative to the binary verify filter above:
+#: instead of a yes/no drop + hard CE override (which still lets a top-CE but off-target record
+#: survive, and cannot lift a wrongly-low-CE true positive), it asks the LLM for a GRADED relevance
+#: SCORE in [0,1] per gate-survivor and FUSES it with the retrieval confidence (joint CE sigmoid
+#: when CE ran, else bi-encoder cosine) into a joint score, re-ranks by joint, and cuts the low
+#: cluster with an in-pool elbow. Default OFF -> this stage is absent and the pipeline (INCLUDING
+#: the verify path above, which is untouched) is byte-identical to the pre-fusion behaviour.
+#: Degrades LOUD (one warning) to the pre-fusion ranked set when the LLM is unavailable or every
+#: per-candidate call errors.
+_LLM_FUSION_ENABLE_ENV = "APECX_ENABLE_LLM_FUSION"
+#: Generic graded-score prompt template (question + title/abstract -> a single 0..1 number). Lives
+#: in a sibling file, NOT in this .py (framework rule: prompts live in template files). No domain
+#: terms, no PMIDs — a pure relevance-grading template.
+_FUSION_PROMPT_PATH = Path(__file__).resolve().parent / "fusion_prompt.md"
+#: Fusion weight: ``joint = _FUSION_LLM_WEIGHT * llm_score + (1 - _FUSION_LLM_WEIGHT) * ce_score``.
+#: 0.5 weights the LLM's read of the question-specific criterion EQUALLY with the retrieval ranker's
+#: confidence — so a top-CE but LLM-judged-off-target record sinks (fixes the hard-override
+#: precision leak) while a wrongly-low-CE but LLM-relevant record is lifted (recovers a true hit the
+#: CE alone ranked too low). A const, not an eval-tuned value.
+_FUSION_LLM_WEIGHT = 0.5
 #: The SINGLE rank+cap: hand out AT MOST this many hybrid-ranked records, every locus.
 #: "15 MAX" is the product spec — the adaptive gate (:meth:`_hybrid_rank`) returns FEWER
 #: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
@@ -239,6 +260,19 @@ def _llm_verify_enabled() -> bool:
     return os.environ.get(_LLM_VERIFY_ENABLE_ENV, "").strip().lower() in {"1", "true"}
 
 
+def _llm_fusion_enabled() -> bool:
+    """Whether the opt-in GRADED LLM+CE fusion stage is ON (``APECX_ENABLE_LLM_FUSION``).
+
+    Default OFF, mirroring :func:`_cross_encoder_enabled` / :func:`_llm_verify_enabled` exactly. ON
+    only for an explicit truthy flag (``'1'`` / ``'true'``, case-insensitive); anything else (unset
+    / ``'0'`` / ``'false'``) leaves the pipeline at its pre-fusion behaviour. Independent of the
+    verify flag: the fusion stage is a separate block gated on THIS env var alone.
+    """
+    import os
+
+    return os.environ.get(_LLM_FUSION_ENABLE_ENV, "").strip().lower() in {"1", "true"}
+
+
 #: Leading tokens an LLM uses to affirm / deny relevance. Matched against the FIRST word of the
 #: (lowercased, stripped) response — the prompt asks for a single leading word.
 _VERIFY_YES_WORDS = frozenset(
@@ -274,6 +308,32 @@ def _parse_verify_verdict(text: str) -> bool | None:
         except ValueError:
             return None
     return None
+
+
+def _parse_fusion_score(text: str) -> float:
+    """Parse an LLM graded-relevance reply into a float in [0, 1] (fusion stage).
+
+    Parse order (brief): a LEADING float wins and is CLAMPED to [0, 1] — so a graded ``0.8``
+    keeps its value (unlike :func:`_parse_verify_verdict`, which collapses any number to a
+    yes/no at 0.5). Else fall back to the binary verify semantics as a backstop: a leading
+    yes/relevant word -> ``1.0``, a no/irrelevant word -> ``0.0``; anything unparseable (empty,
+    ``"maybe"``, garbage) -> the neutral ``0.5``. ALWAYS returns a float: a successful LLM call
+    that produced SOME text is a usable (possibly neutral) score — distinct from a call that
+    ERRORED, which :meth:`LiteratureRagStep._llm_relevance_scores` records as ``None``.
+    """
+    s = (text or "").strip().lower().lstrip("*`_#->. \t")
+    num = re.match(r"[-+]?\d*\.?\d+", s)
+    if num:
+        try:
+            return min(1.0, max(0.0, float(num.group(0))))
+        except ValueError:
+            pass
+    verdict = _parse_verify_verdict(text)
+    if verdict is True:
+        return 1.0
+    if verdict is False:
+        return 0.0
+    return 0.5
 
 
 class LiteratureRagStep(BaseStep):
@@ -462,6 +522,97 @@ class LiteratureRagStep(BaseStep):
                 verdicts.append(None)
         return verdicts
 
+    def _get_fusion_prompt_template(self) -> str:
+        """Lazily load + cache the generic graded-score prompt template from the sibling file.
+
+        Loaded here (not module top) so a caller that never enables fusion never touches the file.
+        Carries ``{question}``/``{title}``/``{abstract}`` placeholders (no domain terms, no PMIDs).
+        """
+        tpl = getattr(self, "_fusion_prompt_template", None)
+        if tpl is None:
+            tpl = _FUSION_PROMPT_PATH.read_text(encoding="utf-8")
+            self._fusion_prompt_template = tpl
+        return tpl
+
+    def _build_fusion_llm(self):
+        """Build the apecx LLM for the fusion stage via the SHARED factory (``APECX_LLM_*``).
+
+        Identical plumbing to :meth:`_build_verify_llm` but a SEPARATE method so the fusion path is
+        independently stubbable in tests and never touches the verify path. RAISES when the
+        endpoint is unreachable / model not pulled / the langchain stack is absent; the caller
+        catches it and degrades LOUD to the pre-fusion set.
+        """
+        from apecx_integration.agents._llm_config import preflight_llm_model
+        from apecx_integration.agents._llm_factory import build_chat_llm
+
+        preflight_llm_model()
+        return build_chat_llm()
+
+    def _llm_relevance_scores(
+        self, question: str, records: list[dict[str, Any]]
+    ) -> list[float | None]:
+        """Per-record GRADED LLM relevance score (aligned to ``records``): a float in [0, 1], or
+        ``None`` when the per-record LLM call itself ERRORED.
+
+        For EACH record, call the apecx LLM with the generic graded-score prompt (question + the
+        record's title+abstract) and parse the reply with :func:`_parse_fusion_score` (leading
+        float -> clamped [0, 1]; yes/no word -> 1.0/0.0; anything else -> 0.5 backstop). A
+        per-record call error maps to ``None`` so the caller can (a) substitute the 0.5 unknown
+        backstop in the fusion when SOME calls succeeded and (b) detect the all-errored case and
+        degrade LOUD. RAISES only if the LLM client itself cannot be built — the caller
+        (:meth:`_hybrid_rank`) catches that and SKIPS the whole fusion stage, loud. Synchronous
+        (``llm.invoke``); the whole rank runs in a worker thread already.
+        """
+        from langchain_core.messages import HumanMessage
+
+        llm = self._build_fusion_llm()
+        template = self._get_fusion_prompt_template()
+        scores: list[float | None] = []
+        for rec in records:
+            prompt = template.format(
+                question=question,
+                title=str(rec.get("title") or "").strip(),
+                abstract=_evidence_text(rec, char_cap=_FULLTEXT_BACKEND_CAP),
+            )
+            try:
+                response = llm.invoke([HumanMessage(content=prompt)])
+                content = getattr(response, "content", None)
+                scores.append(_parse_fusion_score(content) if isinstance(content, str) else None)
+            except Exception as exc:  # noqa: BLE001 — a per-record failure is a failed call, no crash
+                self.nb_logger.warning(
+                    "literature_rag LiteratureRagStep: LLM fusion score call failed for one "
+                    "candidate (%s: %s); treating it as a failed call (0.5 backstop when any "
+                    "other call succeeds, else the whole fusion stage is skipped)",
+                    type(exc).__name__,
+                    exc,
+                )
+                scores.append(None)
+        return scores
+
+    @staticmethod
+    def _fusion_cut(sorted_desc: list[float]) -> float:
+        """In-pool elbow threshold for the fusion joint scores: keep every score >= the return.
+
+        ``sorted_desc`` is the joint scores sorted DESCENDING. The cut drops the low cluster that
+        sits below the single DOMINANT gap in the descending scores — "dominant" means that gap
+        exceeds the COMBINED rest (i.e. it is more than half the total top-to-bottom descent), a
+        comparison derived purely from THIS pool, with NO eval constant. When no gap dominates
+        (saturated / evenly-spread pool), nothing is cut (threshold = the min score -> keep all),
+        so a pool of uniformly-relevant survivors is NOT over-trimmed. Precision-favoring: ties on
+        the max gap resolve to the TOPMOST gap (``list.index`` returns the first), the most
+        aggressive deterministic cut. Empty -> 0.0; single -> that score.
+        """
+        if len(sorted_desc) <= 1:
+            return sorted_desc[0] if sorted_desc else 0.0
+        gaps = [a - b for a, b in zip(sorted_desc, sorted_desc[1:], strict=False)]
+        total = sorted_desc[0] - sorted_desc[-1]  # == sum(gaps)
+        max_gap = max(gaps)
+        # No dominant separation (max gap <= the combined rest) -> keep all.
+        if total <= 0.0 or max_gap <= total - max_gap:
+            return sorted_desc[-1]
+        idx = gaps.index(max_gap)  # topmost dominant gap -> precision-favoring + deterministic
+        return sorted_desc[idx]  # keep everything >= the upper side of that gap
+
     @staticmethod
     def _facet_idf(facets: list[str], present_per_record: list[list[str]]) -> dict[str, float]:
         """IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
@@ -546,7 +697,18 @@ class LiteratureRagStep(BaseStep):
              when the LLM is unreachable or every call errors. Default OFF -> this stage is absent
              and the pipeline is byte-identical to the pre-verify behaviour.
 
-        Recall floor: when verify did NOT run, the kept set is always between
+          4. GRADED LLM+CE fusion (NEW, opt-in via ``APECX_ENABLE_LLM_FUSION``, a separate
+             ALTERNATIVE to (3)): on the survivors of (1)+(2), an apecx LLM returns a GRADED score
+             in [0,1] per candidate; it is FUSED with the retrieval confidence (joint CE sigmoid, or
+             bi-encoder cosine) as ``joint = _FUSION_LLM_WEIGHT*llm + (1-w)*ce``; survivors are
+             re-ranked by ``joint`` desc and the low cluster is cut with an in-pool elbow
+             (:meth:`_fusion_cut`, no eval constant). This separates a top-CE-but-off-target record
+             (sinks on a low LLM score) from a wrongly-low-CE true positive (lifted on a high LLM
+             score) — the blunt-override failure the binary verdict in (3) cannot fix. SKIPPED
+             (one loud warning, pre-fusion set) when the LLM is unreachable or every call errors.
+             Default OFF -> absent; a separate flag + block from (3), so each is independent.
+
+        Recall floor: when verify/fusion did NOT run, the kept set is always between
         ``min(_GATE_MIN_KEEP, n)`` and ``k`` — the floor pads from ``pad_source`` after the
         coverage + CE/bi-encoder bars, so neither cuts below the floor (byte-identical to the
         pre-verify behaviour). When verify DID run (Fix 1, precision-first), the floor may
@@ -724,15 +886,65 @@ class LiteratureRagStep(BaseStep):
                         "pre-verify (CE/coverage) set"
                     )
 
-        # Recall floor. Fix 1 (precision): when the verify stage ACTUALLY ran, the floor may
-        # repopulate ONLY from the VERIFY-SURVIVORS — never re-inject an LLM-rejected record. The
-        # survivors ARE ``kept``, so if verify trimmed below the floor we return exactly those
-        # survivors (a smaller, clean set is correct under a precision-first objective): the
-        # pre-verify floor-pad from ``pad_source`` (which spans rejected records) is SKIPPED. When
-        # verify did NOT run (flag OFF / client unavailable / all-UNKNOWN), the floor behaves
-        # EXACTLY as before — padding from ``pad_source`` so no prior test/cycle is disturbed.
+        # GRADED LLM+CE FUSION filter (opt-in via ``APECX_ENABLE_LLM_FUSION``, a NEWER alternative
+        # to the binary verify filter above) — runs on the gate survivors in EVERY locus, AFTER the
+        # CE/bi-encoder bar and BEFORE the floor+cap, exactly where verify runs. Separate flag,
+        # separate block: when the fusion flag is unset NONE of this executes and the pipeline
+        # (verify path included) is byte-identical. Instead of a yes/no drop + hard CE override
+        # (which lets a top-CE but off-target record survive and cannot lift a wrongly-low-CE true
+        # positive), ask the LLM for a GRADED score in [0,1] per survivor and FUSE it with the
+        # retrieval confidence (joint CE sigmoid when the CE stage ran, else the bi-encoder cosine):
+        # joint = w*llm + (1-w)*ce. Re-rank survivors by joint desc (ties -> prior order ->
+        # deterministic) and cut the low cluster with the in-pool elbow (:meth:`_fusion_cut`, no eval
+        # constant). So a high-CE/near-0-LLM record sinks below the cut while a high-LLM/mid-CE record
+        # is retained. DEGRADE LOUD: client un-buildable OR every per-call errored (all-None) -> SKIP
+        # fusion with ONE warning and return the pre-fusion ``kept``.
+        fusion_applied = False
+        if _llm_fusion_enabled() and kept:
+            try:
+                scores = self._llm_relevance_scores(question, [usable[i] for i in kept])
+            except Exception as exc:  # noqa: BLE001 — LLM unavailable -> skip fusion, loud, no crash
+                self.nb_logger.warning(
+                    "literature_rag LiteratureRagStep: LLM fusion filter unavailable "
+                    "(%s: %s); SKIPPING it and returning the pre-fusion (CE/coverage) set",
+                    type(exc).__name__,
+                    exc,
+                )
+            else:
+                if any(s is not None for s in scores):
+                    # ce_score per survivor: the strongest retrieval signal already computed in THIS
+                    # path (joint CE sigmoid when the CE stage ran, else the bi-encoder cosine). A
+                    # failed per-call score (None) falls back to the 0.5 neutral backstop.
+                    ce_scores = (
+                        [ce_by_index[i] for i in kept] if ce_by_index else [sims[i] for i in kept]
+                    )
+                    joint_by_index = {
+                        idx: _FUSION_LLM_WEIGHT * (s if s is not None else 0.5)
+                        + (1.0 - _FUSION_LLM_WEIGHT) * ce
+                        for idx, s, ce in zip(kept, scores, ce_scores, strict=True)
+                    }
+                    prior_rank = {idx: rank for rank, idx in enumerate(kept)}
+                    ranked_kept = sorted(kept, key=lambda i: (-joint_by_index[i], prior_rank[i]))
+                    cut = self._fusion_cut([joint_by_index[i] for i in ranked_kept])
+                    kept = [i for i in ranked_kept if joint_by_index[i] >= cut]
+                    fusion_applied = True
+                else:
+                    self.nb_logger.warning(
+                        "literature_rag LiteratureRagStep: every LLM fusion score call failed "
+                        "(no usable score); SKIPPING the fusion filter and returning the "
+                        "pre-fusion (CE/coverage) set"
+                    )
+
+        # Recall floor. Fix 1 (precision): when the verify OR the fusion stage ACTUALLY ran, the
+        # floor may repopulate ONLY from THEIR survivors — never re-inject an LLM-dropped / below-
+        # cut record. The survivors ARE ``kept``, so if either trimmed below the floor we return
+        # exactly those survivors (a smaller, clean set is correct under a precision-first
+        # objective): the pre-LLM floor-pad from ``pad_source`` (which spans dropped records) is
+        # SKIPPED. When neither ran (both flags OFF / client unavailable / all-UNKNOWN), the floor
+        # behaves EXACTLY as before — padding from ``pad_source`` so no prior test/cycle is
+        # disturbed (``not fusion_applied`` is a no-op when fusion is OFF).
         floor = min(_GATE_MIN_KEEP, len(usable))
-        if not verify_applied and len(kept) < floor:
+        if not verify_applied and not fusion_applied and len(kept) < floor:
             kept = pad_source[:floor]
         return [usable[i] for i in kept[:k]]
 
