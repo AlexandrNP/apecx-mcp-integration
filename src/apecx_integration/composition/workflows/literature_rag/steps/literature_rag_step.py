@@ -6,13 +6,17 @@ and — for the open-access subset — ``full_text``; synthesis grounds on ``ful
 when present via :func:`_evidence_text`, since abstracts omit epitope/animal-model detail),
 this step:
 
-  1. Ranks the records with a HYBRID signal and keeps the top ``_TOP_K`` (=15):
-     primary key = the number of DISTINCT question facets each record mentions
-     (keyword overlap, :func:`agents.literature.facets.keyword_facet_hits`);
-     tiebreak = sentence-transformers ``all-mpnet-base-v2`` cosine similarity
-     (:meth:`_embed_sims`). This rank+cap is the step's SINGLE authority and runs
-     in EVERY locus (desktop included). If sentence-transformers cannot load, the
-     ranker degrades LOUD to keyword-only — still capped, never the full set.
+  1. Ranks the records with a HYBRID signal and keeps AT MOST ``_TOP_K`` (=15):
+     primary key = an IDF-weighted keyword score — the sum over the DISTINCT question
+     facets each record mentions of each facet's rarity weight across the candidate set
+     (:meth:`_facet_idf` over :func:`agents.literature.facets.facets_present`), so a rare
+     discriminative facet counts far more than a generic one; tiebreak = sentence-
+     transformers ``all-mpnet-base-v2`` cosine similarity (:meth:`_embed_sims`). An
+     adaptive relevance gate then drops the low-relevance tail, so a question with few
+     strongly-relevant records yields FEWER than 15 (never a padded 15). This rank+gate+cap
+     is the step's SINGLE authority and runs in EVERY locus (desktop included). If
+     sentence-transformers cannot load, the ranker degrades LOUD to keyword-only — still
+     gated + capped, never the full set.
   2. Feeds those records to the SHARED synthesizer
      ``apecx_integration.agents.rag_synthesis.synthesize_response`` and returns its
      Markdown answer with the cited PMIDs parsed out.
@@ -57,6 +61,7 @@ Framework contract (nanobrain):
 from __future__ import annotations
 
 import asyncio
+import math
 import re
 from pathlib import Path
 from typing import Any
@@ -65,7 +70,7 @@ from nanobrain.core.step import BaseStep, StepConfig
 
 from apecx_integration.agents.literature.facets import (
     extract_question_facets,
-    keyword_facet_hits,
+    facets_present,
 )
 from apecx_integration.agents.rag_synthesis import synthesize_response
 
@@ -76,9 +81,19 @@ _SYNTHESIS_CONFIG_PATH = Path(__file__).resolve().parent / "synthesis_config.yml
 
 #: Sentence-transformers model used for the embedding tiebreak. Cached after first use.
 _EMBED_MODEL_NAME = "all-mpnet-base-v2"
-#: The SINGLE rank+cap: hand out at most this many hybrid-ranked records, every locus.
-#: The tool (``literature_qa``) relies on THIS as the one cap — it no longer pre-caps.
+#: The SINGLE rank+cap: hand out AT MOST this many hybrid-ranked records, every locus.
+#: "15 MAX" is the product spec — the adaptive gate (:meth:`_hybrid_rank`) returns FEWER
+#: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
+#: as the one cap — it no longer pre-caps.
 _TOP_K = 15
+#: Relevance-gate cutoff (cycle-2 lever b): after sorting by the IDF keyword score, keep
+#: records whose score is at least this FRACTION of the top record's score; drop the
+#: low-relevance tail. Chosen over an elbow/largest-gap rule because a fraction-of-top is
+#: scale-free, has no special-casing for 1-2 record sets, and is predictable to reason about.
+_GATE_FRACTION = 0.4
+#: Recall floor: never return fewer than this many usable records (capped by availability),
+#: even when the gate would cut harder — protects against an over-aggressive cut.
+_GATE_MIN_KEEP = 3
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -189,39 +204,90 @@ class LiteratureRagStep(BaseStep):
         q_emb = model.encode([question], normalize_embeddings=True, convert_to_numpy=True)[0]
         return [float(s) for s in (doc_emb @ q_emb)]
 
+    @staticmethod
+    def _facet_idf(facets: list[str], present_per_record: list[list[str]]) -> dict[str, float]:
+        """IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
+
+        ``df`` = number of candidate records whose text contains the facet; with
+        ``N = len(candidates)``, ``idf = log((N+1)/(df+1)) + 1``. A facet present in few
+        candidates (discriminative) outweighs one present in most (generic) — the rarity
+        weighting the evaluation feedback asked for. No external corpus and no hand-picked
+        terms: the weight is computed purely from the records handed to the ranker.
+        """
+        n = len(present_per_record)
+        df: dict[str, int] = dict.fromkeys(facets, 0)
+        for present in present_per_record:
+            for f in present:  # already DISTINCT per record (facets_present dedups)
+                df[f] += 1
+        return {f: math.log((n + 1) / (df[f] + 1)) + 1.0 for f in facets}
+
     def _hybrid_rank(
         self, question: str, records: list[dict[str, Any]], k: int
     ) -> list[dict[str, Any]]:
-        """Rank records by (distinct keyword-facet hits DESC, embedding cosine DESC); top-k.
+        """Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
+        then cut the low-relevance tail with an adaptive gate; return AT MOST ``k``.
 
-        The step's SINGLE rank+cap authority. Records with no usable text (empty title
-        AND abstract) are dropped first (as the old ``_retrieve_topk`` did). The keyword
-        signal is always available; the embedding tiebreak degrades LOUD to zeros (so the
-        order collapses to keyword-only) when sentence-transformers cannot load — the set
-        is STILL capped at ``k``, never handed out whole. Synchronous + CPU-bound — the
-        caller runs it via ``asyncio.to_thread``.
+        The step's SINGLE rank+cap authority (cycle-2). Records with no usable text (empty
+        title AND abstract) are dropped first. Signals:
+
+          * PRIMARY — IDF keyword score: sum over the DISTINCT facets a record contains of
+            each facet's :meth:`_facet_idf` rarity weight over the candidate set. A rare,
+            discriminative facet contributes far more than a common one (lever a).
+          * TIEBREAK — embedding cosine (:meth:`_embed_sims`). Degrades LOUD to zeros when
+            sentence-transformers cannot load, collapsing the order to keyword-only.
+
+        Gate (lever b): keep records scoring at least ``_GATE_FRACTION`` of the top keyword
+        score, always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records — so a question
+        with few strongly-relevant records yields FEWER than ``k``, never a padded ``k``.
+        If NO facet matches any record (all keyword scores 0), fall back to embedding-cosine
+        top-``k``. Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
         """
         usable = [r for r in records if self._record_text(r)]
         if not usable:
             return []
 
         facets = extract_question_facets(question)
-        kw_hits = [keyword_facet_hits(facets, self._record_text(r)) for r in usable]
+        present_per_record = [facets_present(facets, self._record_text(r)) for r in usable]
+        idf = self._facet_idf(facets, present_per_record)
+        kw_scores = [sum(idf[f] for f in present) for present in present_per_record]
 
         try:
             sims = self._embed_sims(question, usable)
         except Exception as exc:  # noqa: BLE001 — degrade-loud, never dump the full unranked set
             self.nb_logger.warning(
                 "literature_rag LiteratureRagStep: embedding model unavailable (%s: %s); "
-                "ranking by keyword-facet overlap ONLY — still capped at k=%d, NOT the full set",
+                "ranking by IDF keyword overlap ONLY — still gated + capped at k=%d, "
+                "NOT the full set",
                 type(exc).__name__,
                 exc,
                 k,
             )
             sims = [0.0] * len(usable)
 
-        order = sorted(range(len(usable)), key=lambda i: (kw_hits[i], sims[i]), reverse=True)
-        return [usable[i] for i in order[:k]]
+        # No facet matched any candidate -> keyword signal is empty; fall back to the
+        # embedding-cosine top-k (lever b constraint), still capped, never the full set.
+        if not any(score > 0.0 for score in kw_scores):
+            self.nb_logger.warning(
+                "literature_rag LiteratureRagStep: no question facet matched any of %d "
+                "candidate record(s); falling back to embedding-cosine top-%d ranking",
+                len(usable),
+                k,
+            )
+            emb_order = sorted(range(len(usable)), key=lambda i: sims[i], reverse=True)
+            return [usable[i] for i in emb_order[:k]]
+
+        # Sort by (IDF keyword score DESC, cosine DESC). Stable sort keeps input order for
+        # full ties, so repeated runs on identical candidates are deterministic.
+        order = sorted(range(len(usable)), key=lambda i: (kw_scores[i], sims[i]), reverse=True)
+
+        # Adaptive relevance gate: keep the high-relevance head, drop the diluting tail.
+        top_score = kw_scores[order[0]]
+        threshold = _GATE_FRACTION * top_score
+        kept = [i for i in order if kw_scores[i] >= threshold]
+        floor = min(_GATE_MIN_KEEP, len(usable))
+        if len(kept) < floor:
+            kept = order[:floor]
+        return [usable[i] for i in kept[:k]]
 
     @staticmethod
     def _render_host_evidence(question: str, records: list[dict[str, Any]]) -> str:
@@ -273,10 +339,12 @@ class LiteratureRagStep(BaseStep):
             )
         question = question.strip()
 
-        # SINGLE rank+cap authority — runs in EVERY locus (desktop included). Hybrid:
-        # primary key = distinct question-facet keyword hits, tiebreak = embedding cosine,
-        # capped at _TOP_K. Degrades LOUD to keyword-only if sentence-transformers can't
-        # load — never the full unranked set. CPU-bound; offloaded so the loop stays free.
+        # SINGLE rank+gate+cap authority — runs in EVERY locus (desktop included). Hybrid:
+        # primary key = IDF-weighted keyword score, tiebreak = embedding cosine; an adaptive
+        # relevance gate then drops the low-relevance tail (so fewer than _TOP_K come back
+        # when few records are strongly relevant), capped at _TOP_K. Degrades LOUD to
+        # keyword-only if sentence-transformers can't load — never the full unranked set.
+        # CPU-bound; offloaded so the loop stays free.
         ranked = await asyncio.to_thread(self._hybrid_rank, question, filtered_records, _TOP_K)
         if not ranked:
             self.nb_logger.warning(

@@ -74,8 +74,11 @@ QUESTION_STOPWORDS = frozenset(
     ]
 )
 
-#: Prefix length used to stem-match facets longer than 3 chars (morphological variants).
-_STEM_PREFIX_LEN = 4
+#: Minimum stem-prefix length used to match facets longer than 3 chars (morphological
+#: variants). Tightened from 4 -> 5 (cycle-2 lever c): a 4-char shared prefix was
+#: over-matching unrelated words. A facet shorter than this but longer than 3 chars uses
+#: its WHOLE token as the prefix (``key[:_STEM_PREFIX_LEN]`` degrades to the whole key).
+_STEM_PREFIX_LEN = 5
 
 
 def extract_question_facets(question: str, organism: str = "") -> list[str]:
@@ -97,29 +100,51 @@ def extract_question_facets(question: str, organism: str = "") -> list[str]:
     return facets
 
 
-def keyword_facet_hits(facets: list[str], text: str) -> int:
-    """Count how many DISTINCT facets occur in ``text`` (case-insensitive).
+def _facet_in_words(key: str, words: set[str]) -> bool:
+    """Whether a single lowercased ``key`` matches any whole word in ``words``.
 
-    Matching rule (mirrors the stem intent of PubMed term expansion):
-      - a facet longer than 3 chars matches any text word that starts with the
-        facet's :data:`_STEM_PREFIX_LEN`-char stem, so morphological variants
-        (``epitopes`` vs ``epitope``) count as a hit;
+    Matching rule (tightened in cycle-2 lever c):
       - a facet of 3 chars or fewer matches only a WHOLE text word — never a
-        substring inside a longer word (no ``e2`` inside ``e2f1`` false hits).
+        substring inside a longer word (no ``e2`` inside ``e2f1`` false hits);
+      - a longer facet matches any text word that STARTS WITH the facet's stem
+        (a word-boundary prefix match, so morphological variants like ``epitopes``
+        vs ``epitope`` count). The stem is the first :data:`_STEM_PREFIX_LEN` chars,
+        or the whole facet when it is shorter — raising the floor from 4 to 5 kills
+        the short-shared-prefix false hits Tester A reported.
+    """
+    if len(key) <= 3:
+        return key in words
+    stem = key[:_STEM_PREFIX_LEN]
+    return any(w.startswith(stem) for w in words)
+
+
+def facets_present(facets: list[str], text: str) -> list[str]:
+    """The DISTINCT facets from ``facets`` that occur in ``text`` (case-insensitive).
+
+    Order follows ``facets``; each facet appears at most once. Shares the single
+    :func:`_facet_in_words` matching rule with :func:`keyword_facet_hits`. The IDF
+    keyword signal in ``LiteratureRagStep._hybrid_rank`` needs to know WHICH facets a
+    record carries (to sum their rarity weights), not just how many — hence this
+    companion to the count-only :func:`keyword_facet_hits`.
     """
     words = {w.lower() for w in _TOKEN_RE.findall(text)}
     if not words:
-        return 0
-    hits = 0
-    for facet in facets:
-        key = facet.lower()
-        if len(key) > 3:
-            stem = key[:_STEM_PREFIX_LEN]
-            if any(w.startswith(stem) for w in words):
-                hits += 1
-        elif key in words:
-            hits += 1
-    return hits
+        return []
+    return [facet for facet in facets if _facet_in_words(facet.lower(), words)]
 
 
-__all__ = ["QUESTION_STOPWORDS", "extract_question_facets", "keyword_facet_hits"]
+def keyword_facet_hits(facets: list[str], text: str) -> int:
+    """Count how many DISTINCT facets occur in ``text`` (case-insensitive).
+
+    Thin count over :func:`facets_present` (DRY — one matching rule). See
+    :func:`_facet_in_words` for the stem / short-token semantics.
+    """
+    return len(facets_present(facets, text))
+
+
+__all__ = [
+    "QUESTION_STOPWORDS",
+    "extract_question_facets",
+    "facets_present",
+    "keyword_facet_hits",
+]

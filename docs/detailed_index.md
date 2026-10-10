@@ -240,6 +240,8 @@ _Paper-coverage aggregation over a gazetteer-tagged corpus._
 _Shared question-facet extraction + keyword-overlap scoring (base-dep clean)._
 
 - `def extract_question_facets(question: str, organism: str='')` — The question's content tokens, in first-seen order, original case preserved.
+- `def _facet_in_words(key: str, words: set[str])` — Whether a single lowercased ``key`` matches any whole word in ``words``.
+- `def facets_present(facets: list[str], text: str)` — The DISTINCT facets from ``facets`` that occur in ``text`` (case-insensitive).
 - `def keyword_facet_hits(facets: list[str], text: str)` — Count how many DISTINCT facets occur in ``text`` (case-insensitive).
 
 ## `src/apecx_integration/agents/literature/fulltext.py`
@@ -2381,7 +2383,8 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _get_embed_model(self)` — Lazily load + cache the sentence-transformers model on the instance.
   - `def _record_text(record: dict[str, Any])` — Title + abstract joined — the text both ranking signals read.
   - `def _embed_sims(self, question: str, records: list[dict[str, Any]])` — Cosine similarity of each record (aligned to ``records``) to the question.
-  - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by (distinct keyword-facet hits DESC, embedding cosine DESC); top-k.
+  - `def _facet_idf(facets: list[str], present_per_record: list[list[str]])` — IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
+  - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
   - `def _render_host_evidence(question: str, records: list[dict[str, Any]])` — Deterministic evidence body handed to the host LLM in desktop locus.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 

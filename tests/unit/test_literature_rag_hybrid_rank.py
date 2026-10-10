@@ -123,11 +123,13 @@ def test_embedding_unavailable_keyword_only_fallback_still_caps():
     step = _rag_step()
     step.nb_logger = _CaptureLogger()
     step._get_embed_model = lambda: (_ for _ in ()).throw(RuntimeError("no rag extra"))
-    # 20 records; only "hit" mentions the facet, so it must survive the keyword-only cut.
+    # 20 records; only "hit" mentions the facet, so it alone clears the relevance gate.
     records = [_rec(f"pmid{i}", title="noise text") for i in range(19)]
     records.append(_rec("hit", title="alpha beta gamma"))
     ranked = step._hybrid_rank("alpha beta gamma", records, 15)
-    assert len(ranked) == 15  # capped, NOT the full 20
+    # IDF-keyword-only ranking still runs; the gate cuts the zero-score tail down to the
+    # recall floor (3), capped, NEVER the full 20.
+    assert len(ranked) == 3
     assert len(ranked) < len(records)
-    assert ranked[0]["pmid"] == "hit"  # keyword signal still ranks
+    assert ranked[0]["pmid"] == "hit"  # keyword signal still ranks it first
     assert any("keyword" in w.lower() for w in step.nb_logger.warnings)

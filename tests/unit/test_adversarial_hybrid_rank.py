@@ -155,9 +155,10 @@ def test_all_empty_text_no_evidence(monkeypatch):
 
 
 def test_long_token_matches_morphological_variant_via_stem():
-    # facet >3 chars -> 4-char stem "blor" matches "blorped"
+    # facet >=5 chars -> 5-char stem "blorp" matches the morphological variant "blorped"
     assert keyword_facet_hits(["blorping"], "the blorped widget") == 1
-    assert keyword_facet_hits(["blorping"], "blor matched too") == 1  # exact stem word
+    # the 4-char prefix "blor" is now too short for the 5-char stem -> no hit (lever c)
+    assert keyword_facet_hits(["blorping"], "blor matched too") == 0
 
 
 def test_short_token_whole_word_only_never_substring():
@@ -166,10 +167,12 @@ def test_short_token_whole_word_only_never_substring():
     assert keyword_facet_hits(["xqz"], "the axqz marker") == 0  # suffix, no hit
 
 
-def test_long_token_stem_can_overmatch_shared_prefix():
-    # Adversarial: "wobbling" stems to "wobb"; an UNRELATED word sharing that
-    # 4-char prefix ("wobbat") counts as a hit. Documents the stem rule's breadth.
-    assert keyword_facet_hits(["wobbling"], "the wobbat creature") == 1
+def test_long_token_stem_no_longer_overmatches_short_shared_prefix():
+    # Cycle-2 lever c: "wobbling" now stems to the 5-char "wobbl"; an UNRELATED word
+    # sharing only the 4-char prefix ("wobbat") no longer counts as a hit ...
+    assert keyword_facet_hits(["wobbling"], "the wobbat creature") == 0
+    # ... while a genuine >=5-char stem variant ("wobbled") still does.
+    assert keyword_facet_hits(["wobbling"], "the wobbled creature") == 1
 
 
 # --- Case 6: stability / dedup ---------------------------------------------
