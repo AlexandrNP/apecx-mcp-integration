@@ -90,6 +90,19 @@ _CROSS_ENCODER_MODEL_ENV = "APECX_CROSS_ENCODER_MODEL"
 #: is installed), so the CE stage runs ONLY when this flag is truthy ('1'/'true'). Default OFF ->
 #: the pipeline is the pre-CE behavior (coverage -> bi-encoder bar -> coverage-only).
 _CROSS_ENCODER_ENABLE_ENV = "APECX_ENABLE_CROSS_ENCODER"
+#: The LLM relevance-VERIFY filter is OPT-IN (mirrors the CE flag, same anti-pattern rationale).
+#: The embedding + cross-encoder signals have PLATEAUED on a hard class of off-target records that
+#: share all surface vocabulary and differ only by a criterion that requires READING the paper.
+#: No ranker separates them; an LLM that reads each candidate and judges the question's specific
+#: criterion can. When truthy ('1'/'true') AND an apecx LLM is reachable, a final filter stage runs
+#: on the gate survivors (after CE/coverage, before the floor+cap). Default OFF -> pipeline behaves
+#: exactly as today. Degrades LOUD (one warning) to the pre-verify set when the LLM is unavailable
+#: or every per-candidate call errors.
+_LLM_VERIFY_ENABLE_ENV = "APECX_ENABLE_LLM_VERIFY"
+#: Generic verify prompt template (question + title/abstract as parameters). Lives in a sibling
+#: file, NOT in this .py (framework rule: prompts live in YAML/template files, never source). No
+#: domain terms, no PMIDs — purely a relevance-judgment template.
+_VERIFY_PROMPT_PATH = Path(__file__).resolve().parent / "verify_prompt.md"
 #: The SINGLE rank+cap: hand out AT MOST this many hybrid-ranked records, every locus.
 #: "15 MAX" is the product spec — the adaptive gate (:meth:`_hybrid_rank`) returns FEWER
 #: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
@@ -182,6 +195,55 @@ def _cross_encoder_enabled() -> bool:
     import os
 
     return os.environ.get(_CROSS_ENCODER_ENABLE_ENV, "").strip().lower() in {"1", "true"}
+
+
+def _llm_verify_enabled() -> bool:
+    """Whether the opt-in LLM relevance-verify filter is ON (``APECX_ENABLE_LLM_VERIFY``).
+
+    Default OFF, mirroring :func:`_cross_encoder_enabled` exactly. ON only for an explicit truthy
+    flag (``'1'`` / ``'true'``, case-insensitive); anything else (unset / ``'0'`` / ``'false'``)
+    leaves the pipeline at its pre-verify behavior (coverage -> CE/bi-encoder bar -> floor+cap).
+    """
+    import os
+
+    return os.environ.get(_LLM_VERIFY_ENABLE_ENV, "").strip().lower() in {"1", "true"}
+
+
+#: Leading tokens an LLM uses to affirm / deny relevance. Matched against the FIRST word of the
+#: (lowercased, stripped) response — the prompt asks for a single leading word.
+_VERIFY_YES_WORDS = frozenset(
+    {"yes", "y", "true", "relevant", "relevance", "satisfies", "satisfied"}
+)
+_VERIFY_NO_WORDS = frozenset({"no", "n", "false", "irrelevant", "unrelated", "not", "off"})
+
+
+def _parse_verify_verdict(text: str) -> bool | None:
+    """Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
+
+    Accepts the shapes the brief requires and then some: a leading ``yes``/``no``, ``true``/
+    ``false``, ``relevant``/``irrelevant`` word, OR a leading numeric score (``1``/``0``/``0.8``),
+    where ``score >= 0.5`` is relevant. Returns ``None`` when the reply is empty or carries no
+    parseable leading verdict — the caller treats ``None`` as UNKNOWN and KEEPS the candidate
+    (uncertainty must never silently drop retrieved evidence; the verify filter only DROPS a
+    confident ``False``). Case-insensitive; tolerant of surrounding punctuation/markdown.
+    """
+    s = (text or "").strip().lower().lstrip("*`_#->. \t")
+    if not s:
+        return None
+    word = re.match(r"[a-z]+", s)
+    if word:
+        w = word.group(0)
+        if w in _VERIFY_YES_WORDS:
+            return True
+        if w in _VERIFY_NO_WORDS:
+            return False
+    num = re.match(r"[-+]?\d*\.?\d+", s)
+    if num:
+        try:
+            return float(num.group(0)) >= 0.5
+        except ValueError:
+            return None
+    return None
 
 
 class LiteratureRagStep(BaseStep):
@@ -305,6 +367,71 @@ class LiteratureRagStep(BaseStep):
         raw = model.predict(pairs)
         return [_sigmoid(float(s)) for s in raw]
 
+    def _get_verify_prompt_template(self) -> str:
+        """Lazily load + cache the generic verify prompt template from the sibling file.
+
+        Loaded here (not module top) so a caller that never enables the verify stage never
+        touches the file. The template carries ``{question}``/``{title}``/``{abstract}``
+        placeholders (no domain terms, no PMIDs) — the prompt lives in a file, not source.
+        """
+        tpl = getattr(self, "_verify_prompt_template", None)
+        if tpl is None:
+            tpl = _VERIFY_PROMPT_PATH.read_text(encoding="utf-8")
+            self._verify_prompt_template = tpl
+        return tpl
+
+    def _build_verify_llm(self):
+        """Build the apecx LLM for the verify filter via the SHARED factory (``APECX_LLM_*``).
+
+        Reuses the exact client/config path every synthesis path uses (``preflight_llm_model`` +
+        ``build_chat_llm``) — no new client. RAISES when the endpoint is unreachable / model not
+        pulled / the langchain stack is absent; the caller catches it and degrades LOUD.
+        """
+        from apecx_integration.agents._llm_config import preflight_llm_model
+        from apecx_integration.agents._llm_factory import build_chat_llm
+
+        preflight_llm_model()
+        return build_chat_llm()
+
+    def _llm_relevance_verdicts(
+        self, question: str, records: list[dict[str, Any]]
+    ) -> list[bool | None]:
+        """Per-record LLM relevance verdict (aligned to ``records``): ``True``/``False``/``None``.
+
+        For EACH record, call the apecx LLM with the generic verify prompt (question + the
+        record's title+abstract) and parse the reply with :func:`_parse_verify_verdict`. A
+        per-record call error maps to ``None`` (UNKNOWN — the caller keeps it; uncertainty must
+        not silently drop evidence). RAISES only if the LLM client itself cannot be built — the
+        caller (:meth:`_hybrid_rank`) catches that and SKIPS the whole verify stage, loud.
+        Synchronous (``llm.invoke``); the whole rank runs in a worker thread already.
+        """
+        from langchain_core.messages import HumanMessage
+
+        llm = self._build_verify_llm()
+        template = self._get_verify_prompt_template()
+        verdicts: list[bool | None] = []
+        for rec in records:
+            prompt = template.format(
+                question=question,
+                title=str(rec.get("title") or "").strip(),
+                abstract=_evidence_text(rec, char_cap=_FULLTEXT_BACKEND_CAP),
+            )
+            try:
+                response = llm.invoke([HumanMessage(content=prompt)])
+                content = getattr(response, "content", None)
+                verdicts.append(
+                    _parse_verify_verdict(content) if isinstance(content, str) else None
+                )
+            except Exception as exc:  # noqa: BLE001 — a per-record failure is UNKNOWN, never a crash
+                self.nb_logger.warning(
+                    "literature_rag LiteratureRagStep: LLM verify call failed for one "
+                    "candidate (%s: %s); treating as UNKNOWN (kept)",
+                    type(exc).__name__,
+                    exc,
+                )
+                verdicts.append(None)
+        return verdicts
+
     @staticmethod
     def _facet_idf(facets: list[str], present_per_record: list[list[str]]) -> dict[str, float]:
         """IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
@@ -361,10 +488,20 @@ class LiteratureRagStep(BaseStep):
              cosine); if the embedding model is also unavailable or carries no positive signal,
              degrade to coverage-only. Each degrade step warns LOUD; never crashes.
 
+          3. LLM relevance-verify (NEW, opt-in via ``APECX_ENABLE_LLM_VERIFY``, STRONGEST): on the
+             survivors of (1)+(2), an apecx LLM READS each candidate (title+abstract) and judges
+             whether it SATISFIES the question's specific criterion — the signal the embedding /
+             cross-encoder stages cannot provide for records that share all surface vocabulary.
+             DROPS only a confident "not relevant" verdict; keeps "relevant" or UNKNOWN. SKIPPED
+             (one loud warning, pre-verify set returned) when the LLM is unreachable or every call
+             errors. Default OFF -> this stage is absent and the pipeline is byte-identical to the
+             pre-verify behaviour.
+
         The kept set is always between ``min(_GATE_MIN_KEEP, n)`` and ``k`` records: the recall
-        floor applies AFTER both bars, so neither can cut below ``min(_GATE_MIN_KEEP, n)``. If NO
-        facet matches any record (all keyword scores 0), fall back to embedding-cosine top-``k``.
-        Synchronous + CPU-bound — the caller runs it via ``asyncio.to_thread``.
+        floor applies AFTER all bars (coverage, CE/bi-encoder, LLM verify), so none can cut below
+        ``min(_GATE_MIN_KEEP, n)``. If NO facet matches any record (all keyword scores 0), fall back
+        to embedding-cosine top-``k``. Synchronous + CPU/IO-bound — caller runs it via
+        ``asyncio.to_thread``.
         """
         usable = [r for r in records if self._record_text(r)]
         if not usable:
@@ -481,6 +618,37 @@ class LiteratureRagStep(BaseStep):
             if best_sim > 0.0:
                 sem_threshold = _GATE_SEM_FRACTION * best_sim
                 kept = [i for i in kept if sims[i] >= sem_threshold]
+
+        # LLM relevance-verify filter (opt-in, STRONGEST stage) — runs on the gate survivors in
+        # EVERY locus, like the CE gate, AFTER the CE/bi-encoder bar and BEFORE the floor+cap. The
+        # embedding + CE signals have plateaued on off-target records that share all surface
+        # vocabulary and differ only by a criterion that needs READING the paper; an LLM that reads
+        # each candidate and judges the question's specific criterion separates them. DROP only a
+        # confident "not relevant" verdict (False); KEEP a "relevant" (True) or an UNKNOWN (None —
+        # parse miss / per-record error), so uncertainty never silently drops evidence. Prior order
+        # of ``kept`` is preserved (deterministic ties). DEGRADE LOUD: if the LLM client cannot be
+        # built, OR every per-record call errored (all verdicts None), SKIP the filter entirely with
+        # ONE warning and fall back to the pre-verify ``kept``. The floor+cap below then apply to the
+        # verify result exactly as to the CE result, so the recall floor is never violated.
+        if _llm_verify_enabled() and kept:
+            try:
+                verdicts = self._llm_relevance_verdicts(question, [usable[i] for i in kept])
+            except Exception as exc:  # noqa: BLE001 — LLM unavailable -> skip verify, loud, no crash
+                self.nb_logger.warning(
+                    "literature_rag LiteratureRagStep: LLM verify filter unavailable "
+                    "(%s: %s); SKIPPING it and returning the pre-verify (CE/coverage) set",
+                    type(exc).__name__,
+                    exc,
+                )
+            else:
+                if any(v is not None for v in verdicts):
+                    kept = [i for i, v in zip(kept, verdicts, strict=True) if v is not False]
+                else:
+                    self.nb_logger.warning(
+                        "literature_rag LiteratureRagStep: every LLM verify call failed "
+                        "(no usable verdict); SKIPPING the verify filter and returning the "
+                        "pre-verify (CE/coverage) set"
+                    )
 
         floor = min(_GATE_MIN_KEEP, len(usable))
         if len(kept) < floor:
