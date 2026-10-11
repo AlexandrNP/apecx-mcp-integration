@@ -252,6 +252,32 @@ def test_flag_off_is_pre_verify_and_differs_from_flag_on(monkeypatch):
     assert set(pmids_on) != set(pmids_off)  # wiring guard: ON changes the result
 
 
+# --- prompt-contract guard: generic template, placeholders, yes/no output ------------------
+
+
+def test_verify_prompt_is_generic_and_asks_yes_no():
+    """The verify prompt stays parameterized by {question}/{title}/{abstract}, asks for a
+    leading yes/no (the contract `_parse_verify_verdict` reads), and carries NO domain terms.
+    Loosened-rubric wording ("relevant", "off-topic") replaces the old strict "satisfies"."""
+    import apecx_integration.composition.workflows.literature_rag.steps as pkg
+
+    text = (Path(pkg.__file__).resolve().parent / "verify_prompt.md").read_text(encoding="utf-8")
+    low = text.lower()
+
+    # Generic placeholders are present (the step's prompt.format fills these).
+    for ph in ("{question}", "{title}", "{abstract}"):
+        assert ph in text, ph
+    # Asks for a yes/no verdict (the leading-word contract the parser consumes).
+    assert "yes" in low and "no" in low
+    # Loosened rubric: relevance-based, not the old strict "satisfies the question".
+    assert "relevant" in low
+    assert "off-topic" in low
+    assert "satisfies the question" not in low
+    # Stays generic: no domain/organism/PMID specifics leaked into the template.
+    for domain_term in ("virus", "epitope", "pmid", "antigen", "protein"):
+        assert domain_term not in low, domain_term
+
+
 # --- robust parse of the LLM reply --------------------------------------------------------
 
 
