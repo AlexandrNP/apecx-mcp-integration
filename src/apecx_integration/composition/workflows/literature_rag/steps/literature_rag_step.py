@@ -177,6 +177,15 @@ _GATE_CE_ABS = 0.5
 #: derived from the pool at run time). The LLM verdict stays decisive for the uncertain
 #: middle/tail (below the quantile) and whenever there is no positive retrieval signal.
 _VERIFY_PROTECT_QUANTILE = 0.75
+#: The light VERIFY-PRECISION PASS is OPT-IN behind its OWN flag (mirrors the CE/verify/fusion flags,
+#: same anti-pattern rationale). It is a CONSERVATIVE tail-trim that runs ONLY when the verify stage
+#: ACTUALLY applied: the loosened verify prompt recovers true positives (recall up) but admits a thin
+#: low-confidence tail that costs precision. When truthy ('1'/'true') AND verify ran, it scores the
+#: verify-SURVIVORS by their retrieval confidence (joint CE sigmoid when the CE stage ran, else the
+#: bi-encoder cosine) and sheds ONLY a tail separated by a clear DOMINANT gap (reusing
+#: :meth:`_fusion_cut`) — a tight cluster is kept untouched, so the recall win is preserved. Default
+#: OFF -> this pass is absent and the verify path (and all its tests) is byte-identical.
+_VERIFY_PRECISION_PASS_ENABLE_ENV = "APECX_ENABLE_VERIFY_PRECISION_PASS"
 #: Matches the synthesizer's own inline RAG-chunk citation token shape.
 _RAG_CHUNK_CITE = re.compile(r"\[RAG chunk #(\d+)\]")
 
@@ -271,6 +280,20 @@ def _llm_fusion_enabled() -> bool:
     import os
 
     return os.environ.get(_LLM_FUSION_ENABLE_ENV, "").strip().lower() in {"1", "true"}
+
+
+def _verify_precision_pass_enabled() -> bool:
+    """Whether the opt-in verify-precision pass is ON (``APECX_ENABLE_VERIFY_PRECISION_PASS``).
+
+    Default OFF, mirroring :func:`_cross_encoder_enabled` / :func:`_llm_verify_enabled` /
+    :func:`_llm_fusion_enabled` exactly. ON only for an explicit truthy flag (``'1'`` / ``'true'``,
+    case-insensitive); anything else (unset / ``'0'`` / ``'false'``) leaves the pipeline at its
+    pre-pass behaviour. Independent of all other flags: the pass is a separate block gated on THIS
+    env var alone (and only fires when the verify stage actually applied).
+    """
+    import os
+
+    return os.environ.get(_VERIFY_PRECISION_PASS_ENABLE_ENV, "").strip().lower() in {"1", "true"}
 
 
 #: Leading tokens an LLM uses to affirm / deny relevance. Matched against the FIRST word of the
@@ -708,6 +731,15 @@ class LiteratureRagStep(BaseStep):
              (one loud warning, pre-fusion set) when the LLM is unreachable or every call errors.
              Default OFF -> absent; a separate flag + block from (3), so each is independent.
 
+          3b. VERIFY-PRECISION PASS (NEW, opt-in via ``APECX_ENABLE_VERIFY_PRECISION_PASS``): a light
+             CONSERVATIVE tail-trim that runs ONLY when (3) ACTUALLY applied. On the verify-SURVIVORS
+             only, it scores each by its retrieval confidence (joint CE sigmoid when the CE stage ran,
+             else the bi-encoder cosine) and sheds ONLY a tail separated by a clear DOMINANT gap —
+             reusing :meth:`_fusion_cut` (saturated / no dominant gap -> keep ALL, so the recall win
+             is preserved). Prior order is preserved (it sheds, it does NOT re-rank); the floor
+             repopulates ONLY from verify-survivors (never re-injecting a verify-dropped record).
+             Default OFF -> absent; the verify output is byte-identical.
+
         Recall floor: when verify/fusion did NOT run, the kept set is always between
         ``min(_GATE_MIN_KEEP, n)`` and ``k`` — the floor pads from ``pad_source`` after the
         coverage + CE/bi-encoder bars, so neither cuts below the floor (byte-identical to the
@@ -885,6 +917,38 @@ class LiteratureRagStep(BaseStep):
                         "(no usable verdict); SKIPPING the verify filter and returning the "
                         "pre-verify (CE/coverage) set"
                     )
+
+        # VERIFY-PRECISION PASS (opt-in via ``APECX_ENABLE_VERIFY_PRECISION_PASS``) — a light,
+        # CONSERVATIVE tail-trim that runs ONLY when the verify stage ACTUALLY applied, so it acts on
+        # genuine verify-SURVIVORS (verify OFF / skipped -> ``verify_applied`` is False -> this never
+        # runs). The loosened verify prompt recovers true positives (recall up) but admits a thin
+        # low-confidence tail that lowers precision. Here, on the verify-survivors ONLY, score each by
+        # the strongest retrieval signal already computed in THIS path (joint CE sigmoid when the CE
+        # stage ran, else the bi-encoder cosine) and shed ONLY a tail separated by a clear DOMINANT
+        # gap — reusing :meth:`_fusion_cut` (cut below the single gap that exceeds half the total
+        # descent; saturated / no-gap -> keep ALL). So a well-separated low tail is trimmed while a
+        # tight cluster is kept untouched, keeping the recall win intact (no dominant gap -> no trim).
+        # Prior order of ``kept`` is PRESERVED — the pass sheds a tail, it does NOT re-rank.
+        # Floor-from-survivors + no-reinject: if the trim would drop below the recall floor,
+        # repopulate ONLY from the highest-confidence verify-survivors (the pool IS ``kept``, so a
+        # verify-dropped record is never re-injected). Deterministic. Default OFF -> absent; the
+        # verify output stays byte-identical.
+        if verify_applied and _verify_precision_pass_enabled() and kept:
+            conf = [ce_by_index[i] for i in kept] if ce_by_index else [sims[i] for i in kept]
+            cut = self._fusion_cut(sorted(conf, reverse=True))
+            survivor_pos = [pos for pos, c in enumerate(conf) if c >= cut]
+            prec_floor = min(_GATE_MIN_KEEP, len(usable))
+            if len(survivor_pos) < prec_floor:
+                # Pad back the highest-confidence trimmed survivors (deterministic ties -> prior
+                # order) up to the floor — the pool is exactly the verify survivors, so this never
+                # re-injects a verify-dropped record.
+                keep_set = set(survivor_pos)
+                dropped = sorted(
+                    (pos for pos in range(len(kept)) if pos not in keep_set),
+                    key=lambda pos: (-conf[pos], pos),
+                )
+                survivor_pos = sorted(keep_set | set(dropped[: prec_floor - len(survivor_pos)]))
+            kept = [kept[pos] for pos in survivor_pos]
 
         # GRADED LLM+CE FUSION filter (opt-in via ``APECX_ENABLE_LLM_FUSION``, a NEWER alternative
         # to the binary verify filter above) — runs on the gate survivors in EVERY locus, AFTER the
