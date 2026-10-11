@@ -255,10 +255,12 @@ def test_flag_off_is_pre_verify_and_differs_from_flag_on(monkeypatch):
 # --- prompt-contract guard: generic template, placeholders, yes/no output ------------------
 
 
-def test_verify_prompt_is_generic_and_asks_yes_no():
-    """The verify prompt stays parameterized by {question}/{title}/{abstract}, asks for a
-    leading yes/no (the contract `_parse_verify_verdict` reads), and carries NO domain terms.
-    Loosened-rubric wording ("relevant", "off-topic") replaces the old strict "satisfies"."""
+def test_verify_prompt_is_cot_discriminator_and_generic():
+    """The verify prompt stays parameterized by {question}/{title}/{abstract}, is a brief
+    chain-of-thought discriminator (reason first, then decide), ends with the exact final-line
+    verdict contract `VERDICT: yes`/`VERDICT: no` that `_parse_verify_verdict` reads, and carries
+    NO domain terms. The "specific requirement" is phrased generically (derived from the question),
+    never hardcoded to an organism/epitope/etc."""
     import apecx_integration.composition.workflows.literature_rag.steps as pkg
 
     text = (Path(pkg.__file__).resolve().parent / "verify_prompt.md").read_text(encoding="utf-8")
@@ -267,12 +269,14 @@ def test_verify_prompt_is_generic_and_asks_yes_no():
     # Generic placeholders are present (the step's prompt.format fills these).
     for ph in ("{question}", "{title}", "{abstract}"):
         assert ph in text, ph
-    # Asks for a yes/no verdict (the leading-word contract the parser consumes).
-    assert "yes" in low and "no" in low
-    # Loosened rubric: relevance-based, not the old strict "satisfies the question".
-    assert "relevant" in low
-    assert "off-topic" in low
-    assert "satisfies the question" not in low
+    # Final-line verdict contract the parser consumes (CoT: verdict is LAST, not first).
+    assert "VERDICT: yes" in text
+    assert "VERDICT: no" in text
+    # Chain-of-thought discriminator: asks the model to reason about the SPECIFIC requirement.
+    assert "reason" in low
+    assert "specific" in low
+    # Discriminator framing: topic-overlap alone is not enough.
+    assert "topic" in low
     # Stays generic: no domain/organism/PMID specifics leaked into the template.
     for domain_term in ("virus", "epitope", "pmid", "antigen", "protein"):
         assert domain_term not in low, domain_term
@@ -297,11 +301,52 @@ def test_parse_verify_verdict_robust():
         assert _parse_verify_verdict(yes) is True, yes
     for no in ["no", "No", "NO.", "n", "false", "False", "irrelevant", "unrelated", "0", "0.0"]:
         assert _parse_verify_verdict(no) is False, no
-    assert _parse_verify_verdict("0.8") is True  # leading score >= 0.5
-    assert _parse_verify_verdict("0.2") is False  # leading score < 0.5
+    assert _parse_verify_verdict("0.8") is True  # leading score >= 0.5 (backward-compat)
+    assert _parse_verify_verdict("0.2") is False  # leading score < 0.5 (backward-compat)
     assert _parse_verify_verdict("") is None  # empty -> UNKNOWN
     assert _parse_verify_verdict("   ") is None
     assert _parse_verify_verdict("maybe, it is hard to say") is None  # no leading verdict
+
+
+def test_parse_verify_verdict_cot_final_line():
+    """CoT-discriminator replies: the verdict is on the LAST `VERDICT:` line, after reasoning."""
+    keep = (
+        "1. The question asks for a specific measurement of X.\n"
+        "2. The paper reports that measurement directly.\n"
+        "VERDICT: yes"
+    )
+    drop = (
+        "1. The question asks for characterization of X.\n"
+        "2. The paper is about the same topic but never characterizes X itself.\n"
+        "VERDICT: no"
+    )
+    assert _parse_verify_verdict(keep) is True
+    assert _parse_verify_verdict(drop) is False
+
+    # CRITICAL: reasoning mentions "no ... however ... VERDICT: yes" -> read the FINAL verdict (KEEP).
+    tricky_keep = (
+        "The paper is not primarily about the question's subject; "
+        "however, its results section does provide the specific thing asked for.\n"
+        "VERDICT: yes"
+    )
+    assert _parse_verify_verdict(tricky_keep) is True
+
+    # Symmetric trap: reasoning says "yes ... but ..." and ends VERDICT: no -> DROP on final line.
+    tricky_drop = (
+        "At first glance yes, this looks relevant, but it never supplies the specific requirement.\n"
+        "VERDICT: no"
+    )
+    assert _parse_verify_verdict(tricky_drop) is False
+
+    # Marker variants: case-insensitive, extra spacing, trailing punctuation after the token.
+    assert _parse_verify_verdict("reasoning...\nverdict:  yes.") is True
+    assert _parse_verify_verdict("reasoning...\nVERDICT :no") is False
+
+    # Multiple VERDICT lines -> the LAST one wins (self-correction).
+    assert _parse_verify_verdict("VERDICT: no\non reflection\nVERDICT: yes") is True
+
+    # VERDICT present but unparseable token -> None = UNKNOWN = KEEP (never silently drop).
+    assert _parse_verify_verdict("reasoning...\nVERDICT: maybe") is None
 
 
 # --- degrade-loud: LLM unavailable, and every per-call error ------------------------------

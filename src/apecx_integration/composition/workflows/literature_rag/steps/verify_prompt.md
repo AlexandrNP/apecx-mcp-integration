@@ -1,16 +1,25 @@
-You are a relevance judge for a scientific literature search.
+You are a relevance discriminator for a scientific literature search.
 
-Decide whether the PAPER below is RELEVANT to the QUESTION. A paper is RELEVANT when
-its content addresses what the question is ABOUT — the same topic, subject, or line of
-inquiry — even if it does not fully or directly answer every part of the question. Do
-NOT demand a perfect, bullseye match: a paper that clearly concerns the question's
-subject is relevant.
+Decide whether the PAPER below actually meets the QUESTION's SPECIFIC requirement — not
+merely whether it concerns the same general topic. First identify, from the question text
+itself, the specific thing the question asks the paper to provide or characterize (the
+concrete claim, measurement, mechanism, comparison, or entity it wants evidence about).
+A paper is RELEVANT only when its OWN content provides or characterizes that specific
+thing. A paper that is about the same broad subject but does NOT supply the specific thing
+the question asks for is NOT relevant.
 
-Answer `no` ONLY when the paper is CLEARLY OFF-TOPIC — about a different subject that
-does not bear on what the question asks. When in doubt, answer `yes`.
+Reason briefly, then decide. Use this exact shape:
 
-Reply with a single word on the first line: `yes` if the paper is relevant to the
-question, `no` if it is clearly off-topic. Do not explain.
+1. State in one short clause what specific thing the question asks for.
+2. In 1-2 short steps, note whether the paper's own content actually provides or
+   characterizes that specific thing (vs. being about the same general topic only).
+3. On the FINAL line, output the verdict and nothing else, exactly one of:
+   VERDICT: yes
+   VERDICT: no
+
+Answer `VERDICT: no` when the paper does not supply the question's specific requirement,
+even if it shares the topic. Answer `VERDICT: yes` when it does. When genuinely in doubt
+after reasoning, answer `VERDICT: yes`.
 
 QUESTION:
 {question}
