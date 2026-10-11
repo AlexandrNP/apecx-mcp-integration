@@ -304,13 +304,17 @@ _VERIFY_YES_WORDS = frozenset(
 _VERIFY_NO_WORDS = frozenset({"no", "n", "false", "irrelevant", "unrelated", "not", "off"})
 
 
-def _parse_leading_verdict_token(fragment: str) -> bool | None:
-    """Parse a leading ``yes``/``no``/``true``/``false``/``relevant`` word or numeric score.
+def _parse_verify_verdict(text: str) -> bool | None:
+    """Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
 
-    ``score >= 0.5`` is relevant. Returns ``None`` when the fragment is empty or carries no
-    parseable leading verdict. Case-insensitive; tolerant of surrounding punctuation/markdown.
+    Accepts the shapes the brief requires and then some: a leading ``yes``/``no``, ``true``/
+    ``false``, ``relevant``/``irrelevant`` word, OR a leading numeric score (``1``/``0``/``0.8``),
+    where ``score >= 0.5`` is relevant. Returns ``None`` when the reply is empty or carries no
+    parseable leading verdict — the caller treats ``None`` as UNKNOWN and KEEPS the candidate
+    (uncertainty must never silently drop retrieved evidence; the verify filter only DROPS a
+    confident ``False``). Case-insensitive; tolerant of surrounding punctuation/markdown.
     """
-    s = (fragment or "").strip().lower().lstrip("*`_#->. \t")
+    s = (text or "").strip().lower().lstrip("*`_#->. \t")
     if not s:
         return None
     word = re.match(r"[a-z]+", s)
@@ -327,35 +331,6 @@ def _parse_leading_verdict_token(fragment: str) -> bool | None:
         except ValueError:
             return None
     return None
-
-
-def _parse_verify_verdict(text: str) -> bool | None:
-    """Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
-
-    The CoT-discriminator prompt makes the model reason FIRST and emit the decision on a final
-    line ``VERDICT: yes`` / ``VERDICT: no``. So the verdict is at the END of the reply, not the
-    start — and an earlier reasoning step may itself contain a stray ``no`` ("... is not about X,
-    however ... VERDICT: yes"). We therefore read the LAST ``VERDICT:`` line and parse only the
-    token AFTER that marker, ignoring everything before it.
-
-    Backward-compat: when the reply has NO ``VERDICT:`` marker (e.g. the old flat yes/no prompt,
-    or a terse ``yes``), fall back to the leading-token parse over the whole reply.
-
-    The token after ``VERDICT:`` (or the leading token in fallback) accepts ``yes``/``no``,
-    ``true``/``false``, ``relevant``/``irrelevant``, OR a numeric score where ``>= 0.5`` is
-    relevant. Returns ``None`` when the reply is empty or carries no parseable verdict — the
-    caller treats ``None`` as UNKNOWN and KEEPS the candidate (uncertainty must never silently
-    drop retrieved evidence; the verify filter only DROPS a confident ``False``). Case-insensitive.
-    """
-    if not (text or "").strip():
-        return None
-    # Final-line contract: take the token after the LAST `VERDICT:` marker (reasoning precedes it).
-    markers = list(re.finditer(r"verdict\s*:\s*", text, flags=re.IGNORECASE))
-    if markers:
-        tail = text[markers[-1].end() :]
-        return _parse_leading_verdict_token(tail)
-    # Backward-compat: no marker -> leading-token parse (old flat yes/no prompt).
-    return _parse_leading_verdict_token(text)
 
 
 def _parse_fusion_score(text: str) -> float:

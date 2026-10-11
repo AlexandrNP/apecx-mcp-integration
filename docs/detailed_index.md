@@ -2382,7 +2382,6 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
 - `def _llm_verify_enabled()` — Whether the opt-in LLM relevance-verify filter is ON (``APECX_ENABLE_LLM_VERIFY``).
 - `def _llm_fusion_enabled()` — Whether the opt-in GRADED LLM+CE fusion stage is ON (``APECX_ENABLE_LLM_FUSION``).
 - `def _verify_precision_pass_enabled()` — Whether the opt-in verify-precision pass is ON (``APECX_ENABLE_VERIFY_PRECISION_PASS``).
-- `def _parse_leading_verdict_token(fragment: str)` — Parse a leading ``yes``/``no``/``true``/``false``/``relevant`` word or numeric score.
 - `def _parse_verify_verdict(text: str)` — Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
 - `def _parse_fusion_score(text: str)` — Parse an LLM graded-relevance reply into a float in [0, 1] (fusion stage).
 - class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — retrieve top-k records, synthesize a cited answer.
