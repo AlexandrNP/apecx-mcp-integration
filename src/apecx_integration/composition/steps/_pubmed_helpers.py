@@ -14,6 +14,8 @@ correlate WARNINGs back to the calling step.
 
 from __future__ import annotations
 
+import asyncio
+import json
 import logging
 import re
 from typing import Any
@@ -22,6 +24,21 @@ log = logging.getLogger(__name__)
 
 
 _AUTHORS_CAP = 25
+
+_ESEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+
+# PubMed eSearch reachable ceiling for a single query (retstart max 9998), used
+# as the retmax when the caller asks for "no cap" (max_papers <= 0).
+_ESEARCH_MAX_RETMAX = 9_999
+
+# NCBI allows 3 requests/second without an API key; honour that budget since the
+# eFetch that follows this eSearch shares it.
+_NCBI_REQUESTS_PER_SECOND = 3.0
+
+# eSearch JSON responses can carry bare ASCII control characters inside string
+# values, which strict JSON parsers reject. Strip them before parsing (matches
+# apecx_harvesters' own search loader).
+_CONTROL_CHARS_RE = re.compile(rb"[\x00-\x1f\x7f]")
 
 # PubMed eSearch treats these barewords as boolean operators — never emit them
 # as search terms. A token like "and" inside a concept list would silently turn
@@ -226,35 +243,74 @@ def container_to_dict(container: Any) -> dict[str, Any]:
     }
 
 
+async def _esearch_relevance_pmids(term: str, max_papers: int) -> list[str]:
+    """Return PubMed PMIDs for ``term`` in Best Match (relevance) order.
+
+    Issues ONE eSearch GET with ``sort=relevance`` so the top ``max_papers``
+    records are the most topically relevant, not the most recent. The default
+    eSearch order (no ``sort``) is most-recent-first; for a high-volume organism
+    the result set is far larger than ``max_papers``, so older-but-relevant
+    records were silently cut before fetch.
+
+    ``max_papers <= 0`` means "no cap": uses the eSearch single-query ceiling
+    (``_ESEARCH_MAX_RETMAX``) as ``retmax``.
+    """
+    import httpx
+
+    retmax = max_papers if max_papers > 0 else _ESEARCH_MAX_RETMAX
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            _ESEARCH_URL,
+            params={
+                "db": "pubmed",
+                "term": term,
+                "retmode": "json",
+                "retmax": retmax,
+                "sort": "relevance",
+            },
+        )
+        response.raise_for_status()
+        # Respect NCBI's 3 req/s budget shared with the eFetch that follows.
+        await asyncio.sleep(1.0 / _NCBI_REQUESTS_PER_SECOND)
+
+    clean = _CONTROL_CHARS_RE.sub(b"", response.content)
+    result = json.loads(clean)["esearchresult"]
+    if "ERROR" in result:
+        raise ValueError(f"PubMed eSearch error: {result['ERROR']}")
+
+    pmids = [str(p) for p in (result.get("idlist") or [])]
+    if max_papers > 0:
+        pmids = pmids[:max_papers]
+    return pmids
+
+
 async def harvest(term: str, *, max_papers: int = 0) -> list[dict[str, Any]]:
     """Run the PubMed eSearch → eFetch chain for ``term``.
 
+    The eSearch step orders PMIDs by **relevance** (Best Match), so the
+    ``max_papers`` cap keeps the most topically-relevant records rather than the
+    most recent (see :func:`_esearch_relevance_pmids`).
+
     Args:
         term: eSearch query string.
-        max_papers: Cap on PMIDs collected. ``<= 0`` means "no limit —
-            collect every PMID eSearch returns" (PubMed eSearch can return
-            10k+; the focused organism-anchored term keeps this bounded in
-            practice). A positive value stops early.
+        max_papers: Cap on PMIDs collected. ``<= 0`` means "no cap —
+            collect up to the eSearch single-query ceiling"
+            (``_ESEARCH_MAX_RETMAX``). A positive value caps the list.
 
     Returns:
         List of publication dicts via ``container_to_dict``.
 
     Raises:
-        Anything ``apecx_harvesters`` raises — caller is expected to
-        wrap in try/except. The synthesis pipeline catches via
+        Anything ``apecx_harvesters`` or the eSearch request raises — caller is
+        expected to wrap in try/except. The synthesis pipeline catches via
         ``asyncio.gather(return_exceptions=True)``.
     """
-    # Imports are local so the wrapper module loads even when the
-    # ``apecx_harvesters`` extra is not installed (the import error then
+    # The eFetch harvester import is local so the wrapper module loads even when
+    # the ``apecx_harvesters`` extra is not installed (the import error then
     # surfaces only when this function actually runs).
     from apecx_harvesters.loaders.pubmed.retrieve import PubMedHarvester
-    from apecx_harvesters.loaders.pubmed.search import search as pubmed_search
 
-    pmids: list[str] = []
-    async for pmid in pubmed_search(term):
-        pmids.append(pmid)
-        if max_papers > 0 and len(pmids) >= max_papers:
-            break
+    pmids = await _esearch_relevance_pmids(term, max_papers)
 
     if not pmids:
         return []
