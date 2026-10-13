@@ -165,7 +165,10 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
       - ``n_papers_after_filter``: papers retained after the IRI filter.
       - ``organism_iri``: resolved NCBITaxon IRI, or ``None`` when unresolved.
       - ``status``: ``"ok" | "no_evidence" | "unresolved_organism" |
-        "synthesis_failed"``.
+        "synthesis_failed"`` (and ``"host_synthesizes"`` in desktop locus).
+      - ``evidence`` (present only when documents were returned — the ok / host_synthesizes
+        paths): ordered list of per-document blocks ``{rank, citation, chunks, scores}`` built by
+        the reader (:func:`...literature_rag_step.build_evidence_blocks`). Presentation only.
 
     Raises
     ------
@@ -229,7 +232,7 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
     #    no_evidence / synthesis_failed) — pass it straight through; never fabricate "ok".
     result = await _read_filtered(question, filtered)
     status = result.get("status") or "synthesis_failed"
-    return {
+    out = {
         "answer": result.get("answer") or "",
         "citations": list(result.get("citations") or []),
         "n_papers_considered": n_considered,
@@ -237,6 +240,12 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
         "organism_iri": iri,
         "status": status,
     }
+    # Surface the reader's structured per-document evidence when it produced one (the ok /
+    # host_synthesizes paths). Pass-through only — presentation, no behavior change; absent on
+    # the reader's degrade paths (no_evidence / synthesis_failed), which carry no documents.
+    if "evidence" in result:
+        out["evidence"] = result["evidence"]
+    return out
 
 
 __all__ = ["literature_qa"]

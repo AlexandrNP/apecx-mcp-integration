@@ -359,6 +359,93 @@ def _parse_fusion_score(text: str) -> float:
     return 0.5
 
 
+#: Bibliographic fields emitted in an evidence citation, in render order. This base's harvested
+#: records carry ``{pmid, pmcid, title}`` (see ``agents/literature/pipeline.harvest_and_stamp``);
+#: ``abstract`` / ``full_text`` are CONTENT (they populate the chunk text, not the citation) and
+#: ``iris`` are ontology tags, so neither appears here. A record missing any of these simply omits
+#: it — citations are never fabricated or null-filled.
+_CITATION_FIELDS = ("pmid", "pmcid", "title")
+
+
+def _citation_from_record(record: dict[str, Any]) -> dict[str, Any]:
+    """Present-only publication citation from a record's bibliographic fields.
+
+    Emits each of :data:`_CITATION_FIELDS` ONLY when the record carries a non-empty value; an
+    absent/blank field is OMITTED (never fabricated or null-filled). Values are returned verbatim
+    (string-coerced + stripped) — presentation, not interpretation.
+    """
+    citation: dict[str, Any] = {}
+    for field in _CITATION_FIELDS:
+        value = record.get(field)
+        if value is not None and str(value).strip():
+            citation[field] = str(value).strip()
+    return citation
+
+
+def build_evidence_blocks(
+    records: list[dict[str, Any]],
+    scores: list[dict[str, float]],
+    *,
+    char_cap: int,
+) -> list[dict[str, Any]]:
+    """Ordered per-document evidence blocks — PURE presentation, no ranking (no behavior change).
+
+    One block per record, in the given (already ranked+capped) order, aligned 1:1 with ``scores``::
+
+        {"rank": <1-based>, "citation": {present fields}, "chunks": [{"text": ...}], "scores": {...}}
+
+    The chunk ``text`` is the retrieved passage used downstream: the record's title + its grounding
+    text (:func:`_evidence_text` — open-access ``full_text`` when present, else ``abstract``, capped
+    at ``char_cap`` so the block mirrors exactly what THIS locus hands to synthesis). ``scores`` is
+    the per-document retrieval-signal dict collected during ranking (coverage / keyword / cosine /
+    cross-encoder, present-only). Never reorders, drops, or adds a record.
+    """
+    blocks: list[dict[str, Any]] = []
+    for rank, (record, score) in enumerate(zip(records, scores, strict=True), start=1):
+        title = str(record.get("title") or "").strip()
+        passage = _evidence_text(record, char_cap=char_cap)
+        text = (title + "\n" + passage).strip() if passage else title
+        blocks.append(
+            {
+                "rank": rank,
+                "citation": _citation_from_record(record),
+                "chunks": [{"text": text}] if text else [],
+                "scores": dict(score),
+            }
+        )
+    return blocks
+
+
+def render_evidence_markdown(evidence: list[dict[str, Any]]) -> str:
+    """Deterministic Markdown view of an evidence list (pure function of the structure).
+
+    Renders each block in list order: a numbered citation header (present fields only, fixed
+    field order), its retrieval scores (keys sorted, fixed numeric format), then each chunk's
+    text. Depends ONLY on the passed structure — the same input always yields byte-identical
+    output — so the host/desktop path can present ``result["evidence"]`` without re-deriving it.
+    """
+    lines: list[str] = []
+    for block in evidence:
+        rank = block.get("rank")
+        citation = block.get("citation") or {}
+        cite_parts = [
+            f"{field}: {citation[field]}" for field in _CITATION_FIELDS if field in citation
+        ]
+        header = f"## {rank}. " + (" | ".join(cite_parts) if cite_parts else "(no citation fields)")
+        lines.append(header.rstrip())
+        scores = block.get("scores") or {}
+        if scores:
+            score_parts = [f"{key}={float(scores[key]):.4f}" for key in sorted(scores)]
+            lines.append("- scores: " + ", ".join(score_parts))
+        for chunk in block.get("chunks") or []:
+            text = str(chunk.get("text") or "").strip()
+            if text:
+                lines.append("")
+                lines.append(text)
+        lines.append("")
+    return "\n".join(lines).strip()
+
+
 class LiteratureRagStep(BaseStep):
     """Literature RAG answerer — retrieve top-k records, synthesize a cited answer."""
 
@@ -670,8 +757,13 @@ class LiteratureRagStep(BaseStep):
         return {pos for pos, s in enumerate(scores) if s >= threshold}
 
     def _hybrid_rank(
-        self, question: str, records: list[dict[str, Any]], k: int
-    ) -> list[dict[str, Any]]:
+        self,
+        question: str,
+        records: list[dict[str, Any]],
+        k: int,
+        *,
+        return_scores: bool = False,
+    ) -> list[dict[str, Any]] | tuple[list[dict[str, Any]], list[dict[str, float]]]:
         """Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
         then cut the low-relevance tail with an adaptive gate; return AT MOST ``k``.
 
@@ -749,10 +841,18 @@ class LiteratureRagStep(BaseStep):
         than the floor is correct). If NO facet matches any record (all keyword scores 0), fall
         back to embedding-cosine top-``k``. Synchronous + CPU/IO-bound — caller runs it via
         ``asyncio.to_thread``.
+
+        Observability: with ``return_scores=True`` the return becomes
+        ``(ranked_records, per_record_scores)`` where ``per_record_scores`` is aligned 1:1 with
+        ``ranked_records`` and each entry is a present-only dict of the retrieval signals computed
+        for that record (``keyword_idf`` / ``semantic_cosine`` / ``discriminative_coverage`` /
+        ``cross_encoder``). A pure side-channel for the evidence block — it NEVER affects which
+        records are returned or their order. Default (``return_scores=False``) returns the ranked
+        records list exactly as before.
         """
         usable = [r for r in records if self._record_text(r)]
         if not usable:
-            return []
+            return ([], []) if return_scores else []
 
         facets = extract_question_facets(question)
         present_per_record = [facets_present(facets, self._record_text(r)) for r in usable]
@@ -774,6 +874,23 @@ class LiteratureRagStep(BaseStep):
             sims = [0.0] * len(usable)
             embed_available = False
 
+        # Per-document retrieval signals, collected for the evidence block ONLY (observability —
+        # NO effect on ranking/order). Keyed by usable-index; augmented as later signals
+        # (discriminative coverage, cross-encoder) are computed below. Present-only: a signal that
+        # did not run for this record (embeddings unavailable, CE stage off) is simply absent.
+        score_by_index: dict[int, dict[str, float]] = {}
+        for _i in range(len(usable)):
+            _sig: dict[str, float] = {"keyword_idf": float(kw_scores[_i])}
+            if embed_available:
+                _sig["semantic_cosine"] = float(sims[_i])
+            score_by_index[_i] = _sig
+
+        def _ranked(indices: list[int]):
+            out_records = [usable[i] for i in indices]
+            if return_scores:
+                return out_records, [dict(score_by_index[i]) for i in indices]
+            return out_records
+
         # No facet matched any candidate -> keyword signal is empty; fall back to the
         # embedding-cosine top-k (lever b constraint), still capped, never the full set.
         if not any(score > 0.0 for score in kw_scores):
@@ -784,7 +901,7 @@ class LiteratureRagStep(BaseStep):
                 k,
             )
             emb_order = sorted(range(len(usable)), key=lambda i: sims[i], reverse=True)
-            return [usable[i] for i in emb_order[:k]]
+            return _ranked(emb_order[:k])
 
         # Discriminative facets = those whose IDF is within _GATE_KEEP_FRACTION of the rarest
         # facet's IDF (a ratio WITHIN the set -> scale-free). A record's discriminative COVERAGE
@@ -796,6 +913,8 @@ class LiteratureRagStep(BaseStep):
         disc_cov = [
             sum(idf[f] for f in present if f in disc_facets) for present in present_per_record
         ]
+        for _i in range(len(usable)):
+            score_by_index[_i]["discriminative_coverage"] = float(disc_cov[_i])
         order = sorted(
             range(len(usable)),
             key=lambda i: (disc_cov[i], kw_scores[i], sims[i]),
@@ -847,6 +966,8 @@ class LiteratureRagStep(BaseStep):
                 )
             else:
                 ce_by_index = dict(zip(kept, ce_scores, strict=True))
+                for _i, _ce in ce_by_index.items():
+                    score_by_index[_i]["cross_encoder"] = float(_ce)
                 prior_rank = {idx: rank for rank, idx in enumerate(kept)}
                 ce_sorted = sorted(kept, key=lambda i: (-ce_by_index[i], prior_rank[i]))
                 # Floor refills from the FULL usable set: CE-sorted survivors, then the records
@@ -1010,7 +1131,7 @@ class LiteratureRagStep(BaseStep):
         floor = min(_GATE_MIN_KEEP, len(usable))
         if not verify_applied and not fusion_applied and len(kept) < floor:
             kept = pad_source[:floor]
-        return [usable[i] for i in kept[:k]]
+        return _ranked(kept[:k])
 
     @staticmethod
     def _render_host_evidence(question: str, records: list[dict[str, Any]]) -> str:
@@ -1068,7 +1189,9 @@ class LiteratureRagStep(BaseStep):
         # when few records are strongly relevant), capped at _TOP_K. Degrades LOUD to
         # keyword-only if sentence-transformers can't load — never the full unranked set.
         # CPU-bound; offloaded so the loop stays free.
-        ranked = await asyncio.to_thread(self._hybrid_rank, question, filtered_records, _TOP_K)
+        ranked, ranked_scores = await asyncio.to_thread(
+            self._hybrid_rank, question, filtered_records, _TOP_K, return_scores=True
+        )
         if not ranked:
             self.nb_logger.warning(
                 "literature_rag LiteratureRagStep: %d filtered_records but none carry "
@@ -1098,6 +1221,11 @@ class LiteratureRagStep(BaseStep):
                 "answer": self._render_host_evidence(question, ranked),
                 "citations": citations,
                 "status": "host_synthesizes",
+                # Structured per-document evidence (presentation only — same ranked set/order as
+                # the answer + citations above). Desktop char cap, matching the host-handed text.
+                "evidence": build_evidence_blocks(
+                    ranked, ranked_scores, char_cap=_FULLTEXT_DESKTOP_CAP
+                ),
             }
 
         # Build RAG chunks from the ranked set. The synthesizer numbers surviving chunks
@@ -1167,4 +1295,13 @@ class LiteratureRagStep(BaseStep):
             len(ranked),
             len(citations),
         )
-        return {"answer": answer, "citations": citations, "status": "ok"}
+        return {
+            "answer": answer,
+            "citations": citations,
+            "status": "ok",
+            # Structured per-document evidence (presentation only — same ranked set/order the
+            # synthesizer saw). Backend char cap, matching the RAG chunk text handed to synthesis.
+            "evidence": build_evidence_blocks(
+                ranked, ranked_scores, char_cap=_FULLTEXT_BACKEND_CAP
+            ),
+        }

@@ -2385,6 +2385,9 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
 - `def _verify_precision_pass_enabled()` — Whether the opt-in verify-precision pass is ON (``APECX_ENABLE_VERIFY_PRECISION_PASS``).
 - `def _parse_verify_verdict(text: str)` — Robustly parse an LLM relevance reply into ``True`` (relevant) / ``False`` (not) / ``None``.
 - `def _parse_fusion_score(text: str)` — Parse an LLM graded-relevance reply into a float in [0, 1] (fusion stage).
+- `def _citation_from_record(record: dict[str, Any])` — Present-only publication citation from a record's bibliographic fields.
+- `def build_evidence_blocks(records: list[dict[str, Any]], scores: list[dict[str, float]], *, char_cap: int)` — Ordered per-document evidence blocks — PURE presentation, no ranking (no behavior change).
+- `def render_evidence_markdown(evidence: list[dict[str, Any]])` — Deterministic Markdown view of an evidence list (pure function of the structure).
 - class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — retrieve top-k records, synthesize a cited answer.
   - `def _get_config_class(cls)`
   - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the RAG envelope.
@@ -2403,7 +2406,7 @@ _LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answ
   - `def _fusion_cut(sorted_desc: list[float])` — In-pool elbow threshold for the fusion joint scores: keep every score >= the return.
   - `def _facet_idf(facets: list[str], present_per_record: list[list[str]])` — IDF weight of each facet over the CURRENT candidate set (cycle-2 lever a).
   - `def _top_confidence_positions(scores: list[float])` — Positions of the TOP retrieval-confidence tier within the in-pool ``scores`` (verify Fix 2).
-  - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int)` — Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
+  - `def _hybrid_rank(self, question: str, records: list[dict[str, Any]], k: int, *, return_scores: bool=False)` — Rank records by an IDF-weighted keyword score (tiebreak: embedding cosine),
   - `def _render_host_evidence(question: str, records: list[dict[str, Any]])` — Deterministic evidence body handed to the host LLM in desktop locus.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
