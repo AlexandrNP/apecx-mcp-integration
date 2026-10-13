@@ -25,8 +25,8 @@ def harvest_and_stamp(
     """Harvest up to ``max_papers`` PubMed records for ``term``, stamp each with its taxon
     IRIs, and (best-effort) attach open-access full text.
 
-    Returns records each carrying ``{pmid, pmcid, title, abstract, iris}`` plus — for the
-    open-access subset — ``full_text`` (the Europe PMC body, bounded). Abstracts routinely
+    Returns records each carrying ``{pmid, pmcid, title, abstract, iris}`` (plus present-only
+    ``authors`` / ``year`` / ``journal``) and — for the open-access subset — ``full_text`` (the Europe PMC body, bounded). Abstracts routinely
     omit the epitope-residue / animal-model detail specialized questions need; the full-text
     body carries it, so downstream synthesis grounds on ``full_text`` when present.
 

@@ -70,10 +70,15 @@ def test_harvest_pubmed_normalizes_and_drops_abstractless(monkeypatch):
     # Act
     records = harvest_pubmed("anything", max_papers=10)
 
-    # Assert: abstract-less dropped; survivors carry exactly the contract keys
-    # and a str PMID (the int 33445566 is coerced).
+    # Assert: abstract-less dropped; survivors carry the contract keys and a str
+    # PMID (the int 33445566 is coerced).
     assert len(records) == 2
-    assert all(set(r) == {"pmid", "title", "abstract"} for r in records)
+    assert all(set(r) >= {"pmid", "pmcid", "title", "abstract"} for r in records)
+    # Bibliographic fields are present-only: carried when non-empty, never null/empty.
+    assert records[0]["authors"] == ["Doe, J"]
+    assert records[0]["year"] == "2021" and records[0]["journal"] == "J Virol"
+    assert "authors" not in records[1]  # empty author list omitted, not emitted as []
+    assert all(r[k] for r in records for k in ("authors", "year", "journal") if k in r)
     assert all(isinstance(r["pmid"], str) for r in records)
     assert records[0]["pmid"] == "33445566"
     assert "99999999" not in {r["pmid"] for r in records}

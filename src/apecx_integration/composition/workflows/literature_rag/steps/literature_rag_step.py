@@ -36,8 +36,9 @@ grounding gate AS-IS, via the ``rag_chunks`` seam instead: each retrieved record
 becomes a RAG chunk whose ``text`` is its title+abstract. The synthesizer cites
 ``[RAG chunk #N]`` (a token its ``_render_rag_chunks`` renderer authorizes and its
 grounding gate validates against the provided chunks — nothing hallucinated passes).
-We then RELABEL each grounded ``[RAG chunk #N]`` back to ``[PMID:<pmid>]`` in the
-answer and return those PMIDs. Because the gate already guaranteed every cited chunk
+We then RELABEL each grounded ``[RAG chunk #N]`` back to ``[PMID:<pmid> | Author et al. |
+Year]`` (bare ``[PMID:<pmid>]`` when the record has no attribution) in the answer, append a
+code-rendered References section, and return those PMIDs. Because the gate already guaranteed every cited chunk
 is one we supplied, every returned PMID provably traces to the provided evidence —
 exactly the grounding guarantee a literature RAG owes its reader.
 
@@ -359,9 +360,10 @@ def _parse_fusion_score(text: str) -> float:
     return 0.5
 
 
-#: Bibliographic fields emitted in an evidence citation, in render order. This base's harvested
-#: records carry ``{pmid, pmcid, title}`` (see ``agents/literature/pipeline.harvest_and_stamp``);
-#: ``abstract`` / ``full_text`` are CONTENT (they populate the chunk text, not the citation) and
+#: Bibliographic fields emitted in an evidence citation, in render order. Harvested records carry
+#: ``{pmid, pmcid, title}`` plus present-only ``authors`` / ``year`` / ``journal`` (see
+#: ``agents/literature/harvest``); the latter feed the inline anchor + References (see
+#: :func:`_pmid_anchor` / :func:`_reference_line`), not this evidence citation dict. ``abstract`` / ``full_text`` are CONTENT (they populate the chunk text, not the citation) and
 #: ``iris`` are ontology tags, so neither appears here. A record missing any of these simply omits
 #: it — citations are never fabricated or null-filled.
 _CITATION_FIELDS = ("pmid", "pmcid", "title")
@@ -380,6 +382,71 @@ def _citation_from_record(record: dict[str, Any]) -> dict[str, Any]:
         if value is not None and str(value).strip():
             citation[field] = str(value).strip()
     return citation
+
+
+#: Prefix of the truncation marker ``_pubmed_helpers.container_to_dict`` appends to a capped
+#: author list (``"et al. (N more)"``) — a signal, not an author name.
+_AUTHOR_TRUNCATION_PREFIX = "et al."
+
+
+def _named_authors(record: dict[str, Any]) -> tuple[list[str], bool]:
+    """``(author names, truncated)`` from a record's optional ``authors`` list (present-only)."""
+    raw = [str(a).strip() for a in (record.get("authors") or []) if str(a).strip()]
+    named = [a for a in raw if not a.startswith(_AUTHOR_TRUNCATION_PREFIX)]
+    return named, len(named) < len(raw)
+
+
+def _attribution_short(record: dict[str, Any]) -> str:
+    """Short code-rendered attribution, e.g. ``"Doe et al. | 2021"`` (present-only parts).
+
+    First author's surname (text before the first comma of ``"Family, Given"``; the name verbatim
+    otherwise), ``"et al."`` when there is more than one author, then the ``year``. Returns ``""``
+    when the record carries neither — attribution is never fabricated.
+    """
+    named, truncated = _named_authors(record)
+    parts: list[str] = []
+    if named:
+        surname = named[0].split(",", 1)[0].strip()
+        parts.append(f"{surname} et al." if len(named) > 1 or truncated else surname)
+    year = str(record.get("year") or "").strip()
+    if year:
+        parts.append(year)
+    return " | ".join(parts)
+
+
+def _pmid_anchor(pmid: str, record: dict[str, Any]) -> str:
+    """Inline citation anchor: ``[PMID:<id> | Doe et al. | 2021]``, or ``[PMID:<id>]`` bare."""
+    attribution = _attribution_short(record)
+    return f"[PMID:{pmid} | {attribution}]" if attribution else f"[PMID:{pmid}]"
+
+
+def _reference_line(record: dict[str, Any]) -> str:
+    """One References entry, e.g. ``"Doe, J; Roe, R; et al. (2021). Title. J Virol. PMID:1"``.
+
+    Up to three author names (``"; "``-separated, since names carry commas) + ``"et al."`` when
+    more exist, ``(year)``, title, journal, PMID — each segment present-only, never fabricated.
+    """
+    named, truncated = _named_authors(record)
+    authors = "; ".join(named[:3])
+    if authors and (len(named) > 3 or truncated):
+        authors += "; et al."
+    year = str(record.get("year") or "").strip()
+    head = " ".join(s for s in (authors, f"({year})" if year else "") if s)
+    pmid = str(record.get("pmid") or "").strip()
+    segments = (
+        head,
+        str(record.get("title") or "").strip(),
+        str(record.get("journal") or "").strip(),
+        f"PMID:{pmid}" if pmid else "",
+    )
+    # Strip each segment's own trailing "." so the ". " joiner never doubles it ("et al.").
+    return ". ".join(s.rstrip(".") for s in segments if s)
+
+
+def _year_sort_key(record: dict[str, Any]) -> float:
+    """Chronological sort key (earliest first); a missing/non-numeric year sorts last."""
+    year = str(record.get("year") or "").strip()
+    return int(year) if year.isdigit() else math.inf
 
 
 def build_evidence_blocks(
@@ -1150,15 +1217,19 @@ class LiteratureRagStep(BaseStep):
             f"# Literature evidence for: {question}",
             "",
             "The connected assistant synthesizes the answer from the retrieved, "
-            "ontology-filtered PubMed records below. Cite each claim with its "
-            "``[PMID:<id>]``.",
+            "ontology-filtered PubMed records below. Cite each claim with its header "
+            "anchor exactly as shown (``[PMID:<id>]`` or ``[PMID:<id> | Author et al. | Year]``).",
             "",
         ]
         for rec in records:
             pmid = str(rec.get("pmid") or "").strip()
             title = str(rec.get("title") or "").strip()
             evidence = _evidence_text(rec, char_cap=_FULLTEXT_DESKTOP_CAP)
-            lines.append(f"## [PMID:{pmid}] {title}".rstrip() if pmid else f"## {title}".rstrip())
+            header = f"## {_pmid_anchor(pmid, rec)} {title}" if pmid else f"## {title}"
+            lines.append(header.rstrip())
+            journal = str(rec.get("journal") or "").strip()
+            if journal:
+                lines.append(f"_{journal}_")
             if str(rec.get("full_text") or "").strip():
                 # Name the evidence tier so the host knows this is body text, not just the
                 # abstract (and that it may be truncated to the per-paper cap).
@@ -1238,6 +1309,8 @@ class LiteratureRagStep(BaseStep):
         # them in _hybrid_rank so index_to_pmid stays aligned with the synthesizer's #N).
         chunks: list[dict[str, Any]] = []
         index_to_pmid: dict[int, str] = {}
+        # First record wins per PMID, so an anchor and its References entry share metadata.
+        record_by_pmid: dict[str, dict[str, Any]] = {}
         for i, rec in enumerate(ranked, start=1):
             title = str(rec.get("title") or "").strip()
             # Ground on open-access full text (capped tighter than desktop — the backend LLM
@@ -1245,14 +1318,23 @@ class LiteratureRagStep(BaseStep):
             # else the abstract.
             evidence = _evidence_text(rec, char_cap=_FULLTEXT_BACKEND_CAP)
             pmid = str(rec.get("pmid") or "").strip()
+            # Code-rendered attribution in the chunk header (the synthesizer prints
+            # ``source=``) so the LLM can order findings chronologically without inventing it.
+            source_parts = (
+                f"PMID:{pmid}" if pmid else "",
+                _attribution_short(rec),
+                str(rec.get("journal") or "").strip(),
+            )
             chunks.append(
                 {
                     "text": (title + "\n" + evidence).strip(),
                     "id": pmid or None,
-                    "source": f"PMID:{pmid}" if pmid else None,
+                    "source": " | ".join(p for p in source_parts if p) or None,
                 }
             )
             index_to_pmid[i] = pmid
+            if pmid:
+                record_by_pmid.setdefault(pmid, rec)
 
         # 3. Synthesize. Build the LLM the SAME way every synthesis path does — the
         #    shared factory (APECX_LLM_* env) with a loud, early preflight — then
@@ -1279,20 +1361,32 @@ class LiteratureRagStep(BaseStep):
             )
             return {"answer": "", "citations": [], "status": "synthesis_failed"}
 
-        # 4. Relabel grounded [RAG chunk #N] -> [PMID:<pmid>] and collect citations.
-        #    The gate already guaranteed every cited #N is a chunk we supplied, so
-        #    every relabeled PMID traces to the provided evidence.
+        # 4. Relabel grounded [RAG chunk #N] -> [PMID:<pmid> | Author et al. | Year] and
+        #    collect citations. The gate already guaranteed every cited #N is a chunk we
+        #    supplied, so every relabeled PMID traces to the provided evidence. Attribution
+        #    is rendered by code from the record — the LLM never writes it.
         cited_pmids: list[str] = []
 
         def _relabel(match: re.Match) -> str:
-            pmid = index_to_pmid.get(int(match.group(1)))
+            idx = int(match.group(1))
+            pmid = index_to_pmid.get(idx)
             if pmid:
                 cited_pmids.append(pmid)
-                return f"[PMID:{pmid}]"
+                return _pmid_anchor(pmid, record_by_pmid[pmid])
             return match.group(0)
 
         answer = _RAG_CHUNK_CITE.sub(_relabel, raw_answer)
         citations = sorted(set(cited_pmids))
+        # References: exactly the cited records, foundational -> recent (stable sort keeps
+        # first-cited order among same-year / undated records).
+        cited_records = [record_by_pmid[p] for p in dict.fromkeys(cited_pmids)]
+        if cited_records:
+            references = [_reference_line(r) for r in sorted(cited_records, key=_year_sort_key)]
+            answer = (
+                answer.rstrip()
+                + "\n\n## References\n\n"
+                + "\n".join(f"{n}. {line}" for n, line in enumerate(references, start=1))
+            )
         self.nb_logger.info(
             "literature_rag LiteratureRagStep: synthesized %d-char answer over "
             "%d retrieved records; cited %d distinct PMID(s)",
