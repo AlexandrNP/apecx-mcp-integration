@@ -1208,6 +1208,15 @@ def main(argv: list[str] | None = None) -> None:
 
     _configure_logging()
 
+    # Redirect every HF / torch model-download cache to a guaranteed-writable dir BEFORE any
+    # transformers / huggingface_hub import (they bake the cache location into module constants
+    # at import time, so a per-call ``cache_folder=`` cannot fix an internal hub download). A
+    # GUI/MCP launch with an empty or read-only HOME otherwise crashes the embedding tools with
+    # "[Errno 30] Read-only file system: '.cache'". See agents/_embedding_cache.
+    from apecx_integration.agents._embedding_cache import configure_hf_cache_env
+
+    log.info("MCP startup: embedding/HF cache dir = %s", configure_hf_cache_env())
+
     # Load the centralized network config (precedence CLI --config > $APECX_CONFIG >
     # ~/.apecx/config.yml > built-in defaults) and set it process-wide so every consumer reads ONE
     # source. A malformed config / unknown key FAILS LOUD here, before the boot.

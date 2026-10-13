@@ -67,6 +67,7 @@ _(no module-level classes or functions)_
 _Writable download-cache location for the sentence-transformers embedding model._
 
 - `def embedding_cache_folder()` — Return a writable directory for the sentence-transformers model download.
+- `def configure_hf_cache_env()` — Point every HF / torch cache env var at a guaranteed-writable dir (idempotent).
 
 ## `src/apecx_integration/agents/_llm_config.py`
 _Single source of truth for the synthesis-path LLM model + a loud preflight._

@@ -35,6 +35,11 @@ def embedding_cache_folder() -> str:
         return env
     try:
         root = Path.home() / ".cache" / "apecx_embeddings"
+        # HOME="" (common in a GUI/MCP launch) makes Path.home() non-absolute, so the
+        # path resolves relative to a read-only cwd — treat that as a failure, not a dir
+        # to litter cwd with. Also covers Path.home() returning "" / ".".
+        if not root.is_absolute():
+            raise OSError("home is not absolute (HOME empty / unresolvable)")
         root.mkdir(parents=True, exist_ok=True)
         return str(root)
     except (OSError, RuntimeError):
@@ -50,3 +55,33 @@ def embedding_cache_folder() -> str:
             tmp,
         )
         return str(tmp)
+
+
+# Every env var a HF / torch / sentence-transformers import reads to locate its cache.
+# transformers + huggingface_hub resolve these AT IMPORT TIME into module constants, so a
+# per-call ``cache_folder=`` cannot redirect an internal hub download once the module is
+# loaded — the environment must be fixed first.
+_HF_CACHE_ENV_VARS = (
+    "HF_HOME",
+    "SENTENCE_TRANSFORMERS_HOME",
+    "HUGGINGFACE_HUB_CACHE",
+    "TRANSFORMERS_CACHE",
+    "TORCH_HOME",
+    "XDG_CACHE_HOME",
+)
+
+
+def configure_hf_cache_env() -> str:
+    """Point every HF / torch cache env var at a guaranteed-writable dir (idempotent).
+
+    MUST run before ``transformers`` / ``huggingface_hub`` / ``sentence_transformers`` are
+    imported (they read their cache dir from the environment at import time). Called at the
+    ``apecx-mcp`` entry so a GUI/MCP launch with an empty or read-only ``HOME`` — where
+    ``os.path.join(expanduser("~"), ".cache")`` collapses to a relative ``.cache`` on a
+    read-only cwd — never crashes with ``[Errno 30] Read-only file system: '.cache'``. Any
+    var the operator already set is honored (``setdefault``). Returns the chosen dir.
+    """
+    folder = embedding_cache_folder()
+    for var in _HF_CACHE_ENV_VARS:
+        os.environ.setdefault(var, folder)
+    return folder
