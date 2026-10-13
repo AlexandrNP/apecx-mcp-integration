@@ -430,9 +430,15 @@ class SolutionMemoryStep(BaseStep):
         if self._embedding_model is None:
             from sentence_transformers import SentenceTransformer  # noqa: PLC0415
 
+            from apecx_integration.agents._embedding_cache import embedding_cache_folder
+
+            # Pin a guaranteed-writable download cache so a read-only FS / no-HOME
+            # deploy degrades gracefully instead of crashing with
+            # "[Errno 30] Read-only file system: '.cache'" (the huggingface default).
             self._embedding_model = SentenceTransformer(
                 self._embedding_model_name,
                 device=self._embedding_device,
+                cache_folder=embedding_cache_folder(),
             )
         return self._embedding_model
 
