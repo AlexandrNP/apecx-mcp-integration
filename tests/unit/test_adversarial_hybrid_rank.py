@@ -59,30 +59,30 @@ def _stub_backend_llm(mp):
     return captured
 
 
-# --- Case 1: hard cap = 15 -------------------------------------------------
+# --- Case 1: hard cap = 35 -------------------------------------------------
 
 
-def test_desktop_hard_cap_exactly_15(monkeypatch):
+def test_desktop_hard_cap_exactly_35(monkeypatch):
     _desktop(monkeypatch)
     step = _step()
     recs = [_rec(f"zq{i}", title="wobble gribble snorf") for i in range(200)]
     out = asyncio.run(step.process({"question": "wobble gribble snorf", "filtered_records": recs}))
     assert out["status"] == "host_synthesizes"
-    assert len(out["citations"]) == 15
+    assert len(out["citations"]) == 35
 
 
-def test_agent_hard_cap_exactly_15(monkeypatch):
+def test_agent_hard_cap_exactly_35(monkeypatch):
     _agent(monkeypatch)
     cap = _stub_backend_llm(monkeypatch)
     step = _step()
     recs = [_rec(f"zq{i}", title="wobble gribble snorf") for i in range(200)]
     out = asyncio.run(step.process({"question": "wobble gribble snorf", "filtered_records": recs}))
     assert out["status"] == "ok"
-    assert cap["n"] == 15  # exactly 15 chunks reached the synthesizer
-    assert len(out["citations"]) == 15
+    assert cap["n"] == 35  # exactly 35 chunks reached the synthesizer
+    assert len(out["citations"]) == 35
 
 
-def test_fewer_than_15_returns_all_no_padding(monkeypatch):
+def test_fewer_than_cap_returns_all_no_padding(monkeypatch):
     _desktop(monkeypatch)
     step = _step()
     recs = [_rec(f"zq{i}", title="wobble gribble snorf") for i in range(5)]
@@ -135,7 +135,7 @@ def test_empty_facets_still_caps_and_no_crash(monkeypatch):
     recs = [_rec(f"zq{i}", title="wobble gribble snorf") for i in range(200)]
     out = asyncio.run(step.process({"question": "the of and to in", "filtered_records": recs}))
     assert out["status"] == "host_synthesizes"
-    assert len(out["citations"]) == 15  # ranked+capped, never the full 200
+    assert len(out["citations"]) == 35  # ranked+capped, never the full 200
 
 
 # --- Case 4: no usable text ------------------------------------------------

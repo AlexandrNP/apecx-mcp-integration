@@ -16,7 +16,7 @@ from pathlib import Path
 import apecx_integration.mcp_surface.tools.literature_qa as tool
 
 _IRI = "http://purl.obolibrary.org/obo/NCBITaxon_99999"
-_N = 42  # > reader _TOP_K (15): proves the tool does NOT cap
+_N = 42  # > reader _TOP_K (35): proves the tool does NOT cap
 
 
 def _stamped(pmid: str) -> dict:
@@ -24,7 +24,7 @@ def _stamped(pmid: str) -> dict:
 
 
 def test_tool_hands_full_set_reader_owns_cap(monkeypatch):
-    """Tool passes the FULL (>15) IRI-filtered set to the reader; it never pre-caps."""
+    """Tool passes the FULL (>35) IRI-filtered set to the reader; it never pre-caps."""
     fixtures = [_stamped(f"q{i}") for i in range(_N)]
     monkeypatch.setattr(tool, "resolve_organism_to_iri", lambda term, *a, **k: _IRI)
     monkeypatch.setattr(tool, "_get_gazetteer", lambda: object())

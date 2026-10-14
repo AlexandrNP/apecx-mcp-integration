@@ -3298,7 +3298,7 @@ _MCP tool — ``literature_qa``: organism-scoped, cited literature Q&A._
 - `def _get_gazetteer()` — Build (once) + cache the pathogen gazetteer over the synonym dictionary.
 - `def _get_reader_step()` — Load (once) + cache the LiteratureRagStep via ``from_config`` (framework rule).
 - `async def _read_filtered(question: str, filtered_records: list[dict])` — Read the IRI-filtered records into a cited answer via the reader step.
-- `async def literature_qa(organism: str, question: str, max_papers: int=20)` — Answer a question about ``organism`` from organism-filtered, cited literature.
+- `async def literature_qa(organism: str, question: str, max_papers: int=100)` — Answer a question about ``organism`` from organism-filtered, cited literature.
 
 ## `src/apecx_integration/mcp_surface/tools/workflows.py`
 _MCP tools for the scientist-facing workflow lifecycle._

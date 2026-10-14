@@ -168,6 +168,31 @@ def test_desktop_evidence_header_includes_attribution():
     assert "## [PMID:300] Banana toy three" in md
 
 
+def test_desktop_preamble_carries_explicit_synthesis_directives():
+    """The desktop host-evidence preamble must hand the host EXPLICIT citation +
+    specificity + multi-source + chronology + References directives (not a terse
+    one-liner). Mirrors the synthesis_config system_prompt's intent for the DESKTOP
+    path's own text — these are the directives Lever-4 adds to the host handoff."""
+    preamble = LiteratureRagStep._render_host_evidence("q?", [_OLD, _BARE]).split("\n## [PMID")[0]
+
+    # Cite EVERY claim with the exact header anchor; both anchor forms shown.
+    assert "Cite EVERY factual claim" in preamble
+    assert "[PMID:<id> | Author et al. | Year]" in preamble
+    assert "[PMID:<id>]" in preamble
+    assert "Never invent a PMID, author, or year" in preamble
+    # Specificity: quote residues / structures exactly, do not generalize.
+    assert "quote them EXACTLY" in preamble
+    assert "residue" in preamble and "PDB/EMDB" in preamble
+    # Multi-source preference.
+    assert "MULTIPLE records" in preamble
+    # Chronology: foundational -> recent.
+    assert "foundational" in preamble and "recent" in preamble
+    # Thin-evidence honesty.
+    assert "thin" in preamble
+    # Required References section directive.
+    assert "## References" in preamble
+
+
 def _system_prompt() -> str:
     raw = yaml.safe_load(mod._SYNTHESIS_CONFIG_PATH.read_text(encoding="utf-8"))
     return raw["system_prompt"]

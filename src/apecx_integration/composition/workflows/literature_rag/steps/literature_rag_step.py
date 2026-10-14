@@ -6,14 +6,14 @@ and — for the open-access subset — ``full_text``; synthesis grounds on ``ful
 when present via :func:`_evidence_text`, since abstracts omit epitope/animal-model detail),
 this step:
 
-  1. Ranks the records with a HYBRID signal and keeps AT MOST ``_TOP_K`` (=15):
+  1. Ranks the records with a HYBRID signal and keeps AT MOST ``_TOP_K`` (=35):
      primary key = an IDF-weighted keyword score — the sum over the DISTINCT question
      facets each record mentions of each facet's rarity weight across the candidate set
      (:meth:`_facet_idf` over :func:`agents.literature.facets.facets_present`), so a rare
      discriminative facet counts far more than a generic one; tiebreak = sentence-
      transformers ``all-mpnet-base-v2`` cosine similarity (:meth:`_embed_sims`). An
      adaptive relevance gate then drops the low-relevance tail, so a question with few
-     strongly-relevant records yields FEWER than 15 (never a padded 15). This rank+gate+cap
+     strongly-relevant records yields FEWER than 35 (never a padded 35). This rank+gate+cap
      is the step's SINGLE authority and runs in EVERY locus (desktop included). If
      sentence-transformers cannot load, the ranker degrades LOUD to keyword-only — still
      gated + capped, never the full set.
@@ -126,10 +126,10 @@ _FUSION_PROMPT_PATH = Path(__file__).resolve().parent / "fusion_prompt.md"
 #: CE alone ranked too low). A const, not an eval-tuned value.
 _FUSION_LLM_WEIGHT = 0.5
 #: The SINGLE rank+cap: hand out AT MOST this many hybrid-ranked records, every locus.
-#: "15 MAX" is the product spec — the adaptive gate (:meth:`_hybrid_rank`) returns FEWER
+#: "35 MAX" is the product spec — the adaptive gate (:meth:`_hybrid_rank`) returns FEWER
 #: when fewer records are strongly relevant. The tool (``literature_qa``) relies on THIS
 #: as the one cap — it no longer pre-caps.
-_TOP_K = 15
+_TOP_K = 35
 #: Discriminative-COVERAGE gate cutoff (supersedes the rejected fraction-of-SUM gate AND the
 #: peak-only gate that under-trimmed): the SAME scale-free fraction does double duty, each use a
 #: ratio WITHIN the candidate set so neither flips with N / log N. (1) A facet is DISCRIMINATIVE
@@ -1216,9 +1216,22 @@ class LiteratureRagStep(BaseStep):
         lines = [
             f"# Literature evidence for: {question}",
             "",
-            "The connected assistant synthesizes the answer from the retrieved, "
-            "ontology-filtered PubMed records below. Cite each claim with its header "
-            "anchor exactly as shown (``[PMID:<id>]`` or ``[PMID:<id> | Author et al. | Year]``).",
+            "The connected assistant writes the final answer from the retrieved, "
+            "ontology-filtered PubMed records below. Follow these directives exactly:",
+            "",
+            "- Cite EVERY factual claim inline with the record's exact header anchor "
+            "(``[PMID:<id> | Author et al. | Year]`` when shown, else ``[PMID:<id>]``). "
+            "Never invent a PMID, author, or year not present in a header.",
+            "- When a record states specific residues, residue ranges, mutations, PDB/EMDB "
+            "IDs, epitope coordinates, assays, or structures, quote them EXACTLY — do not "
+            'generalize to "a region".',
+            "- Draw on MULTIPLE records; do not lean on a single source.",
+            "- Organize findings foundational → recent where understanding builds over time, "
+            "and note how it changed.",
+            "- Do not add facts beyond what the records below support; if the evidence is "
+            "thin, say so plainly.",
+            "- End the answer with a ``## References`` section listing every cited record "
+            "(anchor + journal + year).",
             "",
         ]
         for rec in records:

@@ -6,9 +6,9 @@ ranking collapses to the deterministic IDF keyword signal). Mechanism-only.
 
 Covers:
   * Invariant 1 — single cap authority: the tool has no cap symbols, does not
-    slice/sort the record list, and hands the FULL IRI-filtered set (>15) to the reader.
+    slice/sort the record list, and hands the FULL IRI-filtered set (> _TOP_K) to the reader.
   * Invariant 2 — rank+cap runs in EVERY locus BEFORE the locus branch; the desktop
-    branch hands the ranked (<=15) set, not the full set.
+    branch hands the ranked (<= _TOP_K) set, not the full set.
   * Invariant 3 — nanobrain from_config wiring (loads; process defined; execute not
     overridden).
 """
@@ -58,8 +58,8 @@ def test_tool_has_no_cap_symbols_or_slicing():
 
 
 def test_tool_hands_full_unsorted_set_to_reader(monkeypatch):
-    """>15 fabricated IRI-stamped records reach the reader intact (tool imposes no cap)."""
-    n = _TOP_K + 12  # 27 > 15
+    """> _TOP_K fabricated IRI-stamped records reach the reader intact (tool imposes no cap)."""
+    n = _TOP_K + 12  # > _TOP_K
     fixtures = [_record(f"p{i:02d}") for i in range(n)]
     monkeypatch.setattr(tool, "resolve_organism_to_iri", lambda term, *a, **k: _IRI)
     monkeypatch.setattr(tool, "_get_gazetteer", lambda: object())
@@ -94,14 +94,14 @@ def test_rank_precedes_locus_branch_in_source():
 
 
 def test_desktop_branch_hands_ranked_capped_set(monkeypatch):
-    """Desktop locus + >15 records -> status=host_synthesizes; citations/evidence <= _TOP_K."""
+    """Desktop locus + > _TOP_K records -> status=host_synthesizes; citations/evidence <= _TOP_K."""
     # Avoid loading the real embedding model: collapse the tiebreak to zeros so the
     # deterministic IDF keyword signal ranks (every record equal -> cap, not gate, trims).
     monkeypatch.setattr(
         lrs.LiteratureRagStep, "_embed_sims", lambda self, q, recs: [0.0] * len(recs)
     )
 
-    n = _TOP_K + 10  # 25 > 15
+    n = _TOP_K + 10  # > _TOP_K
     records = [_record(f"d{i:02d}") for i in range(n)]
 
     step_yaml = Path(lrs.__file__).resolve().parent / "literature_rag_step.yml"

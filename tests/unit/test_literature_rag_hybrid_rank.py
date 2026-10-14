@@ -5,7 +5,7 @@ no real question, no real PMID, no network, no PubMed. The embedding tiebreak is
 stubbed (``_embed_sims``) or forced to fail (``_get_embed_model``) so the tests
 need no ``rag`` extra and stay deterministic.
 
-The reader is the SINGLE rank+cap authority (K=15), applied in EVERY locus. The
+The reader is the SINGLE rank+cap authority (K=35), applied in EVERY locus. The
 real-data parity partner is tests/integration/test_literature_rag_tool_live.py.
 """
 
@@ -106,7 +106,7 @@ def test_hybrid_rank_drops_records_with_no_usable_text():
     assert [r["pmid"] for r in ranked] == ["good"]
 
 
-def test_desktop_locus_caps_at_15(monkeypatch):
+def test_desktop_locus_caps_at_35(monkeypatch):
     monkeypatch.setattr(
         "apecx_integration.composition.runtime.execution_locus.get_active_locus",
         lambda: ExecutionLocus.DESKTOP,
@@ -116,7 +116,7 @@ def test_desktop_locus_caps_at_15(monkeypatch):
     records = [_rec(f"pmid{i}", title=f"alpha record {i}") for i in range(180)]
     out = asyncio.run(step.process({"question": "alpha beta gamma", "filtered_records": records}))
     assert out["status"] == "host_synthesizes"
-    assert len(out["citations"]) == 15  # NOT the full 180
+    assert len(out["citations"]) == 35  # NOT the full 180
 
 
 def test_embedding_unavailable_keyword_only_fallback_still_caps():

@@ -136,7 +136,7 @@ async def _read_filtered(question: str, filtered_records: list[dict]) -> dict:
     return await step.process({"question": question, "filtered_records": filtered_records})
 
 
-async def literature_qa(organism: str, question: str, max_papers: int = 20) -> dict:
+async def literature_qa(organism: str, question: str, max_papers: int = 100) -> dict:
     """Answer a question about ``organism`` from organism-filtered, cited literature.
 
     Resolves the organism to its NCBITaxon IRI, harvests + taxon-stamps up to
@@ -152,7 +152,10 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
     question:
         Free-text scientific question to answer over the filtered papers.
     max_papers:
-        Upper bound on PubMed records harvested (bounded Entrez fetch).
+        Upper bound on PubMed records harvested (bounded Entrez fetch). Default 100:
+        a pool meaningfully larger than the reader's 35-record rank+cap, so the ranker
+        selects the best 35 from a wide candidate set rather than handing back whatever
+        was harvested. A real harvest at 100 runs well under the desktop timeout.
 
     Returns
     -------
