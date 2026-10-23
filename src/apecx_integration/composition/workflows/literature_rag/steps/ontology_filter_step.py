@@ -77,11 +77,26 @@ class OntologyFilterStep(BaseStep):
         stamped_records = envelope.get("stamped_records") or []
 
         if not target_iri:
-            self.nb_logger.warning(
-                "literature_rag OntologyFilterStep: missing/empty target_iri — "
-                "cannot filter (organism->IRI resolution is an upstream concern); "
-                "returning empty filtered set with status=no_target_iri"
-            )
+            # An ambiguous organism is NOT the same failure as an unresolvable
+            # one: the term matched several taxa and upstream refused to pick.
+            # Reporting both as no_target_iri would hide a question the user can
+            # actually answer. Read-only on an upstream field — this step stays
+            # I/O-free.
+            candidates = envelope.get("organism_candidates") or []
+            status = "ambiguous_organism" if candidates else "no_target_iri"
+            if candidates:
+                self.nb_logger.warning(
+                    "literature_rag OntologyFilterStep: organism is ambiguous across "
+                    "%d taxa — cannot filter without a chosen IRI; returning empty "
+                    "filtered set with status=ambiguous_organism",
+                    len(candidates),
+                )
+            else:
+                self.nb_logger.warning(
+                    "literature_rag OntologyFilterStep: missing/empty target_iri — "
+                    "cannot filter (organism->IRI resolution is an upstream concern); "
+                    "returning empty filtered set with status=no_target_iri"
+                )
             # Pass the whole envelope through (enriched) so accumulated fields
             # (question, organism, ...) survive to the reader even on the degrade
             # path; overlay the filter's own keys as a superset.
@@ -89,7 +104,7 @@ class OntologyFilterStep(BaseStep):
                 **envelope,
                 "filtered_records": [],
                 "target_iri": None,
-                "status": "no_target_iri",
+                "status": status,
             }
 
         filtered_records = [r for r in stamped_records if target_iri in (r.get("iris") or [])]
