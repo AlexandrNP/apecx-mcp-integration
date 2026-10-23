@@ -215,9 +215,15 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
     # 2. Harvest + stamp. Both the harvest (its own asyncio.run) and the ~1.34M-row
     #    gazetteer build are blocking; run them off the event loop so the MCP server
     #    stays responsive and we never call asyncio.run() inside a running loop.
+    #
+    #    Search on the canonical NAME when the caller handed us an IRI — which is
+    #    how a re-call after an ambiguity pause arrives. PubMed has no idea what a
+    #    PURL is, so forwarding it verbatim returns zero hits and the pause the
+    #    step above raised would have no usable answer.
+    search_term = resolution.label or organism
     gazetteer = _get_gazetteer()
     stamped = await asyncio.to_thread(
-        harvest_and_stamp, organism, gazetteer, max_papers=int(max_papers)
+        harvest_and_stamp, search_term, gazetteer, max_papers=int(max_papers)
     )
     n_considered = len(stamped)
 

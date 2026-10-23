@@ -193,6 +193,42 @@ def test_paused_envelope_matches_the_database_tools(monkeypatch):
     assert result == expected
 
 
+def test_literature_qa_harvests_on_the_label_when_given_an_iri(monkeypatch):
+    """Answering a pause with an IRI must search PubMed by NAME, not by PURL.
+
+    PubMed has no idea what a PURL is: forwarding it verbatim returns zero
+    hits, so the pause would be answerable in form but not in substance.
+    """
+    rsv_human = "http://purl.obolibrary.org/obo/NCBITaxon_11250"
+    monkeypatch.setattr(
+        tool,
+        "resolve_organism",
+        lambda term, *a, **k: OrganismResolution(
+            rsv_human, [], "resolved", "human respiratory syncytial virus"
+        ),
+    )
+    monkeypatch.setattr(tool, "_get_gazetteer", lambda: object())
+
+    seen: list[str] = []
+
+    def _capture(term, gaz, *, max_papers):
+        seen.append(term)
+        return [_stamped("111", [rsv_human])]
+
+    monkeypatch.setattr(tool, "harvest_and_stamp", _capture)
+
+    async def _fake_reader(question, filtered_records):
+        return {"answer": "a. [PMID:111]", "citations": ["111"], "status": "ok"}
+
+    monkeypatch.setattr(tool, "_read_filtered", _fake_reader)
+
+    result = asyncio.run(tool.literature_qa(rsv_human, "q?", 5))
+
+    assert seen == ["human respiratory syncytial virus"]
+    assert result["organism_iri"] == rsv_human
+    assert result["status"] == "ok"
+
+
 def test_literature_qa_unresolved_organism(monkeypatch):
     """Organism that does not resolve -> unresolved_organism, no harvest."""
     monkeypatch.setattr(tool, "resolve_organism", lambda term, *a, **k: _miss())

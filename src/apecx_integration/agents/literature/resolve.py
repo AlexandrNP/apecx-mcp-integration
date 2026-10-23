@@ -53,11 +53,32 @@ class OrganismResolution(NamedTuple):
     ``iri`` is populated ONLY for ``status == "resolved"``. It is deliberately
     ``None`` on ``"ambiguous"`` so a caller that ignores ``status`` and uses
     the IRI anyway fails loudly rather than filtering on a coin-flip taxon.
+
+    ``label`` is the canonical name, set when the caller passed an IRI (which
+    is unusable as a free-text search term). It is ``None`` when the input was
+    already a name — the caller's own term is the better query then, since it
+    is what the user actually wrote.
     """
 
     iri: str | None
     candidates: list[dict[str, Any]]
     status: ResolutionOutcome
+    label: str | None = None
+
+
+def _canonical_label(uri: str, iri: str) -> str | None:
+    """Look up the canonical name for ``iri``; ``None`` if absent."""
+    import sqlite3
+
+    with contextlib.suppress(sqlite3.OperationalError, sqlite3.DatabaseError):
+        with contextlib.closing(sqlite3.connect(uri, uri=True)) as conn:
+            row = conn.execute(
+                "SELECT canonical_label FROM entries WHERE canonical_iri = ? LIMIT 1",
+                (iri,),
+            ).fetchone()
+        if row:
+            return row[0]
+    return None
 
 
 def _ambiguous_candidates(conn: Any, normalized: str) -> list[dict[str, Any]]:
@@ -132,7 +153,9 @@ def resolve_organism(term: str, db_path: str | os.PathLike | None = None) -> Org
     An NCBITaxon IRI passed as ``term`` short-circuits to ``"resolved"``: the
     caller has already disambiguated, which is exactly how a re-call after an
     ambiguity pause arrives. Without this, answering the pause would look like
-    a miss.
+    a miss. ``label`` carries the canonical name for that IRI, because an IRI
+    is useless as a literature SEARCH term — a caller that forwards ``term``
+    verbatim to PubMed gets zero hits and the pause becomes a dead end.
 
     Never raises on a miss. ``db_path`` defaults to the canonical dictionary
     location (:func:`default_dictionary_path`) when omitted.
@@ -141,19 +164,21 @@ def resolve_organism(term: str, db_path: str | os.PathLike | None = None) -> Org
 
     from apecx_integration.synonym_dictionary.normalization import normalize_surface_form
 
-    if isinstance(term, str) and term.startswith(_NCBITAXON_PREFIX):
-        return OrganismResolution(term.strip(), [], "resolved")
-
-    normalized = normalize_surface_form(term)
-    if not normalized:
-        return OrganismResolution(None, [], "miss")
-
     if db_path is None:
         from apecx_integration.synonym_dictionary.loader import default_dictionary_path
 
         db_path = default_dictionary_path()
 
     uri = f"file:{db_path}?mode=ro"
+
+    if isinstance(term, str) and term.startswith(_NCBITAXON_PREFIX):
+        iri = term.strip()
+        return OrganismResolution(iri, [], "resolved", _canonical_label(uri, iri))
+
+    normalized = normalize_surface_form(term)
+    if not normalized:
+        return OrganismResolution(None, [], "miss")
+
     with contextlib.closing(sqlite3.connect(uri, uri=True)) as conn:
         candidates = _ambiguous_candidates(conn, normalized)
         if candidates:

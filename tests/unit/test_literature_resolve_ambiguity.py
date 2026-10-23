@@ -153,6 +153,22 @@ def test_chosen_iri_short_circuits_so_the_pause_can_be_answered(ambiguous_db):
     assert (result.status, result.iri) == ("resolved", _RSV_HUMAN)
 
 
+def test_iri_input_carries_a_searchable_label(ambiguous_db):
+    """An IRI resolves but is useless as a PubMed query — the label must come too.
+
+    Without this the pause is answerable in name only: the re-call grounds on
+    the right taxon and then harvests zero papers, because the literal PURL is
+    sent as the search term.
+    """
+    result = resolve_organism(_RSV_HUMAN, ambiguous_db)
+    assert result.label == "human respiratory syncytial virus"
+
+
+def test_name_input_leaves_label_unset(ambiguous_db):
+    """The user's own wording is the better query; don't override it."""
+    assert resolve_organism("CHIKV", ambiguous_db).label is None
+
+
 def test_dictionary_without_ambiguity_table_degrades_not_raises(legacy_db):
     result = resolve_organism("RSV", legacy_db)
     assert result.status == "resolved"
