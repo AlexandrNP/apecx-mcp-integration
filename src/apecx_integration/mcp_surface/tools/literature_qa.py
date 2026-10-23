@@ -4,7 +4,8 @@ Exposes the merged literature RAG pipeline as ONE scientist-facing MCP tool.
 Given an ``organism`` name and a free-text ``question``, it:
 
   1. Resolves the organism name to its canonical NCBITaxon PURL IRI
-     (:func:`agents.literature.resolve.resolve_organism_to_iri`).
+     (:func:`agents.literature.resolve.resolve_organism`), PAUSING on an
+     ambiguous surface form instead of picking a taxon.
   2. Harvests up to ``max_papers`` PubMed records for the organism term and
      stamps each with the taxa it mentions
      (:func:`agents.literature.pipeline.harvest_and_stamp`, over a gazetteer built
@@ -18,10 +19,20 @@ Given an ``organism`` name and a free-text ``question``, it:
      ``LiteratureRagStep`` (retrieve top-k → synthesize → cite).
 
 Degrade-loud contract (never a fake "ok"):
+  - organism is ambiguous     -> ``status="paused_awaiting_disambiguation"``
   - organism does not resolve            -> ``status="unresolved_organism"``
   - no papers survive the IRI filter     -> ``status="no_evidence"``
   - synthesis/gate failure in the reader -> ``status="synthesis_failed"``
   - a grounded, cited answer             -> ``status="ok"``
+
+The ambiguity pause is load-bearing, because the alternative failure is
+invisible rather than loud: a surface form like "RSV" spans six taxa (human
+RSV, Rous sarcoma virus, a rice tenuivirus, ...), and BOTH the query IRI and
+the gazetteer stamps are read from the same last-write-wins table — so a
+silent pick makes the corpus filter agree with itself on the WRONG organism
+while the paper counts and the prose both look healthy. The paused envelope
+is the same shape ``harmonized_search`` and the database tools emit; re-call
+with the chosen canonical IRI as ``organism``.
 
 Clean-install rule: this module imports NO optional ``rag`` extra
 (faiss / sentence-transformers) at module scope. The organism resolver, the
@@ -47,7 +58,8 @@ import os
 # Base-dep-clean imports (no faiss / sentence-transformers). Bound at module top
 # so tests can monkeypatch them as module attributes.
 from apecx_integration.agents.literature.pipeline import harvest_and_stamp
-from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
+from apecx_integration.agents.literature.resolve import resolve_organism
+from apecx_integration.mcp_surface.tools._hitl_gate import build_paused_envelope
 
 log = logging.getLogger(__name__)
 
@@ -149,6 +161,12 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
       - ``status``: ``"ok" | "no_evidence" | "unresolved_organism" |
         "synthesis_failed"``.
 
+    On an AMBIGUOUS organism the return is a different shape entirely — the
+    shared paused envelope (``status="paused_awaiting_disambiguation"`` plus
+    ``markdown`` / ``next_action`` / ``candidates`` / ``tool`` / ``term``),
+    matching the database tools byte for byte. Check ``status`` before
+    reading ``answer``.
+
     Raises
     ------
     ValueError
@@ -170,12 +188,26 @@ async def literature_qa(organism: str, question: str, max_papers: int = 20) -> d
             "status": status,
         }
 
-    # 1. Resolve organism -> NCBITaxon IRI. Degrade-loud on a miss.
-    iri = (
-        resolve_organism_to_iri(organism)
-        if isinstance(organism, str) and organism.strip()
-        else None
+    # 1. Resolve organism -> NCBITaxon IRI. Pause on ambiguity, degrade-loud on a
+    #    miss. Both happen BEFORE the ~1.34M-row gazetteer build below, so a term
+    #    we cannot ground costs nothing.
+    resolution = (
+        resolve_organism(organism) if isinstance(organism, str) and organism.strip() else None
     )
+    if resolution is not None and resolution.status == "ambiguous":
+        log.info(
+            "literature_qa: organism %r is ambiguous across %d taxa — pausing for disambiguation",
+            organism,
+            len(resolution.candidates),
+        )
+        return build_paused_envelope(
+            term=organism,
+            candidates=resolution.candidates,
+            param_name="organism",
+            tool_name="literature_qa",
+        )
+
+    iri = resolution.iri if resolution is not None else None
     if iri is None:
         log.info("literature_qa: organism %r did not resolve to an NCBITaxon IRI", organism)
         return _empty("unresolved_organism", None, 0, 0)

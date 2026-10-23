@@ -174,6 +174,12 @@ def _lookup_result_to_meta(lr: LookupResult) -> dict[str, Any]:
     }
 
 
+# Public alias. Tools that detect ambiguity through their own (cheaper)
+# resolver still emit the SAME envelope, so a user-facing LLM sees one shape
+# no matter which tool paused. The underscore name stays for existing callers.
+build_paused_envelope = _build_paused_envelope
+
 __all__ = [
+    "build_paused_envelope",
     "resolve_with_hitl_gate",
 ]
