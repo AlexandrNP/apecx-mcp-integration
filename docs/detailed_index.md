@@ -236,7 +236,8 @@ _Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
   - `def __init__(self, term_iri_map: dict[str, str])`
   - `def tag(self, text: str)` — Return non-overlapping longest-match tags, left to right.
 - `def build_gazetteer(term_iri_map: dict[str, str])` — Build a gazetteer from an INJECTED {surface_form: NCBITaxon_IRI} map.
-- `def build_from_dictionary(db_path: str, *, entity_type: str='pathogen', limit: int | None=None)` — Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
+- `def _ambiguous_surfaces(conn: object)` — Surface forms known to collide across ≥2 taxa, per the dictionary build.
+- `def build_from_dictionary(db_path: str, *, entity_type: str='pathogen', limit: int | None=None, exclude_ambiguous: bool=True)` — Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
 
 ## `src/apecx_integration/agents/literature/harvest.py`
 _Bounded PubMed harvest → literature-record normalization._
@@ -251,7 +252,10 @@ _Harvest → stamp glue: the thin seam that turns a search term into stamped_
 ## `src/apecx_integration/agents/literature/resolve.py`
 _Resolve an organism name to its NCBITaxon PURL IRI._
 
-- `def resolve_organism_to_iri(term: str, db_path: str | os.PathLike | None=None)` — Return the NCBITaxon PURL IRI for ``term``, or ``None`` on a miss.
+- class `OrganismResolution(NamedTuple)` — Three-state outcome of resolving an organism surface form.
+- `def _ambiguous_candidates(conn: Any, normalized: str)` — Return the candidate taxa for ``normalized``, or ``[]`` if unambiguous.
+- `def resolve_organism(term: str, db_path: str | os.PathLike | None=None)` — Resolve ``term`` to an NCBITaxon IRI, reporting ambiguity instead of guessing.
+- `def resolve_organism_to_iri(term: str, db_path: str | os.PathLike | None=None)` — Return the NCBITaxon PURL IRI for ``term``, or ``None``.
 
 ## `src/apecx_integration/agents/literature/stamped_corpus.py`
 _Per-abstract taxon stamping + an in-memory, IRI-filterable store, plus a_

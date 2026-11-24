@@ -7,14 +7,23 @@ enriched with that ``target_iri`` so later steps still see ``question``,
 ``stamped_records`` and everything else.
 
 Resolution is delegated to the shared, reuse-not-reimplement resolver
-``apecx_integration.agents.literature.resolve.resolve_organism_to_iri`` (the SAME
-build-time normalizer + dictionary ``inverse_index`` read the index is built
-from), so runtime keys agree with the index.
+``apecx_integration.agents.literature.resolve.resolve_organism`` (the SAME
+build-time normalizer + dictionary read the index is built from), so runtime
+keys agree with the index.
 
 Degrade-loud: an unresolvable organism (or a missing/empty ``organism`` field)
 yields ``target_iri=None``. We do NOT raise — the downstream OntologyFilterStep
 already degrades loud on a missing ``target_iri`` (status=no_target_iri), so a
 miss surfaces as an honest empty answer, not a crash. A clear WARNING is logged.
+
+An AMBIGUOUS organism is distinguished from a miss. "RSV" spans six taxa, and
+resolving it by last-write-wins would filter the corpus on an arbitrary one
+while every downstream count still looked healthy. Such a term yields
+``target_iri=None`` PLUS ``organism_candidates``, and the filter reports
+``status="ambiguous_organism"`` rather than conflating it with a genuine
+no-match. (Surfacing this as a WorkflowResult ``needs_input`` +
+``ControlTransfer`` additionally requires an EnvelopeStep terminal, which this
+cascade does not yet have — tracked separately.)
 
 Framework contract (nanobrain):
   - Created via ``from_config`` only (never a direct constructor).
@@ -28,7 +37,8 @@ Input envelope (carried by the ``resolve_input`` data unit):
   - plus any other fields (``question``, ``stamped_records``, ...) — passed through.
 
 Output envelope (written to the single ``resolve_output`` data unit):
-  - ``{**envelope, "target_iri": <NCBITaxon PURL | None>}``.
+  - ``{**envelope, "target_iri": <NCBITaxon PURL | None>}``, plus
+    ``"organism_candidates": [<candidate dicts>]`` when the term was ambiguous.
 """
 
 from __future__ import annotations
@@ -37,7 +47,7 @@ from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
 
-from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
+from apecx_integration.agents.literature.resolve import resolve_organism
 
 
 class ResolveOrganismStep(BaseStep):
@@ -80,7 +90,25 @@ class ResolveOrganismStep(BaseStep):
             )
             return {**envelope, "target_iri": None}
 
-        target_iri = resolve_organism_to_iri(organism.strip())
+        resolution = resolve_organism(organism.strip())
+
+        if resolution.status == "ambiguous":
+            self.nb_logger.warning(
+                "literature_rag ResolveOrganismStep: organism %r is ambiguous across "
+                "%d taxa (%s); enriching with target_iri=None + organism_candidates "
+                "(downstream filter degrades loud with status=ambiguous_organism). "
+                "Re-run with the chosen canonical IRI as 'organism'.",
+                organism,
+                len(resolution.candidates),
+                ", ".join(c["canonical_iri"] for c in resolution.candidates),
+            )
+            return {
+                **envelope,
+                "target_iri": None,
+                "organism_candidates": resolution.candidates,
+            }
+
+        target_iri = resolution.iri
         if not target_iri:
             self.nb_logger.warning(
                 "literature_rag ResolveOrganismStep: no NCBITaxon IRI for organism "

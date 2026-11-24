@@ -94,8 +94,39 @@ def build_gazetteer(term_iri_map: dict[str, str]) -> Gazetteer:
     return Gazetteer(term_iri_map)
 
 
+def _ambiguous_surfaces(conn: object) -> set[str]:
+    """Surface forms known to collide across ≥2 taxa, per the dictionary build.
+
+    ``inverse_index`` keeps one row per surface form (last write wins) and
+    shunts the displaced conflicts into ``ambiguous_surface_forms``. Stamping
+    an abstract from the winner alone attributes e.g. every "RSV" mention to
+    whichever of six taxa happened to be written last — and because the query
+    side reads the same table, the wrong stamp and the wrong query agree and
+    the error is invisible downstream. Excluding these surfaces makes the
+    tagger abstain where it cannot be sure.
+
+    Older dictionaries predate the table; absence means "no known conflicts",
+    not a failure.
+    """
+    import sqlite3
+
+    try:
+        return {
+            row[0]
+            for row in conn.execute(  # type: ignore[attr-defined]
+                "SELECT DISTINCT surface_form_normalized FROM ambiguous_surface_forms"
+            )
+        }
+    except sqlite3.OperationalError:
+        return set()
+
+
 def build_from_dictionary(
-    db_path: str, *, entity_type: str = "pathogen", limit: int | None = None
+    db_path: str,
+    *,
+    entity_type: str = "pathogen",
+    limit: int | None = None,
+    exclude_ambiguous: bool = True,
 ) -> Gazetteer:
     """Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
 
@@ -103,6 +134,13 @@ def build_from_dictionary(
     keeping only surfaces that pass the same precision guard as the tag path
     (:func:`_is_taggable`), and returns a gazetteer over the resulting map.
     ``limit`` bounds the number of rows read (SQL ``LIMIT``) for cheap builds.
+
+    ``exclude_ambiguous`` (default on) additionally drops surfaces listed in
+    ``ambiguous_surface_forms`` — see :func:`_ambiguous_surfaces`. On the
+    shipped dictionary this removes 588 of ~1.34M keys (0.04%), among them
+    "rna", "dna" and "rsv". Filtering happens in Python rather than in SQL so
+    that the query — and therefore ``limit``'s row-order semantics — is
+    unchanged, and so a dictionary without the table degrades silently.
     """
     import sqlite3
 
@@ -114,7 +152,10 @@ def build_from_dictionary(
 
     uri = f"file:{db_path}?mode=ro"
     with contextlib.closing(sqlite3.connect(uri, uri=True)) as conn:
+        ambiguous = _ambiguous_surfaces(conn) if exclude_ambiguous else set()
         term_iri_map = {
-            surface: iri for surface, iri in conn.execute(sql, params) if _is_taggable(surface)
+            surface: iri
+            for surface, iri in conn.execute(sql, params)
+            if _is_taggable(surface) and surface not in ambiguous
         }
     return build_gazetteer(term_iri_map)
